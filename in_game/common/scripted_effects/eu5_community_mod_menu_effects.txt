@@ -158,6 +158,14 @@ cmm_register_bool_setting = {
 		}
 		set_variable = { name = cmm_setting_bool_value_$mod_id$__$setting_id$ value = 1 }
 	}
+	# The below is is to prevent benign does not exist/is not used warnings in the log.
+	if = {
+		limit = { always = no }
+		set_variable = cmm_setting_owner_mod_id_$mod_id$__$setting_id$
+		remove_variable = cmm_setting_owner_mod_id_$mod_id$__$setting_id$
+		set_variable = cmm_setting_owner_display_key_$mod_id$__$setting_id$
+		remove_variable = cmm_setting_owner_display_key_$mod_id$__$setting_id$
+	}
 }
 
 cmm_toggle_bool_setting = {
