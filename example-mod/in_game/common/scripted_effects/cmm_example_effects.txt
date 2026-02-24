@@ -21,12 +21,6 @@ cmm_example_register_country = {
 		description_key = CMM_EXAMPLE_SETTING_NOTIFICATIONS_DESC
 		default_value = 0
 	}
-
-	# Static analyzer wiring: ensure concrete dirty vars are seen as set in executed logic.
-	set_variable = { name = cmm_setting_dirty_cmm_example__feature_enabled value = 1 }
-	remove_variable = cmm_setting_dirty_cmm_example__feature_enabled
-	set_variable = { name = cmm_setting_dirty_cmm_example__show_notifications value = 1 }
-	remove_variable = cmm_setting_dirty_cmm_example__show_notifications
 }
 
 cmm_example_consume_cmm_dirty = {
@@ -73,69 +67,6 @@ cmm_example_consume_cmm_dirty = {
 	}
 }
 
-# Intentional no-op symbol wiring for static analyzer warnings.
-cmm_example_dummy_consume_registry_flags = {
-	set_variable = {
-		name = cmm_mod_display_name_key_cmm_example
-		value = flag:CMM_EXAMPLE_MOD_NAME
-	}
-	set_variable = {
-		name = cmm_mod_description_key_cmm_example
-		value = flag:CMM_EXAMPLE_MOD_DESC
-	}
-	set_variable = {
-		name = cmm_setting_label_key_cmm_example__feature_enabled
-		value = flag:CMM_EXAMPLE_SETTING_FEATURE_NAME
-	}
-	set_variable = {
-		name = cmm_setting_desc_key_cmm_example__feature_enabled
-		value = flag:CMM_EXAMPLE_SETTING_FEATURE_DESC
-	}
-	set_variable = {
-		name = cmm_setting_label_key_cmm_example__show_notifications
-		value = flag:CMM_EXAMPLE_SETTING_NOTIFICATIONS_NAME
-	}
-	set_variable = {
-		name = cmm_setting_desc_key_cmm_example__show_notifications
-		value = flag:CMM_EXAMPLE_SETTING_NOTIFICATIONS_DESC
-	}
 
-	if = {
-		limit = {
-			var:cmm_mod_display_name_key_cmm_example = flag:CMM_EXAMPLE_MOD_NAME
-		}
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
-	if = {
-		limit = {
-			var:cmm_mod_description_key_cmm_example = flag:CMM_EXAMPLE_MOD_DESC
-		}
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
-	if = {
-		limit = {
-			var:cmm_setting_label_key_cmm_example__feature_enabled = flag:CMM_EXAMPLE_SETTING_FEATURE_NAME
-		}
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
-	if = {
-		limit = {
-			var:cmm_setting_desc_key_cmm_example__feature_enabled = flag:CMM_EXAMPLE_SETTING_FEATURE_DESC
-		}
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
-	if = {
-		limit = {
-			var:cmm_setting_label_key_cmm_example__show_notifications = flag:CMM_EXAMPLE_SETTING_NOTIFICATIONS_NAME
-		}
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
-	if = {
-		limit = {
-			var:cmm_setting_desc_key_cmm_example__show_notifications = flag:CMM_EXAMPLE_SETTING_NOTIFICATIONS_DESC
-		}
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
-}
 
 

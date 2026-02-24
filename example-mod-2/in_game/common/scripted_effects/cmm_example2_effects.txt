@@ -21,12 +21,6 @@ cmm_example2_register_country = {
 		description_key = CMM_EXAMPLE2_SETTING_MAP_OVERLAY_DESC
 		default_value = 1
 	}
-
-	# Static analyzer wiring: ensure concrete dirty vars are seen as set in executed logic.
-	set_variable = { name = cmm_setting_dirty_cmm_example2__ai_helper value = 1 }
-	remove_variable = cmm_setting_dirty_cmm_example2__ai_helper
-	set_variable = { name = cmm_setting_dirty_cmm_example2__map_overlay value = 1 }
-	remove_variable = cmm_setting_dirty_cmm_example2__map_overlay
 }
 
 cmm_example2_consume_cmm_dirty = {
@@ -73,69 +67,6 @@ cmm_example2_consume_cmm_dirty = {
 	}
 }
 
-# Intentional no-op symbol wiring for static analyzer warnings.
-cmm_example2_dummy_consume_registry_flags = {
-	set_variable = {
-		name = cmm_mod_display_name_key_cmm_example2
-		value = flag:CMM_EXAMPLE2_MOD_NAME
-	}
-	set_variable = {
-		name = cmm_mod_description_key_cmm_example2
-		value = flag:CMM_EXAMPLE2_MOD_DESC
-	}
-	set_variable = {
-		name = cmm_setting_label_key_cmm_example2__ai_helper
-		value = flag:CMM_EXAMPLE2_SETTING_AI_HELPER_NAME
-	}
-	set_variable = {
-		name = cmm_setting_desc_key_cmm_example2__ai_helper
-		value = flag:CMM_EXAMPLE2_SETTING_AI_HELPER_DESC
-	}
-	set_variable = {
-		name = cmm_setting_label_key_cmm_example2__map_overlay
-		value = flag:CMM_EXAMPLE2_SETTING_MAP_OVERLAY_NAME
-	}
-	set_variable = {
-		name = cmm_setting_desc_key_cmm_example2__map_overlay
-		value = flag:CMM_EXAMPLE2_SETTING_MAP_OVERLAY_DESC
-	}
 
-	if = {
-		limit = {
-			var:cmm_mod_display_name_key_cmm_example2 = flag:CMM_EXAMPLE2_MOD_NAME
-		}
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
-	if = {
-		limit = {
-			var:cmm_mod_description_key_cmm_example2 = flag:CMM_EXAMPLE2_MOD_DESC
-		}
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
-	if = {
-		limit = {
-			var:cmm_setting_label_key_cmm_example2__ai_helper = flag:CMM_EXAMPLE2_SETTING_AI_HELPER_NAME
-		}
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
-	if = {
-		limit = {
-			var:cmm_setting_desc_key_cmm_example2__ai_helper = flag:CMM_EXAMPLE2_SETTING_AI_HELPER_DESC
-		}
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
-	if = {
-		limit = {
-			var:cmm_setting_label_key_cmm_example2__map_overlay = flag:CMM_EXAMPLE2_SETTING_MAP_OVERLAY_NAME
-		}
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
-	if = {
-		limit = {
-			var:cmm_setting_desc_key_cmm_example2__map_overlay = flag:CMM_EXAMPLE2_SETTING_MAP_OVERLAY_DESC
-		}
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
-}
 
 

@@ -1,0 +1,18 @@
+﻿# Intentional no-op symbol wiring for static analyzer warnings.
+
+cmm_example3_dummy_consume_registry_flags = {
+	set_variable = cmm_mod_display_name_key_cmm_example3
+	set_variable = cmm_mod_description_key_cmm_example3
+	set_variable = cmm_setting_label_key_cmm_example3__ledger_export
+	set_variable = cmm_setting_desc_key_cmm_example3__ledger_export
+	set_variable = cmm_setting_label_key_cmm_example3__event_hints
+	set_variable = cmm_setting_desc_key_cmm_example3__event_hints
+
+	remove_variable = cmm_mod_display_name_key_cmm_example3
+	remove_variable = cmm_mod_description_key_cmm_example3
+	remove_variable = cmm_setting_label_key_cmm_example3__ledger_export
+	remove_variable = cmm_setting_desc_key_cmm_example3__ledger_export
+	remove_variable = cmm_setting_label_key_cmm_example3__event_hints
+	remove_variable = cmm_setting_desc_key_cmm_example3__event_hints
+}
+

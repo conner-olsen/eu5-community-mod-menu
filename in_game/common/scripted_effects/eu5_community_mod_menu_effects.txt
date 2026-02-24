@@ -73,40 +73,6 @@ cmm_register_mod = {
 	set_variable = { name = cmm_mod_display_name_key_$mod_id$ value = flag:$display_name_key$ }
 	set_variable = { name = cmm_mod_description_key_$mod_id$ value = flag:$description_key$ }
 	set_variable = { name = cmm_mod_description_key_by_display_name_key_$display_name_key$ value = flag:$description_key$ }
-
-	# Mark dynamic metadata as used in executed logic to avoid false-positive warnings.
-	if = {
-		limit = { has_variable = cmm_mod_active_$mod_id$ }
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
-	if = {
-		limit = { var:cmm_mod_display_name_key_$mod_id$ = flag:$display_name_key$ }
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
-	if = {
-		limit = { var:cmm_mod_description_key_$mod_id$ = flag:$description_key$ }
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
-	if = {
-		limit = { var:cmm_mod_description_key_by_display_name_key_$display_name_key$ = flag:$description_key$ }
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
-	if = {
-		limit = { has_variable = cmm_registered_mod_ids }
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
-	if = {
-		limit = { has_variable = cmm_registered_mod_display_name_keys }
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
-	if = {
-		limit = { has_variable = cmm_first_registered_mod_id }
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
-	if = {
-		limit = { has_variable = cmm_first_registered_display_name_key }
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
 }
 
 cmm_unregister_mod = {
@@ -184,7 +150,6 @@ cmm_register_bool_setting = {
 
 	set_variable = { name = cmm_setting_label_key_$mod_id$__$setting_id$ value = flag:$display_name_key$ }
 	set_variable = { name = cmm_setting_desc_key_$mod_id$__$setting_id$ value = flag:$description_key$ }
-	set_variable = { name = cmm_setting_key_flag_$mod_id$__$setting_id$ value = flag:$mod_id$__$setting_id$ }
 
 	if = {
 		limit = {
@@ -192,32 +157,6 @@ cmm_register_bool_setting = {
 			$default_value$ = 1
 		}
 		set_variable = { name = cmm_setting_bool_value_$mod_id$__$setting_id$ value = 1 }
-	}
-
-	# Mark dynamic metadata as used in executed logic to avoid false-positive warnings.
-	if = {
-		limit = { var:cmm_setting_owner_mod_id_$mod_id$__$setting_id$ = flag:$mod_id$ }
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
-	if = {
-		limit = { has_variable = cmm_setting_owner_display_key_$mod_id$__$setting_id$ }
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
-	if = {
-		limit = { var:cmm_setting_label_key_$mod_id$__$setting_id$ = flag:$display_name_key$ }
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
-	if = {
-		limit = { var:cmm_setting_desc_key_$mod_id$__$setting_id$ = flag:$description_key$ }
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
-	if = {
-		limit = { var:cmm_setting_key_flag_$mod_id$__$setting_id$ = flag:$mod_id$__$setting_id$ }
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
-	if = {
-		limit = { has_variable = cmm_registered_setting_keys }
-		change_variable = { name = cmm_registered_mod_count add = 0 }
 	}
 }
 
@@ -236,5 +175,6 @@ cmm_toggle_bool_setting = {
 cmm_clear_setting_dirty = {
 	remove_variable = cmm_setting_dirty_$mod_id$__$setting_id$
 }
+
 
 

@@ -21,13 +21,8 @@ CMM_RegisterCoreMod = {
 			description_key = CMM_CORE_BOOL_EXAMPLE_DESC
 			default_value = 0
 		}
-
-		# Static analyzer wiring: read the core dirty variable in executed logic.
-		if = {
-			limit = { has_variable = cmm_setting_dirty_cmm_core__example_toggle }
-			change_variable = { name = cmm_registered_mod_count add = 0 }
-		}
 	}
 }
+
 
 

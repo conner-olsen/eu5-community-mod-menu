@@ -21,12 +21,6 @@ cmm_example3_register_country = {
 		description_key = CMM_EXAMPLE3_SETTING_EVENT_HINTS_DESC
 		default_value = 0
 	}
-
-	# Static analyzer wiring: ensure concrete dirty vars are seen as set in executed logic.
-	set_variable = { name = cmm_setting_dirty_cmm_example3__ledger_export value = 1 }
-	remove_variable = cmm_setting_dirty_cmm_example3__ledger_export
-	set_variable = { name = cmm_setting_dirty_cmm_example3__event_hints value = 1 }
-	remove_variable = cmm_setting_dirty_cmm_example3__event_hints
 }
 
 cmm_example3_consume_cmm_dirty = {
@@ -73,69 +67,6 @@ cmm_example3_consume_cmm_dirty = {
 	}
 }
 
-# Intentional no-op symbol wiring for static analyzer warnings.
-cmm_example3_dummy_consume_registry_flags = {
-	set_variable = {
-		name = cmm_mod_display_name_key_cmm_example3
-		value = flag:CMM_EXAMPLE3_MOD_NAME
-	}
-	set_variable = {
-		name = cmm_mod_description_key_cmm_example3
-		value = flag:CMM_EXAMPLE3_MOD_DESC
-	}
-	set_variable = {
-		name = cmm_setting_label_key_cmm_example3__ledger_export
-		value = flag:CMM_EXAMPLE3_SETTING_LEDGER_EXPORT_NAME
-	}
-	set_variable = {
-		name = cmm_setting_desc_key_cmm_example3__ledger_export
-		value = flag:CMM_EXAMPLE3_SETTING_LEDGER_EXPORT_DESC
-	}
-	set_variable = {
-		name = cmm_setting_label_key_cmm_example3__event_hints
-		value = flag:CMM_EXAMPLE3_SETTING_EVENT_HINTS_NAME
-	}
-	set_variable = {
-		name = cmm_setting_desc_key_cmm_example3__event_hints
-		value = flag:CMM_EXAMPLE3_SETTING_EVENT_HINTS_DESC
-	}
 
-	if = {
-		limit = {
-			var:cmm_mod_display_name_key_cmm_example3 = flag:CMM_EXAMPLE3_MOD_NAME
-		}
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
-	if = {
-		limit = {
-			var:cmm_mod_description_key_cmm_example3 = flag:CMM_EXAMPLE3_MOD_DESC
-		}
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
-	if = {
-		limit = {
-			var:cmm_setting_label_key_cmm_example3__ledger_export = flag:CMM_EXAMPLE3_SETTING_LEDGER_EXPORT_NAME
-		}
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
-	if = {
-		limit = {
-			var:cmm_setting_desc_key_cmm_example3__ledger_export = flag:CMM_EXAMPLE3_SETTING_LEDGER_EXPORT_DESC
-		}
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
-	if = {
-		limit = {
-			var:cmm_setting_label_key_cmm_example3__event_hints = flag:CMM_EXAMPLE3_SETTING_EVENT_HINTS_NAME
-		}
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
-	if = {
-		limit = {
-			var:cmm_setting_desc_key_cmm_example3__event_hints = flag:CMM_EXAMPLE3_SETTING_EVENT_HINTS_DESC
-		}
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
-}
 
 

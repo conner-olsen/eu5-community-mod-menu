@@ -2,50 +2,33 @@
 # This exists to silence false-positive "flag is set but never used" warnings.
 
 cmm_dummy_consume_registry_flags = {
-	set_variable = {
-		name = cmm_mod_display_name_key_cmm_core
-		value = flag:CMM_CORE_MOD_NAME
-	}
-	set_variable = {
-		name = cmm_mod_description_key_cmm_core
-		value = flag:CMM_CORE_MOD_DESC
-	}
-	set_variable = {
-		name = cmm_setting_label_key_cmm_core__example_toggle
-		value = flag:CMM_CORE_BOOL_EXAMPLE_NAME
-	}
-	set_variable = {
-		name = cmm_setting_desc_key_cmm_core__example_toggle
-		value = flag:CMM_CORE_BOOL_EXAMPLE_DESC
-	}
+	set_variable = cmm_mod_display_name_key_cmm_core
+	remove_variable = cmm_mod_display_name_key_cmm_core
 
-	if = {
-		limit = {
-			var:cmm_mod_display_name_key_cmm_core = flag:CMM_CORE_MOD_NAME
-		}
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
+	set_variable = cmm_mod_description_key_cmm_core
+	remove_variable = cmm_mod_description_key_cmm_core
 
-	if = {
-		limit = {
-			var:cmm_mod_description_key_cmm_core = flag:CMM_CORE_MOD_DESC
-		}
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
+	set_variable = cmm_setting_label_key_cmm_core__example_toggle
+	remove_variable = cmm_setting_label_key_cmm_core__example_toggle
 
-	if = {
-		limit = {
-			var:cmm_setting_label_key_cmm_core__example_toggle = flag:CMM_CORE_BOOL_EXAMPLE_NAME
-		}
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
+	set_variable = cmm_setting_desc_key_cmm_core__example_toggle
+	remove_variable = cmm_setting_desc_key_cmm_core__example_toggle
 
-	if = {
-		limit = {
-			var:cmm_setting_desc_key_cmm_core__example_toggle = flag:CMM_CORE_BOOL_EXAMPLE_DESC
-		}
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
+	# Variables set in runtime but not counted as used by analyzer.
+	remove_variable = cmm_mod_active_cmm_core
+	remove_variable = cmm_mod_active_cmm_example
+	remove_variable = cmm_mod_active_cmm_example2
+	remove_variable = cmm_mod_active_cmm_example3
+	remove_variable = cmm_mod_description_key_by_display_name_key_CMM_CORE_MOD_NAME
+	remove_variable = cmm_mod_description_key_by_display_name_key_CMM_EXAMPLE_MOD_NAME
+	remove_variable = cmm_mod_description_key_by_display_name_key_CMM_EXAMPLE2_MOD_NAME
+	remove_variable = cmm_mod_description_key_by_display_name_key_CMM_EXAMPLE3_MOD_NAME
+	remove_variable = cmm_registered_mod_ids
+	remove_variable = cmm_registered_mod_display_name_keys
+	remove_variable = cmm_first_registered_mod_id
+	remove_variable = cmm_first_registered_display_name_key
+	remove_variable = cmm_registered_setting_keys
+	remove_variable = cmm_setting_dirty_cmm_core__example_toggle
 
 	# Static analyzer wiring for example dirty vars.
 	set_variable = cmm_setting_dirty_cmm_example__feature_enabled
@@ -55,5 +38,8 @@ cmm_dummy_consume_registry_flags = {
 	set_variable = cmm_setting_dirty_cmm_example3__ledger_export
 	set_variable = cmm_setting_dirty_cmm_example3__event_hints
 }
+
+
+
 
 
