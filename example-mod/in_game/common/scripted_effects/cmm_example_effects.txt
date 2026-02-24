@@ -1,0 +1,6 @@
+﻿# Root scope: country.
+cmm_example_register_country = {
+    cmm_register_mod = {
+        mod_id = cmm_example
+    }
+}

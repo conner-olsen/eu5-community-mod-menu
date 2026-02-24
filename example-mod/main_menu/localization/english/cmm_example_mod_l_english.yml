@@ -1,0 +1,5 @@
+﻿l_english:
+ CMM_EXAMPLE_MOD_NAME: "CMM Example Mod"
+ CMM_EXAMPLE_MOD_DESC: "Reference integration mod for Community Mod Menu."
+ CMM_EXAMPLE_SETTING_ENABLED_LABEL: "Enable Example Feature"
+ CMM_EXAMPLE_SETTING_ENABLED_DESC: "Sample toggle state stored on the player country as cmm_example_setting_enabled."
