@@ -71,16 +71,16 @@
 					minimumsize = { 0 420 }
 
 					blockoverride "scrollbox_content" {
-						fixedgridbox = {
+						vbox = {
+							layoutpolicy_horizontal = expanding
+							ignoreinvisible = yes
+							spacing = 0
 							datamodel = "[Player.MakeScope.GetList('cmm_registered_mod_display_name_keys')]"
-							addcolumn = 100%
-							addrow = 40
-							maxhorizontalslots = 1
-							setitemsizefromcell = yes
 
 							item = {
 								widget = {
-									size = { 100% 40 }
+									layoutpolicy_horizontal = expanding
+									minimumsize = { 0 40 }
 									visible = "[Or4(Not(GetVariableSystem.Exists('cmm_mod_search_text')), StringIsEmpty(GetVariableSystem.Get('cmm_mod_search_text')), StringContains(Scope.GetFlagName, GetVariableSystem.Get('cmm_mod_search_text')), StringContains(GetVariableSystem.Get('cmm_mod_search_text'), ToString_int32(Add_int32(PdxGuiWidget.GetIndexInDataModel, '(int32)1'))))]"
 									hbox = {
 										margin = { 4 2 }
