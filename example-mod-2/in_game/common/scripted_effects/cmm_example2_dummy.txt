@@ -15,4 +15,3 @@ cmm_example2_dummy_consume_registry_flags = {
 	remove_variable = cmm_setting_label_key_cmm_example2__map_overlay
 	remove_variable = cmm_setting_desc_key_cmm_example2__map_overlay
 }
-

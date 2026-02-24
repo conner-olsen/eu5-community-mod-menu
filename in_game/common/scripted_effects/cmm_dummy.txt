@@ -29,6 +29,8 @@ cmm_dummy_consume_registry_flags = {
 	remove_variable = cmm_first_registered_display_name_key
 	remove_variable = cmm_registered_setting_keys
 	remove_variable = cmm_setting_dirty_cmm_core__example_toggle
+	remove_variable = cmm_setting_owner_mod_id_cmm_core__example_toggle
+	remove_variable = cmm_setting_owner_display_key_cmm_core__example_toggle
 
 	# Static analyzer wiring for example dirty vars.
 	set_variable = cmm_setting_dirty_cmm_example__feature_enabled
@@ -38,6 +40,7 @@ cmm_dummy_consume_registry_flags = {
 	set_variable = cmm_setting_dirty_cmm_example3__ledger_export
 	set_variable = cmm_setting_dirty_cmm_example3__event_hints
 }
+
 
 
 

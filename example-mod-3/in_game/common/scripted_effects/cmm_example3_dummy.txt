@@ -15,4 +15,3 @@ cmm_example3_dummy_consume_registry_flags = {
 	remove_variable = cmm_setting_label_key_cmm_example3__event_hints
 	remove_variable = cmm_setting_desc_key_cmm_example3__event_hints
 }
-
