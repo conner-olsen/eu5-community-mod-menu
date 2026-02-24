@@ -81,7 +81,7 @@
 							item = {
 								widget = {
 									size = { 100% 40 }
-									visible = "[Or3(Not(GetVariableSystem.Exists('cmm_mod_search_text')), StringContains(Scope.GetFlagName, GetVariableSystem.Get('cmm_mod_search_text')), StringContains(GetVariableSystem.Get('cmm_mod_search_text'), ToString_int32(Add_int32(PdxGuiWidget.GetIndexInDataModel, '(int32)1'))))]"
+									visible = "[Or4(Not(GetVariableSystem.Exists('cmm_mod_search_text')), StringIsEmpty(GetVariableSystem.Get('cmm_mod_search_text')), StringContains(Scope.GetFlagName, GetVariableSystem.Get('cmm_mod_search_text')), StringContains(GetVariableSystem.Get('cmm_mod_search_text'), ToString_int32(Add_int32(PdxGuiWidget.GetIndexInDataModel, '(int32)1'))))]"
 									hbox = {
 										margin = { 4 2 }
 										margin_right = 12
