@@ -1,4 +1,4 @@
-window = {
+﻿window = {
 	name = "ingame_pausemenu"
 	size = { 100% 100% }
 	movable = no 

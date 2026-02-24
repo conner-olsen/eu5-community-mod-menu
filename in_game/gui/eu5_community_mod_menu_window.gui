@@ -1,4 +1,4 @@
-window = {
+﻿window = {
 	name = "eu5_community_mod_menu_window"
 	alwaystransparent = no
 	reorder_on_mouse = never
@@ -25,7 +25,9 @@ window = {
 			spacing = 12
 
 			vbox = {
-				size = { 340 -1 }
+				min_width = 340
+				max_width = 340
+				layoutpolicy_vertical = expanding
 				using = bg_main_inner_alt
 				spacing = 10
 				margin = { 12 12 }
@@ -45,26 +47,36 @@ window = {
 					text = "[Concatenate(Localize('CMM_REGISTERED_MODS_LABEL'), ToString_int32(FixedPointToInt(Player.MakeScope.GetVariable('cmm_registered_mod_count').GetValue)))]"
 				}
 
-				scrollarea = {
+				scrollbox = {
 					using = layoutpolicy_expanding
-					scrollbarpolicy_horizontal = always_off
+					layoutpolicy_vertical = expanding
+					layoutpolicy_horizontal = expanding
+					minimumsize = { 0 420 }
 
-					scrollbar_vertical = {
-						using = Scrollbar_Vertical
-					}
+					blockoverride "scrollbox_content" {
+						fixedgridbox = {
+							datamodel = "[DataModelRepeatedItem(Add_int32('(int32)0', FixedPointToInt(Player.MakeScope.GetVariable('cmm_registered_mod_count').GetValue)))]"
+							addcolumn = 100%
+							addrow = 40
+							maxhorizontalslots = 1
+							setitemsizefromcell = yes
 
-					scrollwidget = {
-						vbox = {
-							spacing = 6
-
-							button_regular = {
-								using = button_resize_to_fit_text
-								size = { 250 35 }
-								text = "CMM_EXAMPLE_MOD_ENTRY"
-								tooltip_enabled = no
+							item = {
+								widget = {
+									size = { 100% 40 }
+									hbox = {
+										margin = { 4 2 }
+										margin_right = 12
+										button_regular = {
+											using = layoutpolicy_expanding
+											text = "[Concatenate(Localize('CMM_MOD_LIST_ENTRY_PREFIX'), ToString_int32(Add_int32(PdxGuiWidget.GetIndexInDataModel, '(int32)1')))]"
+											onclick = "[GetVariableSystem.Set('cmm_selected_mod_index', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
+											down = "[GetVariableSystem.HasValue('cmm_selected_mod_index', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
+											tooltip_enabled = no
+										}
+									}
+								}
 							}
-
-							expand = {}
 						}
 					}
 				}
