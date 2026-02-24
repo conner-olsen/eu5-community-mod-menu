@@ -5,41 +5,59 @@ A dependency mod for **Europa Universalis 5** that provides one shared in-game m
 ## What it provides
 
 - Pause menu button (`Mod Menu`) via intentional `ingame_menu.gui` override.
-- Central settings window shell for registered mods.
+- Dynamic left mod list (search + compact rendering).
+- Dynamic right settings panel for registered boolean settings.
 - Mod-id-based registration API with no fixed slot cap.
 
-## Current status
+## Current settings scope (v1)
 
-- Registration works for multiple independent mods without editing core CMM files.
-- Left list currently renders registered entries in registration order.
-- Advanced search targets (case-insensitive substring) and A-Z sorting are currently blocked by exposed GUI string APIs.
-
-See blocker details: `docs/cmm-search-blocker.md`.
+- Boolean settings only.
+- Registration order is preserved.
+- Value changes are persisted as country variables.
+- UI writes a per-setting dirty marker; integrating mods consume and clear it.
 
 ## Install
 
 1. Place this folder in `Documents\Paradox Interactive\Europa Universalis V\mod`.
 2. Enable `community.mod.menu.dev` (and any integrating mod) in the launcher.
 
-## Mod integration
+## Integration API summary
 
-API (country scope):
+Country scope:
 
 ```txt
 cmm_register_mod = {
     mod_id = your_mod_id
     display_name_key = YOUR_MOD_NAME_KEY
-    description_key = YOUR_MOD_DESC_KEY # optional in intent, reserved for future right-panel metadata
+    description_key = YOUR_MOD_DESC_KEY
+}
+
+cmm_register_bool_setting = {
+    mod_id = your_mod_id
+    setting_id = your_setting_id
+    display_name_key = YOUR_SETTING_NAME_KEY
+    description_key = YOUR_SETTING_DESC_KEY
+    default_value = 0 # optional; 0 or 1
+}
+
+cmm_clear_setting_dirty = {
+    mod_id = your_mod_id
+    setting_id = your_setting_id
 }
 ```
 
-Recommended registration flow:
+Trigger:
 
-- Register on `on_game_start` with a short delay (for player country availability).
-- Re-assert registration on a periodic country pulse for human countries.
+```txt
+cmm_is_bool_setting_enabled = {
+    mod_id = your_mod_id
+    setting_id = your_setting_id
+}
+```
 
-Full docs: `docs/mod-integration.md`.
+Full integration docs: `docs/mod-integration.md`.
 
 ## License
 
 GPL-3.0. See `LICENSE`.
+

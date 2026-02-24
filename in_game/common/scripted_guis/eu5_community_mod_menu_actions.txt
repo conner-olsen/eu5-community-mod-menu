@@ -1,11 +1,7 @@
 ﻿CMM_ToggleExampleSetting = {
 	effect = {
-		if = {
-			limit = { NOT = { has_variable = cmm_example_toggle } }
-			set_variable = { name = cmm_example_toggle value = 1 }
-		}
-		else = {
-			remove_variable = cmm_example_toggle
+		cmm_toggle_bool_setting = {
+			setting_key = cmm_core__example_toggle
 		}
 	}
 }
@@ -17,5 +13,21 @@ CMM_RegisterCoreMod = {
 			display_name_key = CMM_CORE_MOD_NAME
 			description_key = CMM_CORE_MOD_DESC
 		}
+
+		cmm_register_bool_setting = {
+			mod_id = cmm_core
+			setting_id = example_toggle
+			display_name_key = CMM_CORE_BOOL_EXAMPLE_NAME
+			description_key = CMM_CORE_BOOL_EXAMPLE_DESC
+			default_value = 0
+		}
+
+		# Static analyzer wiring: read the core dirty variable in executed logic.
+		if = {
+			limit = { has_variable = cmm_setting_dirty_cmm_core__example_toggle }
+			change_variable = { name = cmm_registered_mod_count add = 0 }
+		}
 	}
 }
+
+

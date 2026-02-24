@@ -8,7 +8,10 @@
  CMM_REGISTERED_MODS_LABEL: "Registered mods: "
  CMM_MOD_LIST_ENTRY_PREFIX: "Mod "
  CMM_SETTINGS_TITLE: "Settings"
- CMM_EXAMPLE_SETTING_LABEL: "Example Toggle"
- CMM_EXAMPLE_SETTING_DESC: "This control confirms that runtime setting changes are wired correctly."
+ CMM_NO_MODS_REGISTERED: "No mods are currently registered in CMM."
+ CMM_NO_SETTINGS_FOR_MOD: "This mod has not registered any settings yet."
  CMM_CORE_MOD_NAME: "Mod Menu"
  CMM_CORE_MOD_DESC: "Shared settings hub for registered mods."
+ CMM_CORE_BOOL_EXAMPLE_NAME: "Enable CMM Diagnostics"
+ CMM_CORE_BOOL_EXAMPLE_DESC: "Example core toggle registered through the same API available to other mods."
+

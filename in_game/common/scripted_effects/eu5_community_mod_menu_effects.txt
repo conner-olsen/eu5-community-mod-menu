@@ -4,13 +4,21 @@
 # cmm_register_mod = {
 #     mod_id = <required>
 #     display_name_key = <required>
-#     description_key = <optional, reserved>
+#     description_key = <required>
 # }
 #
-# Notes:
-# - Registry remains mod_id-based and has no static cap.
-# - Display-name metadata is cached on the registering scope for future UI renderers.
-# - True substring search / A-Z sorting remains blocked by current GUI string API limits.
+# cmm_register_bool_setting = {
+#     mod_id = <required>
+#     setting_id = <required>
+#     display_name_key = <required>
+#     description_key = <required>
+#     default_value = <optional, 0|1, default 0>
+# }
+#
+# cmm_clear_setting_dirty = {
+#     mod_id = <required>
+#     setting_id = <required>
+# }
 
 cmm_register_mod = {
 	if = {
@@ -31,7 +39,16 @@ cmm_register_mod = {
 			}
 		}
 
-		# Keep a dynamic UI row list of display-name keys as flag-scopes.
+		set_local_variable = {
+			name = cmm_register_mod_id_scope
+			value = flag:$mod_id$
+		}
+		add_to_variable_list = {
+			name = cmm_registered_mod_ids
+			target = local_var:cmm_register_mod_id_scope
+		}
+		remove_local_variable = cmm_register_mod_id_scope
+
 		set_local_variable = {
 			name = cmm_register_display_name_scope
 			value = flag:$display_name_key$
@@ -41,33 +58,67 @@ cmm_register_mod = {
 			target = local_var:cmm_register_display_name_scope
 		}
 		remove_local_variable = cmm_register_display_name_scope
+
+		if = {
+			limit = { var:cmm_registered_mod_count = 1 }
+			set_variable = { name = cmm_first_registered_mod_id value = flag:$mod_id$ }
+			set_variable = { name = cmm_first_registered_display_name_key value = flag:$display_name_key$ }
+		}
 	}
 
 	set_variable = { name = cmm_registered_mod_$mod_id$ value = 1 }
+	set_variable = { name = cmm_mod_active_$mod_id$ value = 1 }
 
-	# Store the localization key as a flag value for future name rendering.
+	# Store localization metadata for runtime GUI reads.
 	set_variable = { name = cmm_mod_display_name_key_$mod_id$ value = flag:$display_name_key$ }
-
-	# Mark as used in executed logic to avoid "set but never used" warnings.
-	if = {
-		limit = { has_variable = cmm_mod_display_name_key_$mod_id$ }
-		change_variable = { name = cmm_registered_mod_count add = 0 }
-	}
-
-	# Store reserved description metadata key for future right-panel use.
 	set_variable = { name = cmm_mod_description_key_$mod_id$ value = flag:$description_key$ }
+	set_variable = { name = cmm_mod_description_key_by_display_name_key_$display_name_key$ value = flag:$description_key$ }
 
-	# Mark as used in executed logic to avoid "set but never used" warnings.
+	# Mark dynamic metadata as used in executed logic to avoid false-positive warnings.
 	if = {
-		limit = { has_variable = cmm_mod_description_key_$mod_id$ }
+		limit = { has_variable = cmm_mod_active_$mod_id$ }
 		change_variable = { name = cmm_registered_mod_count add = 0 }
 	}
-
+	if = {
+		limit = { var:cmm_mod_display_name_key_$mod_id$ = flag:$display_name_key$ }
+		change_variable = { name = cmm_registered_mod_count add = 0 }
+	}
+	if = {
+		limit = { var:cmm_mod_description_key_$mod_id$ = flag:$description_key$ }
+		change_variable = { name = cmm_registered_mod_count add = 0 }
+	}
+	if = {
+		limit = { var:cmm_mod_description_key_by_display_name_key_$display_name_key$ = flag:$description_key$ }
+		change_variable = { name = cmm_registered_mod_count add = 0 }
+	}
+	if = {
+		limit = { has_variable = cmm_registered_mod_ids }
+		change_variable = { name = cmm_registered_mod_count add = 0 }
+	}
+	if = {
+		limit = { has_variable = cmm_registered_mod_display_name_keys }
+		change_variable = { name = cmm_registered_mod_count add = 0 }
+	}
+	if = {
+		limit = { has_variable = cmm_first_registered_mod_id }
+		change_variable = { name = cmm_registered_mod_count add = 0 }
+	}
+	if = {
+		limit = { has_variable = cmm_first_registered_display_name_key }
+		change_variable = { name = cmm_registered_mod_count add = 0 }
+	}
 }
 
 cmm_unregister_mod = {
 	if = {
 		limit = { has_variable = cmm_registered_mod_$mod_id$ }
+
+		set_local_variable = { name = cmm_unregister_mod_id_scope value = flag:$mod_id$ }
+		remove_list_variable = {
+			name = cmm_registered_mod_ids
+			target = local_var:cmm_unregister_mod_id_scope
+		}
+		remove_local_variable = cmm_unregister_mod_id_scope
 
 		if = {
 			limit = { has_variable = cmm_mod_display_name_key_$mod_id$ }
@@ -78,8 +129,10 @@ cmm_unregister_mod = {
 		}
 
 		remove_variable = cmm_registered_mod_$mod_id$
+		remove_variable = cmm_mod_active_$mod_id$
 		remove_variable = cmm_mod_display_name_key_$mod_id$
 		remove_variable = cmm_mod_description_key_$mod_id$
+		remove_variable = cmm_mod_registration_order_$mod_id$
 
 		if = {
 			limit = {
@@ -96,3 +149,92 @@ cmm_unregister_mod = {
 cmm_set_mod_sort_priority = {
 	set_variable = { name = cmm_mod_sort_priority_$mod_id$ value = $sort_priority$ }
 }
+
+cmm_register_bool_setting = {
+	if = {
+		limit = { NOT = { has_variable = cmm_registered_setting_$mod_id$__$setting_id$ } }
+		set_variable = { name = cmm_registered_setting_$mod_id$__$setting_id$ value = 1 }
+
+		set_local_variable = {
+			name = cmm_register_setting_scope
+			value = flag:$mod_id$__$setting_id$
+		}
+		add_to_variable_list = {
+			name = cmm_registered_setting_keys
+			target = local_var:cmm_register_setting_scope
+		}
+		remove_local_variable = cmm_register_setting_scope
+
+		if = {
+			limit = { NOT = { has_variable = cmm_mod_bool_setting_count_$mod_id$ } }
+			set_variable = { name = cmm_mod_bool_setting_count_$mod_id$ value = 0 }
+		}
+		change_variable = { name = cmm_mod_bool_setting_count_$mod_id$ add = 1 }
+	}
+
+	set_variable = { name = cmm_setting_owner_mod_id_$mod_id$__$setting_id$ value = flag:$mod_id$ }
+
+	if = {
+		limit = { has_variable = cmm_mod_display_name_key_$mod_id$ }
+		set_variable = {
+			name = cmm_setting_owner_display_key_$mod_id$__$setting_id$
+			value = var:cmm_mod_display_name_key_$mod_id$
+		}
+	}
+
+	set_variable = { name = cmm_setting_label_key_$mod_id$__$setting_id$ value = flag:$display_name_key$ }
+	set_variable = { name = cmm_setting_desc_key_$mod_id$__$setting_id$ value = flag:$description_key$ }
+	set_variable = { name = cmm_setting_key_flag_$mod_id$__$setting_id$ value = flag:$mod_id$__$setting_id$ }
+
+	if = {
+		limit = {
+			NOT = { has_variable = cmm_setting_bool_value_$mod_id$__$setting_id$ }
+			$default_value$ = 1
+		}
+		set_variable = { name = cmm_setting_bool_value_$mod_id$__$setting_id$ value = 1 }
+	}
+
+	# Mark dynamic metadata as used in executed logic to avoid false-positive warnings.
+	if = {
+		limit = { var:cmm_setting_owner_mod_id_$mod_id$__$setting_id$ = flag:$mod_id$ }
+		change_variable = { name = cmm_registered_mod_count add = 0 }
+	}
+	if = {
+		limit = { has_variable = cmm_setting_owner_display_key_$mod_id$__$setting_id$ }
+		change_variable = { name = cmm_registered_mod_count add = 0 }
+	}
+	if = {
+		limit = { var:cmm_setting_label_key_$mod_id$__$setting_id$ = flag:$display_name_key$ }
+		change_variable = { name = cmm_registered_mod_count add = 0 }
+	}
+	if = {
+		limit = { var:cmm_setting_desc_key_$mod_id$__$setting_id$ = flag:$description_key$ }
+		change_variable = { name = cmm_registered_mod_count add = 0 }
+	}
+	if = {
+		limit = { var:cmm_setting_key_flag_$mod_id$__$setting_id$ = flag:$mod_id$__$setting_id$ }
+		change_variable = { name = cmm_registered_mod_count add = 0 }
+	}
+	if = {
+		limit = { has_variable = cmm_registered_setting_keys }
+		change_variable = { name = cmm_registered_mod_count add = 0 }
+	}
+}
+
+cmm_toggle_bool_setting = {
+	if = {
+		limit = { has_variable = cmm_setting_bool_value_$setting_key$ }
+		remove_variable = cmm_setting_bool_value_$setting_key$
+	}
+	else = {
+		set_variable = { name = cmm_setting_bool_value_$setting_key$ value = 1 }
+	}
+
+	set_variable = { name = cmm_setting_dirty_$setting_key$ value = 1 }
+}
+
+cmm_clear_setting_dirty = {
+	remove_variable = cmm_setting_dirty_$mod_id$__$setting_id$
+}
+
+

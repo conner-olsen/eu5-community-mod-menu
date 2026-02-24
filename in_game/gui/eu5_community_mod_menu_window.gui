@@ -45,7 +45,7 @@
 				}
 
 				text_single = {
-					text = "[Concatenate(Localize('CMM_REGISTERED_MODS_LABEL'), ToString_int32(GetDataModelSize(Player.MakeScope.GetList('cmm_registered_mod_display_name_keys'))))]"
+					text = "[Concatenate(Localize('CMM_REGISTERED_MODS_LABEL'), ToString_int32(GetDataModelSize(Player.MakeScope.GetList('cmm_registered_mod_ids'))))]"
 				}
 
 				editbox_single = {
@@ -75,22 +75,24 @@
 							layoutpolicy_horizontal = expanding
 							ignoreinvisible = yes
 							spacing = 0
-							datamodel = "[Player.MakeScope.GetList('cmm_registered_mod_display_name_keys')]"
+							datamodel = "[Player.MakeScope.GetList('cmm_registered_mod_ids')]"
 
 							item = {
 								widget = {
 									layoutpolicy_horizontal = expanding
 									minimumsize = { 0 40 }
-									visible = "[Or4(Not(GetVariableSystem.Exists('cmm_mod_search_text')), StringIsEmpty(GetVariableSystem.Get('cmm_mod_search_text')), StringContains(Scope.GetFlagName, GetVariableSystem.Get('cmm_mod_search_text')), StringContains(GetVariableSystem.Get('cmm_mod_search_text'), ToString_int32(Add_int32(PdxGuiWidget.GetIndexInDataModel, '(int32)1'))))]"
+									visible = "[Or4(Not(GetVariableSystem.Exists('cmm_mod_search_text')), StringIsEmpty(GetVariableSystem.Get('cmm_mod_search_text')), StringContains(Player.MakeScope.GetVariable(Concatenate('cmm_mod_display_name_key_', Scope.GetFlagName)).GetFlagName, GetVariableSystem.Get('cmm_mod_search_text')), StringContains(Scope.GetFlagName, GetVariableSystem.Get('cmm_mod_search_text')))]"
 									hbox = {
 										margin = { 4 2 }
 										margin_right = 12
 
 										button_regular = {
 											using = layoutpolicy_expanding
-											text = "[Select_CString(StringIsEmpty(Scope.GetFlagName), Concatenate(Localize('CMM_MOD_LIST_ENTRY_PREFIX'), ToString_int32(Add_int32(PdxGuiWidget.GetIndexInDataModel, '(int32)1'))), Scope.GetFlagName)]"
+											text = "[Select_CString(Player.MakeScope.GetVariable(Concatenate('cmm_mod_display_name_key_', Scope.GetFlagName)).IsSet, Player.MakeScope.GetVariable(Concatenate('cmm_mod_display_name_key_', Scope.GetFlagName)).GetFlagName, Select_CString(StringIsEmpty(Scope.GetFlagName), Concatenate(Localize('CMM_MOD_LIST_ENTRY_PREFIX'), ToString_int32(Add_int32(PdxGuiWidget.GetIndexInDataModel, '(int32)1'))), Scope.GetFlagName))]"
 											onclick = "[GetVariableSystem.Set('cmm_selected_mod_index', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
-											down = "[GetVariableSystem.HasValue('cmm_selected_mod_index', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
+											onclick = "[GetVariableSystem.Set('cmm_selected_mod_id', Scope.GetFlagName)]"
+											onclick = "[GetVariableSystem.Set('cmm_selected_mod_display_key', Select_CString(Player.MakeScope.GetVariable(Concatenate('cmm_mod_display_name_key_', Scope.GetFlagName)).IsSet, Player.MakeScope.GetVariable(Concatenate('cmm_mod_display_name_key_', Scope.GetFlagName)).GetFlagName, Scope.GetFlagName))]"
+											down = "[GetVariableSystem.HasValue('cmm_selected_mod_id', Scope.GetFlagName)]"
 											tooltip_enabled = no
 										}
 									}
@@ -112,27 +114,90 @@
 					using = Font_Type_Headers
 				}
 
-				hbox = {
-					spacing = 10
-
-					checkbox_square_alt = {
-						onclick = "[GetScriptedGui('CMM_ToggleExampleSetting').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-						checked = "[Player.MakeScope.GetVariable('cmm_example_toggle').IsSet]"
-						tooltip_enabled = no
-					}
-
-					text_single = {
-						text = "CMM_EXAMPLE_SETTING_LABEL"
-					}
-				}
-
 				text_multi = {
-					text = "CMM_EXAMPLE_SETTING_DESC"
+					visible = "[Not(Player.MakeScope.GetVariable('cmm_first_registered_mod_id').IsSet)]"
+					text = "CMM_NO_MODS_REGISTERED"
 					autoresize = yes
 					max_width = 680
 				}
 
-				expand = {}
+				vbox = {
+					visible = "[Player.MakeScope.GetVariable('cmm_first_registered_mod_id').IsSet]"
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					spacing = 10
+
+					text_single = {
+						text = "[Select_CString(GetVariableSystem.Exists('cmm_selected_mod_display_key'), GetVariableSystem.Get('cmm_selected_mod_display_key'), Player.MakeScope.GetVariable('cmm_first_registered_display_name_key').GetFlagName)]"
+						using = Font_Type_Header_Medium
+					}
+
+					text_multi = {
+						text = "[Select_CString(GetVariableSystem.Exists('cmm_selected_mod_id'), Player.MakeScope.GetVariable(Concatenate('cmm_mod_description_key_', GetVariableSystem.Get('cmm_selected_mod_id'))).GetFlagName, Localize('CMM_NO_SETTINGS_FOR_MOD'))]"
+						autoresize = yes
+						max_width = 680
+					}
+
+					scrollbox = {
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						minimumsize = { 0 420 }
+
+						blockoverride "scrollbox_content" {
+							vbox = {
+								layoutpolicy_horizontal = expanding
+								ignoreinvisible = yes
+								spacing = 4
+								datamodel = "[Player.MakeScope.GetList('cmm_registered_setting_keys')]"
+
+								item = {
+									widget = {
+										layoutpolicy_horizontal = expanding
+										minimumsize = { 0 68 }
+										using = bg_window_default_alt
+										visible = "[And(GetVariableSystem.Exists('cmm_selected_mod_id'), GetVariableSystem.HasValue('cmm_selected_mod_id', Player.MakeScope.GetVariable(Concatenate('cmm_setting_owner_mod_id_', Scope.GetFlagName)).GetFlagName))]"
+
+										hbox = {
+											layoutpolicy_horizontal = expanding
+											margin = { 8 6 }
+											spacing = 10
+
+											checkbox_square_alt = {
+												onclick = "[ExecuteConsoleCommand(Concatenate('effect c:', Concatenate(Player.GetTag, Concatenate(' = { cmm_toggle_bool_setting = { setting_key = ', Concatenate(Scope.GetFlagName, ' } } }')))))]"
+												checked = "[Player.MakeScope.GetVariable(Concatenate('cmm_setting_bool_value_', Scope.GetFlagName)).IsSet]"
+												tooltip_enabled = no
+											}
+
+											vbox = {
+												layoutpolicy_horizontal = expanding
+												spacing = 2
+
+												text_single = {
+													text = "[Player.MakeScope.GetVariable(Concatenate('cmm_setting_label_key_', Scope.GetFlagName)).GetFlagName]"
+												}
+
+												text_multi = {
+													text = "[Player.MakeScope.GetVariable(Concatenate('cmm_setting_desc_key_', Scope.GetFlagName)).GetFlagName]"
+													autoresize = yes
+													max_width = 620
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+
+					text_multi = {
+						visible = "[And(GetVariableSystem.Exists('cmm_selected_mod_id'), Not(Player.MakeScope.GetVariable(Concatenate('cmm_mod_bool_setting_count_', GetVariableSystem.Get('cmm_selected_mod_id'))).IsSet))]"
+						text = "CMM_NO_SETTINGS_FOR_MOD"
+						autoresize = yes
+						max_width = 680
+					}
+
+					expand = {}
+				}
 			}
 		}
 	}
@@ -153,3 +218,6 @@
 		}
 	}
 }
+
+
+

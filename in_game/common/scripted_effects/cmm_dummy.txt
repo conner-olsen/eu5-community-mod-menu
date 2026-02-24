@@ -2,9 +2,25 @@
 # This exists to silence false-positive "flag is set but never used" warnings.
 
 cmm_dummy_consume_registry_flags = {
+	set_variable = {
+		name = cmm_mod_display_name_key_cmm_core
+		value = flag:CMM_CORE_MOD_NAME
+	}
+	set_variable = {
+		name = cmm_mod_description_key_cmm_core
+		value = flag:CMM_CORE_MOD_DESC
+	}
+	set_variable = {
+		name = cmm_setting_label_key_cmm_core__example_toggle
+		value = flag:CMM_CORE_BOOL_EXAMPLE_NAME
+	}
+	set_variable = {
+		name = cmm_setting_desc_key_cmm_core__example_toggle
+		value = flag:CMM_CORE_BOOL_EXAMPLE_DESC
+	}
+
 	if = {
 		limit = {
-			has_variable = cmm_mod_display_name_key_cmm_core
 			var:cmm_mod_display_name_key_cmm_core = flag:CMM_CORE_MOD_NAME
 		}
 		change_variable = { name = cmm_registered_mod_count add = 0 }
@@ -12,7 +28,6 @@ cmm_dummy_consume_registry_flags = {
 
 	if = {
 		limit = {
-			has_variable = cmm_mod_description_key_cmm_core
 			var:cmm_mod_description_key_cmm_core = flag:CMM_CORE_MOD_DESC
 		}
 		change_variable = { name = cmm_registered_mod_count add = 0 }
@@ -20,17 +35,25 @@ cmm_dummy_consume_registry_flags = {
 
 	if = {
 		limit = {
-			has_variable = cmm_mod_display_name_key_cmm_example
-			var:cmm_mod_display_name_key_cmm_example = flag:CMM_EXAMPLE_MOD_NAME
+			var:cmm_setting_label_key_cmm_core__example_toggle = flag:CMM_CORE_BOOL_EXAMPLE_NAME
 		}
 		change_variable = { name = cmm_registered_mod_count add = 0 }
 	}
 
 	if = {
 		limit = {
-			has_variable = cmm_mod_description_key_cmm_example
-			var:cmm_mod_description_key_cmm_example = flag:CMM_EXAMPLE_MOD_DESC
+			var:cmm_setting_desc_key_cmm_core__example_toggle = flag:CMM_CORE_BOOL_EXAMPLE_DESC
 		}
 		change_variable = { name = cmm_registered_mod_count add = 0 }
 	}
+
+	# Static analyzer wiring for example dirty vars.
+	set_variable = cmm_setting_dirty_cmm_example__feature_enabled
+	set_variable = cmm_setting_dirty_cmm_example__show_notifications
+	set_variable = cmm_setting_dirty_cmm_example2__ai_helper
+	set_variable = cmm_setting_dirty_cmm_example2__map_overlay
+	set_variable = cmm_setting_dirty_cmm_example3__ledger_export
+	set_variable = cmm_setting_dirty_cmm_example3__event_hints
 }
+
+

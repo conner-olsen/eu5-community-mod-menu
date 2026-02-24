@@ -1,0 +1,6 @@
+﻿# Root scope: country.
+
+cmm_is_bool_setting_enabled = {
+	has_variable = cmm_setting_bool_value_$mod_id$__$setting_id$
+}
+

@@ -292,6 +292,9 @@ template frontend_menu_middle_template {
 		text = "CMM_PAUSE_MENU_BUTTON"
 		onclick = "[GetScriptedGui('CMM_RegisterCoreMod').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 		onclick = "[GetVariableSystem.Clear('cmm_mod_search_text')]"
+		onclick = "[GetVariableSystem.Set('cmm_selected_mod_id', Select_CString(GetVariableSystem.Exists('cmm_selected_mod_id'), GetVariableSystem.Get('cmm_selected_mod_id'), Select_CString(Player.MakeScope.GetVariable('cmm_first_registered_mod_id').IsSet, Player.MakeScope.GetVariable('cmm_first_registered_mod_id').GetFlagName, '')))]"
+		onclick = "[GetVariableSystem.Set('cmm_selected_mod_display_key', Select_CString(GetVariableSystem.Exists('cmm_selected_mod_display_key'), GetVariableSystem.Get('cmm_selected_mod_display_key'), Select_CString(Player.MakeScope.GetVariable('cmm_first_registered_display_name_key').IsSet, Player.MakeScope.GetVariable('cmm_first_registered_display_name_key').GetFlagName, '')))]"
+		onclick = "[GetVariableSystem.Set('cmm_selected_mod_index', Select_CString(GetVariableSystem.Exists('cmm_selected_mod_index'), GetVariableSystem.Get('cmm_selected_mod_index'), '0'))]"
 		onclick = "[ExecuteConsoleCommand( Select_CString( GetVariableSystem.Exists('cmm_window_open'), 'gui.ClearWidgets eu5_community_mod_menu_window', 'gui.createwidget gui/eu5_community_mod_menu_window.gui eu5_community_mod_menu_window' ) )]"
 		onclick = "[GetVariableSystem.Toggle('cmm_window_open')]"
 		onclick = "[PauseMenu.Resume]"
@@ -431,3 +434,4 @@ template frontend_menu_bottom_layout_template {
 		}
 	}		
 }
+

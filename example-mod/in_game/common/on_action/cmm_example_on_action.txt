@@ -1,7 +1,7 @@
 ﻿# Country-scope hooks for registering this mod with Community Mod Menu.
 on_game_start = {
     on_actions = {
-        delay = { days =  1 }
+        delay = { days = 1 }
         cmm_example_register_all_humans
     }
 }
@@ -15,6 +15,7 @@ cmm_example_register_all_humans = {
         every_country = {
             limit = { is_ai = no }
             cmm_example_register_country = yes
+            cmm_example_consume_cmm_dirty = yes
         }
     }
 }
@@ -23,5 +24,7 @@ cmm_example_ensure_registered = {
     trigger = { is_ai = no }
     effect = {
         cmm_example_register_country = yes
+        cmm_example_consume_cmm_dirty = yes
     }
 }
+

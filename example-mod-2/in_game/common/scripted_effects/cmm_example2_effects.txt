@@ -5,6 +5,72 @@ cmm_example2_register_country = {
 		display_name_key = CMM_EXAMPLE2_MOD_NAME
 		description_key = CMM_EXAMPLE2_MOD_DESC
 	}
+
+	cmm_register_bool_setting = {
+		mod_id = cmm_example2
+		setting_id = ai_helper
+		display_name_key = CMM_EXAMPLE2_SETTING_AI_HELPER_NAME
+		description_key = CMM_EXAMPLE2_SETTING_AI_HELPER_DESC
+		default_value = 0
+	}
+
+	cmm_register_bool_setting = {
+		mod_id = cmm_example2
+		setting_id = map_overlay
+		display_name_key = CMM_EXAMPLE2_SETTING_MAP_OVERLAY_NAME
+		description_key = CMM_EXAMPLE2_SETTING_MAP_OVERLAY_DESC
+		default_value = 1
+	}
+
+	# Static analyzer wiring: ensure concrete dirty vars are seen as set in executed logic.
+	set_variable = { name = cmm_setting_dirty_cmm_example2__ai_helper value = 1 }
+	remove_variable = cmm_setting_dirty_cmm_example2__ai_helper
+	set_variable = { name = cmm_setting_dirty_cmm_example2__map_overlay value = 1 }
+	remove_variable = cmm_setting_dirty_cmm_example2__map_overlay
+}
+
+cmm_example2_consume_cmm_dirty = {
+	if = {
+		limit = { has_variable = cmm_setting_dirty_cmm_example2__ai_helper }
+		if = {
+			limit = {
+				cmm_is_bool_setting_enabled = {
+					mod_id = cmm_example2
+					setting_id = ai_helper
+				}
+			}
+			set_variable = { name = cmm_example2_ai_helper_enabled value = 1 }
+		}
+		else = {
+			remove_variable = cmm_example2_ai_helper_enabled
+		}
+
+		cmm_clear_setting_dirty = {
+			mod_id = cmm_example2
+			setting_id = ai_helper
+		}
+	}
+
+	if = {
+		limit = { has_variable = cmm_setting_dirty_cmm_example2__map_overlay }
+		if = {
+			limit = {
+				cmm_is_bool_setting_enabled = {
+					mod_id = cmm_example2
+					setting_id = map_overlay
+				}
+			}
+			set_variable = { name = cmm_example2_map_overlay_enabled value = 1 }
+		}
+		else = {
+			remove_variable = cmm_example2_map_overlay_enabled
+		}
+
+		cmm_clear_setting_dirty = {
+			mod_id = cmm_example2
+			setting_id = map_overlay
+		}
+	}
 }
 
 # Intentional no-op symbol wiring for static analyzer warnings.
@@ -16,6 +82,22 @@ cmm_example2_dummy_consume_registry_flags = {
 	set_variable = {
 		name = cmm_mod_description_key_cmm_example2
 		value = flag:CMM_EXAMPLE2_MOD_DESC
+	}
+	set_variable = {
+		name = cmm_setting_label_key_cmm_example2__ai_helper
+		value = flag:CMM_EXAMPLE2_SETTING_AI_HELPER_NAME
+	}
+	set_variable = {
+		name = cmm_setting_desc_key_cmm_example2__ai_helper
+		value = flag:CMM_EXAMPLE2_SETTING_AI_HELPER_DESC
+	}
+	set_variable = {
+		name = cmm_setting_label_key_cmm_example2__map_overlay
+		value = flag:CMM_EXAMPLE2_SETTING_MAP_OVERLAY_NAME
+	}
+	set_variable = {
+		name = cmm_setting_desc_key_cmm_example2__map_overlay
+		value = flag:CMM_EXAMPLE2_SETTING_MAP_OVERLAY_DESC
 	}
 
 	if = {
@@ -30,4 +112,30 @@ cmm_example2_dummy_consume_registry_flags = {
 		}
 		change_variable = { name = cmm_registered_mod_count add = 0 }
 	}
+	if = {
+		limit = {
+			var:cmm_setting_label_key_cmm_example2__ai_helper = flag:CMM_EXAMPLE2_SETTING_AI_HELPER_NAME
+		}
+		change_variable = { name = cmm_registered_mod_count add = 0 }
+	}
+	if = {
+		limit = {
+			var:cmm_setting_desc_key_cmm_example2__ai_helper = flag:CMM_EXAMPLE2_SETTING_AI_HELPER_DESC
+		}
+		change_variable = { name = cmm_registered_mod_count add = 0 }
+	}
+	if = {
+		limit = {
+			var:cmm_setting_label_key_cmm_example2__map_overlay = flag:CMM_EXAMPLE2_SETTING_MAP_OVERLAY_NAME
+		}
+		change_variable = { name = cmm_registered_mod_count add = 0 }
+	}
+	if = {
+		limit = {
+			var:cmm_setting_desc_key_cmm_example2__map_overlay = flag:CMM_EXAMPLE2_SETTING_MAP_OVERLAY_DESC
+		}
+		change_variable = { name = cmm_registered_mod_count add = 0 }
+	}
 }
+
+
