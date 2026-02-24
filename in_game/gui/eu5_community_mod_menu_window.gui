@@ -25,6 +25,7 @@
 			spacing = 12
 
 			vbox = {
+				name = "cmm_mod_list_panel"
 				min_width = 340
 				max_width = 340
 				layoutpolicy_vertical = expanding
@@ -47,6 +48,50 @@
 					text = "[Concatenate(Localize('CMM_REGISTERED_MODS_LABEL'), ToString_int32(FixedPointToInt(Player.MakeScope.GetVariable('cmm_registered_mod_count').GetValue)))]"
 				}
 
+				editbox_single = {
+					name = "cmm_mod_search_editbox"
+					layoutpolicy_horizontal = expanding
+					focuspolicy = all
+					alwaystransparent = no
+					multiline = no
+					text = ""
+					blockoverride "editbox_properties" {
+						ontextchanged = "[GetVariableSystem.Set('cmm_mod_search_text', GetTextFromSelfOrAnyChildEditbox(PdxGuiWidget.Self))]"
+						ontextedited = "[GetVariableSystem.Set('cmm_mod_search_text', GetTextFromSelfOrAnyChildEditbox(PdxGuiWidget.Self))]"
+					}
+					blockoverride "editbox_label" {
+						text = "CMM_MOD_SEARCH_PLACEHOLDER"
+					}
+				}
+
+				vbox = {
+					spacing = 2
+
+					text_single = {
+						raw_text = "[Select_CString(GetVariableSystem.Exists('cmm_mod_search_text'), 'DBG var exists: yes', 'DBG var exists: no')]"
+					}
+
+					text_single = {
+						raw_text = "[Select_CString(GetVariableSystem.HasValue('cmm_mod_search_text', '__cmm_all__'), 'DBG var=__cmm_all__: yes', 'DBG var=__cmm_all__: no')]"
+					}
+
+					text_single = {
+						raw_text = "[Select_CString(GetVariableSystem.HasValue('cmm_mod_search_text', '1'), 'DBG var=1: yes', 'DBG var=1: no')]"
+					}
+
+					text_single = {
+						raw_text = "[Select_CString(GetVariableSystem.HasValue('cmm_mod_search_text', 'default'), 'DBG var=default: yes', 'DBG var=default: no')]"
+					}
+
+					text_single = {
+						raw_text = "[Select_CString(GetVariableSystem.HasValue('cmm_mod_search_text', 'Registered Mod 1'), 'DBG var=Registered Mod 1: yes', 'DBG var=Registered Mod 1: no')]"
+					}
+
+					text_single = {
+						raw_text = "[Select_CString(GetVariableSystem.HasValue('cmm_mod_search_text', 'zzz'), 'DBG var=zzz: yes', 'DBG var=zzz: no')]"
+					}
+				}
+
 				scrollbox = {
 					using = layoutpolicy_expanding
 					layoutpolicy_vertical = expanding
@@ -64,6 +109,7 @@
 							item = {
 								widget = {
 									size = { 100% 40 }
+									visible = "[Or3(GetVariableSystem.HasValue('cmm_mod_search_text', '__cmm_all__'), GetVariableSystem.HasValue('cmm_mod_search_text', ToString_int32(Add_int32(PdxGuiWidget.GetIndexInDataModel, '(int32)1'))), GetVariableSystem.HasValue('cmm_mod_search_text', Concatenate(Localize('CMM_MOD_LIST_ENTRY_PREFIX'), ToString_int32(Add_int32(PdxGuiWidget.GetIndexInDataModel, '(int32)1')))))]"
 									hbox = {
 										margin = { 4 2 }
 										margin_right = 12
@@ -128,6 +174,7 @@
 		button_close_alt = {
 			blockoverride "close_onclick" {
 				onclick = "[ExecuteConsoleCommand('gui.ClearWidgets eu5_community_mod_menu_window')]"
+				onclick = "[GetVariableSystem.Clear('cmm_mod_search_text')]"
 				onclick = "[GetVariableSystem.Toggle('cmm_window_open')]"
 			}
 		}

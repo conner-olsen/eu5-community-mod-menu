@@ -291,6 +291,8 @@ template frontend_menu_middle_template {
 		using = FrontEndMiddleSectionButton
 		text = "CMM_PAUSE_MENU_BUTTON"
 		onclick = "[GetScriptedGui('CMM_RegisterCoreMod').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		onclick = "[GetVariableSystem.Clear('cmm_mod_search_text')]"
+		onclick = "[GetVariableSystem.Set('cmm_mod_search_text', '__cmm_all__')]"
 		onclick = "[ExecuteConsoleCommand( Select_CString( GetVariableSystem.Exists('cmm_window_open'), 'gui.ClearWidgets eu5_community_mod_menu_window', 'gui.createwidget gui/eu5_community_mod_menu_window.gui eu5_community_mod_menu_window' ) )]"
 		onclick = "[GetVariableSystem.Toggle('cmm_window_open')]"
 		onclick = "[PauseMenu.Resume]"

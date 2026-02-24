@@ -4,6 +4,7 @@
  CMM_WINDOW_TITLE: "Mod Menu"
  CMM_MOD_LIST_TITLE: "Mods"
  CMM_MOD_LIST_PLACEHOLDER: "Registered mods are listed below."
+ CMM_MOD_SEARCH_PLACEHOLDER: "Search mod by number or exact label"
  CMM_REGISTERED_MODS_LABEL: "Registered mods: "
  CMM_MOD_LIST_ENTRY_PREFIX: "Registered Mod "
  CMM_SETTINGS_TITLE: "Settings"
