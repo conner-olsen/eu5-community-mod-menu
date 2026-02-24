@@ -4,7 +4,7 @@
 	"version": "0.1",
 	"game_id": "eu5",
 	"supported_game_version": "1.1.*",
-	"short_description": "[Short Description]",
+	"short_description": "A sharable mod menu allowing multiple mods to make use of the same UI.",
 	"tags": [
 		"Utilities",
 		"User Interface"
