@@ -1,0 +1,123 @@
+window = {
+	name = "eu5_community_mod_menu_window"
+	alwaystransparent = no
+	reorder_on_mouse = never
+	resizable = no
+	movable = no
+	parentanchor = center
+	widgetanchor = center
+	size = { 1120 760 }
+	using = bg_window_default_alt
+	allow_outside = yes
+
+	vbox = {
+		using = window_margin_alt
+		spacing = 10
+
+		window_header_alt = {
+			blockoverride "header_text" {
+				text = "CMM_WINDOW_TITLE"
+			}
+		}
+
+		hbox = {
+			using = layoutpolicy_expanding
+			spacing = 12
+
+			vbox = {
+				size = { 340 -1 }
+				using = bg_main_inner_alt
+				spacing = 10
+				margin = { 12 12 }
+
+				text_single = {
+					text = "CMM_MOD_LIST_TITLE"
+					using = Font_Type_Headers
+				}
+
+				text_multi = {
+					text = "CMM_MOD_LIST_PLACEHOLDER"
+					autoresize = yes
+					max_width = 300
+				}
+
+				text_single = {
+					text = "[Concatenate(Localize('CMM_REGISTERED_MODS_LABEL'), ToString_int32(FixedPointToInt(Player.MakeScope.GetVariable('cmm_registered_mod_count').GetValue)))]"
+				}
+
+				scrollarea = {
+					using = layoutpolicy_expanding
+					scrollbarpolicy_horizontal = always_off
+
+					scrollbar_vertical = {
+						using = Scrollbar_Vertical
+					}
+
+					scrollwidget = {
+						vbox = {
+							spacing = 6
+
+							button_regular = {
+								using = button_resize_to_fit_text
+								size = { 250 35 }
+								text = "CMM_EXAMPLE_MOD_ENTRY"
+								tooltip_enabled = no
+							}
+
+							expand = {}
+						}
+					}
+				}
+			}
+
+			vbox = {
+				using = layoutpolicy_expanding
+				using = bg_main_inner_alt
+				spacing = 10
+				margin = { 12 12 }
+
+				text_single = {
+					text = "CMM_SETTINGS_TITLE"
+					using = Font_Type_Headers
+				}
+
+				hbox = {
+					spacing = 10
+
+					checkbox_square_alt = {
+						onclick = "[GetScriptedGui('CMM_ToggleExampleSetting').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+						checked = "[Player.MakeScope.GetVariable('cmm_example_toggle').IsSet]"
+						tooltip_enabled = no
+					}
+
+					text_single = {
+						text = "CMM_EXAMPLE_SETTING_LABEL"
+					}
+				}
+
+				text_multi = {
+					text = "CMM_EXAMPLE_SETTING_DESC"
+					autoresize = yes
+					max_width = 680
+				}
+
+				expand = {}
+			}
+		}
+	}
+
+	widget = {
+		parentanchor = right
+		position = { -5 5 }
+		size = { 40 40 }
+
+		ui_direction_button_holder_right = {}
+
+		button_close_alt = {
+			blockoverride "close_onclick" {
+				onclick = "[ExecuteConsoleCommand('gui.ClearWidgets eu5_community_mod_menu_window')]"
+				onclick = "[GetVariableSystem.Toggle('cmm_window_open')]"
+			}
+		}
+	}
+}

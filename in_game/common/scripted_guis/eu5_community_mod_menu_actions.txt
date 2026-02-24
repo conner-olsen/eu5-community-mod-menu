@@ -1,0 +1,19 @@
+﻿CMM_ToggleExampleSetting = {
+	effect = {
+		if = {
+			limit = { NOT = { has_variable = cmm_example_toggle } }
+			set_variable = { name = cmm_example_toggle value = 1 }
+		}
+		else = {
+			remove_variable = cmm_example_toggle
+		}
+	}
+}
+
+CMM_RegisterCoreMod = {
+	effect = {
+		cmm_register_mod = {
+			mod_id = cmm_core
+		}
+	}
+}

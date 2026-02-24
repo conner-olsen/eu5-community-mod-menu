@@ -1,0 +1,49 @@
+﻿# Root scope: country (use the human player country when called from GUI).
+# Step 2 registry API:
+# - Dynamic mod_id-based keys
+# - No fixed slots
+# - No static cap
+
+cmm_register_mod = {
+	if = {
+		limit = { NOT = { has_variable = cmm_registered_mod_$mod_id$ } }
+		set_variable = { name = cmm_registered_mod_$mod_id$ value = 1 }
+
+		if = {
+			limit = { NOT = { has_variable = cmm_registered_mod_count } }
+			set_variable = { name = cmm_registered_mod_count value = 0 }
+		}
+		change_variable = { name = cmm_registered_mod_count add = 1 }
+
+		# First-seen order is preserved and used as a stable default ordering key.
+		if = {
+			limit = { NOT = { has_variable = cmm_mod_registration_order_$mod_id$ } }
+			set_variable = {
+				name = cmm_mod_registration_order_$mod_id$
+				value = var:cmm_registered_mod_count
+			}
+		}
+	}
+	else = {
+		set_variable = { name = cmm_registered_mod_$mod_id$ value = 1 }
+	}
+}
+
+cmm_unregister_mod = {
+	if = {
+		limit = { has_variable = cmm_registered_mod_$mod_id$ }
+		remove_variable = cmm_registered_mod_$mod_id$
+		if = {
+			limit = {
+				has_variable = cmm_registered_mod_count
+				var:cmm_registered_mod_count > 0
+			}
+			change_variable = { name = cmm_registered_mod_count subtract = 1 }
+		}
+	}
+	remove_variable = cmm_mod_sort_priority_$mod_id$
+}
+
+cmm_set_mod_sort_priority = {
+	set_variable = { name = cmm_mod_sort_priority_$mod_id$ value = $sort_priority$ }
+}
