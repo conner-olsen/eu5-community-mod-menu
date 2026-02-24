@@ -14,6 +14,8 @@ CMM_RegisterCoreMod = {
 	effect = {
 		cmm_register_mod = {
 			mod_id = cmm_core
+			display_name_key = CMM_CORE_MOD_NAME
+			description_key = CMM_CORE_MOD_DESC
 		}
 	}
 }

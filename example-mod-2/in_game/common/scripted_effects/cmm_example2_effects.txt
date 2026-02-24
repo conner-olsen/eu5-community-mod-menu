@@ -1,0 +1,33 @@
+﻿# Root scope: country.
+cmm_example2_register_country = {
+	cmm_register_mod = {
+		mod_id = cmm_example2
+		display_name_key = CMM_EXAMPLE2_MOD_NAME
+		description_key = CMM_EXAMPLE2_MOD_DESC
+	}
+}
+
+# Intentional no-op symbol wiring for static analyzer warnings.
+cmm_example2_dummy_consume_registry_flags = {
+	set_variable = {
+		name = cmm_mod_display_name_key_cmm_example2
+		value = flag:CMM_EXAMPLE2_MOD_NAME
+	}
+	set_variable = {
+		name = cmm_mod_description_key_cmm_example2
+		value = flag:CMM_EXAMPLE2_MOD_DESC
+	}
+
+	if = {
+		limit = {
+			var:cmm_mod_display_name_key_cmm_example2 = flag:CMM_EXAMPLE2_MOD_NAME
+		}
+		change_variable = { name = cmm_registered_mod_count add = 0 }
+	}
+	if = {
+		limit = {
+			var:cmm_mod_description_key_cmm_example2 = flag:CMM_EXAMPLE2_MOD_DESC
+		}
+		change_variable = { name = cmm_registered_mod_count add = 0 }
+	}
+}

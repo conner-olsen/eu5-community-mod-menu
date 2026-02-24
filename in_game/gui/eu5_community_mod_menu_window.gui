@@ -45,7 +45,7 @@
 				}
 
 				text_single = {
-					text = "[Concatenate(Localize('CMM_REGISTERED_MODS_LABEL'), ToString_int32(FixedPointToInt(Player.MakeScope.GetVariable('cmm_registered_mod_count').GetValue)))]"
+					text = "[Concatenate(Localize('CMM_REGISTERED_MODS_LABEL'), ToString_int32(GetDataModelSize(Player.MakeScope.GetList('cmm_registered_mod_display_name_keys'))))]"
 				}
 
 				editbox_single = {
@@ -64,34 +64,6 @@
 					}
 				}
 
-				vbox = {
-					spacing = 2
-
-					text_single = {
-						raw_text = "[Select_CString(GetVariableSystem.Exists('cmm_mod_search_text'), 'DBG var exists: yes', 'DBG var exists: no')]"
-					}
-
-					text_single = {
-						raw_text = "[Select_CString(GetVariableSystem.HasValue('cmm_mod_search_text', '__cmm_all__'), 'DBG var=__cmm_all__: yes', 'DBG var=__cmm_all__: no')]"
-					}
-
-					text_single = {
-						raw_text = "[Select_CString(GetVariableSystem.HasValue('cmm_mod_search_text', '1'), 'DBG var=1: yes', 'DBG var=1: no')]"
-					}
-
-					text_single = {
-						raw_text = "[Select_CString(GetVariableSystem.HasValue('cmm_mod_search_text', 'default'), 'DBG var=default: yes', 'DBG var=default: no')]"
-					}
-
-					text_single = {
-						raw_text = "[Select_CString(GetVariableSystem.HasValue('cmm_mod_search_text', 'Registered Mod 1'), 'DBG var=Registered Mod 1: yes', 'DBG var=Registered Mod 1: no')]"
-					}
-
-					text_single = {
-						raw_text = "[Select_CString(GetVariableSystem.HasValue('cmm_mod_search_text', 'zzz'), 'DBG var=zzz: yes', 'DBG var=zzz: no')]"
-					}
-				}
-
 				scrollbox = {
 					using = layoutpolicy_expanding
 					layoutpolicy_vertical = expanding
@@ -100,7 +72,7 @@
 
 					blockoverride "scrollbox_content" {
 						fixedgridbox = {
-							datamodel = "[DataModelRepeatedItem(Add_int32('(int32)0', FixedPointToInt(Player.MakeScope.GetVariable('cmm_registered_mod_count').GetValue)))]"
+							datamodel = "[Player.MakeScope.GetList('cmm_registered_mod_display_name_keys')]"
 							addcolumn = 100%
 							addrow = 40
 							maxhorizontalslots = 1
@@ -109,13 +81,14 @@
 							item = {
 								widget = {
 									size = { 100% 40 }
-									visible = "[Or3(GetVariableSystem.HasValue('cmm_mod_search_text', '__cmm_all__'), GetVariableSystem.HasValue('cmm_mod_search_text', ToString_int32(Add_int32(PdxGuiWidget.GetIndexInDataModel, '(int32)1'))), GetVariableSystem.HasValue('cmm_mod_search_text', Concatenate(Localize('CMM_MOD_LIST_ENTRY_PREFIX'), ToString_int32(Add_int32(PdxGuiWidget.GetIndexInDataModel, '(int32)1')))))]"
+									visible = "[Or3(Not(GetVariableSystem.Exists('cmm_mod_search_text')), GetVariableSystem.HasValue('cmm_mod_search_text', Scope.GetFlagName), GetVariableSystem.HasValue('cmm_mod_search_text', ToString_int32(Add_int32(PdxGuiWidget.GetIndexInDataModel, '(int32)1'))))]"
 									hbox = {
 										margin = { 4 2 }
 										margin_right = 12
+
 										button_regular = {
 											using = layoutpolicy_expanding
-											text = "[Concatenate(Localize('CMM_MOD_LIST_ENTRY_PREFIX'), ToString_int32(Add_int32(PdxGuiWidget.GetIndexInDataModel, '(int32)1')))]"
+											text = "[Select_CString(StringIsEmpty(Scope.GetFlagName), Concatenate(Localize('CMM_MOD_LIST_ENTRY_PREFIX'), ToString_int32(Add_int32(PdxGuiWidget.GetIndexInDataModel, '(int32)1'))), Scope.GetFlagName)]"
 											onclick = "[GetVariableSystem.Set('cmm_selected_mod_index', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
 											down = "[GetVariableSystem.HasValue('cmm_selected_mod_index', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
 											tooltip_enabled = no

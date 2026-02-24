@@ -1,0 +1,36 @@
+﻿# Intentional no-op readers for flag-valued registry variables.
+# This exists to silence false-positive "flag is set but never used" warnings.
+
+cmm_dummy_consume_registry_flags = {
+	if = {
+		limit = {
+			has_variable = cmm_mod_display_name_key_cmm_core
+			var:cmm_mod_display_name_key_cmm_core = flag:CMM_CORE_MOD_NAME
+		}
+		change_variable = { name = cmm_registered_mod_count add = 0 }
+	}
+
+	if = {
+		limit = {
+			has_variable = cmm_mod_description_key_cmm_core
+			var:cmm_mod_description_key_cmm_core = flag:CMM_CORE_MOD_DESC
+		}
+		change_variable = { name = cmm_registered_mod_count add = 0 }
+	}
+
+	if = {
+		limit = {
+			has_variable = cmm_mod_display_name_key_cmm_example
+			var:cmm_mod_display_name_key_cmm_example = flag:CMM_EXAMPLE_MOD_NAME
+		}
+		change_variable = { name = cmm_registered_mod_count add = 0 }
+	}
+
+	if = {
+		limit = {
+			has_variable = cmm_mod_description_key_cmm_example
+			var:cmm_mod_description_key_cmm_example = flag:CMM_EXAMPLE_MOD_DESC
+		}
+		change_variable = { name = cmm_registered_mod_count add = 0 }
+	}
+}

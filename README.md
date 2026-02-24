@@ -1,24 +1,45 @@
-# \[Insert Mod Repo Name\]
+﻿# EU5 Community Mod Menu (CMM)
 
-\[Insert Mod Repo Description\]
+A dependency mod for **Europa Universalis 5** that provides one shared in-game mod settings window.
 
-For a full current and upcoming feature list, see the steam page below.
-[![Steam Workshop](https://img.shields.io/badge/Steam%20Workshop-Subscribe-blue)](\[Insert Mod Workshop Link\])
+## What it provides
 
-## Installation
+- Pause menu button (`Mod Menu`) via intentional `ingame_menu.gui` override.
+- Central settings window shell for registered mods.
+- Mod-id-based registration API with no fixed slot cap.
 
-### Steam Workshop (Recommended)
+## Current status
 
-Subscribe on the [Steam Workshop](\[Insert Mod Workshop Link\]).
+- Registration works for multiple independent mods without editing core CMM files.
+- Left list currently renders registered entries in registration order.
+- Advanced search targets (case-insensitive substring) and A-Z sorting are currently blocked by exposed GUI string APIs.
 
-### Manual Installation
+See blocker details: `docs/cmm-search-blocker.md`.
 
-1. Clone or download this repository
-2. Copy it to `Documents\Paradox Interactive\Europa Universalis V\mod`
-3. Enable as normal in game
+## Install
+
+1. Place this folder in `Documents\Paradox Interactive\Europa Universalis V\mod`.
+2. Enable `community.mod.menu.dev` (and any integrating mod) in the launcher.
+
+## Mod integration
+
+API (country scope):
+
+```txt
+cmm_register_mod = {
+    mod_id = your_mod_id
+    display_name_key = YOUR_MOD_NAME_KEY
+    description_key = YOUR_MOD_DESC_KEY # optional in intent, reserved for future right-panel metadata
+}
+```
+
+Recommended registration flow:
+
+- Register on `on_game_start` with a short delay (for player country availability).
+- Re-assert registration on a periodic country pulse for human countries.
+
+Full docs: `docs/mod-integration.md`.
 
 ## License
 
-This project is licensed under the GNU General Public License v3.0; use and modification are allowed with or without attribution.
-
-See the [LICENSE](LICENSE) file for details.
+GPL-3.0. See `LICENSE`.

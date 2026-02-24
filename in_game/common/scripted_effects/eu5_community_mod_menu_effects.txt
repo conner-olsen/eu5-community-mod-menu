@@ -1,21 +1,28 @@
-﻿# Root scope: country (use the human player country when called from GUI).
-# Step 2 registry API:
-# - Dynamic mod_id-based keys
-# - No fixed slots
-# - No static cap
+﻿# Root scope: country (use the human player country when called from GUI/on_action).
+#
+# Public API:
+# cmm_register_mod = {
+#     mod_id = <required>
+#     display_name_key = <required>
+#     description_key = <optional, reserved>
+# }
+#
+# Notes:
+# - Registry remains mod_id-based and has no static cap.
+# - Display-name metadata is cached on the registering scope for future UI renderers.
+# - True substring search / A-Z sorting remains blocked by current GUI string API limits.
 
 cmm_register_mod = {
 	if = {
-		limit = { NOT = { has_variable = cmm_registered_mod_$mod_id$ } }
-		set_variable = { name = cmm_registered_mod_$mod_id$ value = 1 }
+		limit = { NOT = { has_variable = cmm_registered_mod_count } }
+		set_variable = { name = cmm_registered_mod_count value = 0 }
+	}
 
-		if = {
-			limit = { NOT = { has_variable = cmm_registered_mod_count } }
-			set_variable = { name = cmm_registered_mod_count value = 0 }
-		}
+	if = {
+		limit = { NOT = { has_variable = cmm_registered_mod_$mod_id$ } }
 		change_variable = { name = cmm_registered_mod_count add = 1 }
 
-		# First-seen order is preserved and used as a stable default ordering key.
+		# First-seen order is stable and used as default list order.
 		if = {
 			limit = { NOT = { has_variable = cmm_mod_registration_order_$mod_id$ } }
 			set_variable = {
@@ -23,16 +30,57 @@ cmm_register_mod = {
 				value = var:cmm_registered_mod_count
 			}
 		}
+
+		# Keep a dynamic UI row list of display-name keys as flag-scopes.
+		set_local_variable = {
+			name = cmm_register_display_name_scope
+			value = flag:$display_name_key$
+		}
+		add_to_variable_list = {
+			name = cmm_registered_mod_display_name_keys
+			target = local_var:cmm_register_display_name_scope
+		}
+		remove_local_variable = cmm_register_display_name_scope
 	}
-	else = {
-		set_variable = { name = cmm_registered_mod_$mod_id$ value = 1 }
+
+	set_variable = { name = cmm_registered_mod_$mod_id$ value = 1 }
+
+	# Store the localization key as a flag value for future name rendering.
+	set_variable = { name = cmm_mod_display_name_key_$mod_id$ value = flag:$display_name_key$ }
+
+	# Mark as used in executed logic to avoid "set but never used" warnings.
+	if = {
+		limit = { has_variable = cmm_mod_display_name_key_$mod_id$ }
+		change_variable = { name = cmm_registered_mod_count add = 0 }
 	}
+
+	# Store reserved description metadata key for future right-panel use.
+	set_variable = { name = cmm_mod_description_key_$mod_id$ value = flag:$description_key$ }
+
+	# Mark as used in executed logic to avoid "set but never used" warnings.
+	if = {
+		limit = { has_variable = cmm_mod_description_key_$mod_id$ }
+		change_variable = { name = cmm_registered_mod_count add = 0 }
+	}
+
 }
 
 cmm_unregister_mod = {
 	if = {
 		limit = { has_variable = cmm_registered_mod_$mod_id$ }
+
+		if = {
+			limit = { has_variable = cmm_mod_display_name_key_$mod_id$ }
+			remove_list_variable = {
+				name = cmm_registered_mod_display_name_keys
+				target = var:cmm_mod_display_name_key_$mod_id$
+			}
+		}
+
 		remove_variable = cmm_registered_mod_$mod_id$
+		remove_variable = cmm_mod_display_name_key_$mod_id$
+		remove_variable = cmm_mod_description_key_$mod_id$
+
 		if = {
 			limit = {
 				has_variable = cmm_registered_mod_count
@@ -41,6 +89,7 @@ cmm_unregister_mod = {
 			change_variable = { name = cmm_registered_mod_count subtract = 1 }
 		}
 	}
+
 	remove_variable = cmm_mod_sort_priority_$mod_id$
 }
 
