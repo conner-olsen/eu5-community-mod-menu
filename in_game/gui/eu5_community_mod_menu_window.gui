@@ -94,22 +94,6 @@
 											tooltip_enabled = no
 										}
 									}
-									# text_single = {
-									# 	raw_text = "Search Text: [GetVariableSystem.Get('cmm_mod_search_text')] Flag: [Scope.GetFlagName]"
-									# 	autoresize = yes
-									# }
-									# text_single = {
-									# 	raw_text = "Visible: [Or3(Not(GetVariableSystem.Exists('cmm_mod_search_text')), StringContains(Scope.GetFlagName, GetVariableSystem.Get('cmm_mod_search_text')), StringContains(GetVariableSystem.Get('cmm_mod_search_text'), ToString_int32(Add_int32(PdxGuiWidget.GetIndexInDataModel, '(int32)1'))))]"
-									# 	autoresize = yes
-									# }
-									# text_single = {
-									# 	raw_text = "Flag: [Scope.GetFlagName] Flag Contains: [StringContains(Scope.GetFlagName, GetVariableSystem.Get('cmm_mod_search_text'))]"
-									# 	autoresize = yes
-									# }
-									# text_single = {
-									# 	raw_text = "Index: [ToString_int32(Add_int32(PdxGuiWidget.GetIndexInDataModel, '(int32)1')))] Index Contains: [StringContains(GetVariableSystem.Get('cmm_mod_search_text'), ToString_int32(Add_int32(PdxGuiWidget.GetIndexInDataModel, '(int32)1')))]"
-									# 	autoresize = yes
-									# }
 								}
 							}
 						}
