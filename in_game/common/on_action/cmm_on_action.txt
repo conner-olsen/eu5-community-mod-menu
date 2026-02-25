@@ -1,0 +1,45 @@
+﻿# CMM lifecycle and shared registration hook.
+
+on_game_start = {
+	on_actions = {
+		delay = { days = 1 }
+		cmm_register_all_human_countries
+	}
+}
+
+yearly_country_pulse = {
+	on_actions = { cmm_sync_human_country_settings }
+}
+
+cmm_register_all_human_countries = {
+	effect = {
+		every_country = {
+			limit = { is_ai = no }
+			trigger_event_silently = {
+				on_action = cmm_on_register_country
+			}
+		}
+	}
+}
+
+cmm_sync_human_country_settings = {
+	trigger = { is_ai = no }
+	effect = {
+		trigger_event_silently = {
+			on_action = cmm_on_register_country
+		}
+	}
+}
+
+# Shared extension point. Integrating mods append additional on_actions here.
+cmm_on_register_country = {
+	on_actions = {
+		cmm_on_register_country_core
+	}
+}
+
+cmm_on_register_country_core = {
+	effect = {
+		cmm_register_core_country = yes
+	}
+}

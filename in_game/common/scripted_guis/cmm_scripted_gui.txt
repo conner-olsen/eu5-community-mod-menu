@@ -9,18 +9,8 @@
 
 CMM_RegisterCoreMod = {
 	effect = {
-		cmm_register_mod = {
-			mod_id = cmm_core
-			display_name_key = CMM_CORE_MOD_NAME
-			description_key = CMM_CORE_MOD_DESC
-		}
-
-		cmm_register_bool_setting = {
-			mod_id = cmm_core
-			setting_id = example_toggle
-			display_name_key = CMM_CORE_BOOL_EXAMPLE_NAME
-			description_key = CMM_CORE_BOOL_EXAMPLE_DESC
-			default_value = 0
+		trigger_event_silently = {
+			on_action = cmm_on_register_country
 		}
 	}
 }

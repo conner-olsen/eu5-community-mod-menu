@@ -74,6 +74,29 @@ Example callback names:
 
 Callbacks run in player country scope.
 
+## Registration Hook Contract
+
+CMM defines and fires a shared custom on_action named `cmm_on_register_country`.
+
+- CMM fires it on game start (after a 1-day delay), on yearly pulse for human countries, and when opening Mod Menu.
+- Integrating mods should append their own registration leaf on_actions to this hook.
+
+Pattern:
+
+```txt
+cmm_on_register_country = {
+    on_actions = {
+        your_mod_on_register_country
+    }
+}
+
+your_mod_on_register_country = {
+    effect = {
+        your_mod_register_country = yes
+    }
+}
+```
+
 ## Data Contract (Runtime Variables)
 
 CMM writes these country-scope variables/lists:
@@ -93,34 +116,8 @@ CMM writes these country-scope variables/lists:
 
 ## Recommended Registration Flow
 
-```txt
-on_game_start = {
-    on_actions = {
-        delay = { days = 1 }
-        your_mod_register_all_humans
-    }
-}
-
-yearly_country_pulse = {
-    on_actions = { your_mod_ensure_registered }
-}
-
-your_mod_register_all_humans = {
-    effect = {
-        every_country = {
-            limit = { is_ai = no }
-            your_mod_register_country = yes
-        }
-    }
-}
-
-your_mod_ensure_registered = {
-    trigger = { is_ai = no }
-    effect = {
-        your_mod_register_country = yes
-    }
-}
-```
+Use the shared `cmm_on_register_country` hook shown above.  
+Do not create separate `on_game_start` or pulse loops per integrating mod.
 
 ## Minimal Example
 
@@ -138,6 +135,18 @@ your_mod_register_country = {
         display_name_key = YOUR_MOD_SETTING_ALLOW_FEATURE
         description_key = YOUR_MOD_SETTING_ALLOW_FEATURE_DESC
         default_value = 1
+    }
+}
+
+cmm_on_register_country = {
+    on_actions = {
+        your_mod_on_register_country
+    }
+}
+
+your_mod_on_register_country = {
+    effect = {
+        your_mod_register_country = yes
     }
 }
 

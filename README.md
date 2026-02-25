@@ -57,6 +57,14 @@ Callback contract:
 <mod_id>__<setting_id>_on_changed = { ... }
 ```
 
+Registration hook contract:
+
+```txt
+cmm_on_register_country = {
+    on_actions = { your_mod_on_register_country }
+}
+```
+
 Full integration docs: `docs/mod-integration.md`.
 
 ## License

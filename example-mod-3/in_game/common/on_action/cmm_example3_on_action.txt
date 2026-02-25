@@ -1,28 +1,12 @@
-﻿# Country-scope hooks for registering this mod with Community Mod Menu.
-on_game_start = {
+﻿# Hook this mod into CMM shared registration on_action.
+cmm_on_register_country = {
 	on_actions = {
-		delay = { days = 1 }
-		cmm_example3_register_all_humans
+		cmm_example3_on_register_country
 	}
 }
 
-yearly_country_pulse = {
-	on_actions = { cmm_example3_ensure_registered }
-}
-
-cmm_example3_register_all_humans = {
-	effect = {
-		every_country = {
-			limit = { is_ai = no }
-			cmm_example3_register_country = yes
-		}
-	}
-}
-
-cmm_example3_ensure_registered = {
-	trigger = { is_ai = no }
+cmm_example3_on_register_country = {
 	effect = {
 		cmm_example3_register_country = yes
 	}
 }
-
