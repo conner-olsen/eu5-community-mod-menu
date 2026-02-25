@@ -15,6 +15,7 @@ cmm_register_all_human_countries = {
 	effect = {
 		every_country = {
 			limit = { is_ai = no }
+			cmm_register_core_country = yes
 			trigger_event_silently = {
 				on_action = cmm_on_register_country
 			}
@@ -25,6 +26,7 @@ cmm_register_all_human_countries = {
 cmm_sync_human_country_settings = {
 	trigger = { is_ai = no }
 	effect = {
+		cmm_register_core_country = yes
 		trigger_event_silently = {
 			on_action = cmm_on_register_country
 		}
@@ -33,13 +35,5 @@ cmm_sync_human_country_settings = {
 
 # Shared extension point. Integrating mods append additional on_actions here.
 cmm_on_register_country = {
-	on_actions = {
-		cmm_on_register_country_core
-	}
-}
-
-cmm_on_register_country_core = {
-	effect = {
-		cmm_register_core_country = yes
-	}
+	on_actions = { }
 }
