@@ -1,5 +1,5 @@
 ﻿window = {
-	name = "eu5_community_mod_menu_window"
+	name = "cmm_window"
 	alwaystransparent = no
 	reorder_on_mouse = never
 	resizable = no
@@ -211,7 +211,7 @@
 
 		button_close_alt = {
 			blockoverride "close_onclick" {
-				onclick = "[ExecuteConsoleCommand('gui.ClearWidgets eu5_community_mod_menu_window')]"
+				onclick = "[ExecuteConsoleCommand('gui.ClearWidgets cmm_window')]"
 				onclick = "[GetVariableSystem.Clear('cmm_mod_search_text')]"
 				onclick = "[GetVariableSystem.Toggle('cmm_window_open')]"
 			}

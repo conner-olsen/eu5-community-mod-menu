@@ -1,7 +1,7 @@
 ﻿window = {
 	name = "ingame_pausemenu"
 	size = { 100% 100% }
-	movable = no 
+	movable = no
 	layer = map_marker
 
 	alwaystransparent = no
@@ -104,7 +104,7 @@
 	FrontEndMenu = {
 		visible_at_creation = no
 		visible= "[GameIsMultiplayer]"
-		
+
 		blockoverride "frontend_menu_middle_section" {
 			using = frontend_menu_middle_template
 			blockoverride "big_button_size" { size = { -1 60 } }
@@ -170,7 +170,7 @@ template frontend_menu_middle_template {
 		use_global_input_instance = yes
 		onclick = "[PauseMenu.Resume]"
 		enabled = yes
-		tooltipwidget = { LeftClickButtonTooltip = { blockoverride "onclick_text" { text = "PAUSE_MENU_RESUME_TOOLTIP" } } }				
+		tooltipwidget = { LeftClickButtonTooltip = { blockoverride "onclick_text" { text = "PAUSE_MENU_RESUME_TOOLTIP" } } }
 		input_action = "close_window"
 	}
 
@@ -188,7 +188,7 @@ template frontend_menu_middle_template {
 		name = "save_button"
 		text = "SAVE_GAME"
 		enabled = "[And3(Not(IsShowingDialog), Not(GameIsIronman), Not(TutorialIsRunning))]"
-		
+
 		action_tooltip = {
 			title = "SAVE_GAME"
 			enabled = "[And3(Not(IsShowingDialog), Not(GameIsIronman), Not(TutorialIsRunning))]"
@@ -221,7 +221,7 @@ template frontend_menu_middle_template {
 			conditions = "[PauseMenu.LoadIngameTooltip]"
 			on_action = "[PauseMenu.LoadIngame]"
 			enabled = "[And3(Not(IsShowingDialog), Not(GameIsMultiplayer), Not(GameIsIronman))]"
-		} 
+		}
 	}
 
 	button_wax = {
@@ -254,7 +254,7 @@ template frontend_menu_middle_template {
 			conditions = "[PauseMenu.GetOpenLobbyTooltip]"
 			on_action = "[PauseMenu.OpenLobby]"
 			enabled = "[And(Not(IsShowingDialog), PauseMenu.CanOpenLobby)]"
-		} 
+		}
 	}
 
 	button_wax = {
@@ -295,7 +295,7 @@ template frontend_menu_middle_template {
 		onclick = "[GetVariableSystem.Set('cmm_selected_mod_id', Select_CString(GetVariableSystem.Exists('cmm_selected_mod_id'), GetVariableSystem.Get('cmm_selected_mod_id'), Select_CString(Player.MakeScope.GetVariable('cmm_first_registered_mod_id').IsSet, Player.MakeScope.GetVariable('cmm_first_registered_mod_id').GetFlagName, '')))]"
 		onclick = "[GetVariableSystem.Set('cmm_selected_mod_display_key', Select_CString(GetVariableSystem.Exists('cmm_selected_mod_display_key'), GetVariableSystem.Get('cmm_selected_mod_display_key'), Select_CString(Player.MakeScope.GetVariable('cmm_first_registered_display_name_key').IsSet, Player.MakeScope.GetVariable('cmm_first_registered_display_name_key').GetFlagName, '')))]"
 		onclick = "[GetVariableSystem.Set('cmm_selected_mod_index', Select_CString(GetVariableSystem.Exists('cmm_selected_mod_index'), GetVariableSystem.Get('cmm_selected_mod_index'), '0'))]"
-		onclick = "[ExecuteConsoleCommand( Select_CString( GetVariableSystem.Exists('cmm_window_open'), 'gui.ClearWidgets eu5_community_mod_menu_window', 'gui.createwidget gui/eu5_community_mod_menu_window.gui eu5_community_mod_menu_window' ) )]"
+		onclick = "[ExecuteConsoleCommand( Select_CString( GetVariableSystem.Exists('cmm_window_open'), 'gui.ClearWidgets cmm_window', 'gui.createwidget gui/cmm_window.gui cmm_window' ) )]"
 		onclick = "[GetVariableSystem.Toggle('cmm_window_open')]"
 		onclick = "[PauseMenu.Resume]"
 		tooltipwidget = { LeftClickButtonTooltip = { blockoverride "onclick_text" { text = "CMM_PAUSE_MENU_BUTTON_TOOLTIP" } } }
@@ -401,7 +401,7 @@ template frontend_menu_bottom_layout_template {
 					size = { -1 60 }
 					layoutpolicy_horizontal = expanding
 					using = color_black_texture
-	
+
 					text_multi = {
 						parentanchor = center
 						size = { 95% 100% }
@@ -411,27 +411,27 @@ template frontend_menu_bottom_layout_template {
 						font = StandardGameFont
 						default_format = "#color_gold"
 					}
-	
+
 					onclick = "[VersionInfoOnClick]"
 					tooltip_enabled = no
-	
+
 					icon = {
 						size = { 100% 100% }
 						using = tile_frame_squared_texture
 						alpha = 0.9
-	
+
 						modify_texture = {
 							texture = "gfx/interface/colors/new_gold.dds"
 						}
-	
+
 						modify_texture = {
 							using = tile_frame_squared_bevel_texture
 							alpha = 0.1
 						}
-					}		
+					}
 				}
 			}
 		}
-	}		
+	}
 }
 
