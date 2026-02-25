@@ -15,10 +15,9 @@
 #     default_value = <optional, 0|1, default 0>
 # }
 #
-# cmm_clear_pending_setting = {
-#     mod_id = <required>
-#     setting_id = <required>
-# }
+# Setting change callback contract:
+# - CMM calls "<mod_id>__<setting_id>_on_changed" immediately after a toggle.
+# - Effects run in player country scope.
 
 cmm_register_mod = {
 	if = {
@@ -183,23 +182,22 @@ cmm_toggle_bool_setting = {
 	else = {
 		set_variable = { name = cmm_setting_bool_value_$setting_key$ value = 1 }
 	}
-
-	set_variable = { name = cmm_pending_setting_$setting_key$ value = 1 }
-
-	# Benign warning suppression
-	if = {
-		limit = {
-			always = no
-			exists = var:cmm_pending_setting_$setting_key$
-		}
-	}
 }
 
-cmm_clear_pending_setting = {
-	remove_variable = cmm_pending_setting_$mod_id$__$setting_id$
-
-	# Benign warning suppression
-	if = { limit = { always = no } set_variable = cmm_pending_setting_$mod_id$__$setting_id$ }
+# Core example setting callback (triggered by "<setting_key>_on_changed" naming contract).
+cmm_core__example_toggle_on_changed = {
+	if = {
+		limit = {
+			cmm_is_bool_setting_enabled = {
+				mod_id = cmm_core
+				setting_id = example_toggle
+			}
+		}
+		set_variable = { name = cmm_core_example_toggle_enabled value = 1 }
+	}
+	else = {
+		remove_variable = cmm_core_example_toggle_enabled
+	}
 }
 
 

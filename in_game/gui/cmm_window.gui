@@ -164,6 +164,7 @@
 
 											checkbox_square_alt = {
 												onclick = "[ExecuteConsoleCommand(Concatenate('effect c:', Concatenate(Player.GetTag, Concatenate(' = { cmm_toggle_bool_setting = { setting_key = ', Concatenate(Scope.GetFlagName, ' } } }')))))]"
+												onclick = "[ExecuteConsoleCommand(Concatenate('effect c:', Concatenate(Player.GetTag, Concatenate(' = { ', Concatenate(Scope.GetFlagName, '_on_changed = yes }')))))]"
 												checked = "[Player.MakeScope.GetVariable(Concatenate('cmm_setting_bool_value_', Scope.GetFlagName)).IsSet]"
 												tooltip_enabled = no
 											}

@@ -14,7 +14,7 @@ A dependency mod for **Europa Universalis 5** that provides one shared in-game m
 - Boolean settings only.
 - Registration order is preserved.
 - Value changes are persisted as country variables.
-- UI writes a per-setting pending marker; integrating mods process and clear it.
+- UI invokes immediate per-setting callback effects after each toggle.
 
 ## Install
 
@@ -39,11 +39,6 @@ cmm_register_bool_setting = {
     description_key = YOUR_SETTING_DESC_KEY
     default_value = 0 # optional; 0 or 1
 }
-
-cmm_clear_pending_setting = {
-    mod_id = your_mod_id
-    setting_id = your_setting_id
-}
 ```
 
 Trigger:
@@ -53,6 +48,13 @@ cmm_is_bool_setting_enabled = {
     mod_id = your_mod_id
     setting_id = your_setting_id
 }
+```
+
+Callback contract:
+
+```txt
+# CMM calls this on each UI toggle:
+<mod_id>__<setting_id>_on_changed = { ... }
 ```
 
 Full integration docs: `docs/mod-integration.md`.

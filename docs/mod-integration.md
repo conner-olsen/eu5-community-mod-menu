@@ -48,22 +48,7 @@ Arguments:
 - `description_key` (required): localized description.
 - `default_value` (optional): initial value for brand-new saves (`0` off, `1` on).
 
-### 3) Pending-setting helper
-
-When users click a CMM checkbox, CMM sets a pending marker:
-
-- `cmm_pending_setting_<mod_id>__<setting_id>`
-
-After your mod handles the change, clear it:
-
-```txt
-cmm_clear_pending_setting = {
-    mod_id = your_mod_id
-    setting_id = your_setting_id
-}
-```
-
-### 4) Read helper trigger
+### 3) Read helper trigger
 
 ```txt
 cmm_is_bool_setting_enabled = {
@@ -72,7 +57,22 @@ cmm_is_bool_setting_enabled = {
 }
 ```
 
-Use this in your own pulse/on_action logic when processing pending markers.
+Use this in your setting callback effects.
+
+## Immediate Setting Callback Contract
+
+When a player toggles a setting in CMM, CMM immediately calls:
+
+```txt
+<mod_id>__<setting_id>_on_changed = { ... }
+```
+
+Example callback names:
+
+- `cmm_example__feature_enabled_on_changed`
+- `cmm_example2__ai_helper_on_changed`
+
+Callbacks run in player country scope.
 
 ## Data Contract (Runtime Variables)
 
@@ -90,7 +90,6 @@ CMM writes these country-scope variables/lists:
 - `cmm_setting_label_key_<mod_id>__<setting_id>` (flag value)
 - `cmm_setting_desc_key_<mod_id>__<setting_id>` (flag value)
 - `cmm_setting_bool_value_<mod_id>__<setting_id>` (`1` means enabled)
-- `cmm_pending_setting_<mod_id>__<setting_id>` (`1` means changed from UI)
 
 ## Recommended Registration Flow
 
@@ -111,7 +110,6 @@ your_mod_register_all_humans = {
         every_country = {
             limit = { is_ai = no }
             your_mod_register_country = yes
-            your_mod_process_pending_settings = yes
         }
     }
 }
@@ -120,7 +118,6 @@ your_mod_ensure_registered = {
     trigger = { is_ai = no }
     effect = {
         your_mod_register_country = yes
-        your_mod_process_pending_settings = yes
     }
 }
 ```
@@ -144,27 +141,18 @@ your_mod_register_country = {
     }
 }
 
-your_mod_process_pending_settings = {
+your_mod__allow_feature_on_changed = {
     if = {
-        limit = { has_variable = cmm_pending_setting_your_mod__allow_feature }
-
-        if = {
-            limit = {
-                cmm_is_bool_setting_enabled = {
-                    mod_id = your_mod
-                    setting_id = allow_feature
-                }
+        limit = {
+            cmm_is_bool_setting_enabled = {
+                mod_id = your_mod
+                setting_id = allow_feature
             }
-            set_variable = { name = your_mod_feature_enabled value = 1 }
         }
-        else = {
-            remove_variable = your_mod_feature_enabled
-        }
-
-        cmm_clear_pending_setting = {
-            mod_id = your_mod
-            setting_id = allow_feature
-        }
+        set_variable = { name = your_mod_feature_enabled value = 1 }
+    }
+    else = {
+        remove_variable = your_mod_feature_enabled
     }
 }
 ```
@@ -185,5 +173,3 @@ YOUR_MOD_SETTING_ALLOW_FEATURE_DESC: "Enables the feature when checked."
 - CMM v1 settings controls are bool-only.
 - Keep ids stable (`mod_id`, `setting_id`) across updates.
 - Keep integration/API docs in repository docs, not runtime UI localization.
-
-

@@ -7,3 +7,4 @@ Minimal test/integration mod for `community.mod.menu.dev`.
 - Registers mod id `cmm_example3` into CMM.
 - Uses explicit `display_name_key` and `description_key`.
 - Re-registers for human countries on pulse.
+- Applies setting changes immediately via `cmm_example3__<setting_id>_on_changed`.
