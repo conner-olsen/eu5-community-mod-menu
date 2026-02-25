@@ -73,6 +73,25 @@ cmm_register_mod = {
 	set_variable = { name = cmm_mod_display_name_key_$mod_id$ value = flag:$display_name_key$ }
 	set_variable = { name = cmm_mod_description_key_$mod_id$ value = flag:$description_key$ }
 	set_variable = { name = cmm_mod_description_key_by_display_name_key_$display_name_key$ value = flag:$description_key$ }
+
+	# Benign error suppression
+	if = {
+		limit = {
+			always = no
+			exists = flag:$mod_id$
+			exists = flag:$display_name_key$
+			exists = flag:$description_key$
+			exists = var:cmm_registered_mod_ids
+			exists = var:cmm_registered_mod_display_name_keys
+			exists = var:cmm_first_registered_mod_id
+			exists = var:cmm_first_registered_display_name_key
+			exists = var:cmm_registered_mod_$mod_id$
+			exists = var:cmm_mod_active_$mod_id$
+			exists = var:cmm_mod_display_name_key_$mod_id$
+			exists = var:cmm_mod_description_key_$mod_id$
+			exists = var:cmm_mod_description_key_by_display_name_key_$display_name_key$
+		}
+	}
 }
 
 cmm_unregister_mod = {
@@ -158,13 +177,19 @@ cmm_register_bool_setting = {
 		}
 		set_variable = { name = cmm_setting_bool_value_$mod_id$__$setting_id$ value = 1 }
 	}
-	# The below is is to prevent benign does not exist/is not used warnings in the log.
+	# Benign warning suppression
 	if = {
-		limit = { always = no }
-		set_variable = cmm_setting_owner_mod_id_$mod_id$__$setting_id$
-		remove_variable = cmm_setting_owner_mod_id_$mod_id$__$setting_id$
-		set_variable = cmm_setting_owner_display_key_$mod_id$__$setting_id$
-		remove_variable = cmm_setting_owner_display_key_$mod_id$__$setting_id$
+		limit = {
+			always = no
+			exists = flag:$mod_id$__$setting_id$
+			exists = flag:$display_name_key$
+			exists = flag:$description_key$
+			exists = var:cmm_registered_setting_keys
+			exists = var:cmm_setting_owner_mod_id_$mod_id$__$setting_id$
+			exists = var:cmm_setting_owner_display_key_$mod_id$__$setting_id$
+			exists = var:cmm_setting_label_key_$mod_id$__$setting_id$
+			exists = var:cmm_setting_desc_key_$mod_id$__$setting_id$
+		}
 	}
 }
 
@@ -178,10 +203,21 @@ cmm_toggle_bool_setting = {
 	}
 
 	set_variable = { name = cmm_setting_dirty_$setting_key$ value = 1 }
+
+	# Benign warning suppression
+	if = {
+		limit = {
+			always = no
+			exists = var:cmm_setting_dirty_$setting_key$
+		}
+	}
 }
 
 cmm_clear_setting_dirty = {
 	remove_variable = cmm_setting_dirty_$mod_id$__$setting_id$
+
+	# Benign warning suppression
+	if = { limit = { always = no } set_variable = cmm_setting_dirty_$mod_id$__$setting_id$ }
 }
 
 
