@@ -39,25 +39,14 @@ cmm_register_mod = {
 			}
 		}
 
-		set_local_variable = {
-			name = cmm_register_mod_id_scope
-			value = flag:$mod_id$
-		}
 		add_to_variable_list = {
 			name = cmm_registered_mod_ids
-			target = local_var:cmm_register_mod_id_scope
-		}
-		remove_local_variable = cmm_register_mod_id_scope
-
-		set_local_variable = {
-			name = cmm_register_display_name_scope
-			value = flag:$display_name_key$
+			target = flag:$mod_id$
 		}
 		add_to_variable_list = {
 			name = cmm_registered_mod_display_name_keys
-			target = local_var:cmm_register_display_name_scope
+			target = flag:$display_name_key$
 		}
-		remove_local_variable = cmm_register_display_name_scope
 
 		if = {
 			limit = { var:cmm_registered_mod_count = 1 }
@@ -98,12 +87,10 @@ cmm_unregister_mod = {
 	if = {
 		limit = { has_variable = cmm_registered_mod_$mod_id$ }
 
-		set_local_variable = { name = cmm_unregister_mod_id_scope value = flag:$mod_id$ }
 		remove_list_variable = {
 			name = cmm_registered_mod_ids
-			target = local_var:cmm_unregister_mod_id_scope
+			target = flag:$mod_id$
 		}
-		remove_local_variable = cmm_unregister_mod_id_scope
 
 		if = {
 			limit = { has_variable = cmm_mod_display_name_key_$mod_id$ }
@@ -140,15 +127,10 @@ cmm_register_bool_setting = {
 		limit = { NOT = { has_variable = cmm_registered_setting_$mod_id$__$setting_id$ } }
 		set_variable = { name = cmm_registered_setting_$mod_id$__$setting_id$ value = 1 }
 
-		set_local_variable = {
-			name = cmm_register_setting_scope
-			value = flag:$mod_id$__$setting_id$
-		}
 		add_to_variable_list = {
 			name = cmm_registered_setting_keys
-			target = local_var:cmm_register_setting_scope
+			target = flag:$mod_id$__$setting_id$
 		}
-		remove_local_variable = cmm_register_setting_scope
 
 		if = {
 			limit = { NOT = { has_variable = cmm_mod_bool_setting_count_$mod_id$ } }
