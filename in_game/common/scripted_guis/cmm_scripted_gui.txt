@@ -1,13 +1,4 @@
-﻿CMM_ToggleExampleSetting = {
-	effect = {
-		cmm_toggle_bool_setting = {
-			setting_key = cmm_core__example_toggle
-		}
-		cmm_core__example_toggle_on_changed = yes
-	}
-}
-
-CMM_RegisterCoreMod = {
+﻿CMM_RegisterCoreMod = {
 	effect = {
 		cmm_register_core_country = yes
 		trigger_event_silently = {

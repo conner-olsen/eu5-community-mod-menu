@@ -45,22 +45,9 @@ cmm_register_mod = {
 		limit = { NOT = { has_variable = cmm_registered_mod_$mod_id$ } }
 		change_variable = { name = cmm_registered_mod_count add = 1 }
 
-		# First-seen order is stable and used as default list order.
-		if = {
-			limit = { NOT = { has_variable = cmm_mod_registration_order_$mod_id$ } }
-			set_variable = {
-				name = cmm_mod_registration_order_$mod_id$
-				value = var:cmm_registered_mod_count
-			}
-		}
-
 		add_to_variable_list = {
 			name = cmm_registered_mod_ids
 			target = flag:$mod_id$
-		}
-		add_to_variable_list = {
-			name = cmm_registered_mod_display_name_keys
-			target = flag:$display_name_key$
 		}
 
 		if = {
@@ -71,12 +58,10 @@ cmm_register_mod = {
 	}
 
 	set_variable = { name = cmm_registered_mod_$mod_id$ value = 1 }
-	set_variable = { name = cmm_mod_active_$mod_id$ value = 1 }
 
 	# Store localization metadata for runtime GUI reads.
 	set_variable = { name = cmm_mod_display_name_key_$mod_id$ value = flag:$display_name_key$ }
 	set_variable = { name = cmm_mod_description_key_$mod_id$ value = flag:$description_key$ }
-	set_variable = { name = cmm_mod_description_key_by_display_name_key_$display_name_key$ value = flag:$description_key$ }
 
 	# Benign error suppression
 	if = {
@@ -86,55 +71,13 @@ cmm_register_mod = {
 			exists = flag:$display_name_key$
 			exists = flag:$description_key$
 			exists = var:cmm_registered_mod_ids
-			exists = var:cmm_registered_mod_display_name_keys
 			exists = var:cmm_first_registered_mod_id
 			exists = var:cmm_first_registered_display_name_key
 			exists = var:cmm_registered_mod_$mod_id$
-			exists = var:cmm_mod_active_$mod_id$
 			exists = var:cmm_mod_display_name_key_$mod_id$
 			exists = var:cmm_mod_description_key_$mod_id$
-			exists = var:cmm_mod_description_key_by_display_name_key_$display_name_key$
 		}
 	}
-}
-
-cmm_unregister_mod = {
-	if = {
-		limit = { has_variable = cmm_registered_mod_$mod_id$ }
-
-		remove_list_variable = {
-			name = cmm_registered_mod_ids
-			target = flag:$mod_id$
-		}
-
-		if = {
-			limit = { has_variable = cmm_mod_display_name_key_$mod_id$ }
-			remove_list_variable = {
-				name = cmm_registered_mod_display_name_keys
-				target = var:cmm_mod_display_name_key_$mod_id$
-			}
-		}
-
-		remove_variable = cmm_registered_mod_$mod_id$
-		remove_variable = cmm_mod_active_$mod_id$
-		remove_variable = cmm_mod_display_name_key_$mod_id$
-		remove_variable = cmm_mod_description_key_$mod_id$
-		remove_variable = cmm_mod_registration_order_$mod_id$
-
-		if = {
-			limit = {
-				has_variable = cmm_registered_mod_count
-				var:cmm_registered_mod_count > 0
-			}
-			change_variable = { name = cmm_registered_mod_count subtract = 1 }
-		}
-	}
-
-	remove_variable = cmm_mod_sort_priority_$mod_id$
-}
-
-cmm_set_mod_sort_priority = {
-	set_variable = { name = cmm_mod_sort_priority_$mod_id$ value = $sort_priority$ }
 }
 
 cmm_register_bool_setting = {
