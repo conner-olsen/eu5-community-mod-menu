@@ -14,7 +14,7 @@ A dependency mod for **Europa Universalis 5** that provides one shared in-game m
 - Boolean settings only.
 - Registration order is preserved.
 - Value changes are persisted as country variables.
-- UI writes a per-setting dirty marker; integrating mods consume and clear it.
+- UI writes a per-setting pending marker; integrating mods process and clear it.
 
 ## Install
 
@@ -40,7 +40,7 @@ cmm_register_bool_setting = {
     default_value = 0 # optional; 0 or 1
 }
 
-cmm_clear_setting_dirty = {
+cmm_clear_pending_setting = {
     mod_id = your_mod_id
     setting_id = your_setting_id
 }

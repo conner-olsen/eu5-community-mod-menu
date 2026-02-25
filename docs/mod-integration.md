@@ -48,16 +48,16 @@ Arguments:
 - `description_key` (required): localized description.
 - `default_value` (optional): initial value for brand-new saves (`0` off, `1` on).
 
-### 3) Dirty-flag helper
+### 3) Pending-setting helper
 
-When users click a CMM checkbox, CMM sets dirty marker:
+When users click a CMM checkbox, CMM sets a pending marker:
 
-- `cmm_setting_dirty_<mod_id>__<setting_id>`
+- `cmm_pending_setting_<mod_id>__<setting_id>`
 
 After your mod handles the change, clear it:
 
 ```txt
-cmm_clear_setting_dirty = {
+cmm_clear_pending_setting = {
     mod_id = your_mod_id
     setting_id = your_setting_id
 }
@@ -72,7 +72,7 @@ cmm_is_bool_setting_enabled = {
 }
 ```
 
-Use this in your own pulse/on_action logic when consuming dirty markers.
+Use this in your own pulse/on_action logic when processing pending markers.
 
 ## Data Contract (Runtime Variables)
 
@@ -90,7 +90,7 @@ CMM writes these country-scope variables/lists:
 - `cmm_setting_label_key_<mod_id>__<setting_id>` (flag value)
 - `cmm_setting_desc_key_<mod_id>__<setting_id>` (flag value)
 - `cmm_setting_bool_value_<mod_id>__<setting_id>` (`1` means enabled)
-- `cmm_setting_dirty_<mod_id>__<setting_id>` (`1` means changed from UI)
+- `cmm_pending_setting_<mod_id>__<setting_id>` (`1` means changed from UI)
 
 ## Recommended Registration Flow
 
@@ -111,7 +111,7 @@ your_mod_register_all_humans = {
         every_country = {
             limit = { is_ai = no }
             your_mod_register_country = yes
-            your_mod_consume_cmm_dirty = yes
+            your_mod_process_pending_settings = yes
         }
     }
 }
@@ -120,7 +120,7 @@ your_mod_ensure_registered = {
     trigger = { is_ai = no }
     effect = {
         your_mod_register_country = yes
-        your_mod_consume_cmm_dirty = yes
+        your_mod_process_pending_settings = yes
     }
 }
 ```
@@ -144,9 +144,9 @@ your_mod_register_country = {
     }
 }
 
-your_mod_consume_cmm_dirty = {
+your_mod_process_pending_settings = {
     if = {
-        limit = { has_variable = cmm_setting_dirty_your_mod__allow_feature }
+        limit = { has_variable = cmm_pending_setting_your_mod__allow_feature }
 
         if = {
             limit = {
@@ -161,7 +161,7 @@ your_mod_consume_cmm_dirty = {
             remove_variable = your_mod_feature_enabled
         }
 
-        cmm_clear_setting_dirty = {
+        cmm_clear_pending_setting = {
             mod_id = your_mod
             setting_id = allow_feature
         }

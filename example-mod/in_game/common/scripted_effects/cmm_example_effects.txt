@@ -23,9 +23,9 @@ cmm_example_register_country = {
 	}
 }
 
-cmm_example_consume_cmm_dirty = {
+cmm_example_process_pending_settings = {
 	if = {
-		limit = { has_variable = cmm_setting_dirty_cmm_example__feature_enabled }
+		limit = { has_variable = cmm_pending_setting_cmm_example__feature_enabled }
 		if = {
 			limit = {
 				cmm_is_bool_setting_enabled = {
@@ -39,14 +39,14 @@ cmm_example_consume_cmm_dirty = {
 			remove_variable = cmm_example_feature_enabled
 		}
 
-		cmm_clear_setting_dirty = {
+		cmm_clear_pending_setting = {
 			mod_id = cmm_example
 			setting_id = feature_enabled
 		}
 	}
 
 	if = {
-		limit = { has_variable = cmm_setting_dirty_cmm_example__show_notifications }
+		limit = { has_variable = cmm_pending_setting_cmm_example__show_notifications }
 		if = {
 			limit = {
 				cmm_is_bool_setting_enabled = {
@@ -60,7 +60,7 @@ cmm_example_consume_cmm_dirty = {
 			remove_variable = cmm_example_notifications_enabled
 		}
 
-		cmm_clear_setting_dirty = {
+		cmm_clear_pending_setting = {
 			mod_id = cmm_example
 			setting_id = show_notifications
 		}

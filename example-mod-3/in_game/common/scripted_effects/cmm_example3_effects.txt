@@ -23,9 +23,9 @@ cmm_example3_register_country = {
 	}
 }
 
-cmm_example3_consume_cmm_dirty = {
+cmm_example3_process_pending_settings = {
 	if = {
-		limit = { has_variable = cmm_setting_dirty_cmm_example3__ledger_export }
+		limit = { has_variable = cmm_pending_setting_cmm_example3__ledger_export }
 		if = {
 			limit = {
 				cmm_is_bool_setting_enabled = {
@@ -39,14 +39,14 @@ cmm_example3_consume_cmm_dirty = {
 			remove_variable = cmm_example3_ledger_export_enabled
 		}
 
-		cmm_clear_setting_dirty = {
+		cmm_clear_pending_setting = {
 			mod_id = cmm_example3
 			setting_id = ledger_export
 		}
 	}
 
 	if = {
-		limit = { has_variable = cmm_setting_dirty_cmm_example3__event_hints }
+		limit = { has_variable = cmm_pending_setting_cmm_example3__event_hints }
 		if = {
 			limit = {
 				cmm_is_bool_setting_enabled = {
@@ -60,7 +60,7 @@ cmm_example3_consume_cmm_dirty = {
 			remove_variable = cmm_example3_event_hints_enabled
 		}
 
-		cmm_clear_setting_dirty = {
+		cmm_clear_pending_setting = {
 			mod_id = cmm_example3
 			setting_id = event_hints
 		}

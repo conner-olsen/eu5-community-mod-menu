@@ -23,9 +23,9 @@ cmm_example2_register_country = {
 	}
 }
 
-cmm_example2_consume_cmm_dirty = {
+cmm_example2_process_pending_settings = {
 	if = {
-		limit = { has_variable = cmm_setting_dirty_cmm_example2__ai_helper }
+		limit = { has_variable = cmm_pending_setting_cmm_example2__ai_helper }
 		if = {
 			limit = {
 				cmm_is_bool_setting_enabled = {
@@ -39,14 +39,14 @@ cmm_example2_consume_cmm_dirty = {
 			remove_variable = cmm_example2_ai_helper_enabled
 		}
 
-		cmm_clear_setting_dirty = {
+		cmm_clear_pending_setting = {
 			mod_id = cmm_example2
 			setting_id = ai_helper
 		}
 	}
 
 	if = {
-		limit = { has_variable = cmm_setting_dirty_cmm_example2__map_overlay }
+		limit = { has_variable = cmm_pending_setting_cmm_example2__map_overlay }
 		if = {
 			limit = {
 				cmm_is_bool_setting_enabled = {
@@ -60,7 +60,7 @@ cmm_example2_consume_cmm_dirty = {
 			remove_variable = cmm_example2_map_overlay_enabled
 		}
 
-		cmm_clear_setting_dirty = {
+		cmm_clear_pending_setting = {
 			mod_id = cmm_example2
 			setting_id = map_overlay
 		}

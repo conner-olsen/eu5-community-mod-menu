@@ -15,7 +15,7 @@ cmm_example3_register_all_humans = {
 		every_country = {
 			limit = { is_ai = no }
 			cmm_example3_register_country = yes
-			cmm_example3_consume_cmm_dirty = yes
+			cmm_example3_process_pending_settings = yes
 		}
 	}
 }
@@ -24,7 +24,7 @@ cmm_example3_ensure_registered = {
 	trigger = { is_ai = no }
 	effect = {
 		cmm_example3_register_country = yes
-		cmm_example3_consume_cmm_dirty = yes
+		cmm_example3_process_pending_settings = yes
 	}
 }
 

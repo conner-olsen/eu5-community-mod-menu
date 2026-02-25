@@ -15,7 +15,7 @@
 #     default_value = <optional, 0|1, default 0>
 # }
 #
-# cmm_clear_setting_dirty = {
+# cmm_clear_pending_setting = {
 #     mod_id = <required>
 #     setting_id = <required>
 # }
@@ -184,22 +184,22 @@ cmm_toggle_bool_setting = {
 		set_variable = { name = cmm_setting_bool_value_$setting_key$ value = 1 }
 	}
 
-	set_variable = { name = cmm_setting_dirty_$setting_key$ value = 1 }
+	set_variable = { name = cmm_pending_setting_$setting_key$ value = 1 }
 
 	# Benign warning suppression
 	if = {
 		limit = {
 			always = no
-			exists = var:cmm_setting_dirty_$setting_key$
+			exists = var:cmm_pending_setting_$setting_key$
 		}
 	}
 }
 
-cmm_clear_setting_dirty = {
-	remove_variable = cmm_setting_dirty_$mod_id$__$setting_id$
+cmm_clear_pending_setting = {
+	remove_variable = cmm_pending_setting_$mod_id$__$setting_id$
 
 	# Benign warning suppression
-	if = { limit = { always = no } set_variable = cmm_setting_dirty_$mod_id$__$setting_id$ }
+	if = { limit = { always = no } set_variable = cmm_pending_setting_$mod_id$__$setting_id$ }
 }
 
 
