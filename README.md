@@ -37,7 +37,7 @@ cmm_register_bool_setting = {
     setting_id = your_setting_id
     display_name_key = YOUR_SETTING_NAME_KEY
     description_key = YOUR_SETTING_DESC_KEY
-    default_value = no # required; yes or no
+    default_value = 0 # required; 0 (off) or 1 (on)
 }
 ```
 
@@ -46,7 +46,7 @@ Callback contract:
 ```txt
 # CMM calls this on each UI toggle and passes $setting$:
 <mod_id>__<setting_id>_on_changed = {
-    if = { limit = { var:$setting$ = yes } ... }
+    if = { limit = { var:$setting$ = 1 } ... }
 }
 ```
 

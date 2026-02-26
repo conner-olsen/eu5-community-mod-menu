@@ -11,7 +11,7 @@ cmm_example_register_country = {
 		setting_id = feature_enabled
 		display_name_key = CMM_EXAMPLE_SETTING_FEATURE_NAME
 		description_key = CMM_EXAMPLE_SETTING_FEATURE_DESC
-		default_value = yes
+		default_value = 1
 	}
 
 	cmm_register_bool_setting = {
@@ -19,30 +19,30 @@ cmm_example_register_country = {
 		setting_id = show_notifications
 		display_name_key = CMM_EXAMPLE_SETTING_NOTIFICATIONS_NAME
 		description_key = CMM_EXAMPLE_SETTING_NOTIFICATIONS_DESC
-		default_value = no
+		default_value = 0
 	}
 }
 
 cmm_example__feature_enabled_on_changed = {
 	if = {
 		limit = {
-			var:$setting$ = yes
+			var:$setting$ = 1
 		}
-		set_variable = { name = cmm_example_feature_enabled value = yes }
+		set_variable = { name = cmm_example_feature_enabled value = 1 }
 	}
 	else = {
-		remove_variable = cmm_example_feature_enabled
+		set_variable = { name = cmm_example_feature_enabled value = 0 }
 	}
 }
 
 cmm_example__show_notifications_on_changed = {
 	if = {
 		limit = {
-			var:$setting$ = yes
+			var:$setting$ = 1
 		}
-		set_variable = { name = cmm_example_notifications_enabled value = yes }
+		set_variable = { name = cmm_example_notifications_enabled value = 1 }
 	}
 	else = {
-		remove_variable = cmm_example_notifications_enabled
+		set_variable = { name = cmm_example_notifications_enabled value = 0 }
 	}
 }

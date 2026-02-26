@@ -36,7 +36,7 @@ cmm_register_bool_setting = {
     setting_id = your_setting_id
     display_name_key = YOUR_SETTING_NAME_KEY
     description_key = YOUR_SETTING_DESC_KEY
-    default_value = no # yes or no
+    default_value = 0 # 0 (off) or 1 (on)
 }
 ```
 
@@ -46,7 +46,7 @@ Arguments:
 - `setting_id`: stable id within your mod.
 - `display_name_key`: localized label.
 - `description_key`: localized description.
-- `default_value`: initial value for brand-new saves (`no` off, `yes` on).
+- `default_value`: initial value for brand-new saves (`0` off, `1` on).
 
 ## Immediate Setting Callback Contract
 
@@ -102,7 +102,7 @@ CMM writes these country-scope variables/lists:
 - `cmm_setting_owner_mod_id_<mod_id>__<setting_id>` (flag value)
 - `cmm_setting_label_key_<mod_id>__<setting_id>` (flag value)
 - `cmm_setting_desc_key_<mod_id>__<setting_id>` (flag value)
-- `<mod_id>__<setting_id>` (boolean value: `yes`/`no`)
+- `<mod_id>__<setting_id>` (boolean value: `0`/`1`)
 
 ## Recommended Registration Flow
 
@@ -124,7 +124,7 @@ your_mod_register_country = {
         setting_id = allow_feature
         display_name_key = YOUR_MOD_SETTING_ALLOW_FEATURE
         description_key = YOUR_MOD_SETTING_ALLOW_FEATURE_DESC
-        default_value = yes
+        default_value = 1
     }
 }
 
@@ -143,12 +143,12 @@ your_mod_on_register_country = {
 your_mod__allow_feature_on_changed = {
     if = {
         limit = {
-            var:$setting$ = yes
+            var:$setting$ = 1
         }
-        set_variable = { name = your_mod_feature_enabled value = yes }
+        set_variable = { name = your_mod_feature_enabled value = 1 }
     }
     else = {
-        remove_variable = your_mod_feature_enabled
+        set_variable = { name = your_mod_feature_enabled value = 0 }
     }
 }
 ```

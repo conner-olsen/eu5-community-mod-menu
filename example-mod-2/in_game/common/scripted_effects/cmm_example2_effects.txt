@@ -11,7 +11,7 @@ cmm_example2_register_country = {
 		setting_id = ai_helper
 		display_name_key = CMM_EXAMPLE2_SETTING_AI_HELPER_NAME
 		description_key = CMM_EXAMPLE2_SETTING_AI_HELPER_DESC
-		default_value = no
+		default_value = 0
 	}
 
 	cmm_register_bool_setting = {
@@ -19,31 +19,31 @@ cmm_example2_register_country = {
 		setting_id = map_overlay
 		display_name_key = CMM_EXAMPLE2_SETTING_MAP_OVERLAY_NAME
 		description_key = CMM_EXAMPLE2_SETTING_MAP_OVERLAY_DESC
-		default_value = yes
+		default_value = 1
 	}
 }
 
 cmm_example2__ai_helper_on_changed = {
 	if = {
 		limit = {
-			var:$setting$ = yes
+			var:$setting$ = 1
 		}
-		set_variable = { name = cmm_example2_ai_helper_enabled value = yes }
+		set_variable = { name = cmm_example2_ai_helper_enabled value = 1 }
 	}
 	else = {
-		remove_variable = cmm_example2_ai_helper_enabled
+		set_variable = { name = cmm_example2_ai_helper_enabled value = 0 }
 	}
 }
 
 cmm_example2__map_overlay_on_changed = {
 	if = {
 		limit = {
-			var:$setting$ = yes
+			var:$setting$ = 1
 		}
-		set_variable = { name = cmm_example2_map_overlay_enabled value = yes }
+		set_variable = { name = cmm_example2_map_overlay_enabled value = 1 }
 	}
 	else = {
-		remove_variable = cmm_example2_map_overlay_enabled
+		set_variable = { name = cmm_example2_map_overlay_enabled value = 0 }
 	}
 }
 

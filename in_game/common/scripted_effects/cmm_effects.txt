@@ -12,7 +12,7 @@
 #     setting_id = <required>
 #     display_name_key = <required>
 #     description_key = <required>
-#     default_value = <required, yes|no>
+#     default_value = <required, 0|1>
 # }
 #
 # Setting change callback contract:
@@ -32,7 +32,7 @@ cmm_register_core_country = {
 		setting_id = example_toggle
 		display_name_key = CMM_CORE_BOOL_EXAMPLE_NAME
 		description_key = CMM_CORE_BOOL_EXAMPLE_DESC
-		default_value = no
+		default_value = 0
 	}
 }
 
@@ -136,11 +136,13 @@ cmm_register_bool_setting = {
 
 cmm_toggle_bool_setting = {
 	if = {
-		limit = { var:$setting$ = yes }
-		set_variable = { name = $setting$ value = no }
+		limit = {
+			var:$setting$ = 1
+		}
+		set_variable = { name = $setting$ value = 0 }
 	}
 	else = {
-		set_variable = { name = $setting$ value = yes }
+		set_variable = { name = $setting$ value = 1 }
 	}
 
 	# Fire per-setting callback after value mutation.
@@ -153,12 +155,12 @@ cmm_toggle_bool_setting = {
 cmm_core__example_toggle_on_changed = {
 	if = {
 		limit = {
-			var:$setting$ = yes
+			var:$setting$ = 1
 		}
-		set_variable = { name = cmm_core_example_toggle_enabled value = yes }
+		set_variable = { name = cmm_core_example_toggle_enabled value = 1 }
 	}
 	else = {
-		remove_variable = cmm_core_example_toggle_enabled
+		set_variable = { name = cmm_core_example_toggle_enabled value = 0 }
 	}
 }
 

@@ -11,7 +11,7 @@ cmm_example3_register_country = {
 		setting_id = ledger_export
 		display_name_key = CMM_EXAMPLE3_SETTING_LEDGER_EXPORT_NAME
 		description_key = CMM_EXAMPLE3_SETTING_LEDGER_EXPORT_DESC
-		default_value = yes
+		default_value = 1
 	}
 
 	cmm_register_bool_setting = {
@@ -19,31 +19,31 @@ cmm_example3_register_country = {
 		setting_id = event_hints
 		display_name_key = CMM_EXAMPLE3_SETTING_EVENT_HINTS_NAME
 		description_key = CMM_EXAMPLE3_SETTING_EVENT_HINTS_DESC
-		default_value = no
+		default_value = 0
 	}
 }
 
 cmm_example3__ledger_export_on_changed = {
 	if = {
 		limit = {
-			var:$setting$ = yes
+			var:$setting$ = 1
 		}
-		set_variable = { name = cmm_example3_ledger_export_enabled value = yes }
+		set_variable = { name = cmm_example3_ledger_export_enabled value = 1 }
 	}
 	else = {
-		remove_variable = cmm_example3_ledger_export_enabled
+		set_variable = { name = cmm_example3_ledger_export_enabled value = 0 }
 	}
 }
 
 cmm_example3__event_hints_on_changed = {
 	if = {
 		limit = {
-			var:$setting$ = yes
+			var:$setting$ = 1
 		}
-		set_variable = { name = cmm_example3_event_hints_enabled value = yes }
+		set_variable = { name = cmm_example3_event_hints_enabled value = 1 }
 	}
 	else = {
-		remove_variable = cmm_example3_event_hints_enabled
+		set_variable = { name = cmm_example3_event_hints_enabled value = 0 }
 	}
 }
 
