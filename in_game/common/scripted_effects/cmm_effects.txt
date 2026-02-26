@@ -3,15 +3,11 @@
 # Public API:
 # cmm_register_mod = {
 #     mod_id = <required>
-#     display_name_key = <required>
-#     description_key = <required>
 # }
 #
 # cmm_register_bool_setting = {
 #     mod_id = <required>
 #     setting_id = <required>
-#     display_name_key = <required>
-#     description_key = <required>
 #     default_value = <required, 0|1>
 # }
 #
@@ -23,15 +19,11 @@
 cmm_register_core_country = {
 	cmm_register_mod = {
 		mod_id = cmm_core
-		display_name_key = CMM_CORE_MOD_NAME
-		description_key = CMM_CORE_MOD_DESC
 	}
 
 	cmm_register_bool_setting = {
 		mod_id = cmm_core
 		setting_id = example_toggle
-		display_name_key = CMM_CORE_BOOL_EXAMPLE_NAME
-		description_key = CMM_CORE_BOOL_EXAMPLE_DESC
 		default_value = 0
 	}
 }
@@ -54,21 +46,21 @@ cmm_register_mod = {
 
 	set_variable = { name = cmm_registered_mod_$mod_id$ value = yes }
 
-	# Store localization metadata for runtime GUI reads.
-	set_variable = { name = cmm_mod_display_name_key_$mod_id$ value = flag:$display_name_key$ }
-	set_variable = { name = cmm_mod_description_key_$mod_id$ value = flag:$description_key$ }
+	# Store derived localization metadata for runtime GUI reads.
+	set_variable = { name = $mod_id$_name value = flag:$mod_id$_name }
+	set_variable = { name = $mod_id$_desc value = flag:$mod_id$_desc }
 
 	# Benign error suppression
 	if = {
 		limit = {
 			always = no
 			exists = flag:$mod_id$
-			exists = flag:$display_name_key$
-			exists = flag:$description_key$
+			exists = flag:$mod_id$_name
+			exists = flag:$mod_id$_desc
 			exists = var:cmm_registered_mod_ids
 			exists = var:cmm_registered_mod_$mod_id$
-			exists = var:cmm_mod_display_name_key_$mod_id$
-			exists = var:cmm_mod_description_key_$mod_id$
+			exists = var:$mod_id$_name
+			exists = var:$mod_id$_desc
 		}
 	}
 }
@@ -92,16 +84,8 @@ cmm_register_bool_setting = {
 
 	set_variable = { name = cmm_setting_owner_mod_id_$mod_id$__$setting_id$ value = flag:$mod_id$ }
 
-	if = {
-		limit = { has_variable = cmm_mod_display_name_key_$mod_id$ }
-		set_variable = {
-			name = cmm_setting_owner_display_key_$mod_id$__$setting_id$
-			value = var:cmm_mod_display_name_key_$mod_id$
-		}
-	}
-
-	set_variable = { name = $mod_id$__$setting_id$_label value = flag:$display_name_key$ }
-	set_variable = { name = $mod_id$__$setting_id$_desc value = flag:$description_key$ }
+	set_variable = { name = $mod_id$__$setting_id$_name value = flag:$mod_id$_$setting_id$_name }
+	set_variable = { name = $mod_id$__$setting_id$_desc value = flag:$mod_id$_$setting_id$_desc }
 
 	if = {
 		limit = {
@@ -115,12 +99,11 @@ cmm_register_bool_setting = {
 		limit = {
 			always = no
 			exists = flag:$mod_id$__$setting_id$
-			exists = flag:$display_name_key$
-			exists = flag:$description_key$
+			exists = flag:$mod_id$_$setting_id$_name
+			exists = flag:$mod_id$_$setting_id$_desc
 			exists = var:cmm_registered_setting_keys
 			exists = var:cmm_setting_owner_mod_id_$mod_id$__$setting_id$
-			exists = var:cmm_setting_owner_display_key_$mod_id$__$setting_id$
-			exists = var:$mod_id$__$setting_id$_label
+			exists = var:$mod_id$__$setting_id$_name
 			exists = var:$mod_id$__$setting_id$_desc
 		}
 	}

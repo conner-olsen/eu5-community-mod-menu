@@ -5,7 +5,7 @@ This is a minimal integration mod for `community.mod.menu.dev`.
 ## What it demonstrates
 
 - Declaring dependency on Community Mod Menu in `.metadata/metadata.json`.
-- Registering a mod id (`cmm_example`) with explicit display/description localization keys.
+- Registering a mod id (`cmm_example`) with derived localization keys.
 - Appending into CMM shared registration hook `cmm_on_register_country`.
 - Defining immediate per-setting callbacks via `<mod_id>__<setting_id>_on_changed`.
 
@@ -30,8 +30,6 @@ This is a minimal integration mod for `community.mod.menu.dev`.
 your_mod_register_in_cmm = {
     cmm_register_mod = {
         mod_id = your_mod_id
-        display_name_key = YOUR_MOD_NAME_KEY
-        description_key = YOUR_MOD_DESC_KEY
     }
 }
 ```

@@ -17,16 +17,12 @@ All calls below are country-scope.
 ```txt
 cmm_register_mod = {
     mod_id = your_mod_id
-    display_name_key = YOUR_MOD_NAME_KEY
-    description_key = YOUR_MOD_DESC_KEY
 }
 ```
 
 Arguments:
 
 - `mod_id`: stable machine id for ownership.
-- `display_name_key`: localized mod display name.
-- `description_key`: localized one-line description shown in the right header.
 
 ### 2) Register boolean settings
 
@@ -34,8 +30,6 @@ Arguments:
 cmm_register_bool_setting = {
     mod_id = your_mod_id
     setting_id = your_setting_id
-    display_name_key = YOUR_SETTING_NAME_KEY
-    description_key = YOUR_SETTING_DESC_KEY
     default_value = 0 # 0 (off) or 1 (on)
 }
 ```
@@ -44,9 +38,14 @@ Arguments:
 
 - `mod_id`: owner mod id.
 - `setting_id`: stable id within your mod.
-- `display_name_key`: localized label.
-- `description_key`: localized description.
 - `default_value`: initial value for brand-new saves (`0` off, `1` on).
+
+Localization keys are derived automatically from ids:
+
+- Mod title: `<mod_id>_name`
+- Mod description: `<mod_id>_desc`
+- Setting label: `<mod_id>_<setting_id>_name`
+- Setting description: `<mod_id>_<setting_id>_desc`
 
 ## Immediate Setting Callback Contract
 
@@ -95,10 +94,10 @@ CMM writes these country-scope variables/lists:
 
 - `cmm_registered_mod_ids` (variable list; registration order)
 - `cmm_registered_setting_keys` (variable list of `<mod_id>__<setting_id>`)
-- `cmm_mod_display_name_key_<mod_id>` (flag value)
-- `cmm_mod_description_key_<mod_id>` (flag value)
+- `<mod_id>_name` (flag value)
+- `<mod_id>_desc` (flag value)
 - `cmm_setting_owner_mod_id_<mod_id>__<setting_id>` (flag value)
-- `<mod_id>__<setting_id>_label` (flag value)
+- `<mod_id>__<setting_id>_name` (flag value)
 - `<mod_id>__<setting_id>_desc` (flag value)
 - `<mod_id>__<setting_id>` (boolean value: `0`/`1`)
 
@@ -113,15 +112,11 @@ Do not create separate `on_game_start` or pulse loops per integrating mod.
 your_mod_register_country = {
     cmm_register_mod = {
         mod_id = your_mod
-        display_name_key = YOUR_MOD_NAME
-        description_key = YOUR_MOD_DESC
     }
 
     cmm_register_bool_setting = {
         mod_id = your_mod
         setting_id = allow_feature
-        display_name_key = YOUR_MOD_SETTING_ALLOW_FEATURE
-        description_key = YOUR_MOD_SETTING_ALLOW_FEATURE_DESC
         default_value = 1
     }
 }
@@ -156,10 +151,10 @@ your_mod__allow_feature_on_changed = {
 Define your keys in your own localization file:
 
 ```txt
-YOUR_MOD_NAME: "Your Mod Name"
-YOUR_MOD_DESC: "One-line description"
-YOUR_MOD_SETTING_ALLOW_FEATURE: "Allow Feature"
-YOUR_MOD_SETTING_ALLOW_FEATURE_DESC: "Enables the feature when checked."
+your_mod_name: "Your Mod Name"
+your_mod_desc: "One-line description"
+your_mod_allow_feature_name: "Allow Feature"
+your_mod_allow_feature_desc: "Enables the feature when checked."
 ```
 
 ## Notes

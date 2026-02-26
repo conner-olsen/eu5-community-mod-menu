@@ -2,23 +2,17 @@
 cmm_example3_register_country = {
 	cmm_register_mod = {
 		mod_id = cmm_example3
-		display_name_key = CMM_EXAMPLE3_MOD_NAME
-		description_key = CMM_EXAMPLE3_MOD_DESC
 	}
 
 	cmm_register_bool_setting = {
 		mod_id = cmm_example3
 		setting_id = ledger_export
-		display_name_key = CMM_EXAMPLE3_SETTING_LEDGER_EXPORT_NAME
-		description_key = CMM_EXAMPLE3_SETTING_LEDGER_EXPORT_DESC
 		default_value = 1
 	}
 
 	cmm_register_bool_setting = {
 		mod_id = cmm_example3
 		setting_id = event_hints
-		display_name_key = CMM_EXAMPLE3_SETTING_EVENT_HINTS_NAME
-		description_key = CMM_EXAMPLE3_SETTING_EVENT_HINTS_DESC
 		default_value = 0
 	}
 }

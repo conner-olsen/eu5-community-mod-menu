@@ -1,8 +1,8 @@
 ﻿l_english:
- CMM_EXAMPLE2_MOD_NAME: "CMM Example Mod 2"
- CMM_EXAMPLE2_MOD_DESC: "Second reference integration mod for Community Mod Menu."
- CMM_EXAMPLE2_SETTING_AI_HELPER_NAME: "Enable AI Helper"
- CMM_EXAMPLE2_SETTING_AI_HELPER_DESC: "Turns on example AI helper behavior in Example Mod 2."
- CMM_EXAMPLE2_SETTING_MAP_OVERLAY_NAME: "Enable Map Overlay"
- CMM_EXAMPLE2_SETTING_MAP_OVERLAY_DESC: "Shows an example map overlay when enabled."
+ cmm_example2_name: "CMM Example Mod 2"
+ cmm_example2_desc: "Second reference integration mod for Community Mod Menu."
+ cmm_example2_ai_helper_name: "Enable AI Helper"
+ cmm_example2_ai_helper_desc: "Turns on example AI helper behavior in Example Mod 2."
+ cmm_example2_map_overlay_name: "Enable Map Overlay"
+ cmm_example2_map_overlay_desc: "Shows an example map overlay when enabled."
 

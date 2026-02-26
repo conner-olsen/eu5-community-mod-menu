@@ -28,18 +28,19 @@ Country scope:
 ```txt
 cmm_register_mod = {
     mod_id = your_mod_id
-    display_name_key = YOUR_MOD_NAME_KEY
-    description_key = YOUR_MOD_DESC_KEY
 }
 
 cmm_register_bool_setting = {
     mod_id = your_mod_id
     setting_id = your_setting_id
-    display_name_key = YOUR_SETTING_NAME_KEY
-    description_key = YOUR_SETTING_DESC_KEY
     default_value = 0 # required; 0 (off) or 1 (on)
 }
 ```
+
+Localization key format is enforced by ids:
+
+- Mod: `<mod_id>_name`, `<mod_id>_desc`
+- Setting: `<mod_id>_<setting_id>_name`, `<mod_id>_<setting_id>_desc`
 
 Callback contract:
 

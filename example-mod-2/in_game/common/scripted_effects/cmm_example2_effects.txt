@@ -2,23 +2,17 @@
 cmm_example2_register_country = {
 	cmm_register_mod = {
 		mod_id = cmm_example2
-		display_name_key = CMM_EXAMPLE2_MOD_NAME
-		description_key = CMM_EXAMPLE2_MOD_DESC
 	}
 
 	cmm_register_bool_setting = {
 		mod_id = cmm_example2
 		setting_id = ai_helper
-		display_name_key = CMM_EXAMPLE2_SETTING_AI_HELPER_NAME
-		description_key = CMM_EXAMPLE2_SETTING_AI_HELPER_DESC
 		default_value = 0
 	}
 
 	cmm_register_bool_setting = {
 		mod_id = cmm_example2
 		setting_id = map_overlay
-		display_name_key = CMM_EXAMPLE2_SETTING_MAP_OVERLAY_NAME
-		description_key = CMM_EXAMPLE2_SETTING_MAP_OVERLAY_DESC
 		default_value = 1
 	}
 }

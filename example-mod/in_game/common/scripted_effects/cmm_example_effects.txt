@@ -2,23 +2,17 @@
 cmm_example_register_country = {
 	cmm_register_mod = {
 		mod_id = cmm_example
-		display_name_key = CMM_EXAMPLE_MOD_NAME
-		description_key = CMM_EXAMPLE_MOD_DESC
 	}
 
 	cmm_register_bool_setting = {
 		mod_id = cmm_example
 		setting_id = feature_enabled
-		display_name_key = CMM_EXAMPLE_SETTING_FEATURE_NAME
-		description_key = CMM_EXAMPLE_SETTING_FEATURE_DESC
 		default_value = 1
 	}
 
 	cmm_register_bool_setting = {
 		mod_id = cmm_example
 		setting_id = show_notifications
-		display_name_key = CMM_EXAMPLE_SETTING_NOTIFICATIONS_NAME
-		description_key = CMM_EXAMPLE_SETTING_NOTIFICATIONS_DESC
 		default_value = 0
 	}
 }

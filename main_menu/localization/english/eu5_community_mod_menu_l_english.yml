@@ -10,8 +10,8 @@
  CMM_SETTINGS_TITLE: "Settings"
  CMM_NO_MODS_REGISTERED: "No mods are currently registered in CMM."
  CMM_NO_SETTINGS_FOR_MOD: "This mod has not registered any settings yet."
- CMM_CORE_MOD_NAME: "Mod Menu"
- CMM_CORE_MOD_DESC: "Shared settings hub for registered mods."
- CMM_CORE_BOOL_EXAMPLE_NAME: "Enable CMM Diagnostics"
- CMM_CORE_BOOL_EXAMPLE_DESC: "Example core toggle registered through the same API available to other mods."
+ cmm_core_name: "Mod Menu"
+ cmm_core_desc: "Shared settings hub for registered mods."
+ cmm_core_example_toggle_name: "Enable CMM Diagnostics"
+ cmm_core_example_toggle_desc: "Example core toggle registered through the same API available to other mods."
 

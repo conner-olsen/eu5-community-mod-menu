@@ -1,8 +1,8 @@
 ﻿l_english:
- CMM_EXAMPLE3_MOD_NAME: "CMM Example Mod 3"
- CMM_EXAMPLE3_MOD_DESC: "Third reference integration mod for Community Mod Menu."
- CMM_EXAMPLE3_SETTING_LEDGER_EXPORT_NAME: "Enable Ledger Export"
- CMM_EXAMPLE3_SETTING_LEDGER_EXPORT_DESC: "Allows Example Mod 3 to generate sample ledger export data."
- CMM_EXAMPLE3_SETTING_EVENT_HINTS_NAME: "Enable Event Hints"
- CMM_EXAMPLE3_SETTING_EVENT_HINTS_DESC: "Shows additional event hinting text when enabled."
+ cmm_example3_name: "CMM Example Mod 3"
+ cmm_example3_desc: "Third reference integration mod for Community Mod Menu."
+ cmm_example3_ledger_export_name: "Enable Ledger Export"
+ cmm_example3_ledger_export_desc: "Allows Example Mod 3 to generate sample ledger export data."
+ cmm_example3_event_hints_name: "Enable Event Hints"
+ cmm_example3_event_hints_desc: "Shows additional event hinting text when enabled."
 
