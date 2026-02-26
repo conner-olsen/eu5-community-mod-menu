@@ -41,20 +41,13 @@ cmm_register_bool_setting = {
 }
 ```
 
-Trigger:
-
-```txt
-cmm_is_bool_setting_enabled = {
-    mod_id = your_mod_id
-    setting_id = your_setting_id
-}
-```
-
 Callback contract:
 
 ```txt
-# CMM calls this on each UI toggle:
-<mod_id>__<setting_id>_on_changed = { ... }
+# CMM calls this on each UI toggle and passes $setting$:
+<mod_id>__<setting_id>_on_changed = {
+    if = { limit = { var:$setting$ = yes } ... }
+}
 ```
 
 Registration hook contract:

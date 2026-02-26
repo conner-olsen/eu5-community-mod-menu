@@ -48,23 +48,15 @@ Arguments:
 - `description_key` (required): localized description.
 - `default_value` (optional): initial value for brand-new saves (`0` off, `1` on).
 
-### 3) Read helper trigger
-
-```txt
-cmm_is_bool_setting_enabled = {
-    mod_id = your_mod_id
-    setting_id = your_setting_id
-}
-```
-
-Use this in your setting callback effects.
-
 ## Immediate Setting Callback Contract
 
 When a player toggles a setting in CMM, CMM immediately calls:
 
 ```txt
-<mod_id>__<setting_id>_on_changed = { ... }
+<mod_id>__<setting_id>_on_changed = {
+    # CMM provides the backing setting variable id in $setting$
+    # Example: cmm_setting_bool_value_<mod_id>__<setting_id>
+}
 ```
 
 Example callback names:
@@ -110,7 +102,7 @@ CMM writes these country-scope variables/lists:
 - `cmm_setting_owner_mod_id_<mod_id>__<setting_id>` (flag value)
 - `cmm_setting_label_key_<mod_id>__<setting_id>` (flag value)
 - `cmm_setting_desc_key_<mod_id>__<setting_id>` (flag value)
-- `cmm_setting_bool_value_<mod_id>__<setting_id>` (`1` means enabled)
+- `cmm_setting_bool_value_<mod_id>__<setting_id>` (boolean value: `yes`/`no`)
 
 ## Recommended Registration Flow
 
@@ -151,10 +143,7 @@ your_mod_on_register_country = {
 your_mod__allow_feature_on_changed = {
     if = {
         limit = {
-            cmm_is_bool_setting_enabled = {
-                mod_id = your_mod
-                setting_id = allow_feature
-            }
+            var:$setting$ = yes
         }
         set_variable = { name = your_mod_feature_enabled value = 1 }
     }

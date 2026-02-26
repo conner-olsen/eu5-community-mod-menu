@@ -26,10 +26,7 @@ cmm_example_register_country = {
 cmm_example__feature_enabled_on_changed = {
 	if = {
 		limit = {
-			cmm_is_bool_setting_enabled = {
-				mod_id = cmm_example
-				setting_id = feature_enabled
-			}
+			var:$setting$ = yes
 		}
 		set_variable = { name = cmm_example_feature_enabled value = 1 }
 	}
@@ -41,10 +38,7 @@ cmm_example__feature_enabled_on_changed = {
 cmm_example__show_notifications_on_changed = {
 	if = {
 		limit = {
-			cmm_is_bool_setting_enabled = {
-				mod_id = cmm_example
-				setting_id = show_notifications
-			}
+			var:$setting$ = yes
 		}
 		set_variable = { name = cmm_example_notifications_enabled value = 1 }
 	}
@@ -52,7 +46,3 @@ cmm_example__show_notifications_on_changed = {
 		remove_variable = cmm_example_notifications_enabled
 	}
 }
-
-
-
-

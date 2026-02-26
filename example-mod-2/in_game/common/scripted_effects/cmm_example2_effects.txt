@@ -26,10 +26,7 @@ cmm_example2_register_country = {
 cmm_example2__ai_helper_on_changed = {
 	if = {
 		limit = {
-			cmm_is_bool_setting_enabled = {
-				mod_id = cmm_example2
-				setting_id = ai_helper
-			}
+			var:$setting$ = yes
 		}
 		set_variable = { name = cmm_example2_ai_helper_enabled value = 1 }
 	}
@@ -41,10 +38,7 @@ cmm_example2__ai_helper_on_changed = {
 cmm_example2__map_overlay_on_changed = {
 	if = {
 		limit = {
-			cmm_is_bool_setting_enabled = {
-				mod_id = cmm_example2
-				setting_id = map_overlay
-			}
+			var:$setting$ = yes
 		}
 		set_variable = { name = cmm_example2_map_overlay_enabled value = 1 }
 	}

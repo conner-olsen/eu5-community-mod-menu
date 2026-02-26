@@ -26,10 +26,7 @@ cmm_example3_register_country = {
 cmm_example3__ledger_export_on_changed = {
 	if = {
 		limit = {
-			cmm_is_bool_setting_enabled = {
-				mod_id = cmm_example3
-				setting_id = ledger_export
-			}
+			var:$setting$ = yes
 		}
 		set_variable = { name = cmm_example3_ledger_export_enabled value = 1 }
 	}
@@ -41,10 +38,7 @@ cmm_example3__ledger_export_on_changed = {
 cmm_example3__event_hints_on_changed = {
 	if = {
 		limit = {
-			cmm_is_bool_setting_enabled = {
-				mod_id = cmm_example3
-				setting_id = event_hints
-			}
+			var:$setting$ = yes
 		}
 		set_variable = { name = cmm_example3_event_hints_enabled value = 1 }
 	}

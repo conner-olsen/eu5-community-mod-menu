@@ -17,6 +17,7 @@
 #
 # Setting change callback contract:
 # - CMM calls "<mod_id>__<setting_id>_on_changed" immediately after a toggle.
+# - Callback parameter: $setting$ (the backing setting variable id).
 # - Effects run in player country scope.
 
 cmm_register_core_country = {
@@ -113,9 +114,14 @@ cmm_register_bool_setting = {
 	if = {
 		limit = {
 			NOT = { has_variable = cmm_setting_bool_value_$mod_id$__$setting_id$ }
-			$default_value$ = 1
 		}
-		set_variable = { name = cmm_setting_bool_value_$mod_id$__$setting_id$ value = 1 }
+		if = {
+			limit = { $default_value$ = 1 }
+			set_variable = { name = cmm_setting_bool_value_$mod_id$__$setting_id$ value = yes }
+		}
+		else = {
+			set_variable = { name = cmm_setting_bool_value_$mod_id$__$setting_id$ value = no }
+		}
 	}
 	# Benign warning suppression
 	if = {
@@ -135,11 +141,11 @@ cmm_register_bool_setting = {
 
 cmm_toggle_bool_setting = {
 	if = {
-		limit = { has_variable = cmm_setting_bool_value_$setting_key$ }
-		remove_variable = cmm_setting_bool_value_$setting_key$
+		limit = { var:cmm_setting_bool_value_$setting_key$ = yes }
+		set_variable = { name = cmm_setting_bool_value_$setting_key$ value = no }
 	}
 	else = {
-		set_variable = { name = cmm_setting_bool_value_$setting_key$ value = 1 }
+		set_variable = { name = cmm_setting_bool_value_$setting_key$ value = yes }
 	}
 }
 
@@ -147,10 +153,7 @@ cmm_toggle_bool_setting = {
 cmm_core__example_toggle_on_changed = {
 	if = {
 		limit = {
-			cmm_is_bool_setting_enabled = {
-				mod_id = cmm_core
-				setting_id = example_toggle
-			}
+			var:$setting$ = yes
 		}
 		set_variable = { name = cmm_core_example_toggle_enabled value = 1 }
 	}
