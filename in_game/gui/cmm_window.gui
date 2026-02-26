@@ -200,7 +200,7 @@
 
 											checkbox_square_alt = {
 												onclick = "[ExecuteConsoleCommand(Concatenate('effect c:', Concatenate(Player.GetTag, Concatenate(' = { cmm_toggle_bool_setting = { setting = ', Concatenate(Scope.GetFlagName, ' } }')))))]"
-												checked = "[Player.MakeScope.GetVariable(Concatenate('cmm_setting_enabled_', Scope.GetFlagName)).IsSet]"
+												checked = "[Player.MakeScope.GetVariable(Scope.GetFlagName)]"
 												tooltip_enabled = no
 											}
 
@@ -243,7 +243,7 @@
 												}
 
 												text_single = {
-													text = "[Concatenate('DBG checked_eval: ', Select_CString(Player.MakeScope.GetVariable(Concatenate('cmm_setting_enabled_', Scope.GetFlagName)).IsSet, 'true', 'false'))]"
+													text = "[Concatenate('DBG checked_eval: ', Select_CString(Player.MakeScope.GetVariable(Scope.GetFlagName), 'true', 'false'))]"
 												}
 
 												text_multi = {
