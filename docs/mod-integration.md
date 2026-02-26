@@ -24,9 +24,9 @@ cmm_register_mod = {
 
 Arguments:
 
-- `mod_id` (required): stable machine id for ownership.
-- `display_name_key` (required): localized mod display name.
-- `description_key` (required): localized one-line description shown in the right header.
+- `mod_id`: stable machine id for ownership.
+- `display_name_key`: localized mod display name.
+- `description_key`: localized one-line description shown in the right header.
 
 ### 2) Register boolean settings
 
@@ -36,17 +36,17 @@ cmm_register_bool_setting = {
     setting_id = your_setting_id
     display_name_key = YOUR_SETTING_NAME_KEY
     description_key = YOUR_SETTING_DESC_KEY
-    default_value = 0 # optional, 0 or 1
+    default_value = no # yes or no
 }
 ```
 
 Arguments:
 
-- `mod_id` (required): owner mod id.
-- `setting_id` (required): stable id within your mod.
-- `display_name_key` (required): localized label.
-- `description_key` (required): localized description.
-- `default_value` (optional): initial value for brand-new saves (`0` off, `1` on).
+- `mod_id`: owner mod id.
+- `setting_id`: stable id within your mod.
+- `display_name_key`: localized label.
+- `description_key`: localized description.
+- `default_value`: initial value for brand-new saves (`no` off, `yes` on).
 
 ## Immediate Setting Callback Contract
 
@@ -124,7 +124,7 @@ your_mod_register_country = {
         setting_id = allow_feature
         display_name_key = YOUR_MOD_SETTING_ALLOW_FEATURE
         description_key = YOUR_MOD_SETTING_ALLOW_FEATURE_DESC
-        default_value = 1
+        default_value = yes
     }
 }
 
@@ -145,7 +145,7 @@ your_mod__allow_feature_on_changed = {
         limit = {
             var:$setting$ = yes
         }
-        set_variable = { name = your_mod_feature_enabled value = 1 }
+        set_variable = { name = your_mod_feature_enabled value = yes }
     }
     else = {
         remove_variable = your_mod_feature_enabled

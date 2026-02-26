@@ -37,7 +37,7 @@ cmm_register_bool_setting = {
     setting_id = your_setting_id
     display_name_key = YOUR_SETTING_NAME_KEY
     description_key = YOUR_SETTING_DESC_KEY
-    default_value = 0 # optional; 0 or 1
+    default_value = no # required; yes or no
 }
 ```
 

@@ -12,7 +12,7 @@
 #     setting_id = <required>
 #     display_name_key = <required>
 #     description_key = <required>
-#     default_value = <optional, 0|1, default 0>
+#     default_value = <optional, yes|no, default no>
 # }
 #
 # Setting change callback contract:
@@ -32,7 +32,7 @@ cmm_register_core_country = {
 		setting_id = example_toggle
 		display_name_key = CMM_CORE_BOOL_EXAMPLE_NAME
 		description_key = CMM_CORE_BOOL_EXAMPLE_DESC
-		default_value = 0
+		default_value = no
 	}
 }
 
@@ -58,7 +58,7 @@ cmm_register_mod = {
 		}
 	}
 
-	set_variable = { name = cmm_registered_mod_$mod_id$ value = 1 }
+	set_variable = { name = cmm_registered_mod_$mod_id$ value = yes }
 
 	# Store localization metadata for runtime GUI reads.
 	set_variable = { name = cmm_mod_display_name_key_$mod_id$ value = flag:$display_name_key$ }
@@ -84,7 +84,7 @@ cmm_register_mod = {
 cmm_register_bool_setting = {
 	if = {
 		limit = { NOT = { has_variable = cmm_registered_setting_$mod_id$__$setting_id$ } }
-		set_variable = { name = cmm_registered_setting_$mod_id$__$setting_id$ value = 1 }
+		set_variable = { name = cmm_registered_setting_$mod_id$__$setting_id$ value = yes }
 
 		add_to_variable_list = {
 			name = cmm_registered_setting_keys
@@ -115,13 +115,7 @@ cmm_register_bool_setting = {
 		limit = {
 			NOT = { has_variable = cmm_setting_bool_value_$mod_id$__$setting_id$ }
 		}
-		if = {
-			limit = { $default_value$ = 1 }
-			set_variable = { name = cmm_setting_bool_value_$mod_id$__$setting_id$ value = yes }
-		}
-		else = {
-			set_variable = { name = cmm_setting_bool_value_$mod_id$__$setting_id$ value = no }
-		}
+		set_variable = { name = cmm_setting_bool_value_$mod_id$__$setting_id$ value = $default_value$ }
 	}
 	# Benign warning suppression
 	if = {
@@ -155,7 +149,7 @@ cmm_core__example_toggle_on_changed = {
 		limit = {
 			var:$setting$ = yes
 		}
-		set_variable = { name = cmm_core_example_toggle_enabled value = 1 }
+		set_variable = { name = cmm_core_example_toggle_enabled value = yes }
 	}
 	else = {
 		remove_variable = cmm_core_example_toggle_enabled
