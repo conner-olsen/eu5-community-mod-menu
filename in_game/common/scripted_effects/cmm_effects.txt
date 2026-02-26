@@ -50,12 +50,6 @@ cmm_register_mod = {
 			name = cmm_registered_mod_ids
 			target = flag:$mod_id$
 		}
-
-		if = {
-			limit = { var:cmm_registered_mod_count = 1 }
-			set_variable = { name = cmm_first_registered_mod_id value = flag:$mod_id$ }
-			set_variable = { name = cmm_first_registered_display_name_key value = flag:$display_name_key$ }
-		}
 	}
 
 	set_variable = { name = cmm_registered_mod_$mod_id$ value = yes }
@@ -72,8 +66,6 @@ cmm_register_mod = {
 			exists = flag:$display_name_key$
 			exists = flag:$description_key$
 			exists = var:cmm_registered_mod_ids
-			exists = var:cmm_first_registered_mod_id
-			exists = var:cmm_first_registered_display_name_key
 			exists = var:cmm_registered_mod_$mod_id$
 			exists = var:cmm_mod_display_name_key_$mod_id$
 			exists = var:cmm_mod_description_key_$mod_id$

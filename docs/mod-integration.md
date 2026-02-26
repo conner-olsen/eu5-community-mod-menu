@@ -95,8 +95,6 @@ CMM writes these country-scope variables/lists:
 
 - `cmm_registered_mod_ids` (variable list; registration order)
 - `cmm_registered_setting_keys` (variable list of `<mod_id>__<setting_id>`)
-- `cmm_first_registered_mod_id` (flag value; fallback selection)
-- `cmm_first_registered_display_name_key` (flag value; fallback header title)
 - `cmm_mod_display_name_key_<mod_id>` (flag value)
 - `cmm_mod_description_key_<mod_id>` (flag value)
 - `cmm_setting_owner_mod_id_<mod_id>__<setting_id>` (flag value)

@@ -115,25 +115,25 @@
 				}
 
 				text_multi = {
-					visible = "[Not(Player.MakeScope.GetVariable('cmm_first_registered_mod_id').IsSet)]"
+					visible = "[Or(Not(Player.MakeScope.GetVariable('cmm_registered_mod_count').IsSet), EqualTo_CFixedPoint(Player.MakeScope.GetVariable('cmm_registered_mod_count').GetValue, '(CFixedPoint)0'))]"
 					text = "CMM_NO_MODS_REGISTERED"
 					autoresize = yes
 					max_width = 680
 				}
 
 				vbox = {
-					visible = "[Player.MakeScope.GetVariable('cmm_first_registered_mod_id').IsSet]"
+					visible = "[And(Player.MakeScope.GetVariable('cmm_registered_mod_count').IsSet, Not(EqualTo_CFixedPoint(Player.MakeScope.GetVariable('cmm_registered_mod_count').GetValue, '(CFixedPoint)0')))]"
 					layoutpolicy_horizontal = expanding
 					layoutpolicy_vertical = expanding
 					spacing = 10
 
 					text_single = {
-						text = "[Select_CString(GetVariableSystem.Exists('cmm_selected_mod_display_key'), GetVariableSystem.Get('cmm_selected_mod_display_key'), Player.MakeScope.GetVariable('cmm_first_registered_display_name_key').GetFlagName)]"
+						text = "[Select_CString(GetVariableSystem.Exists('cmm_selected_mod_display_key'), GetVariableSystem.Get('cmm_selected_mod_display_key'), '')]"
 						using = Font_Type_Header_Medium
 					}
 
 					text_multi = {
-						text = "[Select_CString(GetVariableSystem.Exists('cmm_selected_mod_id'), Player.MakeScope.GetVariable(Concatenate('cmm_mod_description_key_', GetVariableSystem.Get('cmm_selected_mod_id'))).GetFlagName, Localize('CMM_NO_SETTINGS_FOR_MOD'))]"
+						text = "[Select_CString(GetVariableSystem.Exists(Concatenate('cmm_mod_description_key_', GetVariableSystem.Get('cmm_selected_mod_id'))), Player.MakeScope.GetVariable(Concatenate('cmm_mod_description_key_', GetVariableSystem.Get('cmm_selected_mod_id'))).GetFlagName, '')]"
 						autoresize = yes
 						max_width = 680
 					}
