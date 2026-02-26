@@ -12,12 +12,12 @@
 #     setting_id = <required>
 #     display_name_key = <required>
 #     description_key = <required>
-#     default_value = <optional, yes|no, default no>
+#     default_value = <required, yes|no>
 # }
 #
 # Setting change callback contract:
 # - CMM calls "<mod_id>__<setting_id>_on_changed" immediately after a toggle.
-# - Callback parameter: $setting$ (the backing setting variable id).
+# - Callback parameter: $setting$ (the setting key / bool variable id).
 # - Effects run in player country scope.
 
 cmm_register_core_country = {
@@ -113,9 +113,9 @@ cmm_register_bool_setting = {
 
 	if = {
 		limit = {
-			NOT = { has_variable = cmm_setting_bool_value_$mod_id$__$setting_id$ }
+			NOT = { has_variable = $mod_id$__$setting_id$ }
 		}
-		set_variable = { name = cmm_setting_bool_value_$mod_id$__$setting_id$ value = $default_value$ }
+		set_variable = { name = $mod_id$__$setting_id$ value = $default_value$ }
 	}
 	# Benign warning suppression
 	if = {
@@ -135,15 +135,20 @@ cmm_register_bool_setting = {
 
 cmm_toggle_bool_setting = {
 	if = {
-		limit = { var:cmm_setting_bool_value_$setting_key$ = yes }
-		set_variable = { name = cmm_setting_bool_value_$setting_key$ value = no }
+		limit = { var:$setting$ = yes }
+		set_variable = { name = $setting$ value = no }
 	}
 	else = {
-		set_variable = { name = cmm_setting_bool_value_$setting_key$ value = yes }
+		set_variable = { name = $setting$ value = yes }
+	}
+
+	# Fire per-setting callback after value mutation.
+	$setting$_on_changed = {
+		setting = $setting$
 	}
 }
 
-# Core example setting callback (triggered by "<setting_key>_on_changed" naming contract).
+# Core example setting callback (triggered by "<setting>_on_changed" naming contract).
 cmm_core__example_toggle_on_changed = {
 	if = {
 		limit = {

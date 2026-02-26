@@ -54,8 +54,8 @@ When a player toggles a setting in CMM, CMM immediately calls:
 
 ```txt
 <mod_id>__<setting_id>_on_changed = {
-    # CMM provides the backing setting variable id in $setting$
-    # Example: cmm_setting_bool_value_<mod_id>__<setting_id>
+    # CMM provides the setting key in $setting$
+    # Example: cmm_example__feature_enabled
 }
 ```
 
@@ -102,7 +102,7 @@ CMM writes these country-scope variables/lists:
 - `cmm_setting_owner_mod_id_<mod_id>__<setting_id>` (flag value)
 - `cmm_setting_label_key_<mod_id>__<setting_id>` (flag value)
 - `cmm_setting_desc_key_<mod_id>__<setting_id>` (flag value)
-- `cmm_setting_bool_value_<mod_id>__<setting_id>` (boolean value: `yes`/`no`)
+- `<mod_id>__<setting_id>` (boolean value: `yes`/`no`)
 
 ## Recommended Registration Flow
 
