@@ -173,11 +173,11 @@
 												spacing = 2
 
 												text_single = {
-													text = "[Player.MakeScope.GetVariable(Concatenate('cmm_setting_label_key_', Scope.GetFlagName)).GetFlagName]"
+													text = "[Player.MakeScope.GetVariable(Concatenate(Scope.GetFlagName, '_label')).GetFlagName]"
 												}
 
 												text_multi = {
-													text = "[Player.MakeScope.GetVariable(Concatenate('cmm_setting_desc_key_', Scope.GetFlagName)).GetFlagName]"
+													text = "[Player.MakeScope.GetVariable(Concatenate(Scope.GetFlagName, '_desc')).GetFlagName]"
 													autoresize = yes
 													max_width = 620
 												}

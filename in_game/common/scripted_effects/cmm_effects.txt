@@ -108,8 +108,8 @@ cmm_register_bool_setting = {
 		}
 	}
 
-	set_variable = { name = cmm_setting_label_key_$mod_id$__$setting_id$ value = flag:$display_name_key$ }
-	set_variable = { name = cmm_setting_desc_key_$mod_id$__$setting_id$ value = flag:$description_key$ }
+	set_variable = { name = $mod_id$__$setting_id$_label value = flag:$display_name_key$ }
+	set_variable = { name = $mod_id$__$setting_id$_desc value = flag:$description_key$ }
 
 	if = {
 		limit = {
@@ -128,8 +128,8 @@ cmm_register_bool_setting = {
 			exists = var:cmm_registered_setting_keys
 			exists = var:cmm_setting_owner_mod_id_$mod_id$__$setting_id$
 			exists = var:cmm_setting_owner_display_key_$mod_id$__$setting_id$
-			exists = var:cmm_setting_label_key_$mod_id$__$setting_id$
-			exists = var:cmm_setting_desc_key_$mod_id$__$setting_id$
+			exists = var:$mod_id$__$setting_id$_label
+			exists = var:$mod_id$__$setting_id$_desc
 		}
 	}
 }

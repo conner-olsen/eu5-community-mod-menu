@@ -100,8 +100,8 @@ CMM writes these country-scope variables/lists:
 - `cmm_mod_display_name_key_<mod_id>` (flag value)
 - `cmm_mod_description_key_<mod_id>` (flag value)
 - `cmm_setting_owner_mod_id_<mod_id>__<setting_id>` (flag value)
-- `cmm_setting_label_key_<mod_id>__<setting_id>` (flag value)
-- `cmm_setting_desc_key_<mod_id>__<setting_id>` (flag value)
+- `<mod_id>__<setting_id>_label` (flag value)
+- `<mod_id>__<setting_id>_desc` (flag value)
 - `<mod_id>__<setting_id>` (boolean value: `0`/`1`)
 
 ## Recommended Registration Flow
