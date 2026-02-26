@@ -135,30 +135,18 @@ cmm_register_bool_setting = {
 }
 
 cmm_toggle_bool_setting = {
-	# Debug markers for the entire toggle pipeline.
-	set_variable = cmm_dbg_toggle_called
-	set_variable = { name = cmm_dbg_toggle_setting value = flag:$setting$ }
-	set_variable = { name = cmm_dbg_toggle_before value = var:$setting$ }
-	remove_variable = cmm_dbg_toggle_callback_done
-
 	if = {
 		limit = { var:$setting$ = yes }
 		set_variable = { name = $setting$ value = no }
-		set_variable = { name = cmm_dbg_toggle_branch value = 1 } # 1 = yes->no
 	}
 	else = {
 		set_variable = { name = $setting$ value = yes }
-		set_variable = { name = cmm_dbg_toggle_branch value = 2 } # 2 = no/unset->yes
 	}
-
-	set_variable = { name = cmm_dbg_toggle_after value = var:$setting$ }
 
 	# Fire per-setting callback after value mutation.
 	$setting$_on_changed = {
 		setting = $setting$
 	}
-
-	set_variable = cmm_dbg_toggle_callback_done
 }
 
 # Core example setting callback (triggered by "<setting>_on_changed" naming contract).

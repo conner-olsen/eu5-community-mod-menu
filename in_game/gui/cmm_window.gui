@@ -138,42 +138,6 @@
 						max_width = 680
 					}
 
-					text_single = {
-						text = "[Concatenate('DBG selected_mod_exists: ', Select_CString(GetVariableSystem.Exists('cmm_selected_mod_id'), 'yes', 'no'))]"
-					}
-
-					text_single = {
-						text = "[Concatenate('DBG selected_mod_id: ', Select_CString(GetVariableSystem.Exists('cmm_selected_mod_id'), GetVariableSystem.Get('cmm_selected_mod_id'), 'none'))]"
-					}
-
-					text_single = {
-						text = "[Concatenate('DBG settings_list_size: ', ToString_int32(GetDataModelSize(Player.MakeScope.GetList('cmm_registered_setting_keys'))))]"
-					}
-
-					text_single = {
-						text = "[Concatenate('DBG toggle_called: ', Select_CString(Player.MakeScope.GetVariable('cmm_dbg_toggle_called').IsSet, 'yes', 'no'))]"
-					}
-
-					text_single = {
-						text = "[Concatenate('DBG toggle_setting: ', Select_CString(Player.MakeScope.GetVariable('cmm_dbg_toggle_setting').IsSet, Player.MakeScope.GetVariable('cmm_dbg_toggle_setting').GetFlagName, 'none'))]"
-					}
-
-					text_single = {
-						text = "[Concatenate('DBG toggle_branch(1/2): ', ToString_int32(FixedPointToInt(Player.MakeScope.GetVariable('cmm_dbg_toggle_branch').GetValue)))]"
-					}
-
-					text_single = {
-						text = "[Concatenate('DBG toggle_before: ', ToString_int32(FixedPointToInt(Player.MakeScope.GetVariable('cmm_dbg_toggle_before').GetValue)))]"
-					}
-
-					text_single = {
-						text = "[Concatenate('DBG toggle_after: ', ToString_int32(FixedPointToInt(Player.MakeScope.GetVariable('cmm_dbg_toggle_after').GetValue)))]"
-					}
-
-					text_single = {
-						text = "[Concatenate('DBG callback_done: ', Select_CString(Player.MakeScope.GetVariable('cmm_dbg_toggle_callback_done').IsSet, 'yes', 'no'))]"
-					}
-
 					scrollbox = {
 						layoutpolicy_horizontal = expanding
 						layoutpolicy_vertical = expanding
@@ -189,7 +153,7 @@
 								item = {
 									widget = {
 										layoutpolicy_horizontal = expanding
-										minimumsize = { 0 240 }
+										minimumsize = { 0 68 }
 										using = bg_window_default_alt
 										visible = "[And(GetVariableSystem.Exists('cmm_selected_mod_id'), GetVariableSystem.HasValue('cmm_selected_mod_id', Player.MakeScope.GetVariable(Concatenate('cmm_setting_owner_mod_id_', Scope.GetFlagName)).GetFlagName))]"
 
@@ -214,40 +178,6 @@
 
 												text_multi = {
 													text = "[Player.MakeScope.GetVariable(Concatenate('cmm_setting_desc_key_', Scope.GetFlagName)).GetFlagName]"
-													autoresize = yes
-													max_width = 620
-												}
-
-												text_single = {
-													text = "[Concatenate('DBG key: ', Scope.GetFlagName)]"
-												}
-
-												text_single = {
-													text = "[Concatenate('DBG owner: ', Player.MakeScope.GetVariable(Concatenate('cmm_setting_owner_mod_id_', Scope.GetFlagName)).GetFlagName)]"
-												}
-
-												text_single = {
-													text = "[Concatenate('DBG selected: ', Select_CString(GetVariableSystem.Exists('cmm_selected_mod_id'), GetVariableSystem.Get('cmm_selected_mod_id'), 'none'))]"
-												}
-
-												text_single = {
-													text = "[Concatenate('DBG owner_match: ', Select_CString(GetVariableSystem.HasValue('cmm_selected_mod_id', Player.MakeScope.GetVariable(Concatenate('cmm_setting_owner_mod_id_', Scope.GetFlagName)).GetFlagName), 'yes', 'no'))]"
-												}
-
-												text_single = {
-													text = "[Concatenate('DBG var_is_set: ', Select_CString(Player.MakeScope.GetVariable(Scope.GetFlagName).IsSet, 'yes', 'no'))]"
-												}
-
-												text_single = {
-													text = "[Concatenate('DBG var_value: ', ToString_int32(FixedPointToInt(Player.MakeScope.GetVariable(Scope.GetFlagName).GetValue)))]"
-												}
-
-												text_single = {
-													text = "[Concatenate('DBG checked_eval: ', Select_CString(Player.MakeScope.GetVariable(Scope.GetFlagName), 'true', 'false'))]"
-												}
-
-												text_multi = {
-													text = "[Concatenate('DBG cmd: ', Concatenate('effect c:', Concatenate(Player.GetTag, Concatenate(' = { cmm_toggle_bool_setting = { setting = ', Concatenate(Scope.GetFlagName, ' } }')))))]"
 													autoresize = yes
 													max_width = 620
 												}
