@@ -138,10 +138,10 @@ your_mod__allow_feature_on_changed = {
         limit = {
             var:$setting$ = 1
         }
-        set_variable = { name = your_mod_feature_enabled value = 1 }
+        # enabled effect
     }
     else = {
-        set_variable = { name = your_mod_feature_enabled value = 0 }
+        # disabled effect
     }
 }
 ```

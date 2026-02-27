@@ -22,10 +22,10 @@ cmm_example3__ledger_export_on_changed = {
 		limit = {
 			var:$setting$ = 1
 		}
-		set_variable = { name = cmm_example3_ledger_export_enabled value = 1 }
+		# enabled effect
 	}
 	else = {
-		set_variable = { name = cmm_example3_ledger_export_enabled value = 0 }
+		# disabled effect
 	}
 }
 
@@ -34,10 +34,10 @@ cmm_example3__event_hints_on_changed = {
 		limit = {
 			var:$setting$ = 1
 		}
-		set_variable = { name = cmm_example3_event_hints_enabled value = 1 }
+		# enabled effect
 	}
 	else = {
-		set_variable = { name = cmm_example3_event_hints_enabled value = 0 }
+		# disabled effect
 	}
 }
 

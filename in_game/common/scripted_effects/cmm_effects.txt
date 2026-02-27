@@ -132,10 +132,10 @@ cmm_core__example_toggle_on_changed = {
 		limit = {
 			var:$setting$ = 1
 		}
-		set_variable = { name = cmm_core_example_toggle_enabled value = 1 }
+		# enabled effect
 	}
 	else = {
-		set_variable = { name = cmm_core_example_toggle_enabled value = 0 }
+		# disabled effect
 	}
 }
 

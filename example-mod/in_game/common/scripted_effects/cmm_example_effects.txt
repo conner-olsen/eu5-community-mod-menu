@@ -22,10 +22,10 @@ cmm_example__feature_enabled_on_changed = {
 		limit = {
 			var:$setting$ = 1
 		}
-		set_variable = { name = cmm_example_feature_enabled value = 1 }
+		# enabled effect
 	}
 	else = {
-		set_variable = { name = cmm_example_feature_enabled value = 0 }
+		# disabled effect
 	}
 }
 
@@ -34,9 +34,9 @@ cmm_example__show_notifications_on_changed = {
 		limit = {
 			var:$setting$ = 1
 		}
-		set_variable = { name = cmm_example_notifications_enabled value = 1 }
+		# enabled effect
 	}
 	else = {
-		set_variable = { name = cmm_example_notifications_enabled value = 0 }
+		# disabled effect
 	}
 }

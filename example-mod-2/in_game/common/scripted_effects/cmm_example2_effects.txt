@@ -22,10 +22,10 @@ cmm_example2__ai_helper_on_changed = {
 		limit = {
 			var:$setting$ = 1
 		}
-		set_variable = { name = cmm_example2_ai_helper_enabled value = 1 }
+		# enabled effect
 	}
 	else = {
-		set_variable = { name = cmm_example2_ai_helper_enabled value = 0 }
+		# disabled effect
 	}
 }
 
@@ -34,10 +34,10 @@ cmm_example2__map_overlay_on_changed = {
 		limit = {
 			var:$setting$ = 1
 		}
-		set_variable = { name = cmm_example2_map_overlay_enabled value = 1 }
+		# enabled effect
 	}
 	else = {
-		set_variable = { name = cmm_example2_map_overlay_enabled value = 0 }
+		# disabled effect
 	}
 }
 

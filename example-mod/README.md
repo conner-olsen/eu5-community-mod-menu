@@ -13,7 +13,6 @@ This is a minimal integration mod for `community.mod.menu.dev`.
 
 - `in_game/common/on_action/cmm_example_on_action.txt`
 - `in_game/common/scripted_effects/cmm_example_effects.txt`
-- `in_game/common/scripted_guis/cmm_example_actions.txt`
 - `main_menu/localization/english/cmm_example_mod_l_english.yml`
 
 ## Test flow
