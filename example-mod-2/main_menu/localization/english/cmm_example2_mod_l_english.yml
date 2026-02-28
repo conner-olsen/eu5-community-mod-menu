@@ -1,6 +1,8 @@
 ﻿l_english:
  cmm_example2_name: "CMM Example Mod 2"
  cmm_example2_desc: "Second reference integration mod for Community Mod Menu."
+ cmm_example2_automation_name: "Automation"
+ cmm_example2_visuals_name: "Visuals"
  cmm_example2_ai_helper_name: "Enable AI Helper"
  cmm_example2_ai_helper_desc: "Turns on example AI helper behavior in Example Mod 2."
  cmm_example2_map_overlay_name: "Enable Map Overlay"

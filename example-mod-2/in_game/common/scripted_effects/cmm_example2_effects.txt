@@ -7,12 +7,14 @@ cmm_example2_register_country = {
 	cmm_register_bool_setting = {
 		mod_id = cmm_example2
 		setting_id = ai_helper
+		tab_id = automation
 		default_value = 0
 	}
 
 	cmm_register_bool_setting = {
 		mod_id = cmm_example2
 		setting_id = map_overlay
+		tab_id = visuals
 		default_value = 1
 	}
 }

@@ -14,6 +14,7 @@ A dependency mod for **Europa Universalis 5** that provides one shared in-game m
 - Boolean settings only.
 - Registration order is preserved.
 - Value changes are persisted as country variables.
+- Dynamic per-mod tabs in right panel.
 - UI invokes immediate per-setting scripted GUI callbacks after each toggle.
 
 ## Install
@@ -33,6 +34,7 @@ cmm_register_mod = {
 cmm_register_bool_setting = {
     mod_id = your_mod_id
     setting_id = your_setting_id
+    tab_id = your_tab_id
     default_value = 0 # required; 0 (off) or 1 (on)
 }
 ```
@@ -40,6 +42,7 @@ cmm_register_bool_setting = {
 Localization key format is enforced by ids:
 
 - Mod: `<mod_id>_name`, `<mod_id>_desc`
+- Tab: `<mod_id>_<tab_id>_name`
 - Setting: `<mod_id>_<setting_id>_name`, `<mod_id>_<setting_id>_desc`
 
 Callback contract:

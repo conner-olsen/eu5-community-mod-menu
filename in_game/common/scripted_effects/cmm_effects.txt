@@ -9,6 +9,7 @@ cmm_register_core_country = {
 	cmm_register_bool_setting = {
 		mod_id = cmm_core
 		setting_id = example_toggle
+		tab_id = general
 		default_value = 0
 	}
 }
@@ -56,13 +57,71 @@ cmm_register_mod = {
 	}
 }
 
+# Register a tab for a mod (idempotent by mod_id + tab_id).
+# Scope: country
+# Args:
+# - mod_id (key): Owner mod id.
+# - tab_id (key): Tab id unique within mod.
+cmm_register_tab = {
+	# First-time registration path for this tab key.
+	if = {
+		limit = { NOT = { has_variable = cmm_registered_tab_$mod_id$__$tab_id$ } }
+		set_variable = { name = cmm_registered_tab_$mod_id$__$tab_id$ value = yes }
+
+		# Global tab key list; used by right-panel tab datamodel iteration.
+		add_to_variable_list = {
+			name = cmm_registered_tab_keys
+			target = flag:$mod_id$__$tab_id$
+		}
+
+		# Per-mod tab count.
+		if = {
+			limit = { NOT = { has_variable = cmm_mod_tab_count_$mod_id$ } }
+			set_variable = { name = cmm_mod_tab_count_$mod_id$ value = 0 }
+		}
+		change_variable = { name = cmm_mod_tab_count_$mod_id$ add = 1 }
+
+		# First registered tab becomes default selected tab for this mod.
+		if = {
+			limit = { NOT = { has_variable = cmm_mod_default_tab_$mod_id$ } }
+			set_variable = { name = cmm_mod_default_tab_$mod_id$ value = flag:$mod_id$__$tab_id$ }
+		}
+	}
+
+	# Owner + tab label metadata cache for GUI lookup.
+	set_variable = { name = cmm_tab_owner_mod_id_$mod_id$__$tab_id$ value = flag:$mod_id$ }
+	set_variable = { name = $mod_id$__$tab_id$_name value = flag:$mod_id$_$tab_id$_name }
+
+	# Benign warning suppression
+	if = {
+		limit = {
+			always = no
+			exists = flag:$mod_id$__$tab_id$
+			exists = flag:$mod_id$_$tab_id$_name
+			exists = var:cmm_registered_tab_keys
+			exists = var:cmm_registered_tab_$mod_id$__$tab_id$
+			exists = var:cmm_mod_tab_count_$mod_id$
+			exists = var:cmm_mod_default_tab_$mod_id$
+			exists = var:cmm_tab_owner_mod_id_$mod_id$__$tab_id$
+			exists = var:$mod_id$__$tab_id$_name
+		}
+	}
+}
+
 # Register a boolean setting for a mod (idempotent by mod_id + setting_id).
 # Scope: country
 # Args:
 # - mod_id (key): Owner mod id.
 # - setting_id (key): Setting id unique within mod.
+# - tab_id (key): Owner tab id within mod.
 # - default_value (1/0): Initial value; applied when the setting does not exist yet.
 cmm_register_bool_setting = {
+	# Ensure owning tab exists before binding setting metadata.
+	cmm_register_tab = {
+		mod_id = $mod_id$
+		tab_id = $tab_id$
+	}
+
 	# First-time registration path for this setting key.
 	if = {
 		limit = { NOT = { has_variable = cmm_registered_setting_$mod_id$__$setting_id$ } }
@@ -80,10 +139,18 @@ cmm_register_bool_setting = {
 			set_variable = { name = cmm_mod_bool_setting_count_$mod_id$ value = 0 }
 		}
 		change_variable = { name = cmm_mod_bool_setting_count_$mod_id$ add = 1 }
+
+		# Per-tab count; used for "no settings in this tab" UI state.
+		if = {
+			limit = { NOT = { has_variable = cmm_tab_bool_setting_count_$mod_id$__$tab_id$ } }
+			set_variable = { name = cmm_tab_bool_setting_count_$mod_id$__$tab_id$ value = 0 }
+		}
+		change_variable = { name = cmm_tab_bool_setting_count_$mod_id$__$tab_id$ add = 1 }
 	}
 
 	# Owner + localization metadata cache for GUI lookup.
 	set_variable = { name = cmm_setting_owner_mod_id_$mod_id$__$setting_id$ value = flag:$mod_id$ }
+	set_variable = { name = cmm_setting_owner_tab_key_$mod_id$__$setting_id$ value = flag:$mod_id$__$tab_id$ }
 	set_variable = { name = $mod_id$__$setting_id$_name value = flag:$mod_id$_$setting_id$_name }
 	set_variable = { name = $mod_id$__$setting_id$_desc value = flag:$mod_id$_$setting_id$_desc }
 
@@ -98,10 +165,13 @@ cmm_register_bool_setting = {
 		limit = {
 			always = no
 			exists = flag:$mod_id$__$setting_id$
+			exists = flag:$mod_id$__$tab_id$
 			exists = flag:$mod_id$_$setting_id$_name
 			exists = flag:$mod_id$_$setting_id$_desc
 			exists = var:cmm_registered_setting_keys
 			exists = var:cmm_setting_owner_mod_id_$mod_id$__$setting_id$
+			exists = var:cmm_setting_owner_tab_key_$mod_id$__$setting_id$
+			exists = var:cmm_tab_bool_setting_count_$mod_id$__$tab_id$
 			exists = var:$mod_id$__$setting_id$_name
 			exists = var:$mod_id$__$setting_id$_desc
 		}

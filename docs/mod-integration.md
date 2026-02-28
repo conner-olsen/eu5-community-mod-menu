@@ -30,6 +30,7 @@ Arguments:
 cmm_register_bool_setting = {
     mod_id = your_mod_id
     setting_id = your_setting_id
+    tab_id = your_tab_id
     default_value = 0 # 0 (off) or 1 (on)
 }
 ```
@@ -38,12 +39,23 @@ Arguments:
 
 - `mod_id`: owner mod id.
 - `setting_id`: stable id within your mod.
+- `tab_id`: owner tab id within your mod.
 - `default_value`: initial value for brand-new saves (`0` off, `1` on).
+
+Optional explicit tab registration (only needed if you want an empty tab with no settings yet):
+
+```txt
+cmm_register_tab = {
+    mod_id = your_mod_id
+    tab_id = your_tab_id
+}
+```
 
 Localization keys are derived automatically from ids:
 
 - Mod title: `<mod_id>_name`
 - Mod description: `<mod_id>_desc`
+- Tab label: `<mod_id>_<tab_id>_name`
 - Setting label: `<mod_id>_<setting_id>_name`
 - Setting description: `<mod_id>_<setting_id>_desc`
 
@@ -102,10 +114,14 @@ your_mod_on_register_country = {
 CMM writes these country-scope variables/lists:
 
 - `cmm_registered_mod_ids` (variable list; registration order)
+- `cmm_registered_tab_keys` (variable list of `<mod_id>__<tab_id>`)
 - `cmm_registered_setting_keys` (variable list of `<mod_id>__<setting_id>`)
 - `<mod_id>_name` (flag value)
 - `<mod_id>_desc` (flag value)
+- `cmm_tab_owner_mod_id_<mod_id>__<tab_id>` (flag value)
+- `<mod_id>__<tab_id>_name` (flag value)
 - `cmm_setting_owner_mod_id_<mod_id>__<setting_id>` (flag value)
+- `cmm_setting_owner_tab_key_<mod_id>__<setting_id>` (flag value)
 - `<mod_id>__<setting_id>_name` (flag value)
 - `<mod_id>__<setting_id>_desc` (flag value)
 - `<mod_id>__<setting_id>` (boolean value: `0`/`1`)
@@ -126,6 +142,7 @@ your_mod_register_country = {
     cmm_register_bool_setting = {
         mod_id = your_mod
         setting_id = allow_feature
+        tab_id = general
         default_value = 1
     }
 }
@@ -168,6 +185,7 @@ Define your keys in your own localization file:
 ```txt
 your_mod_name: "Your Mod Name"
 your_mod_desc: "One-line description"
+your_mod_general_name: "General"
 your_mod_allow_feature_name: "Allow Feature"
 your_mod_allow_feature_desc: "Enables the feature when checked."
 ```
@@ -176,4 +194,5 @@ your_mod_allow_feature_desc: "Enables the feature when checked."
 
 - CMM v1 settings controls are bool-only.
 - Keep ids stable (`mod_id`, `setting_id`) across updates.
+- `tab_id` is required for bool-setting registration.
 - Keep integration/API docs in repository docs, not runtime UI localization.

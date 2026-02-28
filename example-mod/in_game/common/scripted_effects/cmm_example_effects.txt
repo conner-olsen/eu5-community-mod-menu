@@ -7,12 +7,14 @@ cmm_example_register_country = {
 	cmm_register_bool_setting = {
 		mod_id = cmm_example
 		setting_id = feature_enabled
+		tab_id = general
 		default_value = 1
 	}
 
 	cmm_register_bool_setting = {
 		mod_id = cmm_example
 		setting_id = show_notifications
+		tab_id = notifications
 		default_value = 0
 	}
 }

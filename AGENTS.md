@@ -30,13 +30,14 @@ Implemented:
 6. Checkbox toggles are wired through scripted GUI callbacks (`<mod_id>__<setting_id>_on_changed`) and `cmm_toggle_bool_setting`.
 7. Shared registration hook `cmm_on_register_country` is in place and used by example mods.
 8. Runtime localization keys are derived from ids (no extra registration args for names/descriptions).
+9. Dynamic per-mod tabs are implemented in the right panel.
+10. Bool settings are filtered by both selected mod and selected tab.
 
 Remaining:
 
-1. Add per-mod tabs in the right settings panel (new requirement).
-2. Add non-bool controls (numeric/slider/dropdown/text) and define stable API.
-3. Finalize list ordering policy (registration-first vs optional alpha mode).
-4. Expand docs/examples after tabs + non-bool controls exist.
+1. Add non-bool controls (numeric/slider/dropdown/text) and define stable API.
+2. Finalize list ordering policy (registration-first vs optional alpha mode).
+3. Expand docs/examples after non-bool controls exist.
 
 ## Constraints
 
@@ -99,9 +100,15 @@ cmm_register_mod = {
     mod_id = <required>
 }
 
+cmm_register_tab = {
+    mod_id = <required>
+    tab_id = <required>
+}
+
 cmm_register_bool_setting = {
     mod_id = <required>
     setting_id = <required>
+    tab_id = <required>
     default_value = <required, 0|1>
 }
 ```
@@ -110,6 +117,7 @@ Derived localization keys:
 
 - Mod name: `<mod_id>_name`
 - Mod description: `<mod_id>_desc`
+- Tab label: `<mod_id>_<tab_id>_name`
 - Setting name: `<mod_id>_<setting_id>_name`
 - Setting description: `<mod_id>_<setting_id>_desc`
 
@@ -137,41 +145,26 @@ Required scripted GUI callback per bool setting:
   - periodic human-country sync,
   - menu-open path.
 
-## Tabs Plan (Next Milestone)
+## Tabs (Implemented)
 
-Goal:
+Behavior:
 
-- Add dynamic tabs per selected mod in the right panel so settings are grouped without hardcoded UI.
+1. Tabs are registered dynamically via `cmm_register_tab` and/or implicitly via `cmm_register_bool_setting`.
+2. Right panel renders tabs from `cmm_registered_tab_keys`, filtered to selected mod.
+3. Clicking a mod row sets selected mod and selected tab default (`cmm_mod_default_tab_<mod_id>`).
+4. Clicking a tab sets `cmm_selected_tab`.
+5. Settings rows are visible only when:
+   - owner mod matches selected mod,
+   - owner tab matches selected tab,
+   - optional per-setting scripted GUI `is_shown` evaluates true.
+6. Empty-state text for settings is tab-scoped (no settings in selected tab).
 
-Implementation plan:
+Verification:
 
-1. Add tab registration API with required ids only:
-   - `cmm_register_tab = { mod_id = <required> tab_id = <required> }`
-2. Extend setting registration to attach each setting to a tab:
-   - `cmm_register_bool_setting` gains required `tab_id`.
-3. Keep localization derived from ids:
-   - Tab label: `<mod_id>_<tab_id>_name`
-4. Persist tab registry data in country-scope variables/lists:
-   - dynamic list of tab keys (`<mod_id>__<tab_id>`)
-   - selected-tab key for current selected mod
-5. Right-panel UI flow:
-   - render tab row from selected mod's registered tabs
-   - clicking a tab sets selected tab key
-   - settings list filters by both selected mod and selected tab
-   - filtered rows compact to top (no gaps)
-6. Scripted GUI behavior:
-   - existing per-setting scripted GUI callbacks remain the mutation path
-   - per-setting `is_shown` remains optional and applies in addition to mod+tab filtering
-7. No compatibility shims:
-   - tabs API can be breaking while unreleased
-   - examples/docs are updated in the same change set
-
-Verification for tabs milestone:
-
-1. A mod can register multiple tabs and settings appear only in the selected tab.
-2. Switching selected mod resets/validates selected tab to that mod's tabs.
+1. A mod can register multiple tabs and settings appear only in selected tab.
+2. Switching selected mod sets selected tab to that mod's default tab.
 3. No hardcoded tab slots/caps in GUI/effects.
-4. No parser/log errors from missing tab metadata when at least one tab is registered for a mod.
+4. No parser/log errors from tab metadata resolution.
 
 Reference focus for this milestone:
 

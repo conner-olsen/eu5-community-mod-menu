@@ -7,12 +7,14 @@ cmm_example3_register_country = {
 	cmm_register_bool_setting = {
 		mod_id = cmm_example3
 		setting_id = ledger_export
+		tab_id = economy
 		default_value = 1
 	}
 
 	cmm_register_bool_setting = {
 		mod_id = cmm_example3
 		setting_id = event_hints
+		tab_id = events
 		default_value = 0
 	}
 }

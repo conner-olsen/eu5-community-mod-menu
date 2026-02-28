@@ -90,6 +90,7 @@
 											using = layoutpolicy_expanding
 											text = "[Select_CString(Player.MakeScope.GetVariable(Concatenate(Scope.GetFlagName, '_name')).IsSet, Player.MakeScope.GetVariable(Concatenate(Scope.GetFlagName, '_name')).GetFlagName, Select_CString(StringIsEmpty(Scope.GetFlagName), Concatenate(Localize('CMM_MOD_LIST_ENTRY_PREFIX'), ToString_int32(Add_int32(PdxGuiWidget.GetIndexInDataModel, '(int32)1'))), Scope.GetFlagName))]"
 											onclick = "[GetVariableSystem.Set('cmm_selected_mod', Scope.GetFlagName)]"
+											onclick = "[GetVariableSystem.Set('cmm_selected_tab', Select_CString(Player.MakeScope.GetVariable(Concatenate('cmm_mod_default_tab_', Scope.GetFlagName)).IsSet, Player.MakeScope.GetVariable(Concatenate('cmm_mod_default_tab_', Scope.GetFlagName)).GetFlagName, ''))]"
 											down = "[GetVariableSystem.HasValue('cmm_selected_mod', Scope.GetFlagName)]"
 											tooltip_enabled = no
 										}
@@ -136,6 +137,26 @@
 						max_width = 680
 					}
 
+					flowcontainer = {
+						layoutpolicy_horizontal = expanding
+						direction = horizontal
+						ignoreinvisible = yes
+						wrap_length = 680
+						spacing = 4
+						datamodel = "[Player.MakeScope.GetList('cmm_registered_tab_keys')]"
+
+						item = {
+							button_regular = {
+								visible = "[And(GetVariableSystem.Exists('cmm_selected_mod'), GetVariableSystem.HasValue('cmm_selected_mod', Player.MakeScope.GetVariable(Concatenate('cmm_tab_owner_mod_id_', Scope.GetFlagName)).GetFlagName))]"
+								size = { 180 34 }
+								text = "[Select_CString(Player.MakeScope.GetVariable(Concatenate(Scope.GetFlagName, '_name')).IsSet, Player.MakeScope.GetVariable(Concatenate(Scope.GetFlagName, '_name')).GetFlagName, Scope.GetFlagName)]"
+								onclick = "[GetVariableSystem.Set('cmm_selected_tab', Scope.GetFlagName)]"
+								down = "[GetVariableSystem.HasValue('cmm_selected_tab', Scope.GetFlagName)]"
+								tooltip_enabled = no
+							}
+						}
+					}
+
 					scrollbox = {
 						layoutpolicy_horizontal = expanding
 						layoutpolicy_vertical = expanding
@@ -153,7 +174,7 @@
 										layoutpolicy_horizontal = expanding
 										minimumsize = { 0 68 }
 										using = bg_window_default_alt
-										visible = "[And(And(GetVariableSystem.Exists('cmm_selected_mod'), GetVariableSystem.HasValue('cmm_selected_mod', Player.MakeScope.GetVariable(Concatenate('cmm_setting_owner_mod_id_', Scope.GetFlagName)).GetFlagName)), GetScriptedGui(Concatenate(Scope.GetFlagName, '_on_changed')).IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]"
+										visible = "[And3(And(GetVariableSystem.Exists('cmm_selected_mod'), GetVariableSystem.HasValue('cmm_selected_mod', Player.MakeScope.GetVariable(Concatenate('cmm_setting_owner_mod_id_', Scope.GetFlagName)).GetFlagName)), And(GetVariableSystem.Exists('cmm_selected_tab'), GetVariableSystem.HasValue('cmm_selected_tab', Player.MakeScope.GetVariable(Concatenate('cmm_setting_owner_tab_key_', Scope.GetFlagName)).GetFlagName)), GetScriptedGui(Concatenate(Scope.GetFlagName, '_on_changed')).IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]"
 
 										hbox = {
 											layoutpolicy_horizontal = expanding
@@ -188,8 +209,8 @@
 					}
 
 					text_multi = {
-						visible = "[And(GetVariableSystem.Exists('cmm_selected_mod'), Not(Player.MakeScope.GetVariable(Concatenate('cmm_mod_bool_setting_count_', GetVariableSystem.Get('cmm_selected_mod'))).IsSet))]"
-						text = "CMM_NO_SETTINGS_FOR_MOD"
+						visible = "[And(GetVariableSystem.Exists('cmm_selected_mod'), Or3(Not(GetVariableSystem.Exists('cmm_selected_tab')), Not(Player.MakeScope.GetVariable(Concatenate('cmm_tab_bool_setting_count_', GetVariableSystem.Get('cmm_selected_tab'))).IsSet), EqualTo_CFixedPoint(Player.MakeScope.GetVariable(Concatenate('cmm_tab_bool_setting_count_', GetVariableSystem.Get('cmm_selected_tab'))).GetValue, '(CFixedPoint)0')))]"
+						text = "CMM_NO_SETTINGS_FOR_TAB"
 						autoresize = yes
 						max_width = 680
 					}

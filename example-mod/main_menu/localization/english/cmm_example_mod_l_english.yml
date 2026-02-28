@@ -1,6 +1,8 @@
 ﻿l_english:
  cmm_example_name: "CMM Example Mod"
  cmm_example_desc: "Reference integration mod for Community Mod Menu."
+ cmm_example_general_name: "General"
+ cmm_example_notifications_name: "Notifications"
  cmm_example_feature_enabled_name: "Enable Example Feature"
  cmm_example_feature_enabled_desc: "Turns on the sample feature flag for Example Mod."
  cmm_example_show_notifications_name: "Show Example Notifications"
