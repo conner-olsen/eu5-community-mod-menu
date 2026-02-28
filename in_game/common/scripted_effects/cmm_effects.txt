@@ -1,20 +1,6 @@
-﻿# Root scope: country (use the human player country when called from GUI/on_action).
-#
-# Public API:
-# cmm_register_mod = {
-#     mod_id = <required>
-# }
-#
-# cmm_register_bool_setting = {
-#     mod_id = <required>
-#     setting_id = <required>
-#     default_value = <required, 0|1>
-# }
-#
-# Setting change callback contract:
-# - CMM executes scripted GUI "<mod_id>__<setting_id>_on_changed" from checkbox onclick.
-# - That scripted GUI should call cmm_toggle_bool_setting for its own key, then optional custom logic.
-
+﻿# Register CMM core mod and its settings.
+# Scope: country
+# Args: none
 cmm_register_core_country = {
 	cmm_register_mod = {
 		mod_id = cmm_core
@@ -27,29 +13,35 @@ cmm_register_core_country = {
 	}
 }
 
+# Register a mod (idempotent by mod_id).
+# Scope: country
+# Args:
+# - mod_id (key): Mod identifier; derives `<mod_id>_name` and `<mod_id>_desc`.
 cmm_register_mod = {
+	# Initialize global mod count once.
 	if = {
 		limit = { NOT = { has_variable = cmm_registered_mod_count } }
 		set_variable = { name = cmm_registered_mod_count value = 0 }
 	}
 
+	# First-time registration path for this mod id.
 	if = {
 		limit = { NOT = { has_variable = cmm_registered_mod_$mod_id$ } }
 		change_variable = { name = cmm_registered_mod_count add = 1 }
 
+		# Global mod id list; used by left-panel datamodel iteration.
 		add_to_variable_list = {
 			name = cmm_registered_mod_ids
 			target = flag:$mod_id$
 		}
 	}
 
+	# Mark as registered and cache mod label/description localization keys.
 	set_variable = { name = cmm_registered_mod_$mod_id$ value = yes }
-
-	# Store derived localization metadata for runtime GUI reads.
 	set_variable = { name = $mod_id$_name value = flag:$mod_id$_name }
 	set_variable = { name = $mod_id$_desc value = flag:$mod_id$_desc }
 
-	# Benign error suppression
+	# Benign warning suppression
 	if = {
 		limit = {
 			always = no
@@ -64,16 +56,25 @@ cmm_register_mod = {
 	}
 }
 
+# Register a boolean setting for a mod (idempotent by mod_id + setting_id).
+# Scope: country
+# Args:
+# - mod_id (key): Owner mod id.
+# - setting_id (key): Setting id unique within mod.
+# - default_value (1/0): Initial value; applied when the setting does not exist yet.
 cmm_register_bool_setting = {
+	# First-time registration path for this setting key.
 	if = {
 		limit = { NOT = { has_variable = cmm_registered_setting_$mod_id$__$setting_id$ } }
 		set_variable = { name = cmm_registered_setting_$mod_id$__$setting_id$ value = yes }
 
+		# Global setting key list; used by right-panel datamodel iteration.
 		add_to_variable_list = {
 			name = cmm_registered_setting_keys
 			target = flag:$mod_id$__$setting_id$
 		}
 
+		# Per-mod count; used for "no settings for this mod" UI state.
 		if = {
 			limit = { NOT = { has_variable = cmm_mod_bool_setting_count_$mod_id$ } }
 			set_variable = { name = cmm_mod_bool_setting_count_$mod_id$ value = 0 }
@@ -81,15 +82,14 @@ cmm_register_bool_setting = {
 		change_variable = { name = cmm_mod_bool_setting_count_$mod_id$ add = 1 }
 	}
 
+	# Owner + localization metadata cache for GUI lookup.
 	set_variable = { name = cmm_setting_owner_mod_id_$mod_id$__$setting_id$ value = flag:$mod_id$ }
-
 	set_variable = { name = $mod_id$__$setting_id$_name value = flag:$mod_id$_$setting_id$_name }
 	set_variable = { name = $mod_id$__$setting_id$_desc value = flag:$mod_id$_$setting_id$_desc }
 
+	# Default initialization; preserves existing save value.
 	if = {
-		limit = {
-			NOT = { has_variable = $mod_id$__$setting_id$ }
-		}
+		limit = { NOT = { has_variable = $mod_id$__$setting_id$ } }
 		set_variable = { name = $mod_id$__$setting_id$ value = $default_value$ }
 	}
 
@@ -108,17 +108,17 @@ cmm_register_bool_setting = {
 	}
 }
 
+# Toggle a registered boolean setting value between `0` and `1`.
+# Scope: country
+# Args:
+# - setting (key): Composite setting key `<mod_id>__<setting_id>`.
 cmm_toggle_bool_setting = {
 	if = {
-		limit = {
-			var:$setting$ = 1
-		}
+		limit = { var:$setting$ = 1 }
 		set_variable = { name = $setting$ value = 0 }
 	}
 	else = {
 		set_variable = { name = $setting$ value = 1 }
 	}
 }
-
-
 

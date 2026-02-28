@@ -51,6 +51,34 @@ Remaining:
 9. Use `CMM` naming prefix for core menu systems.
 10. Right panel must support dynamic per-mod tabs (no fixed tab count).
 
+## Script Doc Comment Style
+
+Use this comment format for core CMM script files (`in_game/common/*` in this repository), excluding example mods unless explicitly requested.
+
+Standard form:
+
+```txt
+# Short Description
+# Scope: [scope]
+# Args: [arg1] ([arg1type]), [arg2] ([arg2type]), ...
+```
+
+Expanded args form (when args are not self-explanatory):
+
+```txt
+# Short Description
+# Scope: [scope]
+# Args:
+# - [arg1] ([arg1type]): [arg1shortdesc]
+# - [arg2] ([arg2type]): [arg2shortdesc]
+```
+
+Additional rules:
+
+- Use `# Args: none` when there are no arguments.
+- Place the doc comment immediately above the target scripted object.
+- Keep comments concise and implementation-accurate.
+
 ## Core File Map
 
 - `in_game/gui/ingame_menu.gui`

@@ -1,5 +1,6 @@
-﻿# CMM lifecycle and shared registration hook.
-
+﻿# Register all human countries at game start.
+# Scope: on_action
+# Args: none
 on_game_start = {
 	on_actions = {
 		delay = { days = 1 }
@@ -7,10 +8,16 @@ on_game_start = {
 	}
 }
 
+# Re-sync registrations yearly for human countries.
+# Scope: on_action
+# Args: none
 yearly_country_pulse = {
 	on_actions = { cmm_sync_human_country_settings }
 }
 
+# Register core + integrations for all human countries.
+# Scope: on_action
+# Args: none
 cmm_register_all_human_countries = {
 	effect = {
 		every_country = {
@@ -23,6 +30,9 @@ cmm_register_all_human_countries = {
 	}
 }
 
+# Re-apply core + integrations for the current human country.
+# Scope: country
+# Args: none
 cmm_sync_human_country_settings = {
 	trigger = { is_ai = no }
 	effect = {
@@ -33,7 +43,10 @@ cmm_sync_human_country_settings = {
 	}
 }
 
-# Shared extension point. Integrating mods append additional on_actions here.
+# Integration extension point.
+# Scope: country
+# Args: none
 cmm_on_register_country = {
 	on_actions = { }
 }
+

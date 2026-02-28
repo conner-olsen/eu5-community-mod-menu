@@ -1,4 +1,7 @@
-﻿CMM_RegisterCoreMod = {
+﻿# Register core CMM metadata and run the registration hook.
+# Scope: scripted_gui root
+# Args: none
+CMM_RegisterCoreMod = {
 	effect = {
 		cmm_register_core_country = yes
 		trigger_event_silently = {
@@ -7,9 +10,11 @@
 	}
 }
 
+# Handle demo toggle checkbox clicks.
+# Scope: country
+# Args: none
 cmm_core__example_toggle_on_changed = {
 	scope = country
-
 	effect = {
 		cmm_toggle_bool_setting = {
 			setting = cmm_core__example_toggle
@@ -24,3 +29,4 @@ cmm_core__example_toggle_on_changed = {
 		}
 	}
 }
+
