@@ -1,21 +1,42 @@
-# AGENTS.md
+﻿# AGENTS.md
 
-Last updated: 2026-02-21
+Last updated: 2026-02-28
 
 ## Critical Context
 
 - The game is fully released as **Europa Universalis 5 (EU5)**.
-- This release is outside base model training knowledge; treat this as authoritative context.
 - Do not use the obsolete codename "Project Caesar".
-- Assume implementation starts from an empty mod scaffold (basic mod setup + thumbnail only).
+- Treat this file as the operating brief for current CMM work.
+- CMM is not released yet; breaking changes are allowed.
+- Do not add backward-compatibility or migration shims unless explicitly requested.
 
 ## Objective
 
-Create a general-purpose dependency mod menu:
+Maintain CMM as a general-purpose dependency mod menu:
 
-- Players use one central menu to configure multiple mods.
-- Other mods register settings into that menu.
-- Other mods should not need to create full custom settings windows.
+- Players use one shared settings menu for multiple mods.
+- Mod authors register settings into CMM dynamically.
+- Mod authors should not need to build a full custom settings window for basic controls.
+
+## Current Implementation State (Authoritative)
+
+Implemented:
+
+1. Pause-menu button injection and open/close flow are working (`ingame_menu.gui` + `cmm_window.gui`).
+2. Dynamic mod registration is working via `cmm_register_mod`.
+3. Dynamic bool setting registration is working via `cmm_register_bool_setting`.
+4. Left panel is dynamic, scrollable, searchable, and physically compacts filtered results.
+5. Right panel renders selected-mod metadata and dynamic setting rows.
+6. Checkbox toggles are wired through scripted GUI callbacks (`<mod_id>__<setting_id>_on_changed`) and `cmm_toggle_bool_setting`.
+7. Shared registration hook `cmm_on_register_country` is in place and used by example mods.
+8. Runtime localization keys are derived from ids (no extra registration args for names/descriptions).
+
+Remaining:
+
+1. Add per-mod tabs in the right settings panel (new requirement).
+2. Add non-bool controls (numeric/slider/dropdown/text) and define stable API.
+3. Finalize list ordering policy (registration-first vs optional alpha mode).
+4. Expand docs/examples after tabs + non-bool controls exist.
 
 ## Constraints
 
@@ -23,68 +44,120 @@ Create a general-purpose dependency mod menu:
 2. Do not design for compatibility with other mods that also override `ingame_menu.gui`.
 3. Do not use fixed slots or any static mod cap.
 4. Do not require manual coordination between mod authors for UI space.
-5. Left side must be a dynamic, scrollable, searchable mod list.
-6. Right side must show settings for the selected mod.
-7. Do not put integration/API instructions in player-facing UI/localization.
-8. All files should be in UTF-8-BOM format.
+5. Left side must remain dynamic and searchable.
+6. Right side must remain dynamic and selected-mod scoped.
+7. Keep integration/API instructions in repository docs, not player-facing runtime UI/localization.
+8. All touched `.gui`, `.txt`, and `.yml` files must be UTF-8-BOM.
+9. Use `CMM` naming prefix for core menu systems.
+10. Right panel must support dynamic per-mod tabs (no fixed tab count).
 
-## Required References
+## Core File Map
 
-### Vanilla EU5
+- `in_game/gui/ingame_menu.gui`
+- `in_game/gui/cmm_window.gui`
+- `in_game/common/scripted_effects/cmm_effects.txt`
+- `in_game/common/scripted_guis/cmm_scripted_gui.txt`
+- `in_game/common/on_action/cmm_on_action.txt`
+- `in_game/common/scripted_triggers/cmm_triggers.txt`
+- `docs/mod-integration.md`
+- `README.md`
 
-- `C:\Steam\steamapps\common\Europa Universalis V\game\in_game\gui\ingame_menu.gui`
-  - Escape menu override target for menu button injection.
+## Integration Contract (Current v1)
 
-- `C:\Steam\steamapps\common\Europa Universalis V\game\in_game\common\scripted_guis\scripted_guis.info`
-  - Scripted GUI schema.
+Country-scope API:
 
-- `C:\Steam\steamapps\common\Europa Universalis V\game\main_menu\gui\debug_menus.gui`
-  - Valid `gui.createwidget` / `gui.ClearWidgets` usage.
+```txt
+cmm_register_mod = {
+    mod_id = <required>
+}
 
-- `C:\Steam\steamapps\common\Europa Universalis V\game\in_game\gui\countries_list_view.gui`
-  - Data-driven list rendering (`filtered_sorted_list`).
+cmm_register_bool_setting = {
+    mod_id = <required>
+    setting_id = <required>
+    default_value = <required, 0|1>
+}
+```
 
-- `C:\Steam\steamapps\common\Europa Universalis V\game\in_game\gui\encyclopedia_lateralview.gui`
-  - Search input wiring (`editbox_search_field`, `ontextedited`).
+Derived localization keys:
 
-- `C:\Steam\steamapps\common\Europa Universalis V\game\in_game\gui\hud_bot.gui`
-  - Searchbar/autocomplete patterns.
+- Mod name: `<mod_id>_name`
+- Mod description: `<mod_id>_desc`
+- Setting name: `<mod_id>_<setting_id>_name`
+- Setting description: `<mod_id>_<setting_id>_desc`
 
-- `C:\Steam\steamapps\common\Europa Universalis V\game\in_game\gui\outliner_settings.gui`
-  - Stable checkbox row patterns.
+Required scripted GUI callback per bool setting:
 
-- `C:\Steam\steamapps\common\Europa Universalis V\game\in_game\gui\ui_library.gui`
-  - Minimal button/checkbox baseline examples.
+```txt
+<mod_id>__<setting_id>_on_changed = {
+    scope = country
+    effect = {
+        cmm_toggle_bool_setting = {
+            setting = <mod_id>__<setting_id>
+        }
+        # optional custom logic
+    }
+    # optional is_shown = { ... } for row visibility
+}
+```
 
-### GlorpUI (User-provided reference mod)
+## Registration Lifecycle
 
-GlorpUI is a third-party UI overhaul mod. Its menu is not general-purpose, but it is useful for open/close flow and pause-menu injection examples.
+- CMM fires shared custom on_action `cmm_on_register_country`.
+- Integrating mods append their own leaf on_actions under that hook.
+- CMM invokes registration on:
+  - startup synchronization,
+  - periodic human-country sync,
+  - menu-open path.
 
-- `C:\Steam\steamapps\workshop\content\3450310\3612386197\in_game\gui\glorp.gui`
-  - Shared custom UI types in that mod.
+## Tabs Plan (Next Milestone)
 
-- `C:\Steam\steamapps\workshop\content\3450310\3612386197\in_game\gui\glorpUI_window.gui`
-  - GlorpUI-specific settings window implementation.
+Goal:
 
-- `C:\Steam\steamapps\workshop\content\3450310\3612386197\in_game\gui\ingame_menu.gui`
-  - GlorpUI pause-menu button injection.
+- Add dynamic tabs per selected mod in the right panel so settings are grouped without hardcoded UI.
 
-- `C:\Steam\steamapps\workshop\content\3450310\3612386197\in_game\common\scripted_guis\glorpUI_custom_actions.txt`
-  - GlorpUI scripted GUI toggle/action structure.
+Implementation plan:
 
-## Build Order
+1. Add tab registration API with required ids only:
+   - `cmm_register_tab = { mod_id = <required> tab_id = <required> }`
+2. Extend setting registration to attach each setting to a tab:
+   - `cmm_register_bool_setting` gains required `tab_id`.
+3. Keep localization derived from ids:
+   - Tab label: `<mod_id>_<tab_id>_name`
+4. Persist tab registry data in country-scope variables/lists:
+   - dynamic list of tab keys (`<mod_id>__<tab_id>`)
+   - selected-tab key for current selected mod
+5. Right-panel UI flow:
+   - render tab row from selected mod's registered tabs
+   - clicking a tab sets selected tab key
+   - settings list filters by both selected mod and selected tab
+   - filtered rows compact to top (no gaps)
+6. Scripted GUI behavior:
+   - existing per-setting scripted GUI callbacks remain the mutation path
+   - per-setting `is_shown` remains optional and applies in addition to mod+tab filtering
+7. No compatibility shims:
+   - tabs API can be breaking while unreleased
+   - examples/docs are updated in the same change set
 
-1. Implement minimal vertical slice: pause-menu button, custom window open/close, one working control.
-2. Implement mod registration model with mod-id-based data (no slot ids).
-3. Render left mod list from registration data.
-4. Add search/filter to mod list.
-5. Render right settings panel from selected mod.
-6. Document mod integration API in repository docs (`README.md` and/or `docs/mod-integration.md`), not in runtime UI text.
+Verification for tabs milestone:
 
-## Done Criteria
+1. A mod can register multiple tabs and settings appear only in the selected tab.
+2. Switching selected mod resets/validates selected tab to that mod's tabs.
+3. No hardcoded tab slots/caps in GUI/effects.
+4. No parser/log errors from missing tab metadata when at least one tab is registered for a mod.
 
-1. Menu code contains no mod-specific hardcoded slots.
-2. Two independent mods can register and appear simultaneously without editing core menu code.
+Reference focus for this milestone:
+
+- `docs/reference-index.md` -> Cheat Menu Pro section (`sakuya_test.gui`, `sakuya_location.gui`) for tab and slider-like control patterns.
+- `docs/reference-index.md` -> Skiar's Cheats Menu section (`skiar_cheat_menu.gui`) for main+secondary tab composition and large numeric row patterns.
+
+## Acceptance Criteria (Release-Level)
+
+1. No mod-specific hardcoded UI slots/caps in CMM.
+2. Independent mods can register concurrently without editing CMM core code.
 3. Mod search + selection works in runtime.
-4. Selected mod settings render and can be changed in runtime.
-5. Player-facing localization contains no modder integration instructions.
+4. Selected mod settings render and apply in runtime.
+5. Player-facing localization contains no integration instructions.
+
+## Helpful References
+
+- Reference catalog: `docs/reference-index.md`
