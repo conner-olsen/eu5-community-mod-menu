@@ -7,12 +7,13 @@ This is a minimal integration mod for `community.mod.menu.dev`.
 - Declaring dependency on Community Mod Menu in `.metadata/metadata.json`.
 - Registering a mod id (`cmm_example`) with derived localization keys.
 - Appending into CMM shared registration hook `cmm_on_register_country`.
-- Defining immediate per-setting callbacks via `<mod_id>__<setting_id>_on_changed`.
+- Defining immediate per-setting scripted GUI callbacks via `<mod_id>__<setting_id>_on_changed`.
 
 ## Files
 
 - `in_game/common/on_action/cmm_example_on_action.txt`
 - `in_game/common/scripted_effects/cmm_example_effects.txt`
+- `in_game/common/scripted_guis/cmm_example_scripted_gui.txt`
 - `main_menu/localization/english/cmm_example_mod_l_english.yml`
 
 ## Test flow

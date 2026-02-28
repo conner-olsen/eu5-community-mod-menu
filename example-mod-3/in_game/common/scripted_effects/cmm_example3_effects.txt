@@ -16,31 +16,3 @@ cmm_example3_register_country = {
 		default_value = 0
 	}
 }
-
-cmm_example3__ledger_export_on_changed = {
-	if = {
-		limit = {
-			var:$setting$ = 1
-		}
-		# enabled effect
-	}
-	else = {
-		# disabled effect
-	}
-}
-
-cmm_example3__event_hints_on_changed = {
-	if = {
-		limit = {
-			var:$setting$ = 1
-		}
-		# enabled effect
-	}
-	else = {
-		# disabled effect
-	}
-}
-
-
-
-

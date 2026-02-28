@@ -12,9 +12,8 @@
 # }
 #
 # Setting change callback contract:
-# - CMM calls "<mod_id>__<setting_id>_on_changed" immediately after a toggle.
-# - Callback parameter: $setting$ (the setting key / bool variable id).
-# - Effects run in player country scope.
+# - CMM executes scripted GUI "<mod_id>__<setting_id>_on_changed" from checkbox onclick.
+# - That scripted GUI should call cmm_toggle_bool_setting for its own key, then optional custom logic.
 
 cmm_register_core_country = {
 	cmm_register_mod = {
@@ -118,24 +117,6 @@ cmm_toggle_bool_setting = {
 	}
 	else = {
 		set_variable = { name = $setting$ value = 1 }
-	}
-
-	# Fire per-setting callback after value mutation.
-	$setting$_on_changed = {
-		setting = $setting$
-	}
-}
-
-# Core example setting callback (triggered by "<setting>_on_changed" naming contract).
-cmm_core__example_toggle_on_changed = {
-	if = {
-		limit = {
-			var:$setting$ = 1
-		}
-		# enabled effect
-	}
-	else = {
-		# disabled effect
 	}
 }
 

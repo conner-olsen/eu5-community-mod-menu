@@ -1,0 +1,35 @@
+﻿cmm_example2__ai_helper_on_changed = {
+	scope = country
+
+	effect = {
+		cmm_toggle_bool_setting = {
+			setting = cmm_example2__ai_helper
+		}
+
+		if = {
+			limit = { var:cmm_example2__ai_helper = 1 }
+			# enabled effect
+		}
+		else = {
+			# disabled effect
+		}
+	}
+}
+
+cmm_example2__map_overlay_on_changed = {
+	scope = country
+
+	effect = {
+		cmm_toggle_bool_setting = {
+			setting = cmm_example2__map_overlay
+		}
+
+		if = {
+			limit = { var:cmm_example2__map_overlay = 1 }
+			# enabled effect
+		}
+		else = {
+			# disabled effect
+		}
+	}
+}

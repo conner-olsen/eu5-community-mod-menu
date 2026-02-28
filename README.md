@@ -14,7 +14,7 @@ A dependency mod for **Europa Universalis 5** that provides one shared in-game m
 - Boolean settings only.
 - Registration order is preserved.
 - Value changes are persisted as country variables.
-- UI invokes immediate per-setting callback effects after each toggle.
+- UI invokes immediate per-setting scripted GUI callbacks after each toggle.
 
 ## Install
 
@@ -45,9 +45,15 @@ Localization key format is enforced by ids:
 Callback contract:
 
 ```txt
-# CMM calls this on each UI toggle and passes $setting$:
+# CMM executes this scripted GUI on each UI toggle:
 <mod_id>__<setting_id>_on_changed = {
-    if = { limit = { var:$setting$ = 1 } ... }
+    scope = country
+    effect = {
+        cmm_toggle_bool_setting = {
+            setting = <mod_id>__<setting_id>
+        }
+        # optional enabled/disabled logic
+    }
 }
 ```
 

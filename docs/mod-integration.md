@@ -49,21 +49,30 @@ Localization keys are derived automatically from ids:
 
 ## Immediate Setting Callback Contract
 
-When a player toggles a setting in CMM, CMM immediately calls:
+When a player toggles a setting in CMM, CMM executes scripted GUI:
 
 ```txt
 <mod_id>__<setting_id>_on_changed = {
-    # CMM provides the setting key in $setting$
-    # Example: cmm_example__feature_enabled
+    scope = country
+    effect = {
+        cmm_toggle_bool_setting = {
+            setting = <mod_id>__<setting_id>
+        }
+        # optional enabled/disabled logic
+    }
 }
 ```
 
-Example callback names:
+Example callback scripted GUI names:
 
 - `cmm_example__feature_enabled_on_changed`
 - `cmm_example2__ai_helper_on_changed`
 
-Callbacks run in player country scope.
+For each registered bool setting, the matching scripted GUI callback is required.
+Define these in `in_game/common/scripted_guis/*.txt`.
+`is_shown` is optional. If omitted, the row is visible.
+When defined, `is_shown` controls row visibility (the setting box), not checked state.
+Checked state is read from `var:<mod_id>__<setting_id>` by CMM UI.
 
 ## Registration Hook Contract
 
@@ -134,14 +143,20 @@ your_mod_on_register_country = {
 }
 
 your_mod__allow_feature_on_changed = {
-    if = {
-        limit = {
-            var:$setting$ = 1
+    scope = country
+    effect = {
+        cmm_toggle_bool_setting = {
+            setting = your_mod__allow_feature
         }
-        # enabled effect
-    }
-    else = {
-        # disabled effect
+        if = {
+            limit = {
+                var:your_mod__allow_feature = 1
+            }
+            # enabled effect
+        }
+        else = {
+            # disabled effect
+        }
     }
 }
 ```

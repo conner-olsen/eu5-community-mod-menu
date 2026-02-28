@@ -6,3 +6,21 @@
 		}
 	}
 }
+
+cmm_core__example_toggle_on_changed = {
+	scope = country
+
+	effect = {
+		cmm_toggle_bool_setting = {
+			setting = cmm_core__example_toggle
+		}
+
+		if = {
+			limit = { var:cmm_core__example_toggle = 1 }
+			# enabled effect
+		}
+		else = {
+			# disabled effect
+		}
+	}
+}
