@@ -137,22 +137,25 @@
 						max_width = 680
 					}
 
-					flowcontainer = {
-						layoutpolicy_horizontal = expanding
-						direction = horizontal
-						ignoreinvisible = yes
-						wrap_length = 680
-						spacing = 4
-						datamodel = "[Player.MakeScope.GetList('cmm_registered_tab_keys')]"
+					header_secondary_tabs = {
+						visible = "[GetVariableSystem.Exists('cmm_selected_mod')]"
+						blockoverride "secondary_tabs_margin" {
+							margin_top = 2
+							spacing = 2
+						}
+						blockoverride "content" {
+							datamodel = "[Player.MakeScope.GetList('cmm_registered_tab_keys')]"
+							datamodel_reuse_widgets = yes
 
-						item = {
-							button_regular = {
-								visible = "[And(GetVariableSystem.Exists('cmm_selected_mod'), GetVariableSystem.HasValue('cmm_selected_mod', Player.MakeScope.GetVariable(Concatenate('cmm_tab_owner_mod_id_', Scope.GetFlagName)).GetFlagName))]"
-								size = { 180 34 }
-								text = "[Select_CString(Player.MakeScope.GetVariable(Concatenate(Scope.GetFlagName, '_name')).IsSet, Player.MakeScope.GetVariable(Concatenate(Scope.GetFlagName, '_name')).GetFlagName, Scope.GetFlagName)]"
-								onclick = "[GetVariableSystem.Set('cmm_selected_tab', Scope.GetFlagName)]"
-								down = "[GetVariableSystem.HasValue('cmm_selected_tab', Scope.GetFlagName)]"
-								tooltip_enabled = no
+							item = {
+								button_secondary_tab_alt = {
+									using = layoutpolicy_expanding
+									visible = "[GetVariableSystem.HasValue('cmm_selected_mod', Player.MakeScope.GetVariable(Concatenate('cmm_tab_owner_mod_id_', Scope.GetFlagName)).GetFlagName)]"
+									text = "[Select_CString(Player.MakeScope.GetVariable(Concatenate(Scope.GetFlagName, '_name')).IsSet, Player.MakeScope.GetVariable(Concatenate(Scope.GetFlagName, '_name')).GetFlagName, Scope.GetFlagName)]"
+									onclick = "[GetVariableSystem.Set('cmm_selected_tab', Scope.GetFlagName)]"
+									down = "[GetVariableSystem.HasValue('cmm_selected_tab', Scope.GetFlagName)]"
+									tooltip_enabled = no
+								}
 							}
 						}
 					}
