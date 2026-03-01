@@ -70,3 +70,50 @@ macro = {
     replace_with = "Player.MakeScope.GetVariable(Concatenate('cmm_tab_bool_setting_count_', GetVariableSystem.Get('cmm_selected_tab'))).GetValue"
 }
 
+macro = {
+    description = "True when no mods are registered yet"
+    definition = "CMMNoModsRegistered"
+    replace_with = "Or(Not(CMMVar('cmm_registered_mod_count').IsSet), EqualTo_CFixedPoint(CMMVar('cmm_registered_mod_count').GetValue, '(CFixedPoint)0'))"
+}
+
+macro = {
+    description = "True when at least one mod is registered"
+    definition = "CMMHasRegisteredMods"
+    replace_with = "And(CMMVar('cmm_registered_mod_count').IsSet, Not(EqualTo_CFixedPoint(CMMVar('cmm_registered_mod_count').GetValue, '(CFixedPoint)0')))"
+}
+
+macro = {
+    description = "Filter match for one mod row against current search text"
+    definition = "CMMModMatchesSearch(ModId)"
+    replace_with = "Or4(Not(GetVariableSystem.Exists('cmm_mod_search_text')), StringIsEmpty(GetVariableSystem.Get('cmm_mod_search_text')), StringContains(CMMVarFlagOr(Concatenate(ModId, '_name'), ModId), GetVariableSystem.Get('cmm_mod_search_text')), StringContains(ModId, GetVariableSystem.Get('cmm_mod_search_text')))"
+}
+
+macro = {
+    description = "Localized row label for a mod row with index fallback"
+    definition = "CMMModRowLabel(ModId,RowIndex)"
+    replace_with = "CMMVarFlagOr(Concatenate(ModId, '_name'), Select_CString(StringIsEmpty(ModId), Concatenate(Localize('CMM_MOD_LIST_ENTRY_PREFIX'), ToString_int32(Add_int32(RowIndex, '(int32)1'))), ModId))"
+}
+
+macro = {
+    description = "Visibility rule for one setting row"
+    definition = "CMMSettingRowVisible(SettingKey)"
+    replace_with = "And3(And(CMMSelectedModExists, GetVariableSystem.HasValue('cmm_selected_mod', CMMSettingOwnerModId(SettingKey))), And(CMMSelectedTabExists, GetVariableSystem.HasValue('cmm_selected_tab', CMMSettingOwnerTabKey(SettingKey))), GetScriptedGui(Concatenate(SettingKey, '_on_changed')).IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))"
+}
+
+macro = {
+    description = "Execute setting on-changed scripted GUI callback"
+    definition = "CMMExecuteSettingChanged(SettingKey)"
+    replace_with = "GetScriptedGui(Concatenate(SettingKey, '_on_changed')).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
+macro = {
+    description = "Checkbox checked state for numeric bool setting (1 = on)"
+    definition = "CMMIsSettingEnabled(SettingKey)"
+    replace_with = "EqualTo_CFixedPoint(CMMVar(SettingKey).GetValue, '(CFixedPoint)1')"
+}
+
+macro = {
+    description = "Show empty-state text when selected tab has zero visible settings"
+    definition = "CMMShowNoSettingsForSelectedTab"
+    replace_with = "And(CMMSelectedModExists, Or3(Not(CMMSelectedTabExists), Not(CMMSelectedTabCountIsSet), EqualTo_CFixedPoint(CMMSelectedTabCountValue, '(CFixedPoint)0')))"
+}

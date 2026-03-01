@@ -81,14 +81,14 @@
 								widget = {
 									layoutpolicy_horizontal = expanding
 									minimumsize = { 0 40 }
-									visible = "[Or4(Not(GetVariableSystem.Exists('cmm_mod_search_text')), StringIsEmpty(GetVariableSystem.Get('cmm_mod_search_text')), StringContains(CMMVarFlagOr(Concatenate(Scope.GetFlagName, '_name'), Scope.GetFlagName), GetVariableSystem.Get('cmm_mod_search_text')), StringContains(Scope.GetFlagName, GetVariableSystem.Get('cmm_mod_search_text')))]"
+									visible = "[CMMModMatchesSearch(Scope.GetFlagName)]"
 									hbox = {
 										margin = { 4 2 }
 										margin_right = 12
 
 										button_regular = {
 											using = layoutpolicy_expanding
-											text = "[CMMVarFlagOr(Concatenate(Scope.GetFlagName, '_name'), Select_CString(StringIsEmpty(Scope.GetFlagName), Concatenate(Localize('CMM_MOD_LIST_ENTRY_PREFIX'), ToString_int32(Add_int32(PdxGuiWidget.GetIndexInDataModel, '(int32)1'))), Scope.GetFlagName))]"
+											text = "[CMMModRowLabel(Scope.GetFlagName, PdxGuiWidget.GetIndexInDataModel)]"
 											onclick = "[GetVariableSystem.Set('cmm_selected_mod', Scope.GetFlagName)]"
 											onclick = "[GetVariableSystem.Set('cmm_selected_tab', CMMDefaultTabOr(Scope.GetFlagName, ''))]"
 											down = "[GetVariableSystem.HasValue('cmm_selected_mod', Scope.GetFlagName)]"
@@ -114,14 +114,14 @@
 				}
 
 				text_multi = {
-					visible = "[Or(Not(Player.MakeScope.GetVariable('cmm_registered_mod_count').IsSet), EqualTo_CFixedPoint(Player.MakeScope.GetVariable('cmm_registered_mod_count').GetValue, '(CFixedPoint)0'))]"
+					visible = "[CMMNoModsRegistered]"
 					text = "CMM_NO_MODS_REGISTERED"
 					autoresize = yes
 					max_width = 680
 				}
 
 				vbox = {
-					visible = "[And(Player.MakeScope.GetVariable('cmm_registered_mod_count').IsSet, Not(EqualTo_CFixedPoint(Player.MakeScope.GetVariable('cmm_registered_mod_count').GetValue, '(CFixedPoint)0')))]"
+					visible = "[CMMHasRegisteredMods]"
 					layoutpolicy_horizontal = expanding
 					layoutpolicy_vertical = expanding
 					spacing = 10
@@ -177,7 +177,7 @@
 										layoutpolicy_horizontal = expanding
 										minimumsize = { 0 68 }
 										using = bg_window_default_alt
-										visible = "[And3(And(CMMSelectedModExists, GetVariableSystem.HasValue('cmm_selected_mod', CMMSettingOwnerModId(Scope.GetFlagName))), And(CMMSelectedTabExists, GetVariableSystem.HasValue('cmm_selected_tab', CMMSettingOwnerTabKey(Scope.GetFlagName))), GetScriptedGui(Concatenate(Scope.GetFlagName, '_on_changed')).IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End))]"
+										visible = "[CMMSettingRowVisible(Scope.GetFlagName)]"
 
 										hbox = {
 											layoutpolicy_horizontal = expanding
@@ -185,8 +185,8 @@
 											spacing = 10
 
 											checkbox_square_alt = {
-												onclick = "[GetScriptedGui(Concatenate(Scope.GetFlagName, '_on_changed')).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-												checked = "[EqualTo_CFixedPoint(CMMVar(Scope.GetFlagName).GetValue, '(CFixedPoint)1')]"
+												onclick = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+												checked = "[CMMIsSettingEnabled(Scope.GetFlagName)]"
 												tooltip_enabled = no
 											}
 
@@ -212,7 +212,7 @@
 					}
 
 					text_multi = {
-						visible = "[And(CMMSelectedModExists, Or3(Not(CMMSelectedTabExists), Not(CMMSelectedTabCountIsSet), EqualTo_CFixedPoint(CMMSelectedTabCountValue, '(CFixedPoint)0')))]"
+						visible = "[CMMShowNoSettingsForSelectedTab]"
 						text = "CMM_NO_SETTINGS_FOR_TAB"
 						autoresize = yes
 						max_width = 680
