@@ -195,4 +195,5 @@ your_mod_allow_feature_desc: "Enables the feature when checked."
 - CMM v1 settings controls are bool-only.
 - Keep ids stable (`mod_id`, `setting_id`) across updates.
 - `tab_id` is required for bool-setting registration.
+- CMM core GUI uses shared function macros from `loading_screen/data_binding/cmm_macros.txt` (internal refactor layer).
 - Keep integration/API docs in repository docs, not runtime UI localization.

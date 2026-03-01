@@ -1,6 +1,6 @@
 ﻿# AGENTS.md
 
-Last updated: 2026-02-28
+Last updated: 2026-03-01
 
 ## Critical Context
 
@@ -32,6 +32,7 @@ Implemented:
 8. Runtime localization keys are derived from ids (no extra registration args for names/descriptions).
 9. Dynamic per-mod tabs are implemented in the right panel.
 10. Bool settings are filtered by both selected mod and selected tab.
+11. GUI function macro layer is in place (`loading_screen/data_binding/cmm_macros.txt`) and used by CMM GUI.
 
 Remaining:
 
@@ -88,8 +89,18 @@ Additional rules:
 - `in_game/common/scripted_guis/cmm_scripted_gui.txt`
 - `in_game/common/on_action/cmm_on_action.txt`
 - `in_game/common/scripted_triggers/cmm_triggers.txt`
+- `loading_screen/data_binding/cmm_macros.txt`
 - `docs/mod-integration.md`
 - `README.md`
+
+## GUI Macro Rules
+
+Use GUI function macros for repeated GUI data-binding expressions in CMM core GUI files.
+
+- Define CMM macros in `loading_screen/data_binding/cmm_macros.txt`.
+- Keep macro names `CMM*`.
+- Prefer macros for repeated variable lookups, fallback localization resolution, and selected-mod/tab accessors.
+- Keep behavior unchanged during macro refactors (no logic change unless explicitly requested).
 
 ## Integration Contract (Current v1)
 
