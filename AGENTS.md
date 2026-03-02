@@ -88,7 +88,6 @@ Additional rules:
 - `in_game/common/scripted_effects/cmm_effects.txt`
 - `in_game/common/scripted_guis/cmm_scripted_gui.txt`
 - `in_game/common/on_action/cmm_on_action.txt`
-- `in_game/common/scripted_triggers/cmm_triggers.txt`
 - `loading_screen/data_binding/cmm_macros.txt`
 - `docs/mod-integration.md`
 - `README.md`
@@ -99,8 +98,9 @@ Use GUI function macros for repeated GUI data-binding expressions in CMM core GU
 
 - Define CMM macros in `loading_screen/data_binding/cmm_macros.txt`.
 - Keep macro names `CMM*`.
-- Prefer macros for repeated variable lookups, fallback localization resolution, and selected-mod/tab accessors.
+- Prefer macros for repeated variable lookups, label/description resolution, and selected-mod/tab accessors.
 - Keep behavior unchanged during macro refactors (no logic change unless explicitly requested).
+- Treat fallback paths as unnecessary by default; only keep a fallback when there is a proven reachable runtime case.
 
 ## Integration Contract (Current v1)
 

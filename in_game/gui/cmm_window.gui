@@ -45,7 +45,7 @@
 				}
 
 				text_single = {
-					text = "[Concatenate(Localize('CMM_REGISTERED_MODS_LABEL'), ToString_int32(GetDataModelSize(Player.MakeScope.GetList('cmm_registered_mod_ids'))))]"
+					text = "[CMMRegisteredModsLabel]"
 				}
 
 				editbox_single = {
@@ -88,9 +88,9 @@
 
 										button_regular = {
 											using = layoutpolicy_expanding
-											text = "[CMMModRowLabel(Scope.GetFlagName, PdxGuiWidget.GetIndexInDataModel)]"
+											text = "[CMMModRowLabel(Scope.GetFlagName)]"
 											onclick = "[GetVariableSystem.Set('cmm_selected_mod', Scope.GetFlagName)]"
-											onclick = "[GetVariableSystem.Set('cmm_selected_tab', CMMDefaultTabOr(Scope.GetFlagName, ''))]"
+											onclick = "[GetVariableSystem.Set('cmm_selected_tab', CMMDefaultTab(Scope.GetFlagName))]"
 											down = "[GetVariableSystem.HasValue('cmm_selected_mod', Scope.GetFlagName)]"
 											tooltip_enabled = no
 										}
@@ -127,18 +127,20 @@
 					spacing = 10
 
 					text_single = {
-						text = "[CMMSelectedModNameOr('')]"
+						visible = "[CMMSelectedModExists]"
+						text = "[CMMSelectedModName]"
 						using = Font_Type_Header_Medium
 					}
 
 					text_multi = {
-						text = "[CMMSelectedModDescOr('')]"
+						visible = "[CMMSelectedModExists]"
+						text = "[CMMSelectedModDesc]"
 						autoresize = yes
 						max_width = 680
 					}
 
 					header_secondary_tabs = {
-						visible = "[GetVariableSystem.Exists('cmm_selected_mod')]"
+						visible = "[CMMSelectedModExists]"
 						blockoverride "secondary_tabs_margin" {
 							margin_top = 2
 							spacing = 2
@@ -151,7 +153,7 @@
 								button_secondary_tab_alt = {
 									using = layoutpolicy_expanding
 									visible = "[GetVariableSystem.HasValue('cmm_selected_mod', CMMTabOwnerModId(Scope.GetFlagName))]"
-									text = "[CMMVarFlagOr(Concatenate(Scope.GetFlagName, '_name'), Scope.GetFlagName)]"
+									text = "[CMMTabName(Scope.GetFlagName)]"
 									onclick = "[GetVariableSystem.Set('cmm_selected_tab', Scope.GetFlagName)]"
 									down = "[GetVariableSystem.HasValue('cmm_selected_tab', Scope.GetFlagName)]"
 									tooltip_enabled = no
@@ -195,11 +197,11 @@
 												spacing = 2
 
 												text_single = {
-													text = "[CMMVarFlagOr(Concatenate(Scope.GetFlagName, '_name'), Scope.GetFlagName)]"
+													text = "[CMMSettingName(Scope.GetFlagName)]"
 												}
 
 												text_multi = {
-													text = "[CMMVarFlagOr(Concatenate(Scope.GetFlagName, '_desc'), '')]"
+													text = "[CMMSettingDesc(Scope.GetFlagName)]"
 													autoresize = yes
 													max_width = 620
 												}

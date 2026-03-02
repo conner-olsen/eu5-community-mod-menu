@@ -19,16 +19,12 @@ cmm_register_core_country = {
 # Args:
 # - mod_id (key): Mod identifier; derives `<mod_id>_name` and `<mod_id>_desc`.
 cmm_register_mod = {
-	# Initialize global mod count once.
-	if = {
-		limit = { NOT = { has_variable = cmm_registered_mod_count } }
-		set_variable = { name = cmm_registered_mod_count value = 0 }
-	}
-
 	# First-time registration path for this mod id.
 	if = {
 		limit = { NOT = { has_variable = cmm_registered_mod_$mod_id$ } }
-		change_variable = { name = cmm_registered_mod_count add = 1 }
+		set_variable = { name = cmm_registered_mod_$mod_id$ value = yes }
+		set_variable = { name = $mod_id$_name value = flag:$mod_id$_name }
+		set_variable = { name = $mod_id$_desc value = flag:$mod_id$_desc }
 
 		# Global mod id list; used by left-panel datamodel iteration.
 		add_to_variable_list = {
@@ -36,11 +32,6 @@ cmm_register_mod = {
 			target = flag:$mod_id$
 		}
 	}
-
-	# Mark as registered and cache mod label/description localization keys.
-	set_variable = { name = cmm_registered_mod_$mod_id$ value = yes }
-	set_variable = { name = $mod_id$_name value = flag:$mod_id$_name }
-	set_variable = { name = $mod_id$_desc value = flag:$mod_id$_desc }
 
 	# Benign warning suppression
 	if = {
@@ -67,6 +58,8 @@ cmm_register_tab = {
 	if = {
 		limit = { NOT = { has_variable = cmm_registered_tab_$mod_id$__$tab_id$ } }
 		set_variable = { name = cmm_registered_tab_$mod_id$__$tab_id$ value = yes }
+		set_variable = { name = cmm_tab_owner_mod_id_$mod_id$__$tab_id$ value = flag:$mod_id$ }
+		set_variable = { name = $mod_id$__$tab_id$_name value = flag:$mod_id$_$tab_id$_name }
 
 		# Global tab key list; used by right-panel tab datamodel iteration.
 		add_to_variable_list = {
@@ -74,23 +67,12 @@ cmm_register_tab = {
 			target = flag:$mod_id$__$tab_id$
 		}
 
-		# Per-mod tab count.
-		if = {
-			limit = { NOT = { has_variable = cmm_mod_tab_count_$mod_id$ } }
-			set_variable = { name = cmm_mod_tab_count_$mod_id$ value = 0 }
-		}
-		change_variable = { name = cmm_mod_tab_count_$mod_id$ add = 1 }
-
 		# First registered tab becomes default selected tab for this mod.
 		if = {
 			limit = { NOT = { has_variable = cmm_mod_default_tab_$mod_id$ } }
 			set_variable = { name = cmm_mod_default_tab_$mod_id$ value = flag:$mod_id$__$tab_id$ }
 		}
 	}
-
-	# Owner + tab label metadata cache for GUI lookup.
-	set_variable = { name = cmm_tab_owner_mod_id_$mod_id$__$tab_id$ value = flag:$mod_id$ }
-	set_variable = { name = $mod_id$__$tab_id$_name value = flag:$mod_id$_$tab_id$_name }
 
 	# Benign warning suppression
 	if = {
@@ -100,7 +82,6 @@ cmm_register_tab = {
 			exists = flag:$mod_id$_$tab_id$_name
 			exists = var:cmm_registered_tab_keys
 			exists = var:cmm_registered_tab_$mod_id$__$tab_id$
-			exists = var:cmm_mod_tab_count_$mod_id$
 			exists = var:cmm_mod_default_tab_$mod_id$
 			exists = var:cmm_tab_owner_mod_id_$mod_id$__$tab_id$
 			exists = var:$mod_id$__$tab_id$_name
@@ -126,19 +107,16 @@ cmm_register_bool_setting = {
 	if = {
 		limit = { NOT = { has_variable = cmm_registered_setting_$mod_id$__$setting_id$ } }
 		set_variable = { name = cmm_registered_setting_$mod_id$__$setting_id$ value = yes }
+		set_variable = { name = cmm_setting_owner_mod_id_$mod_id$__$setting_id$ value = flag:$mod_id$ }
+		set_variable = { name = cmm_setting_owner_tab_key_$mod_id$__$setting_id$ value = flag:$mod_id$__$tab_id$ }
+		set_variable = { name = $mod_id$__$setting_id$_name value = flag:$mod_id$_$setting_id$_name }
+		set_variable = { name = $mod_id$__$setting_id$_desc value = flag:$mod_id$_$setting_id$_desc }
 
 		# Global setting key list; used by right-panel datamodel iteration.
 		add_to_variable_list = {
 			name = cmm_registered_setting_keys
 			target = flag:$mod_id$__$setting_id$
 		}
-
-		# Per-mod count; used for "no settings for this mod" UI state.
-		if = {
-			limit = { NOT = { has_variable = cmm_mod_bool_setting_count_$mod_id$ } }
-			set_variable = { name = cmm_mod_bool_setting_count_$mod_id$ value = 0 }
-		}
-		change_variable = { name = cmm_mod_bool_setting_count_$mod_id$ add = 1 }
 
 		# Per-tab count; used for "no settings in this tab" UI state.
 		if = {
@@ -147,12 +125,6 @@ cmm_register_bool_setting = {
 		}
 		change_variable = { name = cmm_tab_bool_setting_count_$mod_id$__$tab_id$ add = 1 }
 	}
-
-	# Owner + localization metadata cache for GUI lookup.
-	set_variable = { name = cmm_setting_owner_mod_id_$mod_id$__$setting_id$ value = flag:$mod_id$ }
-	set_variable = { name = cmm_setting_owner_tab_key_$mod_id$__$setting_id$ value = flag:$mod_id$__$tab_id$ }
-	set_variable = { name = $mod_id$__$setting_id$_name value = flag:$mod_id$_$setting_id$_name }
-	set_variable = { name = $mod_id$__$setting_id$_desc value = flag:$mod_id$_$setting_id$_desc }
 
 	# Default initialization; preserves existing save value.
 	if = {

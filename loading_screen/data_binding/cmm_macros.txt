@@ -5,15 +5,15 @@
 }
 
 macro = {
-    description = "Resolve a flag-backed variable to localized text with fallback"
-    definition = "CMMVarFlagOr(Name,Fallback)"
-    replace_with = "Select_CString(Player.MakeScope.GetVariable(Name).IsSet, Player.MakeScope.GetVariable(Name).GetFlagName, Fallback)"
+    description = "Default tab key for a mod id"
+    definition = "CMMDefaultTab(ModId)"
+    replace_with = "CMMVar(Concatenate('cmm_mod_default_tab_', ModId)).GetFlagName"
 }
 
 macro = {
-    description = "Resolve default tab key for a mod id with fallback"
-    definition = "CMMDefaultTabOr(ModId,Fallback)"
-    replace_with = "Select_CString(Player.MakeScope.GetVariable(Concatenate('cmm_mod_default_tab_', ModId)).IsSet, Player.MakeScope.GetVariable(Concatenate('cmm_mod_default_tab_', ModId)).GetFlagName, Fallback)"
+    description = "Registered-mod count label text"
+    definition = "CMMRegisteredModsLabel"
+    replace_with = "Concatenate(Localize('CMM_REGISTERED_MODS_LABEL'), ToString_int32(GetDataModelSize(Player.MakeScope.GetList('cmm_registered_mod_ids'))))"
 }
 
 macro = {
@@ -29,69 +29,87 @@ macro = {
 }
 
 macro = {
-    description = "Resolve currently selected mod name localization with fallback"
-    definition = "CMMSelectedModNameOr(Fallback)"
-    replace_with = "Select_CString(And(GetVariableSystem.Exists('cmm_selected_mod'), Player.MakeScope.GetVariable(Concatenate(GetVariableSystem.Get('cmm_selected_mod'), '_name')).IsSet), Player.MakeScope.GetVariable(Concatenate(GetVariableSystem.Get('cmm_selected_mod'), '_name')).GetFlagName, Fallback)"
+    description = "Selected mod name localization"
+    definition = "CMMSelectedModName"
+    replace_with = "CMMVar(Concatenate(GetVariableSystem.Get('cmm_selected_mod'), '_name')).GetFlagName"
 }
 
 macro = {
-    description = "Resolve currently selected mod description localization with fallback"
-    definition = "CMMSelectedModDescOr(Fallback)"
-    replace_with = "Select_CString(And(GetVariableSystem.Exists('cmm_selected_mod'), Player.MakeScope.GetVariable(Concatenate(GetVariableSystem.Get('cmm_selected_mod'), '_desc')).IsSet), Player.MakeScope.GetVariable(Concatenate(GetVariableSystem.Get('cmm_selected_mod'), '_desc')).GetFlagName, Fallback)"
+    description = "Selected mod description localization"
+    definition = "CMMSelectedModDesc"
+    replace_with = "CMMVar(Concatenate(GetVariableSystem.Get('cmm_selected_mod'), '_desc')).GetFlagName"
 }
 
 macro = {
     description = "Read tab owner mod id for a tab key"
     definition = "CMMTabOwnerModId(TabKey)"
-    replace_with = "Player.MakeScope.GetVariable(Concatenate('cmm_tab_owner_mod_id_', TabKey)).GetFlagName"
+    replace_with = "CMMVar(Concatenate('cmm_tab_owner_mod_id_', TabKey)).GetFlagName"
+}
+
+macro = {
+    description = "Tab label localization"
+    definition = "CMMTabName(TabKey)"
+    replace_with = "CMMVar(Concatenate(TabKey, '_name')).GetFlagName"
 }
 
 macro = {
     description = "Read setting owner mod id for a setting key"
     definition = "CMMSettingOwnerModId(SettingKey)"
-    replace_with = "Player.MakeScope.GetVariable(Concatenate('cmm_setting_owner_mod_id_', SettingKey)).GetFlagName"
+    replace_with = "CMMVar(Concatenate('cmm_setting_owner_mod_id_', SettingKey)).GetFlagName"
 }
 
 macro = {
     description = "Read setting owner tab key for a setting key"
     definition = "CMMSettingOwnerTabKey(SettingKey)"
-    replace_with = "Player.MakeScope.GetVariable(Concatenate('cmm_setting_owner_tab_key_', SettingKey)).GetFlagName"
+    replace_with = "CMMVar(Concatenate('cmm_setting_owner_tab_key_', SettingKey)).GetFlagName"
+}
+
+macro = {
+    description = "Setting label localization"
+    definition = "CMMSettingName(SettingKey)"
+    replace_with = "CMMVar(Concatenate(SettingKey, '_name')).GetFlagName"
+}
+
+macro = {
+    description = "Setting description localization"
+    definition = "CMMSettingDesc(SettingKey)"
+    replace_with = "CMMVar(Concatenate(SettingKey, '_desc')).GetFlagName"
 }
 
 macro = {
     description = "True when selected tab has a tab-setting-count variable"
     definition = "CMMSelectedTabCountIsSet"
-    replace_with = "Player.MakeScope.GetVariable(Concatenate('cmm_tab_bool_setting_count_', GetVariableSystem.Get('cmm_selected_tab'))).IsSet"
+    replace_with = "CMMVar(Concatenate('cmm_tab_bool_setting_count_', GetVariableSystem.Get('cmm_selected_tab'))).IsSet"
 }
 
 macro = {
     description = "Selected tab setting count value"
     definition = "CMMSelectedTabCountValue"
-    replace_with = "Player.MakeScope.GetVariable(Concatenate('cmm_tab_bool_setting_count_', GetVariableSystem.Get('cmm_selected_tab'))).GetValue"
+    replace_with = "CMMVar(Concatenate('cmm_tab_bool_setting_count_', GetVariableSystem.Get('cmm_selected_tab'))).GetValue"
 }
 
 macro = {
     description = "True when no mods are registered yet"
     definition = "CMMNoModsRegistered"
-    replace_with = "Or(Not(CMMVar('cmm_registered_mod_count').IsSet), EqualTo_CFixedPoint(CMMVar('cmm_registered_mod_count').GetValue, '(CFixedPoint)0'))"
+    replace_with = "IsDataModelEmpty(Player.MakeScope.GetList('cmm_registered_mod_ids'))"
 }
 
 macro = {
     description = "True when at least one mod is registered"
     definition = "CMMHasRegisteredMods"
-    replace_with = "And(CMMVar('cmm_registered_mod_count').IsSet, Not(EqualTo_CFixedPoint(CMMVar('cmm_registered_mod_count').GetValue, '(CFixedPoint)0')))"
+    replace_with = "Not(IsDataModelEmpty(Player.MakeScope.GetList('cmm_registered_mod_ids')))"
 }
 
 macro = {
     description = "Filter match for one mod row against current search text"
     definition = "CMMModMatchesSearch(ModId)"
-    replace_with = "Or4(Not(GetVariableSystem.Exists('cmm_mod_search_text')), StringIsEmpty(GetVariableSystem.Get('cmm_mod_search_text')), StringContains(CMMVarFlagOr(Concatenate(ModId, '_name'), ModId), GetVariableSystem.Get('cmm_mod_search_text')), StringContains(ModId, GetVariableSystem.Get('cmm_mod_search_text')))"
+    replace_with = "Or4(Not(GetVariableSystem.Exists('cmm_mod_search_text')), StringIsEmpty(GetVariableSystem.Get('cmm_mod_search_text')), StringContains(CMMVar(Concatenate(ModId, '_name')).GetFlagName, GetVariableSystem.Get('cmm_mod_search_text')), StringContains(ModId, GetVariableSystem.Get('cmm_mod_search_text')))"
 }
 
 macro = {
-    description = "Localized row label for a mod row with index fallback"
-    definition = "CMMModRowLabel(ModId,RowIndex)"
-    replace_with = "CMMVarFlagOr(Concatenate(ModId, '_name'), Select_CString(StringIsEmpty(ModId), Concatenate(Localize('CMM_MOD_LIST_ENTRY_PREFIX'), ToString_int32(Add_int32(RowIndex, '(int32)1'))), ModId))"
+    description = "Localized row label for one mod row"
+    definition = "CMMModRowLabel(ModId)"
+    replace_with = "CMMVar(Concatenate(ModId, '_name')).GetFlagName"
 }
 
 macro = {
@@ -116,4 +134,10 @@ macro = {
     description = "Show empty-state text when selected tab has zero visible settings"
     definition = "CMMShowNoSettingsForSelectedTab"
     replace_with = "And(CMMSelectedModExists, Or3(Not(CMMSelectedTabExists), Not(CMMSelectedTabCountIsSet), EqualTo_CFixedPoint(CMMSelectedTabCountValue, '(CFixedPoint)0')))"
+}
+
+macro = {
+    description = "Command string to toggle CMM window open/close"
+    definition = "CMMWindowToggleCommand"
+    replace_with = "Select_CString(GetVariableSystem.Exists('cmm_window_open'), 'gui.ClearWidgets cmm_window', 'gui.createwidget gui/cmm_window.gui cmm_window')"
 }
