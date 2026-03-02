@@ -1,6 +1,6 @@
 ﻿# AGENTS.md
 
-Last updated: 2026-03-01
+Last updated: 2026-03-02
 
 ## Critical Context
 
@@ -101,6 +101,31 @@ Use GUI function macros for repeated GUI data-binding expressions in CMM core GU
 - Prefer macros for repeated variable lookups, label/description resolution, and selected-mod/tab accessors.
 - Keep behavior unchanged during macro refactors (no logic change unless explicitly requested).
 - Treat fallback paths as unnecessary by default; only keep a fallback when there is a proven reachable runtime case.
+
+## GUI Macro Doc Comment Style
+
+Use this comment format for macro definitions in `loading_screen/data_binding/cmm_macros.txt`.
+
+Standard form:
+
+```txt
+# Args: [arg1] ([arg1type]), [arg2] ([arg2type]), ...
+# Returns: [returntype]
+```
+
+Scope-dependent form (only when macro behavior depends on ambient scope):
+
+```txt
+# Scope: [scope]
+# Args: [arg1] ([arg1type]), [arg2] ([arg2type]), ...
+# Returns: [returntype]
+```
+
+Additional rules:
+
+- Use `# Args: none` when there are no arguments.
+- Do not add short descriptions here; keep macro purpose in `description = "..."`.
+- Do not add `# Scope:` unless the macro actually depends on ambient scope.
 
 ## Integration Contract (Current v1)
 
