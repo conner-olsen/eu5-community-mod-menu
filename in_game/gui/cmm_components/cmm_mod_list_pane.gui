@@ -1,0 +1,86 @@
+﻿types CMMModListTypes
+{
+	type cmm_mod_list_panel = vbox {
+		name = "cmm_mod_list_panel"
+		min_width = 340
+		max_width = 340
+		layoutpolicy_vertical = expanding
+		using = bg_main_inner_alt
+		spacing = 10
+		margin = { 12 12 }
+
+		text_single = {
+			text = "CMM_MOD_LIST_TITLE"
+			using = Font_Type_Headers
+		}
+
+		text_multi = {
+			text = "CMM_MOD_LIST_PLACEHOLDER"
+			autoresize = yes
+			max_width = 300
+		}
+
+		text_single = {
+			text = "[CMMRegisteredModsLabel]"
+		}
+
+		editbox_single = {
+			name = "cmm_mod_search_editbox"
+			layoutpolicy_horizontal = expanding
+			focuspolicy = all
+			alwaystransparent = no
+			multiline = no
+			text = ""
+			blockoverride "editbox_properties" {
+				ontextchanged = "[GetVariableSystem.Set('cmm_mod_search_text', GetTextFromSelfOrAnyChildEditbox(PdxGuiWidget.Self))]"
+				ontextedited = "[GetVariableSystem.Set('cmm_mod_search_text', GetTextFromSelfOrAnyChildEditbox(PdxGuiWidget.Self))]"
+			}
+			blockoverride "editbox_label" {
+				text = "CMM_MOD_SEARCH_PLACEHOLDER"
+			}
+		}
+
+		scrollbox = {
+			using = layoutpolicy_expanding
+			layoutpolicy_vertical = expanding
+			layoutpolicy_horizontal = expanding
+			minimumsize = { 0 420 }
+
+			blockoverride "scrollbox_content" {
+				cmm_mod_list_rows = {}
+			}
+		}
+	}
+
+	type cmm_mod_list_rows = vbox {
+		layoutpolicy_horizontal = expanding
+		ignoreinvisible = yes
+		spacing = 0
+		datamodel = "[Player.MakeScope.GetList('cmm_registered_mod_ids')]"
+
+		item = {
+			cmm_mod_list_row = {}
+		}
+	}
+
+	type cmm_mod_list_row = widget {
+		layoutpolicy_horizontal = expanding
+		minimumsize = { 0 40 }
+		visible = "[CMMModMatchesSearch(Scope.GetFlagName)]"
+
+		hbox = {
+			margin = { 4 2 }
+			margin_right = 12
+
+			button_regular = {
+				using = layoutpolicy_expanding
+				text = "[CMMModRowLabel(Scope.GetFlagName)]"
+				onclick = "[GetVariableSystem.Set('cmm_selected_mod', Scope.GetFlagName)]"
+				onclick = "[GetVariableSystem.Set('cmm_selected_tab', CMMDefaultTab(Scope.GetFlagName))]"
+				down = "[GetVariableSystem.HasValue('cmm_selected_mod', Scope.GetFlagName)]"
+				tooltip_enabled = no
+			}
+		}
+	}
+}
+

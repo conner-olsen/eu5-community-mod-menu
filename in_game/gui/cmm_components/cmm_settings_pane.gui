@@ -1,33 +1,62 @@
-﻿types CMMWindowTypes
+﻿types CMMSettingsTypes
 {
-	type cmm_mod_list_rows = vbox {
-		layoutpolicy_horizontal = expanding
-		ignoreinvisible = yes
-		spacing = 0
-		datamodel = "[Player.MakeScope.GetList('cmm_registered_mod_ids')]"
+	type cmm_settings_panel = vbox {
+		using = layoutpolicy_expanding
+		using = bg_main_inner_alt
+		spacing = 10
+		margin = { 12 12 }
 
-		item = {
-			cmm_mod_list_row = {}
+		text_single = {
+			text = "CMM_SETTINGS_TITLE"
+			using = Font_Type_Headers
 		}
-	}
 
-	type cmm_mod_list_row = widget {
-		layoutpolicy_horizontal = expanding
-		minimumsize = { 0 40 }
-		visible = "[CMMModMatchesSearch(Scope.GetFlagName)]"
+		text_multi = {
+			visible = "[CMMNoModsRegistered]"
+			text = "CMM_NO_MODS_REGISTERED"
+			autoresize = yes
+			max_width = 680
+		}
 
-		hbox = {
-			margin = { 4 2 }
-			margin_right = 12
+		vbox = {
+			visible = "[CMMHasRegisteredMods]"
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			spacing = 10
 
-			button_regular = {
-				using = layoutpolicy_expanding
-				text = "[CMMModRowLabel(Scope.GetFlagName)]"
-				onclick = "[GetVariableSystem.Set('cmm_selected_mod', Scope.GetFlagName)]"
-				onclick = "[GetVariableSystem.Set('cmm_selected_tab', CMMDefaultTab(Scope.GetFlagName))]"
-				down = "[GetVariableSystem.HasValue('cmm_selected_mod', Scope.GetFlagName)]"
-				tooltip_enabled = no
+			text_single = {
+				visible = "[CMMSelectedModExists]"
+				text = "[CMMSelectedModName]"
+				using = Font_Type_Header_Medium
 			}
+
+			text_multi = {
+				visible = "[CMMSelectedModExists]"
+				text = "[CMMSelectedModDesc]"
+				autoresize = yes
+				max_width = 680
+			}
+
+			cmm_mod_tabs = {}
+
+			scrollbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+				minimumsize = { 0 420 }
+
+				blockoverride "scrollbox_content" {
+					cmm_setting_rows = {}
+				}
+			}
+
+			text_multi = {
+				visible = "[CMMShowNoSettingsForSelectedTab]"
+				text = "CMM_NO_SETTINGS_FOR_TAB"
+				autoresize = yes
+				max_width = 680
+			}
+
+			expand = {}
 		}
 	}
 
@@ -100,4 +129,20 @@
 			}
 		}
 	}
+
+	type cmm_window_close_widget = widget {
+		parentanchor = right
+		position = { -5 5 }
+		size = { 40 40 }
+
+		ui_direction_button_holder_right = {}
+
+		button_close_alt = {
+			blockoverride "close_onclick" {
+				onclick = "[GetVariableSystem.Clear('cmm_mod_search_text')]"
+				onclick = "[GetVariableSystem.Toggle('cmm_window_open')]"
+			}
+		}
+	}
 }
+
