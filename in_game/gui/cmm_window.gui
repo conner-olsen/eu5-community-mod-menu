@@ -9,6 +9,7 @@
 	size = { 1120 760 }
 	using = bg_window_default_alt
 	allow_outside = yes
+	visible = "[GetVariableSystem.Exists('cmm_window_open')]"
 
 	vbox = {
 		using = window_margin_alt
@@ -235,7 +236,6 @@
 
 		button_close_alt = {
 			blockoverride "close_onclick" {
-				onclick = "[ExecuteConsoleCommand('gui.ClearWidgets cmm_window')]"
 				onclick = "[GetVariableSystem.Clear('cmm_mod_search_text')]"
 				onclick = "[GetVariableSystem.Toggle('cmm_window_open')]"
 			}

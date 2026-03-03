@@ -292,7 +292,6 @@ template frontend_menu_middle_template {
 		text = "CMM_PAUSE_MENU_BUTTON"
 		onclick = "[GetScriptedGui('CMM_RegisterCoreMod').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 		onclick = "[GetVariableSystem.Clear('cmm_mod_search_text')]"
-		onclick = "[ExecuteConsoleCommand(CMMWindowToggleCommand)]"
 		onclick = "[GetVariableSystem.Toggle('cmm_window_open')]"
 		onclick = "[PauseMenu.Resume]"
 		tooltipwidget = { LeftClickButtonTooltip = { blockoverride "onclick_text" { text = "CMM_PAUSE_MENU_BUTTON_TOOLTIP" } } }

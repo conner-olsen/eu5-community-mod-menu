@@ -181,11 +181,3 @@ macro = {
     definition = "CMMShowNoSettingsForSelectedTab"
     replace_with = "And(CMMSelectedModExists, Or3(Not(CMMSelectedTabExists), Not(CMMSelectedTabCountIsSet), EqualTo_CFixedPoint(CMMSelectedTabCountValue, '(CFixedPoint)0')))"
 }
-
-# Args: none
-# Returns: string
-macro = {
-    description = "Command string to toggle CMM window open/close"
-    definition = "CMMWindowToggleCommand"
-    replace_with = "Select_CString(GetVariableSystem.Exists('cmm_window_open'), 'gui.ClearWidgets cmm_window', 'gui.createwidget gui/cmm_window.gui cmm_window')"
-}
