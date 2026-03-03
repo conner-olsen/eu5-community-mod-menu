@@ -127,6 +127,28 @@ Additional rules:
 - Do not add short descriptions here; keep macro purpose in `description = "..."`.
 - Do not add `# Scope:` unless the macro actually depends on ambient scope.
 
+## GUI Type Doc Comment Style
+
+Use this comment format for GUI `type` blocks in CMM GUI component files.
+
+Standard form:
+
+```txt
+# Short Description
+# Reads:
+# - [expression] [type]: [short description]
+# - [expression] [type]: [short description]
+# Writes:
+# - [expression] [type]: [short description]
+```
+
+Additional rules:
+
+- Place the doc comment immediately above each `type`.
+- Prefer concrete expressions (for example `Scope.GetFlagName`, `Player.MakeScope.GetList('...')`, `GetVariableSystem.Get('...')`, `GetVariableSystem.Set('...')`).
+- Keep comments concise and implementation-accurate.
+- Use `# Writes:` + `# - none [n/a]: no writes.` when the type does not write any state.
+
 ## Integration Contract (Current v1)
 
 Country-scope API:
@@ -218,3 +240,4 @@ Reference focus for this milestone:
 ## Helpful References
 
 - Reference catalog: `docs/reference-index.md`
+

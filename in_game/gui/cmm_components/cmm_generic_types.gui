@@ -1,4 +1,11 @@
 ﻿types = CMMGenericTypes {
+	# Window-level close control for CMM.
+	# Reads:
+	# - GetVariableSystem.Get('cmm_window_open') [string]: open-state key toggled when closing the window.
+	# - GetVariableSystem.Get('cmm_mod_search_text') [string]: search text key cleared on close.
+	# Writes:
+	# - GetVariableSystem.Clear('cmm_mod_search_text') [void]: clears transient search text.
+	# - GetVariableSystem.Toggle('cmm_window_open') [void]: toggles window visibility state.
 	type cmm_window_close_widget = widget {
 		parentanchor = right
 		position = { -5 5 }
@@ -14,3 +21,4 @@
 		}
 	}
 }
+
