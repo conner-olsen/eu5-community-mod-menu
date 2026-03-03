@@ -72,33 +72,7 @@
 					minimumsize = { 0 420 }
 
 					blockoverride "scrollbox_content" {
-						vbox = {
-							layoutpolicy_horizontal = expanding
-							ignoreinvisible = yes
-							spacing = 0
-							datamodel = "[Player.MakeScope.GetList('cmm_registered_mod_ids')]"
-
-							item = {
-								widget = {
-									layoutpolicy_horizontal = expanding
-									minimumsize = { 0 40 }
-									visible = "[CMMModMatchesSearch(Scope.GetFlagName)]"
-									hbox = {
-										margin = { 4 2 }
-										margin_right = 12
-
-										button_regular = {
-											using = layoutpolicy_expanding
-											text = "[CMMModRowLabel(Scope.GetFlagName)]"
-											onclick = "[GetVariableSystem.Set('cmm_selected_mod', Scope.GetFlagName)]"
-											onclick = "[GetVariableSystem.Set('cmm_selected_tab', CMMDefaultTab(Scope.GetFlagName))]"
-											down = "[GetVariableSystem.HasValue('cmm_selected_mod', Scope.GetFlagName)]"
-											tooltip_enabled = no
-										}
-									}
-								}
-							}
-						}
+						cmm_mod_list_rows = {}
 					}
 				}
 			}
@@ -140,28 +114,7 @@
 						max_width = 680
 					}
 
-					header_secondary_tabs = {
-						visible = "[CMMSelectedModExists]"
-						blockoverride "secondary_tabs_margin" {
-							margin_top = 2
-							spacing = 2
-						}
-						blockoverride "content" {
-							datamodel = "[Player.MakeScope.GetList('cmm_registered_tab_keys')]"
-							datamodel_reuse_widgets = yes
-
-							item = {
-								button_secondary_tab_alt = {
-									using = layoutpolicy_expanding
-									visible = "[GetVariableSystem.HasValue('cmm_selected_mod', CMMTabOwnerModId(Scope.GetFlagName))]"
-									text = "[CMMTabName(Scope.GetFlagName)]"
-									onclick = "[GetVariableSystem.Set('cmm_selected_tab', Scope.GetFlagName)]"
-									down = "[GetVariableSystem.HasValue('cmm_selected_tab', Scope.GetFlagName)]"
-									tooltip_enabled = no
-								}
-							}
-						}
-					}
+					cmm_mod_tabs = {}
 
 					scrollbox = {
 						layoutpolicy_horizontal = expanding
@@ -169,48 +122,7 @@
 						minimumsize = { 0 420 }
 
 						blockoverride "scrollbox_content" {
-							vbox = {
-								layoutpolicy_horizontal = expanding
-								ignoreinvisible = yes
-								spacing = 4
-								datamodel = "[Player.MakeScope.GetList('cmm_registered_setting_keys')]"
-
-								item = {
-									widget = {
-										layoutpolicy_horizontal = expanding
-										minimumsize = { 0 68 }
-										using = bg_window_default_alt
-										visible = "[CMMSettingRowVisible(Scope.GetFlagName)]"
-
-										hbox = {
-											layoutpolicy_horizontal = expanding
-											margin = { 8 6 }
-											spacing = 10
-
-											checkbox_square_alt = {
-												onclick = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-												checked = "[CMMIsSettingEnabled(Scope.GetFlagName)]"
-												tooltip_enabled = no
-											}
-
-											vbox = {
-												layoutpolicy_horizontal = expanding
-												spacing = 2
-
-												text_single = {
-													text = "[CMMSettingName(Scope.GetFlagName)]"
-												}
-
-												text_multi = {
-													text = "[CMMSettingDesc(Scope.GetFlagName)]"
-													autoresize = yes
-													max_width = 620
-												}
-											}
-										}
-									}
-								}
-							}
+							cmm_setting_rows = {}
 						}
 					}
 
@@ -242,6 +154,3 @@
 		}
 	}
 }
-
-
-
