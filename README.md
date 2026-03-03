@@ -74,30 +74,16 @@ Callback contract:
 <mod_id>__<setting_id>_on_changed = {
     scope = country
     effect = {
+        cmm_apply_numeric_change = {
+            setting = <mod_id>__<setting_id>
+        }
         # optional custom logic after numeric value changes
     }
     # optional is_shown = { ... }
 }
-
-# Numeric step callbacks (required):
-<mod_id>__<setting_id>_on_decrease = {
-    scope = country
-    effect = {
-        cmm_step_numeric_setting_down = {
-            setting = <mod_id>__<setting_id>
-        }
-    }
-}
-
-<mod_id>__<setting_id>_on_increase = {
-    scope = country
-    effect = {
-        cmm_step_numeric_setting_up = {
-            setting = <mod_id>__<setting_id>
-        }
-    }
-}
 ```
+
+CMM handles numeric increase/decrease through generic marker scripted GUIs and then executes the setting-specific `_on_changed`.
 
 Registration hook contract:
 

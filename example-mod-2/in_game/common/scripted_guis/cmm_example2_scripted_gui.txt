@@ -38,26 +38,9 @@ cmm_example2__overlay_opacity_on_changed = {
 	scope = country
 
 	effect = {
-		set_variable = { name = cmm_example2__overlay_opacity value = var:cmm_example2__overlay_opacity }
-	}
-}
-
-cmm_example2__overlay_opacity_on_decrease = {
-	scope = country
-
-	effect = {
-		cmm_step_numeric_setting_down = {
+		cmm_apply_numeric_change = {
 			setting = cmm_example2__overlay_opacity
 		}
-	}
-}
-
-cmm_example2__overlay_opacity_on_increase = {
-	scope = country
-
-	effect = {
-		cmm_step_numeric_setting_up = {
-			setting = cmm_example2__overlay_opacity
-		}
+		# optional custom logic
 	}
 }

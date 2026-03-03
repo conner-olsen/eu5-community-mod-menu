@@ -116,42 +116,25 @@ Required scripted GUI callback:
 
 ### Numeric setting callbacks
 
-Required scripted GUI callbacks:
+Required scripted GUI callback:
 
 ```txt
 <mod_id>__<setting_id>_on_changed = {
     scope = country
     effect = {
+        cmm_apply_numeric_change = {
+            setting = <mod_id>__<setting_id>
+        }
         # optional custom logic after numeric value changes
     }
     # optional is_shown = { ... }
-}
-
-<mod_id>__<setting_id>_on_decrease = {
-    scope = country
-    effect = {
-        cmm_step_numeric_setting_down = {
-            setting = <mod_id>__<setting_id>
-        }
-        # optional custom logic
-    }
-}
-
-<mod_id>__<setting_id>_on_increase = {
-    scope = country
-    effect = {
-        cmm_step_numeric_setting_up = {
-            setting = <mod_id>__<setting_id>
-        }
-        # optional custom logic
-    }
 }
 ```
 
 Notes:
 
 - `_on_changed` is also used for row visibility (`is_shown`) checks.
-- CMM executes `_on_changed` after `_on_decrease` and `_on_increase`.
+- CMM handles numeric +/- via generic marker scripted GUIs, then executes `_on_changed`.
 - If `is_shown` is omitted, the row is visible.
 - Checked/value state is read directly from `var:<mod_id>__<setting_id>` by CMM UI.
 
@@ -236,24 +219,11 @@ your_mod__allow_feature_on_changed = {
 
 your_mod__amount_on_changed = {
     scope = country
-    effect = { }
-}
-
-your_mod__amount_on_decrease = {
-    scope = country
     effect = {
-        cmm_step_numeric_setting_down = {
+        cmm_apply_numeric_change = {
             setting = your_mod__amount
         }
-    }
-}
-
-your_mod__amount_on_increase = {
-    scope = country
-    effect = {
-        cmm_step_numeric_setting_up = {
-            setting = your_mod__amount
-        }
+        # optional custom logic
     }
 }
 ```

@@ -29,7 +29,7 @@ Implemented:
 5. Left panel is dynamic, scrollable, searchable, and physically compacts filtered results.
 6. Right panel renders selected-mod metadata and dynamic setting rows.
 7. Bool toggles are wired through scripted GUI callbacks (`<mod_id>__<setting_id>_on_changed`) and `cmm_toggle_bool_setting`.
-8. Numeric steppers are wired through scripted GUI callbacks (`<mod_id>__<setting_id>_on_decrease` / `_on_increase`) and CMM numeric step helpers.
+8. Numeric steppers are wired through generic CMM markers and per-setting scripted GUI `_on_changed` callbacks.
 9. Shared registration hook `cmm_on_register_country` is in place and used by example mods.
 10. Runtime localization keys are derived from ids (no extra registration args for names/descriptions).
 11. Dynamic per-mod tabs are implemented in the right panel.
@@ -212,31 +212,16 @@ Required scripted GUI callbacks per numeric setting:
 <mod_id>__<setting_id>_on_changed = {
     scope = country
     effect = {
+        cmm_apply_numeric_change = {
+            setting = <mod_id>__<setting_id>
+        }
         # optional custom logic after numeric value changes
     }
     # optional is_shown = { ... } for row visibility
 }
-
-<mod_id>__<setting_id>_on_decrease = {
-    scope = country
-    effect = {
-        cmm_step_numeric_setting_down = {
-            setting = <mod_id>__<setting_id>
-        }
-    }
-}
-
-<mod_id>__<setting_id>_on_increase = {
-    scope = country
-    effect = {
-        cmm_step_numeric_setting_up = {
-            setting = <mod_id>__<setting_id>
-        }
-    }
-}
 ```
 
-For numeric settings, CMM executes `_on_changed` after `_on_decrease` and `_on_increase`.
+For numeric settings, CMM marks +/- generically and then executes setting-specific `_on_changed`.
 
 ## Registration Lifecycle
 

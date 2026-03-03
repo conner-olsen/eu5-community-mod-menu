@@ -182,20 +182,20 @@ macro = {
     replace_with = "GetScriptedGui(Concatenate(SettingKey, '_on_changed')).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
 }
 
-# Args: SettingKey (string)
+# Args: none
 # Returns: none
 macro = {
-    description = "Execute numeric setting decrease scripted GUI callback"
-    definition = "CMMExecuteSettingDecrease(SettingKey)"
-    replace_with = "GetScriptedGui(Concatenate(SettingKey, '_on_decrease')).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+    description = "Mark pending numeric change as decrease"
+    definition = "CMMMarkNumericDecrease"
+    replace_with = "GetScriptedGui('CMM_MarkNumericDecrease').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
 }
 
-# Args: SettingKey (string)
+# Args: none
 # Returns: none
 macro = {
-    description = "Execute numeric setting increase scripted GUI callback"
-    definition = "CMMExecuteSettingIncrease(SettingKey)"
-    replace_with = "GetScriptedGui(Concatenate(SettingKey, '_on_increase')).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+    description = "Mark pending numeric change as increase"
+    definition = "CMMMarkNumericIncrease"
+    replace_with = "GetScriptedGui('CMM_MarkNumericIncrease').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
 }
 
 # Args: SettingKey (string)

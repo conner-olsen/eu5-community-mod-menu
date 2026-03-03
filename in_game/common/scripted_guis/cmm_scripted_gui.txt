@@ -10,6 +10,24 @@ CMM_RegisterCoreMod = {
 	}
 }
 
+# Mark the next numeric interaction as decrease.
+# Scope: scripted_gui root
+# Args: none
+CMM_MarkNumericDecrease = {
+	effect = {
+		set_variable = { name = cmm_change_to_apply value = 0 }
+	}
+}
+
+# Mark the next numeric interaction as increase.
+# Scope: scripted_gui root
+# Args: none
+CMM_MarkNumericIncrease = {
+	effect = {
+		set_variable = { name = cmm_change_to_apply value = 1 }
+	}
+}
+
 # Handle demo toggle checkbox clicks.
 # Scope: country
 # Args: none
@@ -30,37 +48,15 @@ cmm_core__example_toggle_on_changed = {
 	}
 }
 
-# Visibility callback for core numeric demo setting.
+# On-changed callback for core numeric demo setting.
 # Scope: country
 # Args: none
 cmm_core__diagnostics_interval_on_changed = {
 	scope = country
 	effect = {
-		# no-op; keeps a unified visibility callback name across setting types.
-		set_variable = { name = cmm_core__diagnostics_interval value = var:cmm_core__diagnostics_interval }
-	}
-}
-
-# Decrease callback for core numeric demo setting.
-# Scope: country
-# Args: none
-cmm_core__diagnostics_interval_on_decrease = {
-	scope = country
-	effect = {
-		cmm_step_numeric_setting_down = {
+		cmm_apply_numeric_change = {
 			setting = cmm_core__diagnostics_interval
 		}
-	}
-}
-
-# Increase callback for core numeric demo setting.
-# Scope: country
-# Args: none
-cmm_core__diagnostics_interval_on_increase = {
-	scope = country
-	effect = {
-		cmm_step_numeric_setting_up = {
-			setting = cmm_core__diagnostics_interval
-		}
+		# optional custom logic
 	}
 }

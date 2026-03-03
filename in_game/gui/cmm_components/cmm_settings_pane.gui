@@ -127,8 +127,8 @@
 	# - Player.MakeScope.GetVariable(Scope.GetFlagName) [value]: current setting value for checked/value display.
 	# Writes:
 	# - GetScriptedGui(Concatenate(Scope.GetFlagName, '_on_changed')).Execute(...) [effect]: applies shared post-change logic and bool toggles.
-	# - GetScriptedGui(Concatenate(Scope.GetFlagName, '_on_decrease')).Execute(...) [effect]: decreases numeric settings.
-	# - GetScriptedGui(Concatenate(Scope.GetFlagName, '_on_increase')).Execute(...) [effect]: increases numeric settings.
+	# - GetScriptedGui('CMM_MarkNumericDecrease').Execute(...) [effect]: stores pending numeric decrease marker.
+	# - GetScriptedGui('CMM_MarkNumericIncrease').Execute(...) [effect]: stores pending numeric increase marker.
 	type cmm_setting_row = widget {
 		layoutpolicy_horizontal = expanding
 		minimumsize = { 0 68 }
@@ -155,7 +155,7 @@
 				button_regular = {
 					minimumsize = { 32 32 }
 					text = "-"
-					onclick = "[CMMExecuteSettingDecrease(Scope.GetFlagName)]"
+					onclick = "[CMMMarkNumericDecrease]"
 					onclick = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
 					tooltip_enabled = no
 				}
@@ -168,7 +168,7 @@
 				button_regular = {
 					minimumsize = { 32 32 }
 					text = "+"
-					onclick = "[CMMExecuteSettingIncrease(Scope.GetFlagName)]"
+					onclick = "[CMMMarkNumericIncrease]"
 					onclick = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
 					tooltip_enabled = no
 				}

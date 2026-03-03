@@ -281,3 +281,27 @@ cmm_step_numeric_setting_down = {
 		set_variable = { name = $setting$ value = var:cmm_setting_min_$setting$ }
 	}
 }
+
+# Apply the pending numeric change marker to a setting and clear the marker.
+# Scope: country
+# Args:
+# - setting (key): Composite setting key `<mod_id>__<setting_id>`.
+cmm_apply_numeric_change = {
+	if = {
+		limit = { has_variable = cmm_change_to_apply }
+
+		if = {
+			limit = { var:cmm_change_to_apply = 1 }
+			cmm_step_numeric_setting_up = {
+				setting = $setting$
+			}
+		}
+		else = {
+			cmm_step_numeric_setting_down = {
+				setting = $setting$
+			}
+		}
+
+		remove_variable = cmm_change_to_apply
+	}
+}

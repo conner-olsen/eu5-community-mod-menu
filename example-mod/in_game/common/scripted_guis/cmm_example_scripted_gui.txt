@@ -38,26 +38,9 @@ cmm_example__monthly_bonus_on_changed = {
 	scope = country
 
 	effect = {
-		set_variable = { name = cmm_example__monthly_bonus value = var:cmm_example__monthly_bonus }
-	}
-}
-
-cmm_example__monthly_bonus_on_decrease = {
-	scope = country
-
-	effect = {
-		cmm_step_numeric_setting_down = {
+		cmm_apply_numeric_change = {
 			setting = cmm_example__monthly_bonus
 		}
-	}
-}
-
-cmm_example__monthly_bonus_on_increase = {
-	scope = country
-
-	effect = {
-		cmm_step_numeric_setting_up = {
-			setting = cmm_example__monthly_bonus
-		}
+		# optional custom logic
 	}
 }
