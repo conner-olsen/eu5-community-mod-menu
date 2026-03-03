@@ -7,7 +7,7 @@ This is a minimal integration mod for `community.mod.menu.dev`.
 - Declaring dependency on Community Mod Menu in `.metadata/metadata.json`.
 - Registering a mod id (`cmm_example`) with derived localization keys.
 - Appending into CMM shared registration hook `cmm_on_register_country`.
-- Defining immediate per-setting scripted GUI callbacks via `<mod_id>__<setting_id>_on_changed`.
+- Defining immediate per-setting scripted GUI callbacks (`_on_changed`, plus numeric `_on_decrease` / `_on_increase`).
 
 ## Files
 

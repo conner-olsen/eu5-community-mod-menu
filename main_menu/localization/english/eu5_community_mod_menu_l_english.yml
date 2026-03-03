@@ -16,4 +16,5 @@
  cmm_core_general_name: "General"
  cmm_core_example_toggle_name: "Enable CMM Diagnostics"
  cmm_core_example_toggle_desc: "Example core toggle registered through the same API available to other mods."
-
+ cmm_core_diagnostics_interval_name: "Diagnostics Interval"
+ cmm_core_diagnostics_interval_desc: "Example numeric setting that controls a diagnostic interval value."

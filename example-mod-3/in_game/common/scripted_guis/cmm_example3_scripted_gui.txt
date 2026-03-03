@@ -33,3 +33,31 @@ cmm_example3__event_hints_on_changed = {
 		}
 	}
 }
+
+cmm_example3__export_interval_on_changed = {
+	scope = country
+
+	effect = {
+		set_variable = { name = cmm_example3__export_interval value = var:cmm_example3__export_interval }
+	}
+}
+
+cmm_example3__export_interval_on_decrease = {
+	scope = country
+
+	effect = {
+		cmm_step_numeric_setting_down = {
+			setting = cmm_example3__export_interval
+		}
+	}
+}
+
+cmm_example3__export_interval_on_increase = {
+	scope = country
+
+	effect = {
+		cmm_step_numeric_setting_up = {
+			setting = cmm_example3__export_interval
+		}
+	}
+}

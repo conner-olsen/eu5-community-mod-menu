@@ -30,3 +30,37 @@ cmm_core__example_toggle_on_changed = {
 	}
 }
 
+# Visibility callback for core numeric demo setting.
+# Scope: country
+# Args: none
+cmm_core__diagnostics_interval_on_changed = {
+	scope = country
+	effect = {
+		# no-op; keeps a unified visibility callback name across setting types.
+		set_variable = { name = cmm_core__diagnostics_interval value = var:cmm_core__diagnostics_interval }
+	}
+}
+
+# Decrease callback for core numeric demo setting.
+# Scope: country
+# Args: none
+cmm_core__diagnostics_interval_on_decrease = {
+	scope = country
+	effect = {
+		cmm_step_numeric_setting_down = {
+			setting = cmm_core__diagnostics_interval
+		}
+	}
+}
+
+# Increase callback for core numeric demo setting.
+# Scope: country
+# Args: none
+cmm_core__diagnostics_interval_on_increase = {
+	scope = country
+	effect = {
+		cmm_step_numeric_setting_up = {
+			setting = cmm_core__diagnostics_interval
+		}
+	}
+}

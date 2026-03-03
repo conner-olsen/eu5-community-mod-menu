@@ -87,6 +87,22 @@ macro = {
 }
 
 # Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when a setting key is registered as bool type"
+    definition = "CMMSettingIsBool(SettingKey)"
+    replace_with = "Not(CMMSettingIsNumeric(SettingKey))"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when a setting key is registered as numeric type"
+    definition = "CMMSettingIsNumeric(SettingKey)"
+    replace_with = "CMMVar(Concatenate('cmm_setting_step_', SettingKey)).IsSet"
+}
+
+# Args: SettingKey (string)
 # Returns: string
 macro = {
     description = "Setting label localization"
@@ -107,7 +123,7 @@ macro = {
 macro = {
     description = "True when selected tab has a tab-setting-count variable"
     definition = "CMMSelectedTabCountIsSet"
-    replace_with = "CMMVar(Concatenate('cmm_tab_bool_setting_count_', GetVariableSystem.Get('cmm_selected_tab'))).IsSet"
+    replace_with = "CMMVar(Concatenate('cmm_tab_setting_count_', GetVariableSystem.Get('cmm_selected_tab'))).IsSet"
 }
 
 # Args: none
@@ -115,7 +131,7 @@ macro = {
 macro = {
     description = "Selected tab setting count value"
     definition = "CMMSelectedTabCountValue"
-    replace_with = "CMMVar(Concatenate('cmm_tab_bool_setting_count_', GetVariableSystem.Get('cmm_selected_tab'))).GetValue"
+    replace_with = "CMMVar(Concatenate('cmm_tab_setting_count_', GetVariableSystem.Get('cmm_selected_tab'))).GetValue"
 }
 
 # Args: none
@@ -167,11 +183,35 @@ macro = {
 }
 
 # Args: SettingKey (string)
+# Returns: none
+macro = {
+    description = "Execute numeric setting decrease scripted GUI callback"
+    definition = "CMMExecuteSettingDecrease(SettingKey)"
+    replace_with = "GetScriptedGui(Concatenate(SettingKey, '_on_decrease')).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
+# Args: SettingKey (string)
+# Returns: none
+macro = {
+    description = "Execute numeric setting increase scripted GUI callback"
+    definition = "CMMExecuteSettingIncrease(SettingKey)"
+    replace_with = "GetScriptedGui(Concatenate(SettingKey, '_on_increase')).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
+# Args: SettingKey (string)
 # Returns: boolean
 macro = {
-    description = "Checkbox checked state for numeric bool setting (1 = on)"
+    description = "Checkbox checked state for bool settings (1 = on)"
     definition = "CMMIsSettingEnabled(SettingKey)"
     replace_with = "EqualTo_CFixedPoint(CMMVar(SettingKey).GetValue, '(CFixedPoint)1')"
+}
+
+# Args: SettingKey (string)
+# Returns: value
+macro = {
+    description = "Numeric setting value text"
+    definition = "CMMNumericSettingValue(SettingKey)"
+    replace_with = "CMMVar(SettingKey).GetValue"
 }
 
 # Args: none

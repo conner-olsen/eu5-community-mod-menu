@@ -7,4 +7,5 @@
  cmm_example3_ledger_export_desc: "Allows Example Mod 3 to generate sample ledger export data."
  cmm_example3_event_hints_name: "Enable Event Hints"
  cmm_example3_event_hints_desc: "Shows additional event hinting text when enabled."
-
+ cmm_example3_export_interval_name: "Export Interval"
+ cmm_example3_export_interval_desc: "Example numeric setting for export cadence."

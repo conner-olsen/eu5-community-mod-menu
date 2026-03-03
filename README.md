@@ -6,17 +6,18 @@ A dependency mod for **Europa Universalis 5** that provides one shared in-game m
 
 - Pause menu button (`Mod Menu`) via intentional `ingame_menu.gui` override.
 - Dynamic left mod list (search + compact rendering).
-- Dynamic right settings panel for registered boolean settings.
+- Dynamic right settings panel for registered bool and numeric settings.
+- Dynamic per-mod tabs in the right panel.
 - Mod-id-based registration API with no fixed slot cap.
 - GUI function macro layer for shared CMM data-binding expressions (`loading_screen/data_binding/cmm_macros.txt`).
 
 ## Current settings scope (v1)
 
-- Boolean settings only.
+- Bool settings (`0`/`1`) with checkbox controls.
+- Numeric settings with stepper controls (`-` / `+`).
 - Registration order is preserved.
 - Value changes are persisted as country variables.
-- Dynamic per-mod tabs in right panel.
-- UI invokes immediate per-setting scripted GUI callbacks after each toggle.
+- UI invokes per-setting scripted GUI callbacks immediately on interaction.
 
 ## Install
 
@@ -38,6 +39,16 @@ cmm_register_bool_setting = {
     tab_id = your_tab_id
     default_value = 0 # required; 0 (off) or 1 (on)
 }
+
+cmm_register_numeric_setting = {
+    mod_id = your_mod_id
+    setting_id = your_setting_id
+    tab_id = your_tab_id
+    default_value = 10 # required
+    min_value = 0      # required
+    max_value = 100    # required
+    step_value = 5     # required
+}
 ```
 
 Localization key format is enforced by ids:
@@ -49,14 +60,41 @@ Localization key format is enforced by ids:
 Callback contract:
 
 ```txt
-# CMM executes this scripted GUI on each UI toggle:
+# Bool setting callback (required):
 <mod_id>__<setting_id>_on_changed = {
     scope = country
     effect = {
         cmm_toggle_bool_setting = {
             setting = <mod_id>__<setting_id>
         }
-        # optional enabled/disabled logic
+    }
+}
+
+# Numeric shared callback (required; executed after + / -):
+<mod_id>__<setting_id>_on_changed = {
+    scope = country
+    effect = {
+        # optional custom logic after numeric value changes
+    }
+    # optional is_shown = { ... }
+}
+
+# Numeric step callbacks (required):
+<mod_id>__<setting_id>_on_decrease = {
+    scope = country
+    effect = {
+        cmm_step_numeric_setting_down = {
+            setting = <mod_id>__<setting_id>
+        }
+    }
+}
+
+<mod_id>__<setting_id>_on_increase = {
+    scope = country
+    effect = {
+        cmm_step_numeric_setting_up = {
+            setting = <mod_id>__<setting_id>
+        }
     }
 }
 ```
@@ -74,4 +112,3 @@ Full integration docs: `docs/mod-integration.md`.
 ## License
 
 GPL-3.0. See `LICENSE`.
-

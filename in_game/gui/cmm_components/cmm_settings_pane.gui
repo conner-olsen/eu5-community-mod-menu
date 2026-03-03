@@ -8,7 +8,7 @@
 	# - GetVariableSystem.Get('cmm_selected_tab') [string]: active tab key for tab and row filtering.
 	# Writes:
 	# - GetVariableSystem.Set('cmm_selected_tab') [string]: changes selected tab from tab clicks.
-	# - <mod_id>__<setting_id>_on_changed callbacks [effect]: update setting values when checkboxes are clicked.
+	# - <mod_id>__<setting_id> callbacks [effect]: update setting values when controls are used.
 	type cmm_settings_panel = vbox {
 		using = layoutpolicy_expanding
 		using = bg_main_inner_alt
@@ -119,14 +119,16 @@
 		}
 	}
 
-	# Single setting row (checkbox + name + description).
+	# Single setting row for bool and numeric settings.
 	# Reads:
 	# - Scope.GetFlagName [string]: current setting key (`<mod_id>__<setting_id>`).
 	# - GetVariableSystem.Get('cmm_selected_mod') [string]: active mod id for row visibility filtering.
 	# - GetVariableSystem.Get('cmm_selected_tab') [string]: active tab key for row visibility filtering.
-	# - Player.MakeScope.GetVariable(Scope.GetFlagName) [value]: numeric setting value used for checked state.
+	# - Player.MakeScope.GetVariable(Scope.GetFlagName) [value]: current setting value for checked/value display.
 	# Writes:
-	# - GetScriptedGui(Concatenate(Scope.GetFlagName, '_on_changed')).Execute(...) [effect]: applies setting change logic on click.
+	# - GetScriptedGui(Concatenate(Scope.GetFlagName, '_on_changed')).Execute(...) [effect]: applies shared post-change logic and bool toggles.
+	# - GetScriptedGui(Concatenate(Scope.GetFlagName, '_on_decrease')).Execute(...) [effect]: decreases numeric settings.
+	# - GetScriptedGui(Concatenate(Scope.GetFlagName, '_on_increase')).Execute(...) [effect]: increases numeric settings.
 	type cmm_setting_row = widget {
 		layoutpolicy_horizontal = expanding
 		minimumsize = { 0 68 }
@@ -139,9 +141,37 @@
 			spacing = 10
 
 			checkbox_square_alt = {
+				visible = "[CMMSettingIsBool(Scope.GetFlagName)]"
 				onclick = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
 				checked = "[CMMIsSettingEnabled(Scope.GetFlagName)]"
 				tooltip_enabled = no
+			}
+
+			hbox = {
+				visible = "[CMMSettingIsNumeric(Scope.GetFlagName)]"
+				spacing = 4
+				minimumsize = { 120 0 }
+
+				button_regular = {
+					minimumsize = { 32 32 }
+					text = "-"
+					onclick = "[CMMExecuteSettingDecrease(Scope.GetFlagName)]"
+					onclick = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+					tooltip_enabled = no
+				}
+
+				text_single = {
+					minimumsize = { 44 0 }
+					text = "[CMMNumericSettingValue(Scope.GetFlagName)]"
+				}
+
+				button_regular = {
+					minimumsize = { 32 32 }
+					text = "+"
+					onclick = "[CMMExecuteSettingIncrease(Scope.GetFlagName)]"
+					onclick = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+					tooltip_enabled = no
+				}
 			}
 
 			vbox = {
@@ -161,4 +191,3 @@
 		}
 	}
 }
-

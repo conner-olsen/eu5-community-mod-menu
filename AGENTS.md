@@ -1,6 +1,6 @@
 ﻿# AGENTS.md
 
-Last updated: 2026-03-02
+Last updated: 2026-03-03
 
 ## Critical Context
 
@@ -22,21 +22,23 @@ Maintain CMM as a general-purpose dependency mod menu:
 
 Implemented:
 
-1. Pause-menu button injection and open/close flow are working (`ingame_menu.gui` + `cmm_window.gui`).
+1. Pause-menu button injection and open/close flow are working (`cmm_ingame_menu.gui` + `cmm_window.gui`).
 2. Dynamic mod registration is working via `cmm_register_mod`.
 3. Dynamic bool setting registration is working via `cmm_register_bool_setting`.
-4. Left panel is dynamic, scrollable, searchable, and physically compacts filtered results.
-5. Right panel renders selected-mod metadata and dynamic setting rows.
-6. Checkbox toggles are wired through scripted GUI callbacks (`<mod_id>__<setting_id>_on_changed`) and `cmm_toggle_bool_setting`.
-7. Shared registration hook `cmm_on_register_country` is in place and used by example mods.
-8. Runtime localization keys are derived from ids (no extra registration args for names/descriptions).
-9. Dynamic per-mod tabs are implemented in the right panel.
-10. Bool settings are filtered by both selected mod and selected tab.
-11. GUI function macro layer is in place (`loading_screen/data_binding/cmm_macros.txt`) and used by CMM GUI.
+4. Dynamic numeric setting registration is working via `cmm_register_numeric_setting`.
+5. Left panel is dynamic, scrollable, searchable, and physically compacts filtered results.
+6. Right panel renders selected-mod metadata and dynamic setting rows.
+7. Bool toggles are wired through scripted GUI callbacks (`<mod_id>__<setting_id>_on_changed`) and `cmm_toggle_bool_setting`.
+8. Numeric steppers are wired through scripted GUI callbacks (`<mod_id>__<setting_id>_on_decrease` / `_on_increase`) and CMM numeric step helpers.
+9. Shared registration hook `cmm_on_register_country` is in place and used by example mods.
+10. Runtime localization keys are derived from ids (no extra registration args for names/descriptions).
+11. Dynamic per-mod tabs are implemented in the right panel.
+12. Settings are filtered by both selected mod and selected tab.
+13. GUI function macro layer is in place (`loading_screen/data_binding/cmm_macros.txt`) and used by CMM GUI.
 
 Remaining:
 
-1. Add non-bool controls (numeric/slider/dropdown/text) and define stable API.
+1. Add remaining non-bool controls (slider/dropdown/text) and define stable API.
 2. Finalize list ordering policy (registration-first vs optional alpha mode).
 3. Expand docs/examples after non-bool controls exist.
 
@@ -83,7 +85,7 @@ Additional rules:
 
 ## Core File Map
 
-- `in_game/gui/ingame_menu.gui`
+- `in_game/gui/cmm_ingame_menu.gui`
 - `in_game/gui/cmm_window.gui`
 - `in_game/common/scripted_effects/cmm_effects.txt`
 - `in_game/common/scripted_guis/cmm_scripted_gui.txt`
@@ -169,6 +171,16 @@ cmm_register_bool_setting = {
     tab_id = <required>
     default_value = <required, 0|1>
 }
+
+cmm_register_numeric_setting = {
+    mod_id = <required>
+    setting_id = <required>
+    tab_id = <required>
+    default_value = <required, number>
+    min_value = <required, number>
+    max_value = <required, number>
+    step_value = <required, number>
+}
 ```
 
 Derived localization keys:
@@ -179,7 +191,7 @@ Derived localization keys:
 - Setting name: `<mod_id>_<setting_id>_name`
 - Setting description: `<mod_id>_<setting_id>_desc`
 
-Required scripted GUI callback per bool setting:
+Required scripted GUI callbacks per bool setting:
 
 ```txt
 <mod_id>__<setting_id>_on_changed = {
@@ -194,20 +206,51 @@ Required scripted GUI callback per bool setting:
 }
 ```
 
+Required scripted GUI callbacks per numeric setting:
+
+```txt
+<mod_id>__<setting_id>_on_changed = {
+    scope = country
+    effect = {
+        # optional custom logic after numeric value changes
+    }
+    # optional is_shown = { ... } for row visibility
+}
+
+<mod_id>__<setting_id>_on_decrease = {
+    scope = country
+    effect = {
+        cmm_step_numeric_setting_down = {
+            setting = <mod_id>__<setting_id>
+        }
+    }
+}
+
+<mod_id>__<setting_id>_on_increase = {
+    scope = country
+    effect = {
+        cmm_step_numeric_setting_up = {
+            setting = <mod_id>__<setting_id>
+        }
+    }
+}
+```
+
+For numeric settings, CMM executes `_on_changed` after `_on_decrease` and `_on_increase`.
+
 ## Registration Lifecycle
 
 - CMM fires shared custom on_action `cmm_on_register_country`.
 - Integrating mods append their own leaf on_actions under that hook.
 - CMM invokes registration on:
   - startup synchronization,
-  - periodic human-country sync,
   - menu-open path.
 
 ## Tabs (Implemented)
 
 Behavior:
 
-1. Tabs are registered dynamically via `cmm_register_tab` and/or implicitly via `cmm_register_bool_setting`.
+1. Tabs are registered dynamically via `cmm_register_tab` and/or implicitly via setting registration APIs.
 2. Right panel renders tabs from `cmm_registered_tab_keys`, filtered to selected mod.
 3. Clicking a mod row sets selected mod and selected tab default (`cmm_mod_default_tab_<mod_id>`).
 4. Clicking a tab sets `cmm_selected_tab`.

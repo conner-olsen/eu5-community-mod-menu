@@ -7,4 +7,5 @@
  cmm_example_feature_enabled_desc: "Turns on the sample feature flag for Example Mod."
  cmm_example_show_notifications_name: "Show Example Notifications"
  cmm_example_show_notifications_desc: "Controls whether Example Mod emits notification-style updates."
-
+ cmm_example_monthly_bonus_name: "Monthly Bonus"
+ cmm_example_monthly_bonus_desc: "Example numeric setting for a monthly bonus amount."

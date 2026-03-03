@@ -17,4 +17,14 @@ cmm_example3_register_country = {
 		tab_id = events
 		default_value = 0
 	}
+
+	cmm_register_numeric_setting = {
+		mod_id = cmm_example3
+		setting_id = export_interval
+		tab_id = economy
+		default_value = 3
+		min_value = 1
+		max_value = 12
+		step_value = 1
+	}
 }
