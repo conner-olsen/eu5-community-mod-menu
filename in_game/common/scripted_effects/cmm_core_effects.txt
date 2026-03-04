@@ -309,65 +309,27 @@ cmm_toggle_bool_setting = {
 	}
 }
 
-# Select the next option for a dropdown setting (with wrap-around).
-# Scope: country
-# Args:
-# - setting (key): Composite setting key `<mod_id>__<setting_id>`.
-cmm_step_dropdown_setting_next = {
-	change_variable = { name = $setting$ add = 1 }
-
-	if = {
-		limit = { var:$setting$ > var:cmm_setting_dropdown_last_index_$setting$ }
-		set_variable = { name = $setting$ value = 0 }
-	}
-}
-
-# Select the previous option for a dropdown setting (with wrap-around).
-# Scope: country
-# Args:
-# - setting (key): Composite setting key `<mod_id>__<setting_id>`.
-cmm_step_dropdown_setting_previous = {
-	change_variable = { name = $setting$ add = -1 }
-
-	if = {
-		limit = { var:$setting$ < 0 }
-		set_variable = { name = $setting$ value = var:cmm_setting_dropdown_last_index_$setting$ }
-	}
-}
-
-# Select the first option for a dropdown setting.
-# Scope: country
-# Args:
-# - setting (key): Composite setting key `<mod_id>__<setting_id>`.
-cmm_set_dropdown_setting_first = {
-	set_variable = { name = $setting$ value = 0 }
-}
-
-# Select the last option for a dropdown setting.
-# Scope: country
-# Args:
-# - setting (key): Composite setting key `<mod_id>__<setting_id>`.
-cmm_set_dropdown_setting_last = {
-	set_variable = { name = $setting$ value = var:cmm_setting_dropdown_last_index_$setting$ }
-}
-
-# Apply the pending dropdown change marker to a setting and clear the marker.
+# Apply the pending dropdown selected index to a setting and clear the marker.
 # Scope: country
 # Args:
 # - setting (key): Composite setting key `<mod_id>__<setting_id>`.
 cmm_apply_dropdown_change = {
 	if = {
-		limit = { has_variable = cmm_dropdown_change_to_apply }
+		limit = { has_variable = cmm_dropdown_index_to_apply }
+		set_variable = { name = cmm_dbg_dropdown_last_applied_index value = var:cmm_dropdown_index_to_apply }
+		set_variable = { name = $setting$ value = var:cmm_dropdown_index_to_apply }
 
-		switch = {
-			trigger = var:cmm_dropdown_change_to_apply
-			1 = { cmm_step_dropdown_setting_next = { setting = $setting$ } }
-			-1 = { cmm_step_dropdown_setting_previous = { setting = $setting$ } }
-			3 = { cmm_set_dropdown_setting_last = { setting = $setting$ } }
-			-3 = { cmm_set_dropdown_setting_first = { setting = $setting$ } }
+		if = {
+			limit = { var:$setting$ < 0 }
+			set_variable = { name = $setting$ value = 0 }
 		}
 
-		remove_variable = cmm_dropdown_change_to_apply
+		if = {
+			limit = { var:$setting$ > var:cmm_setting_dropdown_last_index_$setting$ }
+			set_variable = { name = $setting$ value = var:cmm_setting_dropdown_last_index_$setting$ }
+		}
+
+		remove_variable = cmm_dropdown_index_to_apply
 	}
 }
 

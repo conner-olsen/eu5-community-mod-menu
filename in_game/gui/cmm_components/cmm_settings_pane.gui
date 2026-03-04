@@ -119,6 +119,111 @@
 		}
 	}
 
+	# Dropdown control for one CMM setting row.
+	# Reads:
+	# - Scope.GetFlagName [string]: current setting key in root context (`<mod_id>__<setting_id>`).
+	# - PdxGuiWidget.GetIndexInDataModel [int32]: clicked option index in item context.
+	# - Player.MakeScope.GetVariable(<setting_key>) [value]: current selected dropdown index.
+	# Writes:
+	# - cmm_dropdown_index_to_apply [value]: pending selected index for `cmm_apply_dropdown_change`.
+	# - <mod_id>__<setting_id> callbacks [effect]: applies selected index to setting via `_on_changed`.
+	type cmm_dropdown_setting_control = dropDown {
+		size = { 168 30 }
+		alwaystransparent = no
+		datamodel = "[DataModelRepeatedItem(CMMDropdownOptionCount(Scope.GetFlagName))]"
+		selectedindex = "[CMMDropdownSelectedIndex(Scope.GetFlagName)]"
+		onselectionchanged = "[GetVariableSystem.Set('cmm_dbg_dropdown_onselection_scope', Scope.GetFlagName)]"
+
+		active_item = {
+			widget = {
+				size = { 100% 30 }
+
+				button_drop = {
+					tooltip_enabled = no
+				}
+				hbox = {
+					using = layoutpolicy_expanding
+					margin = { 5 0 }
+
+					text_single = {
+						using = layoutpolicy_expanding
+						margin = { 10 0 }
+						autoresize = no
+						align = left|nobaseline
+						fontsize_min = 13
+						text = "[CMMDropdownSelectedLabel(Scope.GetFlagName)]"
+					}
+
+					icon = {
+						size = { 22 22 }
+						texture = "gfx/interface/buttons/flats/button_simple_down.dds"
+						using = color_gold
+						modify_texture = {
+							using = overlay_window_texture
+							blend_mode = overlay
+							alpha = 1
+						}
+					}
+				}
+			}
+		}
+
+		item = {
+			widget = {
+				size = { 100% 30 }
+
+				button_dropdown = {
+					button_trigger = left
+					onclick = "[GetVariableSystem.Set('cmm_dbg_dropdown_item_index', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
+					onclick = "[GetVariableSystem.Set('cmm_dbg_dropdown_item_scope', Scope.GetFlagName)]"
+					onclick = "[GetScriptedGui(Concatenate('CMM_MarkDropdownSelection_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+					onclick = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+					tooltip_enabled = no
+				}
+
+				text_single = {
+					size = { 100% 100% }
+					margin = { 15 0 }
+					autoresize = no
+					align = left|nobaseline
+					fontsize_min = 13
+					default_format = "#medium"
+					text = "[CMMDropdownListLabel(Scope.GetFlagName,PdxGuiWidget.GetIndexInDataModel)]"
+				}
+			}
+		}
+
+		list = {
+			scrollarea = {
+				size = { 100% 250 }
+				position = { 0 0 }
+				autoresizescrollarea = yes
+				autoresizeviewport = yes
+				alwaystransparent = yes
+				scrollbarpolicy_horizontal = always_off
+
+				background = {
+					using = dropdown_list_background_template
+				}
+
+				maximumsize = { -1 250 }
+
+				scrollwidget = {
+					fixedgridbox = {
+						setitemsizefromcell = yes
+						alwaystransparent = no
+						addcolumn = 100%
+						addrow = 30
+					}
+				}
+
+				scrollbar_vertical = {
+					using = Scrollbar_Vertical
+				}
+			}
+		}
+	}
+
 	# Single setting row for bool, numeric, and dropdown settings.
 	# Reads:
 	# - Scope.GetFlagName [string]: current setting key (`<mod_id>__<setting_id>`).
@@ -130,7 +235,7 @@
 	# Writes:
 	# - GetScriptedGui(Concatenate(Scope.GetFlagName, '_on_changed')).Execute(...) [effect]: applies shared post-change setting logic.
 	# - GetScriptedGui('CMM_MarkNumeric*').Execute(...) [effect]: stores pending numeric delta mode.
-	# - GetScriptedGui('CMM_MarkDropdown*').Execute(...) [effect]: stores pending dropdown direction mode.
+	# - GetScriptedGui('CMM_MarkDropdownSelection_<index>').Execute(...) [effect]: stores pending dropdown selected index.
 	type cmm_setting_row = widget {
 		layoutpolicy_horizontal = expanding
 		minimumsize = { 0 68 }
@@ -149,76 +254,8 @@
 				tooltip_enabled = no
 			}
 
-			hbox = {
+			cmm_dropdown_setting_control = {
 				visible = "[CMMSettingIsDropdown(Scope.GetFlagName)]"
-				spacing = 4
-				minimumsize = { 168 0 }
-
-				button_regular = {
-					minimumsize = { 32 32 }
-					text = "<"
-
-					action_tooltip = {
-						click_mode = single
-						click_type = left
-						click_modifier = default
-						title = "CMM_DROPDOWN_PREVIOUS"
-						on_action = "[CMMMarkDropdownPrevious]"
-						on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-					}
-
-					action_tooltip = {
-						click_modifier = shift
-						click_mode = single
-						click_type = left
-						title = "CMM_DROPDOWN_FIRST"
-						on_action = "[CMMMarkDropdownFirst]"
-						on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-					}
-
-					tooltipwidget = {
-						BasicFunctionalTooltip = {}
-					}
-				}
-
-				widget = {
-					name = "dropdown_value_widget"
-					minimumsize = { 84 0 }
-
-					text_single = {
-						parentanchor = center
-						widgetanchor = center
-						align = center
-						text = "[Localize(Concatenate(Concatenate(Scope.GetFlagName, '_option_'), Concatenate(ToString_int32(FixedPointToInt(Player.MakeScope.GetVariable(Scope.GetFlagName).GetValue)), '_name')))]"
-					}
-				}
-
-				button_regular = {
-					minimumsize = { 32 32 }
-					text = ">"
-
-					action_tooltip = {
-						click_mode = single
-						click_type = left
-						click_modifier = default
-						title = "CMM_DROPDOWN_NEXT"
-						on_action = "[CMMMarkDropdownNext]"
-						on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-					}
-
-					action_tooltip = {
-						click_modifier = shift
-						click_mode = single
-						click_type = left
-						title = "CMM_DROPDOWN_LAST"
-						on_action = "[CMMMarkDropdownLast]"
-						on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-					}
-
-					tooltipwidget = {
-						BasicFunctionalTooltip = {}
-					}
-				}
 			}
 
 			hbox = {
@@ -327,6 +364,12 @@
 					text = "[CMMSettingDesc(Scope.GetFlagName)]"
 					autoresize = yes
 					max_width = 620
+				}
+
+				text_single = {
+					visible = "[CMMSettingIsDropdown(Scope.GetFlagName)]"
+					default_format = "#color_gray"
+					raw_text = "DBG i:[GetVariableSystem.Get('cmm_dbg_dropdown_item_index')] s:[GetVariableSystem.Get('cmm_dbg_dropdown_item_scope')] o:[GetVariableSystem.Get('cmm_dbg_dropdown_onselection_scope')] m:[Player.MakeScope.GetVariable('cmm_dbg_dropdown_last_marked_index').GetValue] p:[Player.MakeScope.GetVariable('cmm_dropdown_index_to_apply').GetValue] a:[Player.MakeScope.GetVariable('cmm_dbg_dropdown_last_applied_index').GetValue] v:[Player.MakeScope.GetVariable(Scope.GetFlagName).GetValue]"
 				}
 			}
 		}

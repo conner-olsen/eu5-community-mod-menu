@@ -180,7 +180,7 @@ Notes:
 
 - `_on_changed` is also used for row visibility (`is_shown`) checks.
 - CMM handles numeric modes (`1x`, `5x`, `min/max`) via generic marker scripted GUIs, then executes `_on_changed`.
-- CMM handles dropdown modes (previous/next/first/last) via generic marker scripted GUIs, then executes `_on_changed`.
+- CMM captures dropdown selection index via a generic marker scripted GUI, then executes `_on_changed`.
 - If `is_shown` is omitted, the row is visible.
 - Checked/value state is read directly from `var:<mod_id>__<setting_id>` by CMM UI.
 

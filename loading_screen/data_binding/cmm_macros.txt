@@ -238,38 +238,6 @@ macro = {
     replace_with = "GetScriptedGui('CMM_MarkNumericIncreaseToMax').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
 }
 
-# Args: none
-# Returns: none
-macro = {
-    description = "Mark pending dropdown change as previous option"
-    definition = "CMMMarkDropdownPrevious"
-    replace_with = "GetScriptedGui('CMM_MarkDropdownPrevious').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
-}
-
-# Args: none
-# Returns: none
-macro = {
-    description = "Mark pending dropdown change as next option"
-    definition = "CMMMarkDropdownNext"
-    replace_with = "GetScriptedGui('CMM_MarkDropdownNext').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
-}
-
-# Args: none
-# Returns: none
-macro = {
-    description = "Mark pending dropdown change as first option"
-    definition = "CMMMarkDropdownFirst"
-    replace_with = "GetScriptedGui('CMM_MarkDropdownFirst').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
-}
-
-# Args: none
-# Returns: none
-macro = {
-    description = "Mark pending dropdown change as last option"
-    definition = "CMMMarkDropdownLast"
-    replace_with = "GetScriptedGui('CMM_MarkDropdownLast').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
-}
-
 # Args: SettingKey (string)
 # Returns: boolean
 macro = {
@@ -300,6 +268,38 @@ macro = {
     description = "Numeric setting maximum bound text"
     definition = "CMMNumericSettingMax(SettingKey)"
     replace_with = "CMMVar(Concatenate('cmm_setting_max_', SettingKey)).GetValue"
+}
+
+# Args: SettingKey (string)
+# Returns: int32
+macro = {
+    description = "Dropdown option count for one setting"
+    definition = "CMMDropdownOptionCount(SettingKey)"
+    replace_with = "FixedPointToInt(CMMVar(Concatenate('cmm_setting_dropdown_count_', SettingKey)).GetValue)"
+}
+
+# Args: SettingKey (string)
+# Returns: int32
+macro = {
+    description = "Dropdown selected index for one setting"
+    definition = "CMMDropdownSelectedIndex(SettingKey)"
+    replace_with = "FixedPointToInt(CMMVar(SettingKey).GetValue)"
+}
+
+# Args: SettingKey (string)
+# Returns: string
+macro = {
+    description = "Localized selected dropdown label for one setting"
+    definition = "CMMDropdownSelectedLabel(SettingKey)"
+    replace_with = "Localize(Concatenate(Concatenate(SettingKey, '_option_'), Concatenate(ToString_int32(CMMDropdownSelectedIndex(SettingKey)), '_name')))"
+}
+
+# Args: SettingKey (string), Index (int32)
+# Returns: string
+macro = {
+    description = "Localized dropdown list label for one setting and option index"
+    definition = "CMMDropdownListLabel(SettingKey,Index)"
+    replace_with = "Localize(Concatenate(Concatenate(SettingKey, '_option_'), Concatenate(ToString_int32(Index), '_name')))"
 }
 
 # Args: none
