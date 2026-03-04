@@ -15,6 +15,9 @@ A dependency mod for **Europa Universalis 5** that provides one shared in-game m
 
 - Bool settings (`0`/`1`) with checkbox controls.
 - Numeric settings with stepper controls (`-` / `+`).
+  - Click: `1x` step.
+  - `Ctrl+click`: `5x` step.
+  - `Shift+click`: jump to min/max.
 - Registration order is preserved.
 - Value changes are persisted as country variables.
 - UI invokes per-setting scripted GUI callbacks immediately on interaction.
@@ -83,7 +86,7 @@ Callback contract:
 }
 ```
 
-CMM handles numeric increase/decrease through generic marker scripted GUIs and then executes the setting-specific `_on_changed`.
+CMM handles numeric change modes through generic marker scripted GUIs (`1x`, `5x`, `min/max`) and then executes the setting-specific `_on_changed`.
 
 Registration hook contract:
 

@@ -185,7 +185,7 @@ macro = {
 # Args: none
 # Returns: none
 macro = {
-    description = "Mark pending numeric change as decrease"
+    description = "Mark pending numeric change as one-step decrease"
     definition = "CMMMarkNumericDecrease"
     replace_with = "GetScriptedGui('CMM_MarkNumericDecrease').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
 }
@@ -193,9 +193,41 @@ macro = {
 # Args: none
 # Returns: none
 macro = {
-    description = "Mark pending numeric change as increase"
+    description = "Mark pending numeric change as five-step decrease"
+    definition = "CMMMarkNumericDecrease5x"
+    replace_with = "GetScriptedGui('CMM_MarkNumericDecrease5x').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
+# Args: none
+# Returns: none
+macro = {
+    description = "Mark pending numeric change as jump-to-min"
+    definition = "CMMMarkNumericDecreaseToMin"
+    replace_with = "GetScriptedGui('CMM_MarkNumericDecreaseToMin').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
+# Args: none
+# Returns: none
+macro = {
+    description = "Mark pending numeric change as one-step increase"
     definition = "CMMMarkNumericIncrease"
     replace_with = "GetScriptedGui('CMM_MarkNumericIncrease').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
+# Args: none
+# Returns: none
+macro = {
+    description = "Mark pending numeric change as five-step increase"
+    definition = "CMMMarkNumericIncrease5x"
+    replace_with = "GetScriptedGui('CMM_MarkNumericIncrease5x').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
+# Args: none
+# Returns: none
+macro = {
+    description = "Mark pending numeric change as jump-to-max"
+    definition = "CMMMarkNumericIncreaseToMax"
+    replace_with = "GetScriptedGui('CMM_MarkNumericIncreaseToMax').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
 }
 
 # Args: SettingKey (string)

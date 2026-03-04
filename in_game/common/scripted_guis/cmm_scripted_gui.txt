@@ -10,21 +10,57 @@ CMM_RegisterCoreMod = {
 	}
 }
 
-# Mark the next numeric interaction as decrease.
+# Mark the next numeric interaction as one-step decrease.
 # Scope: scripted_gui root
 # Args: none
 CMM_MarkNumericDecrease = {
 	effect = {
-		set_variable = { name = cmm_change_to_apply value = 0 }
+		set_variable = { name = cmm_numeric_change_to_apply value = -1 }
 	}
 }
 
-# Mark the next numeric interaction as increase.
+# Mark the next numeric interaction as five-step decrease.
+# Scope: scripted_gui root
+# Args: none
+CMM_MarkNumericDecrease5x = {
+	effect = {
+		set_variable = { name = cmm_numeric_change_to_apply value = -2 }
+	}
+}
+
+# Mark the next numeric interaction as jump-to-min.
+# Scope: scripted_gui root
+# Args: none
+CMM_MarkNumericDecreaseToMin = {
+	effect = {
+		set_variable = { name = cmm_numeric_change_to_apply value = -3 }
+	}
+}
+
+# Mark the next numeric interaction as one-step increase.
 # Scope: scripted_gui root
 # Args: none
 CMM_MarkNumericIncrease = {
 	effect = {
-		set_variable = { name = cmm_change_to_apply value = 1 }
+		set_variable = { name = cmm_numeric_change_to_apply value = 1 }
+	}
+}
+
+# Mark the next numeric interaction as five-step increase.
+# Scope: scripted_gui root
+# Args: none
+CMM_MarkNumericIncrease5x = {
+	effect = {
+		set_variable = { name = cmm_numeric_change_to_apply value = 2 }
+	}
+}
+
+# Mark the next numeric interaction as jump-to-max.
+# Scope: scripted_gui root
+# Args: none
+CMM_MarkNumericIncreaseToMax = {
+	effect = {
+		set_variable = { name = cmm_numeric_change_to_apply value = 3 }
 	}
 }
 

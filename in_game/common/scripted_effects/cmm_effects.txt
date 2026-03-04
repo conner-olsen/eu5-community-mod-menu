@@ -269,6 +269,18 @@ cmm_step_numeric_setting_up = {
 	}
 }
 
+# Increase a numeric setting by five intervals and clamp to max.
+# Scope: country
+# Args:
+# - setting (key): Composite setting key `<mod_id>__<setting_id>`.
+cmm_step_numeric_setting_up_5x = {
+	cmm_step_numeric_setting_up = { setting = $setting$ }
+	cmm_step_numeric_setting_up = { setting = $setting$ }
+	cmm_step_numeric_setting_up = { setting = $setting$ }
+	cmm_step_numeric_setting_up = { setting = $setting$ }
+	cmm_step_numeric_setting_up = { setting = $setting$ }
+}
+
 # Decrease a numeric setting and clamp to its min value.
 # Scope: country
 # Args:
@@ -282,26 +294,67 @@ cmm_step_numeric_setting_down = {
 	}
 }
 
+# Decrease a numeric setting by five intervals and clamp to min.
+# Scope: country
+# Args:
+# - setting (key): Composite setting key `<mod_id>__<setting_id>`.
+cmm_step_numeric_setting_down_5x = {
+	cmm_step_numeric_setting_down = { setting = $setting$ }
+	cmm_step_numeric_setting_down = { setting = $setting$ }
+	cmm_step_numeric_setting_down = { setting = $setting$ }
+	cmm_step_numeric_setting_down = { setting = $setting$ }
+	cmm_step_numeric_setting_down = { setting = $setting$ }
+}
+
+# Set a numeric setting directly to its configured max value.
+# Scope: country
+# Args:
+# - setting (key): Composite setting key `<mod_id>__<setting_id>`.
+cmm_set_numeric_setting_max = {
+	set_variable = { name = $setting$ value = var:cmm_setting_max_$setting$ }
+}
+
+# Set a numeric setting directly to its configured min value.
+# Scope: country
+# Args:
+# - setting (key): Composite setting key `<mod_id>__<setting_id>`.
+cmm_set_numeric_setting_min = {
+	set_variable = { name = $setting$ value = var:cmm_setting_min_$setting$ }
+}
+
 # Apply the pending numeric change marker to a setting and clear the marker.
 # Scope: country
 # Args:
 # - setting (key): Composite setting key `<mod_id>__<setting_id>`.
 cmm_apply_numeric_change = {
 	if = {
-		limit = { has_variable = cmm_change_to_apply }
+		limit = { has_variable = cmm_numeric_change_to_apply }
 
 		if = {
-			limit = { var:cmm_change_to_apply = 1 }
-			cmm_step_numeric_setting_up = {
-				setting = $setting$
-			}
+			limit = { var:cmm_numeric_change_to_apply = 1 }
+			cmm_step_numeric_setting_up = { setting = $setting$ }
 		}
-		else = {
-			cmm_step_numeric_setting_down = {
-				setting = $setting$
-			}
+		else_if = {
+			limit = { var:cmm_numeric_change_to_apply = 2 }
+			cmm_step_numeric_setting_up_5x = { setting = $setting$ }
+		}
+		else_if = {
+			limit = { var:cmm_numeric_change_to_apply = 3 }
+			cmm_set_numeric_setting_max = { setting = $setting$ }
+		}
+		else_if = {
+			limit = { var:cmm_numeric_change_to_apply = -1 }
+			cmm_step_numeric_setting_down = { setting = $setting$ }
+		}
+		else_if = {
+			limit = { var:cmm_numeric_change_to_apply = -2 }
+			cmm_step_numeric_setting_down_5x = { setting = $setting$ }
+		}
+		else_if = {
+			limit = { var:cmm_numeric_change_to_apply = -3 }
+			cmm_set_numeric_setting_min = { setting = $setting$ }
 		}
 
-		remove_variable = cmm_change_to_apply
+		remove_variable = cmm_numeric_change_to_apply
 	}
 }

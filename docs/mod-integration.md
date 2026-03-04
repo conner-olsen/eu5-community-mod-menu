@@ -84,6 +84,10 @@ Arguments:
 - `min_value`: minimum allowed value.
 - `max_value`: maximum allowed value.
 - `step_value`: amount added/removed per button press.
+  - CMM numeric controls support modifiers:
+    - Click: `1x` step.
+    - `Ctrl+click`: `5x` step.
+    - `Shift+click`: jump to min/max.
 
 Localization keys are derived automatically from ids:
 
@@ -134,7 +138,7 @@ Required scripted GUI callback:
 Notes:
 
 - `_on_changed` is also used for row visibility (`is_shown`) checks.
-- CMM handles numeric +/- via generic marker scripted GUIs, then executes `_on_changed`.
+- CMM handles numeric modes (`1x`, `5x`, `min/max`) via generic marker scripted GUIs, then executes `_on_changed`.
 - If `is_shown` is omitted, the row is visible.
 - Checked/value state is read directly from `var:<mod_id>__<setting_id>` by CMM UI.
 

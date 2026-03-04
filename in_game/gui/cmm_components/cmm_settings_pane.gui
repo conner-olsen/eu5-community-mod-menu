@@ -127,8 +127,7 @@
 	# - Player.MakeScope.GetVariable(Scope.GetFlagName) [value]: current setting value for checked/value display.
 	# Writes:
 	# - GetScriptedGui(Concatenate(Scope.GetFlagName, '_on_changed')).Execute(...) [effect]: applies shared post-change logic and bool toggles.
-	# - GetScriptedGui('CMM_MarkNumericDecrease').Execute(...) [effect]: stores pending numeric decrease marker.
-	# - GetScriptedGui('CMM_MarkNumericIncrease').Execute(...) [effect]: stores pending numeric increase marker.
+	# - GetScriptedGui('CMM_MarkNumeric*').Execute(...) [effect]: stores pending numeric delta mode.
 	type cmm_setting_row = widget {
 		layoutpolicy_horizontal = expanding
 		minimumsize = { 0 68 }
@@ -155,9 +154,37 @@
 				button_regular = {
 					minimumsize = { 32 32 }
 					text = "-"
-					onclick = "[CMMMarkNumericDecrease]"
-					onclick = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-					tooltip_enabled = no
+
+					action_tooltip = {
+						click_mode = single
+						click_type = left
+						click_modifier = default
+						title = "CMM_NUMERIC_DECREASE"
+						on_action = "[CMMMarkNumericDecrease]"
+						on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+					}
+
+					action_tooltip = {
+						click_modifier = ctrl
+						click_mode = single
+						click_type = left
+						title = "CMM_NUMERIC_DECREASE_5X"
+						on_action = "[CMMMarkNumericDecrease5x]"
+						on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+					}
+
+					action_tooltip = {
+						click_modifier = shift
+						click_mode = single
+						click_type = left
+						title = "CMM_NUMERIC_DECREASE_MIN"
+						on_action = "[CMMMarkNumericDecreaseToMin]"
+						on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+					}
+
+					tooltipwidget = {
+						BasicFunctionalTooltip = {}
+					}
 				}
 
 				text_single = {
@@ -168,9 +195,37 @@
 				button_regular = {
 					minimumsize = { 32 32 }
 					text = "+"
-					onclick = "[CMMMarkNumericIncrease]"
-					onclick = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-					tooltip_enabled = no
+
+					action_tooltip = {
+						click_mode = single
+						click_type = left
+						click_modifier = default
+						title = "CMM_NUMERIC_INCREASE"
+						on_action = "[CMMMarkNumericIncrease]"
+						on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+					}
+
+					action_tooltip = {
+						click_modifier = ctrl
+						click_mode = single
+						click_type = left
+						title = "CMM_NUMERIC_INCREASE_5X"
+						on_action = "[CMMMarkNumericIncrease5x]"
+						on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+					}
+
+					action_tooltip = {
+						click_modifier = shift
+						click_mode = single
+						click_type = left
+						title = "CMM_NUMERIC_INCREASE_MAX"
+						on_action = "[CMMMarkNumericIncreaseToMax]"
+						on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+					}
+
+					tooltipwidget = {
+						BasicFunctionalTooltip = {}
+					}
 				}
 			}
 
