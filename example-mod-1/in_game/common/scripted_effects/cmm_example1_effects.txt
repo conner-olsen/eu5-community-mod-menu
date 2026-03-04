@@ -11,7 +11,7 @@ cmm_example1_register_mod = {
 		default_value = 1
 	}
 
-	cmm_register_bool_setting = {
+	cmm_register_global_bool_setting = {
 		mod_id = cmm_example1
 		setting_id = show_notifications
 		tab_id = notifications

@@ -142,6 +142,7 @@
 				size = { 100% 30 }
 
 				button_drop = {
+					enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
 					onclick = "[GetVariableSystem.Set('cmm_dropdown_hover_index', ToString_int32(CMMDropdownSelectedIndex(Scope.GetFlagName)))]"
 					tooltip_enabled = no
 				}
@@ -177,6 +178,7 @@
 				size = { 100% 30 }
 
 				button_dropdown = {
+					enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
 					onmousehierarchyenter = "[GetVariableSystem.Set('cmm_dropdown_hover_index', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
 					tooltip_enabled = no
 				}
@@ -249,6 +251,7 @@
 
 			checkbox_square_alt = {
 				visible = "[CMMSettingIsBool(Scope.GetFlagName)]"
+				enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
 				onclick = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
 				checked = "[CMMIsSettingEnabled(Scope.GetFlagName)]"
 				tooltip_enabled = no
@@ -265,6 +268,7 @@
 
 				button_regular = {
 					minimumsize = { 32 32 }
+					enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
 					text = "-"
 
 					action_tooltip = {
@@ -317,6 +321,7 @@
 
 				button_regular = {
 					minimumsize = { 32 32 }
+					enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
 					text = "+"
 
 					action_tooltip = {

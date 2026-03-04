@@ -89,6 +89,22 @@ macro = {
 # Args: SettingKey (string)
 # Returns: boolean
 macro = {
+    description = "True when a setting key stores value in global scope"
+    definition = "CMMSettingIsGlobal(SettingKey)"
+    replace_with = "EqualTo_CFixedPoint(CMMVar(Concatenate('cmm_setting_is_global_', SettingKey)).GetValue, '(CFixedPoint)1')"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when local player can edit this setting (global settings are host-only in MP)"
+    definition = "CMMCanEditSetting(SettingKey)"
+    replace_with = "Or(Not(CMMSettingIsGlobal(SettingKey)), Or(Not(GameIsMultiplayer), IsHost))"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
     description = "True when a setting key is registered as dropdown type"
     definition = "CMMSettingIsDropdown(SettingKey)"
     replace_with = "CMMVar(Concatenate('cmm_setting_dropdown_count_', SettingKey)).IsSet"

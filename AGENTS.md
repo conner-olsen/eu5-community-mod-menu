@@ -1,6 +1,6 @@
 ﻿# AGENTS.md
 
-Last updated: 2026-03-03
+Last updated: 2026-03-04
 
 ## Critical Context
 
@@ -37,6 +37,8 @@ Implemented:
 13. Dynamic per-mod tabs are implemented in the right panel.
 14. Settings are filtered by both selected mod and selected tab.
 15. GUI function macro layer is in place (`loading_screen/data_binding/cmm_macros.txt`) and used by CMM GUI.
+16. Global setting registration is implemented via `cmm_register_global_bool_setting`, `cmm_register_global_numeric_setting`, and `cmm_register_global_dropdown_setting`.
+17. Global settings are host-editable in multiplayer and synced to player UI caches.
 
 Remaining:
 
@@ -176,6 +178,13 @@ cmm_register_bool_setting = {
     default_value = <required, 0|1>
 }
 
+cmm_register_global_bool_setting = {
+    mod_id = <required>
+    setting_id = <required>
+    tab_id = <required>
+    default_value = <required, 0|1>
+}
+
 cmm_register_numeric_setting = {
     mod_id = <required>
     setting_id = <required>
@@ -186,7 +195,25 @@ cmm_register_numeric_setting = {
     step_value = <required, number>
 }
 
+cmm_register_global_numeric_setting = {
+    mod_id = <required>
+    setting_id = <required>
+    tab_id = <required>
+    default_value = <required, number>
+    min_value = <required, number>
+    max_value = <required, number>
+    step_value = <required, number>
+}
+
 cmm_register_dropdown_setting = {
+    mod_id = <required>
+    setting_id = <required>
+    tab_id = <required>
+    default_index = <required, number>
+    option_count = <required, number >= 1>
+}
+
+cmm_register_global_dropdown_setting = {
     mod_id = <required>
     setting_id = <required>
     tab_id = <required>

@@ -40,7 +40,7 @@ Arguments:
 
 Notes:
 
-- `cmm_register_bool_setting`, `cmm_register_numeric_setting`, and `cmm_register_dropdown_setting` auto-register their tab.
+- `cmm_register_bool_setting`, `cmm_register_numeric_setting`, `cmm_register_dropdown_setting`, and their `cmm_register_global_*` variants auto-register their tab.
 - Use explicit `cmm_register_tab` only when you need an empty tab with no settings yet.
 
 ### 3) Register bool settings
@@ -60,6 +60,17 @@ Arguments:
 - `setting_id`: stable id within your mod.
 - `tab_id`: owner tab id within your mod.
 - `default_value`: initial value for brand-new saves (`0` off, `1` on).
+
+Global-storage variant:
+
+```txt
+cmm_register_global_bool_setting = {
+    mod_id = your_mod_id
+    setting_id = your_setting_id
+    tab_id = your_tab_id
+    default_value = 0
+}
+```
 
 ### 4) Register numeric settings
 
@@ -89,6 +100,20 @@ Arguments:
     - `Ctrl+click`: `5x` step.
     - `Shift+click`: jump to min/max.
 
+Global-storage variant:
+
+```txt
+cmm_register_global_numeric_setting = {
+    mod_id = your_mod_id
+    setting_id = your_setting_id
+    tab_id = your_tab_id
+    default_value = 10
+    min_value = 0
+    max_value = 100
+    step_value = 5
+}
+```
+
 ### 5) Register dropdown settings
 
 ```txt
@@ -111,6 +136,18 @@ Arguments:
   - CMM dropdown controls support modifiers:
     - Click on `<` / `>`: previous/next option.
     - `Shift+click` on `<` / `>`: jump to first/last option.
+
+Global-storage variant:
+
+```txt
+cmm_register_global_dropdown_setting = {
+    mod_id = your_mod_id
+    setting_id = your_setting_id
+    tab_id = your_tab_id
+    default_index = 1
+    option_count = 3
+}
+```
 
 Localization keys are derived automatically from ids:
 
@@ -183,6 +220,8 @@ Notes:
 - CMM captures dropdown selection index via a generic marker scripted GUI, then executes `_on_changed`.
 - If `is_shown` is omitted, the row is visible.
 - Checked/value state is read directly from `var:<mod_id>__<setting_id>` by CMM UI.
+- Global settings (`cmm_register_global_*`) are writable by host only in multiplayer (`IsHost`); all players can view them.
+- Callback contract is unchanged for local vs global settings; `cmm_toggle_bool_setting`, `cmm_apply_numeric_change`, and `cmm_apply_dropdown_change` branch automatically.
 
 ## Registration Hook Contract
 
@@ -221,6 +260,7 @@ CMM writes these country-scope variables/lists:
 - `<mod_id>__<tab_id>_name` (flag value)
 - `cmm_setting_owner_mod_id_<mod_id>__<setting_id>` (flag value)
 - `cmm_setting_owner_tab_key_<mod_id>__<setting_id>` (flag value)
+- `cmm_setting_is_global_<mod_id>__<setting_id>` (`0` local country setting, `1` global setting)
 - `cmm_setting_min_<mod_id>__<setting_id>` (numeric only)
 - `cmm_setting_max_<mod_id>__<setting_id>` (numeric only)
 - `cmm_setting_step_<mod_id>__<setting_id>` (numeric only)
@@ -228,7 +268,8 @@ CMM writes these country-scope variables/lists:
 - `cmm_setting_dropdown_last_index_<mod_id>__<setting_id>` (dropdown only)
 - `<mod_id>__<setting_id>_name` (flag value)
 - `<mod_id>__<setting_id>_desc` (flag value)
-- `<mod_id>__<setting_id>` (setting value)
+- `<mod_id>__<setting_id>` (country cache value used by CMM UI)
+- global `<mod_id>__<setting_id>` (authoritative value for `cmm_register_global_*` settings)
 
 ## Minimal Example (Bool + Numeric + Dropdown)
 

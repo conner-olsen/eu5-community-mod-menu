@@ -8,6 +8,7 @@ This is a minimal integration mod for `community.mod.menu.dev`.
 - Registering a mod id (`cmm_example1`) with derived localization keys.
 - Appending into CMM shared registration hook `cmm_on_mod_registration`.
 - Defining immediate per-setting scripted GUI callbacks via `_on_changed` (bool, numeric, and dropdown).
+- Registering one global bool setting (`show_notifications`) for multiplayer host-only edit testing.
 
 ## Files
 
