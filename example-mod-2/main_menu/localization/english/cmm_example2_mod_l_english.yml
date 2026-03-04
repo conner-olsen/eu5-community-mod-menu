@@ -9,3 +9,8 @@
  cmm_example2_map_overlay_desc: "Shows an example map overlay when enabled."
  cmm_example2_overlay_opacity_name: "Overlay Opacity"
  cmm_example2_overlay_opacity_desc: "Example numeric setting for overlay opacity strength."
+ cmm_example2_overlay_mode_name: "Overlay Mode"
+ cmm_example2_overlay_mode_desc: "Example dropdown setting for overlay display mode."
+ cmm_example2__overlay_mode_option_0_name: "Disabled"
+ cmm_example2__overlay_mode_option_1_name: "Political"
+ cmm_example2__overlay_mode_option_2_name: "Terrain"

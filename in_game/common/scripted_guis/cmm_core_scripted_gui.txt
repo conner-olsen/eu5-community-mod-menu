@@ -51,3 +51,39 @@ CMM_MarkNumericIncreaseToMax = {
 		set_variable = { name = cmm_numeric_change_to_apply value = 3 }
 	}
 }
+
+# Mark the next dropdown interaction as previous option.
+# Scope: country
+# Args: none
+CMM_MarkDropdownPrevious = {
+	effect = {
+		set_variable = { name = cmm_dropdown_change_to_apply value = -1 }
+	}
+}
+
+# Mark the next dropdown interaction as next option.
+# Scope: country
+# Args: none
+CMM_MarkDropdownNext = {
+	effect = {
+		set_variable = { name = cmm_dropdown_change_to_apply value = 1 }
+	}
+}
+
+# Mark the next dropdown interaction as first option.
+# Scope: country
+# Args: none
+CMM_MarkDropdownFirst = {
+	effect = {
+		set_variable = { name = cmm_dropdown_change_to_apply value = -3 }
+	}
+}
+
+# Mark the next dropdown interaction as last option.
+# Scope: country
+# Args: none
+CMM_MarkDropdownLast = {
+	effect = {
+		set_variable = { name = cmm_dropdown_change_to_apply value = 3 }
+	}
+}

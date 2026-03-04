@@ -216,6 +216,85 @@ cmm_register_numeric_setting = {
 	}
 }
 
+# Register a dropdown setting for a mod (idempotent by mod_id + setting_id).
+# Scope: country
+# Args:
+# - mod_id (key): Owner mod id.
+# - setting_id (key): Setting id unique within mod.
+# - tab_id (key): Owner tab id within mod.
+# - default_index (number): Initial selected option index.
+# - option_count (number): Number of options (`>= 1`; indexed `0..option_count-1`).
+cmm_register_dropdown_setting = {
+	# Ensure owning tab exists before binding setting metadata.
+	cmm_register_tab = {
+		mod_id = $mod_id$
+		tab_id = $tab_id$
+	}
+
+	set_variable = { name = cmm_setting_dropdown_count_$mod_id$__$setting_id$ value = $option_count$ }
+	set_variable = { name = cmm_setting_dropdown_last_index_$mod_id$__$setting_id$ value = $option_count$ }
+	change_variable = { name = cmm_setting_dropdown_last_index_$mod_id$__$setting_id$ add = -1 }
+
+	# First-time registration path for this setting key.
+	if = {
+		limit = { NOT = { has_variable = cmm_registered_setting_$mod_id$__$setting_id$ } }
+		set_variable = { name = cmm_registered_setting_$mod_id$__$setting_id$ value = yes }
+		set_variable = { name = cmm_setting_owner_mod_id_$mod_id$__$setting_id$ value = flag:$mod_id$ }
+		set_variable = { name = cmm_setting_owner_tab_key_$mod_id$__$setting_id$ value = flag:$mod_id$__$tab_id$ }
+		set_variable = { name = $mod_id$__$setting_id$_name value = flag:$mod_id$_$setting_id$_name }
+		set_variable = { name = $mod_id$__$setting_id$_desc value = flag:$mod_id$_$setting_id$_desc }
+
+		# Global setting key list; used by right-panel datamodel iteration.
+		add_to_variable_list = {
+			name = cmm_registered_setting_keys
+			target = flag:$mod_id$__$setting_id$
+		}
+
+		# Per-tab count; used for "no settings in this tab" UI state.
+		if = {
+			limit = { NOT = { has_variable = cmm_tab_setting_count_$mod_id$__$tab_id$ } }
+			set_variable = { name = cmm_tab_setting_count_$mod_id$__$tab_id$ value = 0 }
+		}
+		change_variable = { name = cmm_tab_setting_count_$mod_id$__$tab_id$ add = 1 }
+	}
+
+	# Default initialization; preserves existing save value.
+	if = {
+		limit = { NOT = { has_variable = $mod_id$__$setting_id$ } }
+		set_variable = { name = $mod_id$__$setting_id$ value = $default_index$ }
+	}
+
+	# Clamp current value into configured option range.
+	if = {
+		limit = { var:$mod_id$__$setting_id$ < 0 }
+		set_variable = { name = $mod_id$__$setting_id$ value = 0 }
+	}
+
+	if = {
+		limit = { var:$mod_id$__$setting_id$ > var:cmm_setting_dropdown_last_index_$mod_id$__$setting_id$ }
+		set_variable = { name = $mod_id$__$setting_id$ value = var:cmm_setting_dropdown_last_index_$mod_id$__$setting_id$ }
+	}
+
+	# Benign warning suppression
+	if = {
+		limit = {
+			always = no
+			exists = flag:$mod_id$__$setting_id$
+			exists = flag:$mod_id$__$tab_id$
+			exists = flag:$mod_id$_$setting_id$_name
+			exists = flag:$mod_id$_$setting_id$_desc
+			exists = var:cmm_registered_setting_keys
+			exists = var:cmm_setting_owner_mod_id_$mod_id$__$setting_id$
+			exists = var:cmm_setting_owner_tab_key_$mod_id$__$setting_id$
+			exists = var:cmm_setting_dropdown_count_$mod_id$__$setting_id$
+			exists = var:cmm_setting_dropdown_last_index_$mod_id$__$setting_id$
+			exists = var:cmm_tab_setting_count_$mod_id$__$tab_id$
+			exists = var:$mod_id$__$setting_id$_name
+			exists = var:$mod_id$__$setting_id$_desc
+		}
+	}
+}
+
 # Toggle a registered boolean setting value between `0` and `1`.
 # Scope: country
 # Args:
@@ -227,6 +306,68 @@ cmm_toggle_bool_setting = {
 	}
 	else = {
 		set_variable = { name = $setting$ value = 1 }
+	}
+}
+
+# Select the next option for a dropdown setting (with wrap-around).
+# Scope: country
+# Args:
+# - setting (key): Composite setting key `<mod_id>__<setting_id>`.
+cmm_step_dropdown_setting_next = {
+	change_variable = { name = $setting$ add = 1 }
+
+	if = {
+		limit = { var:$setting$ > var:cmm_setting_dropdown_last_index_$setting$ }
+		set_variable = { name = $setting$ value = 0 }
+	}
+}
+
+# Select the previous option for a dropdown setting (with wrap-around).
+# Scope: country
+# Args:
+# - setting (key): Composite setting key `<mod_id>__<setting_id>`.
+cmm_step_dropdown_setting_previous = {
+	change_variable = { name = $setting$ add = -1 }
+
+	if = {
+		limit = { var:$setting$ < 0 }
+		set_variable = { name = $setting$ value = var:cmm_setting_dropdown_last_index_$setting$ }
+	}
+}
+
+# Select the first option for a dropdown setting.
+# Scope: country
+# Args:
+# - setting (key): Composite setting key `<mod_id>__<setting_id>`.
+cmm_set_dropdown_setting_first = {
+	set_variable = { name = $setting$ value = 0 }
+}
+
+# Select the last option for a dropdown setting.
+# Scope: country
+# Args:
+# - setting (key): Composite setting key `<mod_id>__<setting_id>`.
+cmm_set_dropdown_setting_last = {
+	set_variable = { name = $setting$ value = var:cmm_setting_dropdown_last_index_$setting$ }
+}
+
+# Apply the pending dropdown change marker to a setting and clear the marker.
+# Scope: country
+# Args:
+# - setting (key): Composite setting key `<mod_id>__<setting_id>`.
+cmm_apply_dropdown_change = {
+	if = {
+		limit = { has_variable = cmm_dropdown_change_to_apply }
+
+		switch = {
+			trigger = var:cmm_dropdown_change_to_apply
+			1 = { cmm_step_dropdown_setting_next = { setting = $setting$ } }
+			-1 = { cmm_step_dropdown_setting_previous = { setting = $setting$ } }
+			3 = { cmm_set_dropdown_setting_last = { setting = $setting$ } }
+			-3 = { cmm_set_dropdown_setting_first = { setting = $setting$ } }
+		}
+
+		remove_variable = cmm_dropdown_change_to_apply
 	}
 }
 

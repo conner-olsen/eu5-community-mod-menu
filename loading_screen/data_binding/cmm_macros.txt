@@ -89,9 +89,9 @@ macro = {
 # Args: SettingKey (string)
 # Returns: boolean
 macro = {
-    description = "True when a setting key is registered as bool type"
-    definition = "CMMSettingIsBool(SettingKey)"
-    replace_with = "Not(CMMSettingIsNumeric(SettingKey))"
+    description = "True when a setting key is registered as dropdown type"
+    definition = "CMMSettingIsDropdown(SettingKey)"
+    replace_with = "CMMVar(Concatenate('cmm_setting_dropdown_count_', SettingKey)).IsSet"
 }
 
 # Args: SettingKey (string)
@@ -100,6 +100,14 @@ macro = {
     description = "True when a setting key is registered as numeric type"
     definition = "CMMSettingIsNumeric(SettingKey)"
     replace_with = "CMMVar(Concatenate('cmm_setting_step_', SettingKey)).IsSet"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when a setting key is registered as bool type"
+    definition = "CMMSettingIsBool(SettingKey)"
+    replace_with = "And(Not(CMMSettingIsNumeric(SettingKey)), Not(CMMSettingIsDropdown(SettingKey)))"
 }
 
 # Args: SettingKey (string)
@@ -228,6 +236,38 @@ macro = {
     description = "Mark pending numeric change as jump-to-max"
     definition = "CMMMarkNumericIncreaseToMax"
     replace_with = "GetScriptedGui('CMM_MarkNumericIncreaseToMax').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
+# Args: none
+# Returns: none
+macro = {
+    description = "Mark pending dropdown change as previous option"
+    definition = "CMMMarkDropdownPrevious"
+    replace_with = "GetScriptedGui('CMM_MarkDropdownPrevious').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
+# Args: none
+# Returns: none
+macro = {
+    description = "Mark pending dropdown change as next option"
+    definition = "CMMMarkDropdownNext"
+    replace_with = "GetScriptedGui('CMM_MarkDropdownNext').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
+# Args: none
+# Returns: none
+macro = {
+    description = "Mark pending dropdown change as first option"
+    definition = "CMMMarkDropdownFirst"
+    replace_with = "GetScriptedGui('CMM_MarkDropdownFirst').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
+# Args: none
+# Returns: none
+macro = {
+    description = "Mark pending dropdown change as last option"
+    definition = "CMMMarkDropdownLast"
+    replace_with = "GetScriptedGui('CMM_MarkDropdownLast').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
 }
 
 # Args: SettingKey (string)

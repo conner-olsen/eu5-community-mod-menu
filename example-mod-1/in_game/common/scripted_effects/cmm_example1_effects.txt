@@ -1,5 +1,5 @@
 ﻿# Root scope: country.
-cmm_example2_register_mod = {
+cmm_example1_register_mod = {
 	cmm_register_mod = {
 		mod_id = cmm_example1
 	}
@@ -26,5 +26,13 @@ cmm_example2_register_mod = {
 		min_value = 0
 		max_value = 100
 		step_value = 5
+	}
+
+	cmm_register_dropdown_setting = {
+		mod_id = cmm_example1
+		setting_id = mode
+		tab_id = general
+		default_index = 1
+		option_count = 3
 	}
 }

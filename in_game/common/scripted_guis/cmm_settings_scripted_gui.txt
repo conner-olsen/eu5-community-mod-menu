@@ -42,3 +42,16 @@ cmm_core__diagnostics_interval_on_changed = {
 		# optional custom logic
 	}
 }
+
+# On-changed callback for core dropdown demo setting.
+# Scope: country
+# Args: none
+cmm_core__diagnostics_level_on_changed = {
+	scope = country
+	effect = {
+		cmm_apply_dropdown_change = {
+			setting = cmm_core__diagnostics_level
+		}
+		# optional custom logic
+	}
+}

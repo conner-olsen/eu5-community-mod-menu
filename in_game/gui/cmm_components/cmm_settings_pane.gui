@@ -119,17 +119,18 @@
 		}
 	}
 
-	# Single setting row for bool and numeric settings.
+	# Single setting row for bool, numeric, and dropdown settings.
 	# Reads:
 	# - Scope.GetFlagName [string]: current setting key (`<mod_id>__<setting_id>`).
 	# - GetVariableSystem.Get('cmm_selected_mod') [string]: active mod id for row visibility filtering.
 	# - GetVariableSystem.Get('cmm_selected_tab') [string]: active tab key for row visibility filtering.
-	# - Player.MakeScope.GetVariable(Scope.GetFlagName) [value]: current setting value for checked/value display.
+	# - Player.MakeScope.GetVariable(Scope.GetFlagName) [value]: current setting value for checked/value/option display.
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_min_', Scope.GetFlagName)) [value]: numeric minimum bound.
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_max_', Scope.GetFlagName)) [value]: numeric maximum bound.
 	# Writes:
-	# - GetScriptedGui(Concatenate(Scope.GetFlagName, '_on_changed')).Execute(...) [effect]: applies shared post-change logic and bool toggles.
+	# - GetScriptedGui(Concatenate(Scope.GetFlagName, '_on_changed')).Execute(...) [effect]: applies shared post-change setting logic.
 	# - GetScriptedGui('CMM_MarkNumeric*').Execute(...) [effect]: stores pending numeric delta mode.
+	# - GetScriptedGui('CMM_MarkDropdown*').Execute(...) [effect]: stores pending dropdown direction mode.
 	type cmm_setting_row = widget {
 		layoutpolicy_horizontal = expanding
 		minimumsize = { 0 68 }
@@ -146,6 +147,78 @@
 				onclick = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
 				checked = "[CMMIsSettingEnabled(Scope.GetFlagName)]"
 				tooltip_enabled = no
+			}
+
+			hbox = {
+				visible = "[CMMSettingIsDropdown(Scope.GetFlagName)]"
+				spacing = 4
+				minimumsize = { 168 0 }
+
+				button_regular = {
+					minimumsize = { 32 32 }
+					text = "<"
+
+					action_tooltip = {
+						click_mode = single
+						click_type = left
+						click_modifier = default
+						title = "CMM_DROPDOWN_PREVIOUS"
+						on_action = "[CMMMarkDropdownPrevious]"
+						on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+					}
+
+					action_tooltip = {
+						click_modifier = shift
+						click_mode = single
+						click_type = left
+						title = "CMM_DROPDOWN_FIRST"
+						on_action = "[CMMMarkDropdownFirst]"
+						on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+					}
+
+					tooltipwidget = {
+						BasicFunctionalTooltip = {}
+					}
+				}
+
+				widget = {
+					name = "dropdown_value_widget"
+					minimumsize = { 84 0 }
+
+					text_single = {
+						parentanchor = center
+						widgetanchor = center
+						align = center
+						text = "[Localize(Concatenate(Concatenate(Scope.GetFlagName, '_option_'), Concatenate(ToString_int32(FixedPointToInt(Player.MakeScope.GetVariable(Scope.GetFlagName).GetValue)), '_name')))]"
+					}
+				}
+
+				button_regular = {
+					minimumsize = { 32 32 }
+					text = ">"
+
+					action_tooltip = {
+						click_mode = single
+						click_type = left
+						click_modifier = default
+						title = "CMM_DROPDOWN_NEXT"
+						on_action = "[CMMMarkDropdownNext]"
+						on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+					}
+
+					action_tooltip = {
+						click_modifier = shift
+						click_mode = single
+						click_type = left
+						title = "CMM_DROPDOWN_LAST"
+						on_action = "[CMMMarkDropdownLast]"
+						on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+					}
+
+					tooltipwidget = {
+						BasicFunctionalTooltip = {}
+					}
+				}
 			}
 
 			hbox = {
@@ -200,7 +273,7 @@
 
 					text_single = {
 						align = center
-						default_format = "#weak_text"
+						default_format = "#color_gray"
 						raw_text = "([CMMNumericSettingMin(Scope.GetFlagName)]-[CMMNumericSettingMax(Scope.GetFlagName)])"
 					}
 				}

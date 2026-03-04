@@ -40,7 +40,7 @@ Arguments:
 
 Notes:
 
-- `cmm_register_bool_setting` and `cmm_register_numeric_setting` auto-register their tab.
+- `cmm_register_bool_setting`, `cmm_register_numeric_setting`, and `cmm_register_dropdown_setting` auto-register their tab.
 - Use explicit `cmm_register_tab` only when you need an empty tab with no settings yet.
 
 ### 3) Register bool settings
@@ -89,6 +89,29 @@ Arguments:
     - `Ctrl+click`: `5x` step.
     - `Shift+click`: jump to min/max.
 
+### 5) Register dropdown settings
+
+```txt
+cmm_register_dropdown_setting = {
+    mod_id = your_mod_id
+    setting_id = your_setting_id
+    tab_id = your_tab_id
+    default_index = 1
+    option_count = 3
+}
+```
+
+Arguments:
+
+- `mod_id`: owner mod id.
+- `setting_id`: stable id within your mod.
+- `tab_id`: owner tab id within your mod.
+- `default_index`: initial selected option index for brand-new saves.
+- `option_count`: number of options (`>= 1`). Options are indexed `0..option_count-1`.
+  - CMM dropdown controls support modifiers:
+    - Click on `<` / `>`: previous/next option.
+    - `Shift+click` on `<` / `>`: jump to first/last option.
+
 Localization keys are derived automatically from ids:
 
 - Mod title: `<mod_id>_name`
@@ -96,6 +119,7 @@ Localization keys are derived automatically from ids:
 - Tab label: `<mod_id>_<tab_id>_name`
 - Setting label: `<mod_id>_<setting_id>_name`
 - Setting description: `<mod_id>_<setting_id>_desc`
+- Dropdown options: `<mod_id>__<setting_id>_option_<index>_name`
 
 ## Callback Contract
 
@@ -135,10 +159,28 @@ Required scripted GUI callback:
 }
 ```
 
+### Dropdown setting callbacks
+
+Required scripted GUI callback:
+
+```txt
+<mod_id>__<setting_id>_on_changed = {
+    scope = country
+    effect = {
+        cmm_apply_dropdown_change = {
+            setting = <mod_id>__<setting_id>
+        }
+        # optional custom logic after dropdown value changes
+    }
+    # optional is_shown = { ... }
+}
+```
+
 Notes:
 
 - `_on_changed` is also used for row visibility (`is_shown`) checks.
 - CMM handles numeric modes (`1x`, `5x`, `min/max`) via generic marker scripted GUIs, then executes `_on_changed`.
+- CMM handles dropdown modes (previous/next/first/last) via generic marker scripted GUIs, then executes `_on_changed`.
 - If `is_shown` is omitted, the row is visible.
 - Checked/value state is read directly from `var:<mod_id>__<setting_id>` by CMM UI.
 
@@ -182,11 +224,13 @@ CMM writes these country-scope variables/lists:
 - `cmm_setting_min_<mod_id>__<setting_id>` (numeric only)
 - `cmm_setting_max_<mod_id>__<setting_id>` (numeric only)
 - `cmm_setting_step_<mod_id>__<setting_id>` (numeric only)
+- `cmm_setting_dropdown_count_<mod_id>__<setting_id>` (dropdown only)
+- `cmm_setting_dropdown_last_index_<mod_id>__<setting_id>` (dropdown only)
 - `<mod_id>__<setting_id>_name` (flag value)
 - `<mod_id>__<setting_id>_desc` (flag value)
 - `<mod_id>__<setting_id>` (setting value)
 
-## Minimal Example (Bool + Numeric)
+## Minimal Example (Bool + Numeric + Dropdown)
 
 ```txt
 your_mod_register_mod = {
@@ -210,6 +254,14 @@ your_mod_register_mod = {
         max_value = 100
         step_value = 5
     }
+
+    cmm_register_dropdown_setting = {
+        mod_id = your_mod
+        setting_id = mode
+        tab_id = general
+        default_index = 1
+        option_count = 3
+    }
 }
 
 your_mod__allow_feature_on_changed = {
@@ -230,6 +282,16 @@ your_mod__amount_on_changed = {
         # optional custom logic
     }
 }
+
+your_mod__mode_on_changed = {
+    scope = country
+    effect = {
+        cmm_apply_dropdown_change = {
+            setting = your_mod__mode
+        }
+        # optional custom logic
+    }
+}
 ```
 
 ## Localization
@@ -244,10 +306,15 @@ your_mod_allow_feature_name: "Allow Feature"
 your_mod_allow_feature_desc: "Enables the feature when checked."
 your_mod_amount_name: "Amount"
 your_mod_amount_desc: "Numeric amount controlled in CMM."
+your_mod_mode_name: "Mode"
+your_mod_mode_desc: "Dropdown mode controlled in CMM."
+your_mod__mode_option_0_name: "Off"
+your_mod__mode_option_1_name: "Standard"
+your_mod__mode_option_2_name: "Aggressive"
 ```
 
 ## Notes
 
-- CMM v1 controls currently include bool and numeric only.
+- CMM v1 controls currently include bool, numeric, and dropdown.
 - Keep ids stable (`mod_id`, `tab_id`, `setting_id`) across updates.
 - Keep integration/API docs in repository docs, not runtime UI localization.

@@ -44,3 +44,14 @@ cmm_example2__overlay_opacity_on_changed = {
 		# optional custom logic
 	}
 }
+
+cmm_example2__overlay_mode_on_changed = {
+	scope = country
+
+	effect = {
+		cmm_apply_dropdown_change = {
+			setting = cmm_example2__overlay_mode
+		}
+		# optional custom logic
+	}
+}

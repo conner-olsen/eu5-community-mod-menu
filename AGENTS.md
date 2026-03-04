@@ -26,19 +26,21 @@ Implemented:
 2. Dynamic mod registration is working via `cmm_register_mod`.
 3. Dynamic bool setting registration is working via `cmm_register_bool_setting`.
 4. Dynamic numeric setting registration is working via `cmm_register_numeric_setting`.
-5. Left panel is dynamic, scrollable, searchable, and physically compacts filtered results.
-6. Right panel renders selected-mod metadata and dynamic setting rows.
-7. Bool toggles are wired through scripted GUI callbacks (`<mod_id>__<setting_id>_on_changed`) and `cmm_toggle_bool_setting`.
-8. Numeric steppers are wired through generic CMM markers and per-setting scripted GUI `_on_changed` callbacks (`click=1x`, `ctrl+click=5x`, `shift+click=min/max`).
-9. Shared registration hook `cmm_on_mod_registration` is in place and used by example mods.
-10. Runtime localization keys are derived from ids (no extra registration args for names/descriptions).
-11. Dynamic per-mod tabs are implemented in the right panel.
-12. Settings are filtered by both selected mod and selected tab.
-13. GUI function macro layer is in place (`loading_screen/data_binding/cmm_macros.txt`) and used by CMM GUI.
+5. Dynamic dropdown setting registration is working via `cmm_register_dropdown_setting`.
+6. Left panel is dynamic, scrollable, searchable, and physically compacts filtered results.
+7. Right panel renders selected-mod metadata and dynamic setting rows.
+8. Bool toggles are wired through scripted GUI callbacks (`<mod_id>__<setting_id>_on_changed`) and `cmm_toggle_bool_setting`.
+9. Numeric steppers are wired through generic CMM markers and per-setting scripted GUI `_on_changed` callbacks (`click=1x`, `ctrl+click=5x`, `shift+click=min/max`).
+10. Dropdown selectors are wired through generic CMM markers and per-setting scripted GUI `_on_changed` callbacks (`click=prev/next`, `shift+click=first/last`).
+11. Shared registration hook `cmm_on_mod_registration` is in place and used by example mods.
+12. Runtime localization keys are derived from ids (no extra registration args for names/descriptions).
+13. Dynamic per-mod tabs are implemented in the right panel.
+14. Settings are filtered by both selected mod and selected tab.
+15. GUI function macro layer is in place (`loading_screen/data_binding/cmm_macros.txt`) and used by CMM GUI.
 
 Remaining:
 
-1. Add remaining non-bool controls (slider/dropdown/text) and define stable API.
+1. Add remaining non-bool controls (slider/text) and define stable API.
 2. Finalize list ordering policy (registration-first vs optional alpha mode).
 3. Expand docs/examples after non-bool controls exist.
 
@@ -183,6 +185,14 @@ cmm_register_numeric_setting = {
     max_value = <required, number>
     step_value = <required, number>
 }
+
+cmm_register_dropdown_setting = {
+    mod_id = <required>
+    setting_id = <required>
+    tab_id = <required>
+    default_index = <required, number>
+    option_count = <required, number >= 1>
+}
 ```
 
 Derived localization keys:
@@ -192,6 +202,7 @@ Derived localization keys:
 - Tab label: `<mod_id>_<tab_id>_name`
 - Setting name: `<mod_id>_<setting_id>_name`
 - Setting description: `<mod_id>_<setting_id>_desc`
+- Dropdown option label: `<mod_id>__<setting_id>_option_<index>_name`
 
 Required scripted GUI callbacks per bool setting:
 
@@ -224,6 +235,23 @@ Required scripted GUI callbacks per numeric setting:
 ```
 
 For numeric settings, CMM marks numeric modes generically (`1x`, `5x`, `min/max`) and then executes setting-specific `_on_changed`.
+
+Required scripted GUI callbacks per dropdown setting:
+
+```txt
+<mod_id>__<setting_id>_on_changed = {
+    scope = country
+    effect = {
+        cmm_apply_dropdown_change = {
+            setting = <mod_id>__<setting_id>
+        }
+        # optional custom logic after dropdown value changes
+    }
+    # optional is_shown = { ... } for row visibility
+}
+```
+
+For dropdown settings, CMM marks dropdown modes generically (prev/next/first/last) and then executes setting-specific `_on_changed`.
 
 ## Registration Lifecycle
 

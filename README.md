@@ -6,7 +6,7 @@ A dependency mod for **Europa Universalis 5** that provides one shared in-game m
 
 - Pause menu button (`Mod Menu`) via intentional `ingame_menu.gui` override.
 - Dynamic left mod list (search + compact rendering).
-- Dynamic right settings panel for registered bool and numeric settings.
+- Dynamic right settings panel for registered bool, numeric, and dropdown settings.
 - Dynamic per-mod tabs in the right panel.
 - Mod-id-based registration API with no fixed slot cap.
 - GUI function macro layer for shared CMM data-binding expressions (`loading_screen/data_binding/cmm_macros.txt`).
@@ -18,6 +18,9 @@ A dependency mod for **Europa Universalis 5** that provides one shared in-game m
   - Click: `1x` step.
   - `Ctrl+click`: `5x` step.
   - `Shift+click`: jump to min/max.
+- Dropdown settings with selector controls (`<` / `>`).
+  - Click: previous/next option.
+  - `Shift+click`: jump to first/last option.
 - Registration order is preserved.
 - Value changes are persisted as country variables.
 - UI invokes per-setting scripted GUI callbacks immediately on interaction.
@@ -52,6 +55,14 @@ cmm_register_numeric_setting = {
     max_value = 100    # required
     step_value = 5     # required
 }
+
+cmm_register_dropdown_setting = {
+    mod_id = your_mod_id
+    setting_id = your_setting_id
+    tab_id = your_tab_id
+    default_index = 1 # required
+    option_count = 3  # required; >= 1 (options are 0..option_count-1)
+}
 ```
 
 Localization key format is enforced by ids:
@@ -59,6 +70,7 @@ Localization key format is enforced by ids:
 - Mod: `<mod_id>_name`, `<mod_id>_desc`
 - Tab: `<mod_id>_<tab_id>_name`
 - Setting: `<mod_id>_<setting_id>_name`, `<mod_id>_<setting_id>_desc`
+- Dropdown option: `<mod_id>__<setting_id>_option_<index>_name`
 
 Callback contract:
 
@@ -84,9 +96,19 @@ Callback contract:
     }
     # optional is_shown = { ... }
 }
+
+# Dropdown shared callback (required; executed after < / >):
+<mod_id>__<setting_id>_on_changed = {
+    scope = country
+    effect = {
+        cmm_apply_dropdown_change = {
+            setting = <mod_id>__<setting_id>
+        }
+    }
+}
 ```
 
-CMM handles numeric change modes through generic marker scripted GUIs (`1x`, `5x`, `min/max`) and then executes the setting-specific `_on_changed`.
+CMM handles numeric/dropdown change modes through generic marker scripted GUIs and then executes the setting-specific `_on_changed`.
 
 Registration hook contract:
 

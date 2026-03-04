@@ -27,4 +27,12 @@ cmm_example2_register_mod = {
 		max_value = 100
 		step_value = 10
 	}
+
+	cmm_register_dropdown_setting = {
+		mod_id = cmm_example2
+		setting_id = overlay_mode
+		tab_id = visuals
+		default_index = 0
+		option_count = 3
+	}
 }

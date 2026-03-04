@@ -44,3 +44,14 @@ cmm_example1__monthly_bonus_on_changed = {
 		# optional custom logic
 	}
 }
+
+cmm_example1__mode_on_changed = {
+	scope = country
+
+	effect = {
+		cmm_apply_dropdown_change = {
+			setting = cmm_example1__mode
+		}
+		# optional custom logic
+	}
+}

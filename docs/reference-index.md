@@ -39,6 +39,10 @@ This file catalogs useful reference files for CMM work.
 - `C:\Steam\steamapps\common\Europa Universalis V\game\in_game\gui\diplomacy_lateralview.gui`
   - Multi-tab composition with `header_main_tabs` + secondary tab blocks.
 
+- `C:\Steam\steamapps\common\Europa Universalis V\game\main_menu\gui\settings\setting_types.gui`
+  - Native enum dropdown template and usage (`JominiSettingsEnumDropdown`, `dropDown`) around lines `3-100` and `618-635`.
+  - Useful for dropdown active-item/item/list composition and selected index wiring.
+
 ## GlorpUI (Workshop 3612386197)
 
 GlorpUI is useful for open/close flow and pause-menu injection examples.

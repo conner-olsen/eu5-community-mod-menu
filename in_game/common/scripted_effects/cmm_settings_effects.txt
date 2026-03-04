@@ -22,4 +22,12 @@ cmm_register_menu_settings = {
 		max_value = 10
 		step_value = 1
 	}
+
+	cmm_register_dropdown_setting = {
+		mod_id = cmm_core
+		setting_id = diagnostics_level
+		tab_id = general
+		default_index = 1
+		option_count = 3
+	}
 }
