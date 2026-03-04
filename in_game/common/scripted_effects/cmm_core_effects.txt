@@ -331,6 +331,15 @@ cmm_apply_dropdown_change = {
 
 		remove_variable = cmm_dropdown_index_to_apply
 	}
+
+	# Benign warning suppression
+	if = {
+		limit = {
+			always = no
+			exists = var:cmm_dropdown_index_to_apply
+			exists = var:cmm_setting_dropdown_last_index_$setting$
+		}
+	}
 }
 
 # Increase a numeric setting and clamp to its max value.
