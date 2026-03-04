@@ -1,0 +1,44 @@
+﻿# Register core CMM metadata and run the registration hook.
+# Scope: country
+# Args: none
+CMM_RegisterCoreMod = {
+	effect = {
+		cmm_register_menu_settings = yes
+		trigger_event_silently = {
+			on_action = cmm_on_register_country
+		}
+	}
+}
+
+# Handle demo toggle checkbox clicks.
+# Scope: country
+# Args: none
+cmm_core__example_toggle_on_changed = {
+	scope = country
+	effect = {
+		cmm_toggle_bool_setting = {
+			setting = cmm_core__example_toggle
+		}
+
+		if = {
+			limit = { var:cmm_core__example_toggle = 1 }
+			# enabled effect
+		}
+		else = {
+			# disabled effect
+		}
+	}
+}
+
+# On-changed callback for core numeric demo setting.
+# Scope: country
+# Args: none
+cmm_core__diagnostics_interval_on_changed = {
+	scope = country
+	effect = {
+		cmm_apply_numeric_change = {
+			setting = cmm_core__diagnostics_interval
+		}
+		# optional custom logic
+	}
+}

@@ -1,0 +1,25 @@
+﻿# Register CMM menu settings and demo entries.
+# Scope: country
+# Args: none
+cmm_register_menu_settings = {
+	cmm_register_mod = {
+		mod_id = cmm_core
+	}
+
+	cmm_register_bool_setting = {
+		mod_id = cmm_core
+		setting_id = example_toggle
+		tab_id = general
+		default_value = 0
+	}
+
+	cmm_register_numeric_setting = {
+		mod_id = cmm_core
+		setting_id = diagnostics_interval
+		tab_id = general
+		default_value = 5
+		min_value = 0
+		max_value = 10
+		step_value = 1
+	}
+}

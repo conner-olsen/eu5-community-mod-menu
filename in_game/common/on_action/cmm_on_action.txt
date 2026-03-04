@@ -15,7 +15,7 @@ cmm_register_all_human_countries = {
 	effect = {
 		every_country = {
 			limit = { is_ai = no }
-			cmm_register_core_country = yes
+			cmm_register_menu_settings = yes
 			trigger_event_silently = {
 				on_action = cmm_on_register_country
 			}

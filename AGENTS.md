@@ -87,8 +87,10 @@ Additional rules:
 
 - `in_game/gui/cmm_ingame_menu.gui`
 - `in_game/gui/cmm_window.gui`
-- `in_game/common/scripted_effects/cmm_effects.txt`
-- `in_game/common/scripted_guis/cmm_scripted_gui.txt`
+- `in_game/common/scripted_effects/cmm_core_effects.txt`
+- `in_game/common/scripted_effects/cmm_settings_effects.txt`
+- `in_game/common/scripted_guis/cmm_core_scripted_gui.txt`
+- `in_game/common/scripted_guis/cmm_settings_scripted_gui.txt`
 - `in_game/common/on_action/cmm_on_action.txt`
 - `loading_screen/data_binding/cmm_macros.txt`
 - `docs/mod-integration.md`
