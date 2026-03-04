@@ -122,7 +122,7 @@
 	# Dropdown control for one CMM setting row.
 	# Reads:
 	# - Scope.GetFlagName [string]: current setting key in root context (`<mod_id>__<setting_id>`).
-	# - PdxGuiWidget.GetIndexInDataModel [int32]: clicked option index in item context.
+	# - PdxGuiWidget.GetIndexInDataModel [int32]: hovered option index in item context.
 	# - Player.MakeScope.GetVariable(<setting_key>) [value]: current selected dropdown index.
 	# - GetVariableSystem.Get('cmm_dropdown_hover_index') [string]: hovered dropdown option index used by selection callback.
 	# Writes:
@@ -365,7 +365,6 @@
 					autoresize = yes
 					max_width = 620
 				}
-
 			}
 		}
 	}
