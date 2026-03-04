@@ -43,6 +43,12 @@ This file catalogs useful reference files for CMM work.
   - Native enum dropdown template and usage (`JominiSettingsEnumDropdown`, `dropDown`) around lines `3-100` and `618-635`.
   - Useful for dropdown active-item/item/list composition and selected index wiring.
 
+- `C:\Steam\steamapps\common\Europa Universalis V\game\in_game\gui\game_rules.gui`
+  - In-game custom `dropDown` layout and behavior (`datamodel`, `onselectionchanged`, active-item/item composition) around lines `359-430`.
+
+- `C:\Steam\steamapps\common\Europa Universalis V\game\in_game\gui\unit_viewer.gui`
+  - Minimal functional `dropdown` binding with `selectedindex` + `onselectionchanged` around lines `382-393`.
+
 ## GlorpUI (Workshop 3612386197)
 
 GlorpUI is useful for open/close flow and pause-menu injection examples.
