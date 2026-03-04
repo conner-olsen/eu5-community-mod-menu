@@ -330,29 +330,14 @@ cmm_apply_numeric_change = {
 	if = {
 		limit = { has_variable = cmm_numeric_change_to_apply }
 
-		if = {
-			limit = { var:cmm_numeric_change_to_apply = 1 }
-			cmm_step_numeric_setting_up = { setting = $setting$ }
-		}
-		else_if = {
-			limit = { var:cmm_numeric_change_to_apply = 2 }
-			cmm_step_numeric_setting_up_5x = { setting = $setting$ }
-		}
-		else_if = {
-			limit = { var:cmm_numeric_change_to_apply = 3 }
-			cmm_set_numeric_setting_max = { setting = $setting$ }
-		}
-		else_if = {
-			limit = { var:cmm_numeric_change_to_apply = -1 }
-			cmm_step_numeric_setting_down = { setting = $setting$ }
-		}
-		else_if = {
-			limit = { var:cmm_numeric_change_to_apply = -2 }
-			cmm_step_numeric_setting_down_5x = { setting = $setting$ }
-		}
-		else_if = {
-			limit = { var:cmm_numeric_change_to_apply = -3 }
-			cmm_set_numeric_setting_min = { setting = $setting$ }
+		switch = {
+			trigger = var:cmm_numeric_change_to_apply
+			1 = { cmm_step_numeric_setting_up = { setting = $setting$ } }
+			2 = { cmm_step_numeric_setting_up_5x = { setting = $setting$ } }
+			3 = { cmm_set_numeric_setting_max = { setting = $setting$ } }
+			-1 = { cmm_step_numeric_setting_down = { setting = $setting$ } }
+			-2 = { cmm_step_numeric_setting_down_5x = { setting = $setting$ } }
+			-3 = { cmm_set_numeric_setting_min = { setting = $setting$ } }
 		}
 
 		remove_variable = cmm_numeric_change_to_apply
