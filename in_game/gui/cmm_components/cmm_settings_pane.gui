@@ -124,7 +124,9 @@
 	# - Scope.GetFlagName [string]: current setting key in root context (`<mod_id>__<setting_id>`).
 	# - PdxGuiWidget.GetIndexInDataModel [int32]: clicked option index in item context.
 	# - Player.MakeScope.GetVariable(<setting_key>) [value]: current selected dropdown index.
+	# - GetVariableSystem.Get('cmm_dropdown_hover_index') [string]: hovered dropdown option index used by selection callback.
 	# Writes:
+	# - GetVariableSystem.Set('cmm_dropdown_hover_index') [string]: tracks hovered/active dropdown option index.
 	# - cmm_dropdown_index_to_apply [value]: pending selected index for `cmm_apply_dropdown_change`.
 	# - <mod_id>__<setting_id> callbacks [effect]: applies selected index to setting via `_on_changed`.
 	type cmm_dropdown_setting_control = dropDown {
@@ -133,12 +135,17 @@
 		datamodel = "[DataModelRepeatedItem(CMMDropdownOptionCount(Scope.GetFlagName))]"
 		selectedindex = "[CMMDropdownSelectedIndex(Scope.GetFlagName)]"
 		onselectionchanged = "[GetVariableSystem.Set('cmm_dbg_dropdown_onselection_scope', Scope.GetFlagName)]"
+		onselectionchanged = "[GetVariableSystem.Set('cmm_dbg_dropdown_item_scope', Scope.GetFlagName)]"
+		onselectionchanged = "[GetVariableSystem.Set('cmm_dbg_dropdown_item_index', GetVariableSystem.Get('cmm_dropdown_hover_index'))]"
+		onselectionchanged = "[GetScriptedGui(Concatenate('CMM_MarkDropdownSelection_', GetVariableSystem.Get('cmm_dropdown_hover_index'))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		onselectionchanged = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
 
 		active_item = {
 			widget = {
 				size = { 100% 30 }
 
 				button_drop = {
+					onclick = "[GetVariableSystem.Set('cmm_dropdown_hover_index', ToString_int32(CMMDropdownSelectedIndex(Scope.GetFlagName)))]"
 					tooltip_enabled = no
 				}
 				hbox = {
@@ -173,11 +180,7 @@
 				size = { 100% 30 }
 
 				button_dropdown = {
-					button_trigger = left
-					onclick = "[GetVariableSystem.Set('cmm_dbg_dropdown_item_index', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
-					onclick = "[GetVariableSystem.Set('cmm_dbg_dropdown_item_scope', Scope.GetFlagName)]"
-					onclick = "[GetScriptedGui(Concatenate('CMM_MarkDropdownSelection_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-					onclick = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+					onmousehierarchyenter = "[GetVariableSystem.Set('cmm_dropdown_hover_index', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
 					tooltip_enabled = no
 				}
 
@@ -196,7 +199,7 @@
 		list = {
 			scrollarea = {
 				size = { 100% 250 }
-				position = { 0 0 }
+				position = { 0 30 }
 				autoresizescrollarea = yes
 				autoresizeviewport = yes
 				alwaystransparent = yes
