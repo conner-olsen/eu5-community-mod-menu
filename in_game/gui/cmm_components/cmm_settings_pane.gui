@@ -125,6 +125,8 @@
 	# - GetVariableSystem.Get('cmm_selected_mod') [string]: active mod id for row visibility filtering.
 	# - GetVariableSystem.Get('cmm_selected_tab') [string]: active tab key for row visibility filtering.
 	# - Player.MakeScope.GetVariable(Scope.GetFlagName) [value]: current setting value for checked/value display.
+	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_min_', Scope.GetFlagName)) [value]: numeric minimum bound.
+	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_max_', Scope.GetFlagName)) [value]: numeric maximum bound.
 	# Writes:
 	# - GetScriptedGui(Concatenate(Scope.GetFlagName, '_on_changed')).Execute(...) [effect]: applies shared post-change logic and bool toggles.
 	# - GetScriptedGui('CMM_MarkNumeric*').Execute(...) [effect]: stores pending numeric delta mode.
@@ -149,7 +151,7 @@
 			hbox = {
 				visible = "[CMMSettingIsNumeric(Scope.GetFlagName)]"
 				spacing = 4
-				minimumsize = { 120 0 }
+				minimumsize = { 168 0 }
 
 				button_regular = {
 					minimumsize = { 32 32 }
@@ -187,9 +189,20 @@
 					}
 				}
 
-				text_single = {
-					minimumsize = { 44 0 }
-					text = "[CMMNumericSettingValue(Scope.GetFlagName)]"
+				vbox = {
+					minimumsize = { 84 0 }
+					spacing = 0
+
+					text_single = {
+						align = center
+						text = "[CMMNumericSettingValue(Scope.GetFlagName)]"
+					}
+
+					text_single = {
+						align = center
+						default_format = "#weak_text"
+						raw_text = "([CMMNumericSettingMin(Scope.GetFlagName)]-[CMMNumericSettingMax(Scope.GetFlagName)])"
+					}
 				}
 
 				button_regular = {

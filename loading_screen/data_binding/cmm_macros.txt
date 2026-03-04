@@ -246,6 +246,22 @@ macro = {
     replace_with = "CMMVar(SettingKey).GetValue"
 }
 
+# Args: SettingKey (string)
+# Returns: value
+macro = {
+    description = "Numeric setting minimum bound text"
+    definition = "CMMNumericSettingMin(SettingKey)"
+    replace_with = "CMMVar(Concatenate('cmm_setting_min_', SettingKey)).GetValue"
+}
+
+# Args: SettingKey (string)
+# Returns: value
+macro = {
+    description = "Numeric setting maximum bound text"
+    definition = "CMMNumericSettingMax(SettingKey)"
+    replace_with = "CMMVar(Concatenate('cmm_setting_max_', SettingKey)).GetValue"
+}
+
 # Args: none
 # Returns: boolean
 macro = {
