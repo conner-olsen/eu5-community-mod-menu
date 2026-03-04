@@ -316,7 +316,6 @@ cmm_toggle_bool_setting = {
 cmm_apply_dropdown_change = {
 	if = {
 		limit = { has_variable = cmm_dropdown_index_to_apply }
-		set_variable = { name = cmm_dbg_dropdown_last_applied_index value = var:cmm_dropdown_index_to_apply }
 		set_variable = { name = $setting$ value = var:cmm_dropdown_index_to_apply }
 
 		if = {

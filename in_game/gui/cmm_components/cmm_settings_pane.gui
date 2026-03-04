@@ -134,9 +134,6 @@
 		alwaystransparent = no
 		datamodel = "[DataModelRepeatedItem(CMMDropdownOptionCount(Scope.GetFlagName))]"
 		selectedindex = "[CMMDropdownSelectedIndex(Scope.GetFlagName)]"
-		onselectionchanged = "[GetVariableSystem.Set('cmm_dbg_dropdown_onselection_scope', Scope.GetFlagName)]"
-		onselectionchanged = "[GetVariableSystem.Set('cmm_dbg_dropdown_item_scope', Scope.GetFlagName)]"
-		onselectionchanged = "[GetVariableSystem.Set('cmm_dbg_dropdown_item_index', GetVariableSystem.Get('cmm_dropdown_hover_index'))]"
 		onselectionchanged = "[GetScriptedGui(Concatenate('CMM_MarkDropdownSelection_', GetVariableSystem.Get('cmm_dropdown_hover_index'))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
 		onselectionchanged = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
 
@@ -369,11 +366,6 @@
 					max_width = 620
 				}
 
-				text_single = {
-					visible = "[CMMSettingIsDropdown(Scope.GetFlagName)]"
-					default_format = "#color_gray"
-					raw_text = "DBG i:[GetVariableSystem.Get('cmm_dbg_dropdown_item_index')] s:[GetVariableSystem.Get('cmm_dbg_dropdown_item_scope')] o:[GetVariableSystem.Get('cmm_dbg_dropdown_onselection_scope')] m:[Player.MakeScope.GetVariable('cmm_dbg_dropdown_last_marked_index').GetValue] p:[Player.MakeScope.GetVariable('cmm_dropdown_index_to_apply').GetValue] a:[Player.MakeScope.GetVariable('cmm_dbg_dropdown_last_applied_index').GetValue] v:[Player.MakeScope.GetVariable(Scope.GetFlagName).GetValue]"
-				}
 			}
 		}
 	}
