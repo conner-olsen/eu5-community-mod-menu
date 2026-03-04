@@ -144,7 +144,7 @@ Notes:
 
 ## Registration Hook Contract
 
-CMM defines and fires a shared custom on_action named `cmm_on_register_country`.
+CMM defines and fires a shared custom on_action named `cmm_on_mod_registration`.
 
 - CMM fires it on game start (after a 1-day delay) and when opening Mod Menu.
 - Integrating mods should append their own registration leaf on_actions to this hook.
@@ -152,15 +152,15 @@ CMM defines and fires a shared custom on_action named `cmm_on_register_country`.
 Pattern:
 
 ```txt
-cmm_on_register_country = {
+cmm_on_mod_registration = {
     on_actions = {
-        your_mod_on_register_country
+        your_mod_on_register_mod
     }
 }
 
-your_mod_on_register_country = {
+your_mod_on_register_mod = {
     effect = {
-        your_mod_register_country = yes
+        your_mod_register_mod = yes
     }
 }
 ```
@@ -189,7 +189,7 @@ CMM writes these country-scope variables/lists:
 ## Minimal Example (Bool + Numeric)
 
 ```txt
-your_mod_register_country = {
+your_mod_register_mod = {
     cmm_register_mod = {
         mod_id = your_mod
     }

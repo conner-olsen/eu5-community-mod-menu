@@ -5,7 +5,7 @@ CMM_RegisterCoreMod = {
 	effect = {
 		cmm_register_menu_settings = yes
 		trigger_event_silently = {
-			on_action = cmm_on_register_country
+			on_action = cmm_on_mod_registration
 		}
 	}
 }

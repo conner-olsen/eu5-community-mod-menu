@@ -30,7 +30,7 @@ Implemented:
 6. Right panel renders selected-mod metadata and dynamic setting rows.
 7. Bool toggles are wired through scripted GUI callbacks (`<mod_id>__<setting_id>_on_changed`) and `cmm_toggle_bool_setting`.
 8. Numeric steppers are wired through generic CMM markers and per-setting scripted GUI `_on_changed` callbacks (`click=1x`, `ctrl+click=5x`, `shift+click=min/max`).
-9. Shared registration hook `cmm_on_register_country` is in place and used by example mods.
+9. Shared registration hook `cmm_on_mod_registration` is in place and used by example mods.
 10. Runtime localization keys are derived from ids (no extra registration args for names/descriptions).
 11. Dynamic per-mod tabs are implemented in the right panel.
 12. Settings are filtered by both selected mod and selected tab.
@@ -227,7 +227,7 @@ For numeric settings, CMM marks numeric modes generically (`1x`, `5x`, `min/max`
 
 ## Registration Lifecycle
 
-- CMM fires shared custom on_action `cmm_on_register_country`.
+- CMM fires shared custom on_action `cmm_on_mod_registration`.
 - Integrating mods append their own leaf on_actions under that hook.
 - CMM invokes registration on:
   - startup synchronization,

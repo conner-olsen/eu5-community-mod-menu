@@ -1,25 +1,25 @@
 ﻿# Root scope: country.
-cmm_example_register_country = {
+cmm_example2_register_mod = {
 	cmm_register_mod = {
-		mod_id = cmm_example
+		mod_id = cmm_example1
 	}
 
 	cmm_register_bool_setting = {
-		mod_id = cmm_example
+		mod_id = cmm_example1
 		setting_id = feature_enabled
 		tab_id = general
 		default_value = 1
 	}
 
 	cmm_register_bool_setting = {
-		mod_id = cmm_example
+		mod_id = cmm_example1
 		setting_id = show_notifications
 		tab_id = notifications
 		default_value = 0
 	}
 
 	cmm_register_numeric_setting = {
-		mod_id = cmm_example
+		mod_id = cmm_example1
 		setting_id = monthly_bonus
 		tab_id = general
 		default_value = 10

@@ -91,8 +91,8 @@ CMM handles numeric change modes through generic marker scripted GUIs (`1x`, `5x
 Registration hook contract:
 
 ```txt
-cmm_on_register_country = {
-    on_actions = { your_mod_on_register_country }
+cmm_on_mod_registration = {
+    on_actions = { your_mod_on_register_mod }
 }
 ```
 
