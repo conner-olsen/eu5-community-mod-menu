@@ -40,7 +40,7 @@ Arguments:
 
 Notes:
 
-- `cmm_register_bool_setting`, `cmm_register_numeric_setting`, `cmm_register_dropdown_setting`, and their `cmm_register_global_*` variants auto-register their tab.
+- `cmm_register_bool_setting`, `cmm_register_numeric_setting`, `cmm_register_slider_setting`, `cmm_register_dropdown_setting`, and their `cmm_register_global_*` variants auto-register their tab.
 - Use explicit `cmm_register_tab` only when you need an empty tab with no settings yet.
 
 ### 3) Register bool settings
@@ -114,7 +114,50 @@ cmm_register_global_numeric_setting = {
 }
 ```
 
-### 5) Register dropdown settings
+### 5) Register slider settings
+
+```txt
+cmm_register_slider_setting = {
+    mod_id = your_mod_id
+    setting_id = your_setting_id
+    tab_id = your_tab_id
+    default_value = 50
+    min_value = 0
+    max_value = 100
+    step_value = 10
+}
+```
+
+Arguments:
+
+- `mod_id`: owner mod id.
+- `setting_id`: stable id within your mod.
+- `tab_id`: owner tab id within your mod.
+- `default_value`: initial value for brand-new saves. CMM quantizes slider values to the nearest configured step.
+- `min_value`: minimum allowed value.
+- `max_value`: maximum allowed value.
+- `step_value`: logical slider interval.
+  - Track clicks select the nearest slider position.
+  - Click on `-` / `+`: `1x` step.
+  - `Ctrl+click` on `-` / `+`: `5x` step.
+  - `Shift+click` on `-` / `+`: jump to min/max.
+  - Slider tracks render up to 25 visual slots. Above that, track clicks snap to the nearest visual slot while `-` / `+` still use exact step math.
+
+Global-storage variant:
+
+```txt
+cmm_register_global_slider_setting = {
+    mod_id = your_mod_id
+    setting_id = your_setting_id
+    tab_id = your_tab_id
+    default_value = 50
+    min_value = 0
+    max_value = 100
+    step_value = 10
+}
+```
+
+### 6) Register dropdown settings
 
 ```txt
 cmm_register_dropdown_setting = {
@@ -196,6 +239,23 @@ Required scripted GUI callback:
 }
 ```
 
+### Slider setting callbacks
+
+Required scripted GUI callback:
+
+```txt
+<mod_id>__<setting_id>_on_changed = {
+    scope = country
+    effect = {
+        cmm_apply_slider_change = {
+            setting = <mod_id>__<setting_id>
+        }
+        # optional custom logic after slider value changes
+    }
+    # optional is_shown = { ... }
+}
+```
+
 ### Dropdown setting callbacks
 
 Required scripted GUI callback:
@@ -217,11 +277,12 @@ Notes:
 
 - `_on_changed` is also used for row visibility (`is_shown`) checks.
 - CMM handles numeric modes (`1x`, `5x`, `min/max`) via generic marker scripted GUIs, then executes `_on_changed`.
+- CMM handles slider track clicks and `-` / `+` modifiers via generic marker scripted GUIs, then executes `_on_changed`.
 - CMM captures dropdown selection index via a generic marker scripted GUI, then executes `_on_changed`.
 - If `is_shown` is omitted, the row is visible.
 - Checked/value state is read directly from `var:<mod_id>__<setting_id>` by CMM UI.
 - Global settings (`cmm_register_global_*`) are writable by host only in multiplayer (`IsHost`); all players can view them.
-- Callback contract is unchanged for local vs global settings; `cmm_toggle_bool_setting`, `cmm_apply_numeric_change`, and `cmm_apply_dropdown_change` branch automatically.
+- Callback contract is unchanged for local vs global settings; `cmm_toggle_bool_setting`, `cmm_apply_numeric_change`, `cmm_apply_slider_change`, and `cmm_apply_dropdown_change` branch automatically.
 
 ## Registration Hook Contract
 
@@ -261,9 +322,14 @@ CMM writes these country-scope variables/lists:
 - `cmm_setting_owner_mod_id_<mod_id>__<setting_id>` (flag value)
 - `cmm_setting_owner_tab_key_<mod_id>__<setting_id>` (flag value)
 - `cmm_setting_is_global_<mod_id>__<setting_id>` (`0` local country setting, `1` global setting)
-- `cmm_setting_min_<mod_id>__<setting_id>` (numeric only)
-- `cmm_setting_max_<mod_id>__<setting_id>` (numeric only)
-- `cmm_setting_step_<mod_id>__<setting_id>` (numeric only)
+- `cmm_setting_is_slider_<mod_id>__<setting_id>` (`0` non-slider, `1` slider)
+- `cmm_setting_min_<mod_id>__<setting_id>` (numeric and slider)
+- `cmm_setting_max_<mod_id>__<setting_id>` (numeric and slider)
+- `cmm_setting_step_<mod_id>__<setting_id>` (numeric and slider)
+- `cmm_setting_slider_actual_step_count_<mod_id>__<setting_id>` (slider only)
+- `cmm_setting_slider_actual_last_index_<mod_id>__<setting_id>` (slider only)
+- `cmm_setting_slider_visual_step_count_<mod_id>__<setting_id>` (slider only)
+- `cmm_setting_slider_visual_last_index_<mod_id>__<setting_id>` (slider only)
 - `cmm_setting_dropdown_count_<mod_id>__<setting_id>` (dropdown only)
 - `cmm_setting_dropdown_last_index_<mod_id>__<setting_id>` (dropdown only)
 - `<mod_id>__<setting_id>_name` (flag value)
@@ -271,7 +337,7 @@ CMM writes these country-scope variables/lists:
 - `<mod_id>__<setting_id>` (country cache value used by CMM UI)
 - global `<mod_id>__<setting_id>` (authoritative value for `cmm_register_global_*` settings)
 
-## Minimal Example (Bool + Numeric + Dropdown)
+## Minimal Example (Bool + Numeric + Slider + Dropdown)
 
 ```txt
 your_mod_register_mod = {
@@ -294,6 +360,16 @@ your_mod_register_mod = {
         min_value = 0
         max_value = 100
         step_value = 5
+    }
+
+    cmm_register_slider_setting = {
+        mod_id = your_mod
+        setting_id = intensity
+        tab_id = general
+        default_value = 50
+        min_value = 0
+        max_value = 100
+        step_value = 10
     }
 
     cmm_register_dropdown_setting = {
@@ -324,6 +400,16 @@ your_mod__amount_on_changed = {
     }
 }
 
+your_mod__intensity_on_changed = {
+    scope = country
+    effect = {
+        cmm_apply_slider_change = {
+            setting = your_mod__intensity
+        }
+        # optional custom logic
+    }
+}
+
 your_mod__mode_on_changed = {
     scope = country
     effect = {
@@ -347,6 +433,8 @@ your_mod_allow_feature_name: "Allow Feature"
 your_mod_allow_feature_desc: "Enables the feature when checked."
 your_mod_amount_name: "Amount"
 your_mod_amount_desc: "Numeric amount controlled in CMM."
+your_mod_intensity_name: "Intensity"
+your_mod_intensity_desc: "Slider amount controlled in CMM."
 your_mod_mode_name: "Mode"
 your_mod_mode_desc: "Dropdown mode controlled in CMM."
 your_mod__mode_option_0_name: "Off"
@@ -356,6 +444,6 @@ your_mod__mode_option_2_name: "Aggressive"
 
 ## Notes
 
-- CMM v1 controls currently include bool, numeric, and dropdown.
+- CMM v1 controls currently include bool, numeric, slider, and dropdown.
 - Keep ids stable (`mod_id`, `tab_id`, `setting_id`) across updates.
 - Keep integration/API docs in repository docs, not runtime UI localization.

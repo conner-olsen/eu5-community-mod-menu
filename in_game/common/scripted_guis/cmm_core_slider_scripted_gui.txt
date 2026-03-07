@@ -1,0 +1,224 @@
+﻿# Mark the next slider interaction as visual slot `0`.
+# Scope: country
+# Args: none
+CMM_MarkSliderSelection_0 = {
+	effect = {
+		set_variable = { name = cmm_slider_index_to_apply value = 0 }
+	}
+}
+
+# Mark the next slider interaction as visual slot `1`.
+# Scope: country
+# Args: none
+CMM_MarkSliderSelection_1 = {
+	effect = {
+		set_variable = { name = cmm_slider_index_to_apply value = 1 }
+	}
+}
+
+# Mark the next slider interaction as visual slot `2`.
+# Scope: country
+# Args: none
+CMM_MarkSliderSelection_2 = {
+	effect = {
+		set_variable = { name = cmm_slider_index_to_apply value = 2 }
+	}
+}
+
+# Mark the next slider interaction as visual slot `3`.
+# Scope: country
+# Args: none
+CMM_MarkSliderSelection_3 = {
+	effect = {
+		set_variable = { name = cmm_slider_index_to_apply value = 3 }
+	}
+}
+
+# Mark the next slider interaction as visual slot `4`.
+# Scope: country
+# Args: none
+CMM_MarkSliderSelection_4 = {
+	effect = {
+		set_variable = { name = cmm_slider_index_to_apply value = 4 }
+	}
+}
+
+# Mark the next slider interaction as visual slot `5`.
+# Scope: country
+# Args: none
+CMM_MarkSliderSelection_5 = {
+	effect = {
+		set_variable = { name = cmm_slider_index_to_apply value = 5 }
+	}
+}
+
+# Mark the next slider interaction as visual slot `6`.
+# Scope: country
+# Args: none
+CMM_MarkSliderSelection_6 = {
+	effect = {
+		set_variable = { name = cmm_slider_index_to_apply value = 6 }
+	}
+}
+
+# Mark the next slider interaction as visual slot `7`.
+# Scope: country
+# Args: none
+CMM_MarkSliderSelection_7 = {
+	effect = {
+		set_variable = { name = cmm_slider_index_to_apply value = 7 }
+	}
+}
+
+# Mark the next slider interaction as visual slot `8`.
+# Scope: country
+# Args: none
+CMM_MarkSliderSelection_8 = {
+	effect = {
+		set_variable = { name = cmm_slider_index_to_apply value = 8 }
+	}
+}
+
+# Mark the next slider interaction as visual slot `9`.
+# Scope: country
+# Args: none
+CMM_MarkSliderSelection_9 = {
+	effect = {
+		set_variable = { name = cmm_slider_index_to_apply value = 9 }
+	}
+}
+
+# Mark the next slider interaction as visual slot `10`.
+# Scope: country
+# Args: none
+CMM_MarkSliderSelection_10 = {
+	effect = {
+		set_variable = { name = cmm_slider_index_to_apply value = 10 }
+	}
+}
+
+# Mark the next slider interaction as visual slot `11`.
+# Scope: country
+# Args: none
+CMM_MarkSliderSelection_11 = {
+	effect = {
+		set_variable = { name = cmm_slider_index_to_apply value = 11 }
+	}
+}
+
+# Mark the next slider interaction as visual slot `12`.
+# Scope: country
+# Args: none
+CMM_MarkSliderSelection_12 = {
+	effect = {
+		set_variable = { name = cmm_slider_index_to_apply value = 12 }
+	}
+}
+
+# Mark the next slider interaction as visual slot `13`.
+# Scope: country
+# Args: none
+CMM_MarkSliderSelection_13 = {
+	effect = {
+		set_variable = { name = cmm_slider_index_to_apply value = 13 }
+	}
+}
+
+# Mark the next slider interaction as visual slot `14`.
+# Scope: country
+# Args: none
+CMM_MarkSliderSelection_14 = {
+	effect = {
+		set_variable = { name = cmm_slider_index_to_apply value = 14 }
+	}
+}
+
+# Mark the next slider interaction as visual slot `15`.
+# Scope: country
+# Args: none
+CMM_MarkSliderSelection_15 = {
+	effect = {
+		set_variable = { name = cmm_slider_index_to_apply value = 15 }
+	}
+}
+
+# Mark the next slider interaction as visual slot `16`.
+# Scope: country
+# Args: none
+CMM_MarkSliderSelection_16 = {
+	effect = {
+		set_variable = { name = cmm_slider_index_to_apply value = 16 }
+	}
+}
+
+# Mark the next slider interaction as visual slot `17`.
+# Scope: country
+# Args: none
+CMM_MarkSliderSelection_17 = {
+	effect = {
+		set_variable = { name = cmm_slider_index_to_apply value = 17 }
+	}
+}
+
+# Mark the next slider interaction as visual slot `18`.
+# Scope: country
+# Args: none
+CMM_MarkSliderSelection_18 = {
+	effect = {
+		set_variable = { name = cmm_slider_index_to_apply value = 18 }
+	}
+}
+
+# Mark the next slider interaction as visual slot `19`.
+# Scope: country
+# Args: none
+CMM_MarkSliderSelection_19 = {
+	effect = {
+		set_variable = { name = cmm_slider_index_to_apply value = 19 }
+	}
+}
+
+# Mark the next slider interaction as visual slot `20`.
+# Scope: country
+# Args: none
+CMM_MarkSliderSelection_20 = {
+	effect = {
+		set_variable = { name = cmm_slider_index_to_apply value = 20 }
+	}
+}
+
+# Mark the next slider interaction as visual slot `21`.
+# Scope: country
+# Args: none
+CMM_MarkSliderSelection_21 = {
+	effect = {
+		set_variable = { name = cmm_slider_index_to_apply value = 21 }
+	}
+}
+
+# Mark the next slider interaction as visual slot `22`.
+# Scope: country
+# Args: none
+CMM_MarkSliderSelection_22 = {
+	effect = {
+		set_variable = { name = cmm_slider_index_to_apply value = 22 }
+	}
+}
+
+# Mark the next slider interaction as visual slot `23`.
+# Scope: country
+# Args: none
+CMM_MarkSliderSelection_23 = {
+	effect = {
+		set_variable = { name = cmm_slider_index_to_apply value = 23 }
+	}
+}
+
+# Mark the next slider interaction as visual slot `24`.
+# Scope: country
+# Args: none
+CMM_MarkSliderSelection_24 = {
+	effect = {
+		set_variable = { name = cmm_slider_index_to_apply value = 24 }
+	}
+}

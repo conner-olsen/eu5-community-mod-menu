@@ -6,7 +6,7 @@ A dependency mod for **Europa Universalis 5** that provides one shared in-game m
 
 - Pause menu button (`Mod Menu`) via intentional `ingame_menu.gui` override.
 - Dynamic left mod list (search + compact rendering).
-- Dynamic right settings panel for registered bool, numeric, and dropdown settings.
+- Dynamic right settings panel for registered bool, numeric, slider, and dropdown settings.
 - Dynamic per-mod tabs in the right panel.
 - Mod-id-based registration API with no fixed slot cap.
 - GUI function macro layer for shared CMM data-binding expressions (`loading_screen/data_binding/cmm_macros.txt`).
@@ -18,6 +18,11 @@ A dependency mod for **Europa Universalis 5** that provides one shared in-game m
   - Click: `1x` step.
   - `Ctrl+click`: `5x` step.
   - `Shift+click`: jump to min/max.
+- Slider settings with pseudo-slider controls.
+  - Click track: jump to the selected slider position.
+  - Click `-` / `+`: `1x` step.
+  - `Ctrl+click` on `-` / `+`: `5x` step.
+  - `Shift+click` on `-` / `+`: jump to min/max.
 - Dropdown settings with selector controls (`<` / `>`).
   - Click: previous/next option.
   - `Shift+click`: jump to first/last option.
@@ -54,6 +59,16 @@ cmm_register_numeric_setting = {
     min_value = 0      # required
     max_value = 100    # required
     step_value = 5     # required
+}
+
+cmm_register_slider_setting = {
+    mod_id = your_mod_id
+    setting_id = your_setting_id
+    tab_id = your_tab_id
+    default_value = 50 # required
+    min_value = 0      # required
+    max_value = 100    # required
+    step_value = 10    # required
 }
 
 cmm_register_dropdown_setting = {
@@ -97,6 +112,18 @@ Callback contract:
     # optional is_shown = { ... }
 }
 
+# Slider shared callback (required; executed after track click or +/-):
+<mod_id>__<setting_id>_on_changed = {
+    scope = country
+    effect = {
+        cmm_apply_slider_change = {
+            setting = <mod_id>__<setting_id>
+        }
+        # optional custom logic after slider value changes
+    }
+    # optional is_shown = { ... }
+}
+
 # Dropdown shared callback (required; executed after < / >):
 <mod_id>__<setting_id>_on_changed = {
     scope = country
@@ -108,7 +135,7 @@ Callback contract:
 }
 ```
 
-CMM handles numeric/dropdown change modes through generic marker scripted GUIs and then executes the setting-specific `_on_changed`.
+CMM handles numeric, slider, and dropdown change modes through generic marker scripted GUIs and then executes the setting-specific `_on_changed`.
 
 Registration hook contract:
 

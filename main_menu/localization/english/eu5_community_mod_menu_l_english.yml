@@ -30,6 +30,8 @@
  cmm_core_global_example_toggle_desc: "Example global toggle. In multiplayer, only the host can change this setting."
  cmm_core_diagnostics_interval_name: "Diagnostics Interval"
  cmm_core_diagnostics_interval_desc: "Example numeric setting that controls a diagnostic interval value."
+ cmm_core_diagnostics_sensitivity_name: "Diagnostics Sensitivity"
+ cmm_core_diagnostics_sensitivity_desc: "Example slider setting that uses a pseudo-slider track with clickable positions."
  cmm_core_diagnostics_level_name: "Diagnostics Level"
  cmm_core_diagnostics_level_desc: "Example dropdown setting for selecting diagnostics verbosity."
  cmm_core__diagnostics_level_option_0_name: "Low"

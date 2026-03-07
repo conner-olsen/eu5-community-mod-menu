@@ -97,6 +97,14 @@ macro = {
 # Args: SettingKey (string)
 # Returns: boolean
 macro = {
+    description = "True when a setting key is registered as slider type"
+    definition = "CMMSettingIsSlider(SettingKey)"
+    replace_with = "EqualTo_CFixedPoint(CMMVar(Concatenate('cmm_setting_is_slider_', SettingKey)).GetValue, '(CFixedPoint)1')"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
     description = "True when local player can edit this setting (global settings are host-only in MP)"
     definition = "CMMCanEditSetting(SettingKey)"
     replace_with = "Or(Not(CMMSettingIsGlobal(SettingKey)), Or(Not(GameIsMultiplayer), IsHost))"
@@ -115,7 +123,7 @@ macro = {
 macro = {
     description = "True when a setting key is registered as numeric type"
     definition = "CMMSettingIsNumeric(SettingKey)"
-    replace_with = "CMMVar(Concatenate('cmm_setting_step_', SettingKey)).IsSet"
+    replace_with = "And(CMMVar(Concatenate('cmm_setting_step_', SettingKey)).IsSet, Not(CMMSettingIsSlider(SettingKey)))"
 }
 
 # Args: SettingKey (string)
@@ -123,7 +131,7 @@ macro = {
 macro = {
     description = "True when a setting key is registered as bool type"
     definition = "CMMSettingIsBool(SettingKey)"
-    replace_with = "And(Not(CMMSettingIsNumeric(SettingKey)), Not(CMMSettingIsDropdown(SettingKey)))"
+    replace_with = "And3(Not(CMMSettingIsNumeric(SettingKey)), Not(CMMSettingIsDropdown(SettingKey)), Not(CMMSettingIsSlider(SettingKey)))"
 }
 
 # Args: SettingKey (string)
@@ -284,6 +292,46 @@ macro = {
     description = "Numeric setting maximum bound text"
     definition = "CMMNumericSettingMax(SettingKey)"
     replace_with = "CMMVar(Concatenate('cmm_setting_max_', SettingKey)).GetValue"
+}
+
+# Args: SettingKey (string)
+# Returns: int32
+macro = {
+    description = "Slider visual step count for one setting"
+    definition = "CMMSliderVisualStepCount(SettingKey)"
+    replace_with = "FixedPointToInt(CMMVar(Concatenate('cmm_setting_slider_visual_step_count_', SettingKey)).GetValue)"
+}
+
+# Args: SettingKey (string)
+# Returns: int32
+macro = {
+    description = "Slider actual last index for one setting"
+    definition = "CMMSliderActualLastIndex(SettingKey)"
+    replace_with = "FixedPointToInt(CMMVar(Concatenate('cmm_setting_slider_actual_last_index_', SettingKey)).GetValue)"
+}
+
+# Args: SettingKey (string)
+# Returns: int32
+macro = {
+    description = "Slider visual last index for one setting"
+    definition = "CMMSliderVisualLastIndex(SettingKey)"
+    replace_with = "FixedPointToInt(CMMVar(Concatenate('cmm_setting_slider_visual_last_index_', SettingKey)).GetValue)"
+}
+
+# Args: SettingKey (string)
+# Returns: int32
+macro = {
+    description = "Current actual slider step index for one setting"
+    definition = "CMMSliderCurrentActualIndex(SettingKey)"
+    replace_with = "FixedPointToInt(Add_CFixedPoint(Divide_CFixedPoint(Subtract_CFixedPoint(CMMVar(SettingKey).GetValue, CMMVar(Concatenate('cmm_setting_min_', SettingKey)).GetValue), CMMVar(Concatenate('cmm_setting_step_', SettingKey)).GetValue), '(CFixedPoint)0.5'))"
+}
+
+# Args: SettingKey (string)
+# Returns: int32
+macro = {
+    description = "Current visual slider slot index for one setting"
+    definition = "CMMSliderCurrentVisualIndex(SettingKey)"
+    replace_with = "Divide_int32(Multiply_int32(CMMSliderCurrentActualIndex(SettingKey), CMMSliderVisualLastIndex(SettingKey)), CMMSliderActualLastIndex(SettingKey))"
 }
 
 # Args: SettingKey (string)

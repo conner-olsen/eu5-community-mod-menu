@@ -18,7 +18,7 @@ cmm_example2_register_mod = {
 		default_value = 1
 	}
 
-	cmm_register_numeric_setting = {
+	cmm_register_slider_setting = {
 		mod_id = cmm_example2
 		setting_id = overlay_opacity
 		tab_id = visuals

@@ -30,6 +30,16 @@ cmm_register_menu_settings = {
 		step_value = 1
 	}
 
+	cmm_register_slider_setting = {
+		mod_id = cmm_core
+		setting_id = diagnostics_sensitivity
+		tab_id = general
+		default_value = 50
+		min_value = 0
+		max_value = 100
+		step_value = 10
+	}
+
 	cmm_register_dropdown_setting = {
 		mod_id = cmm_core
 		setting_id = diagnostics_level

@@ -63,6 +63,19 @@ cmm_core__diagnostics_interval_on_changed = {
 	}
 }
 
+# On-changed callback for core slider demo setting.
+# Scope: country
+# Args: none
+cmm_core__diagnostics_sensitivity_on_changed = {
+	scope = country
+	effect = {
+		cmm_apply_slider_change = {
+			setting = cmm_core__diagnostics_sensitivity
+		}
+		# optional custom logic
+	}
+}
+
 # On-changed callback for core dropdown demo setting.
 # Scope: country
 # Args: none

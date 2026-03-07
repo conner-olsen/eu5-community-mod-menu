@@ -38,7 +38,7 @@ cmm_example2__overlay_opacity_on_changed = {
 	scope = country
 
 	effect = {
-		cmm_apply_numeric_change = {
+		cmm_apply_slider_change = {
 			setting = cmm_example2__overlay_opacity
 		}
 		# optional custom logic
