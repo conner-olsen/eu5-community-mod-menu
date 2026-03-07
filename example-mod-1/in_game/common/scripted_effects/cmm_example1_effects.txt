@@ -6,21 +6,21 @@ cmm_example1_register_mod = {
 
 	cmm_register_bool_setting = {
 		mod_id = cmm_example1
-		setting_id = feature_enabled
+		setting_id = example_toggle
 		tab_id = general
 		default_value = 1
 	}
 
 	cmm_register_global_bool_setting = {
 		mod_id = cmm_example1
-		setting_id = show_notifications
-		tab_id = notifications
+		setting_id = global_example_toggle
+		tab_id = global
 		default_value = 0
 	}
 
 	cmm_register_numeric_setting = {
 		mod_id = cmm_example1
-		setting_id = monthly_bonus
+		setting_id = example_numeric
 		tab_id = general
 		default_value = 10
 		min_value = 0
@@ -30,7 +30,7 @@ cmm_example1_register_mod = {
 
 	cmm_register_dropdown_setting = {
 		mod_id = cmm_example1
-		setting_id = mode
+		setting_id = example_dropdown
 		tab_id = general
 		default_index = 1
 		option_count = 3

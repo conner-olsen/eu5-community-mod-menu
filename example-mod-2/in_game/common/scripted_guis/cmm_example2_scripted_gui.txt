@@ -1,13 +1,13 @@
-﻿cmm_example2__ai_helper_on_changed = {
+﻿cmm_example2__example_toggle_1_on_changed = {
 	scope = country
 
 	effect = {
 		cmm_toggle_bool_setting = {
-			setting = cmm_example2__ai_helper
+			setting = cmm_example2__example_toggle_1
 		}
 
 		if = {
-			limit = { var:cmm_example2__ai_helper = 1 }
+			limit = { var:cmm_example2__example_toggle_1 = 1 }
 			# enabled effect
 		}
 		else = {
@@ -16,16 +16,16 @@
 	}
 }
 
-cmm_example2__map_overlay_on_changed = {
+cmm_example2__example_toggle_2_on_changed = {
 	scope = country
 
 	effect = {
 		cmm_toggle_bool_setting = {
-			setting = cmm_example2__map_overlay
+			setting = cmm_example2__example_toggle_2
 		}
 
 		if = {
-			limit = { var:cmm_example2__map_overlay = 1 }
+			limit = { var:cmm_example2__example_toggle_2 = 1 }
 			# enabled effect
 		}
 		else = {
@@ -34,23 +34,23 @@ cmm_example2__map_overlay_on_changed = {
 	}
 }
 
-cmm_example2__overlay_opacity_on_changed = {
+cmm_example2__example_slider_on_changed = {
 	scope = country
 
 	effect = {
 		cmm_apply_slider_change = {
-			setting = cmm_example2__overlay_opacity
+			setting = cmm_example2__example_slider
 		}
 		# optional custom logic
 	}
 }
 
-cmm_example2__overlay_mode_on_changed = {
+cmm_example2__example_dropdown_on_changed = {
 	scope = country
 
 	effect = {
 		cmm_apply_dropdown_change = {
-			setting = cmm_example2__overlay_mode
+			setting = cmm_example2__example_dropdown
 		}
 		# optional custom logic
 	}
