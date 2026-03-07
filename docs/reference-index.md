@@ -1,11 +1,7 @@
 # Reference Index
-
-Last updated: 2026-02-28
-
 This file catalogs useful reference files for CMM work.
 
 ## Vanilla EU5
-
 - `C:\Steam\steamapps\common\Europa Universalis V\game\in_game\gui\ingame_menu.gui`
   - Escape menu override target for menu button injection.
 
@@ -29,12 +25,29 @@ This file catalogs useful reference files for CMM work.
 
 - `C:\Steam\steamapps\common\Europa Universalis V\game\in_game\gui\ui_library.gui`
   - Baseline tabs and control examples (`header_main_tabs`, `header_secondary_tabs`, `ranged_slider`).
+  - Canonical dual-handle syntax example around lines `14492-14521` (`value_low`, `slider_low`, `dec_button_low`, `inc_button_low`, `mincap`, `maxcap`).
 
 - `C:\Steam\steamapps\common\Europa Universalis V\game\in_game\gui\economy_lateralview.gui`
   - Real production slider usage (`economy_slider`, `onvaluechanged`, `onchangefinish`).
 
 - `C:\Steam\steamapps\common\Europa Universalis V\game\in_game\gui\select_search_filter.gui`
-  - Range-slider filtering pattern (`ranged_slider`, low/high callbacks).
+  - Range-slider filtering pattern around lines `145-177` (`ranged_slider`, `value_low`, `onvaluechanged_low`, `onvaluechanged`).
+
+- `C:\Steam\steamapps\common\Europa Universalis V\game\in_game\gui\setup_mercenary_requirements.gui`
+  - Two production single-handle `ranged_slider` examples around lines `651-718` and `884-974`.
+  - Useful for dynamic min/max/cap/step/value wiring and per-row +/- button enable/tooltip overrides.
+
+- `C:\Steam\steamapps\common\Europa Universalis V\game\in_game\gui\setup_condottieri.gui`
+  - Two concise production `ranged_slider` examples around lines `420-487` and `525-592` (duration and cost modifier).
+  - Good minimal pattern for dynamic bounds + `onvaluechanged` without extra custom logic.
+
+- `C:\Steam\steamapps\common\Europa Universalis V\game\in_game\gui\map_markers.gui`
+  - Compact inline `ranged_slider` around lines `3932-4013`.
+  - Shows custom +/- button skins inside slider for tight row layouts.
+
+- `C:\Steam\steamapps\common\Europa Universalis V\game\in_game\gui\import_export_lateralview.gui`
+  - Narrow `ranged_slider` around lines `386-469` with tooltip and disabled slider +/- buttons (`dec_button = { button = {} }`, `inc_button = { button = {} }`).
+  - Useful pattern when external +/- controls already exist in the row.
 
 - `C:\Steam\steamapps\common\Europa Universalis V\game\in_game\gui\diplomacy_lateralview.gui`
   - Multi-tab composition with `header_main_tabs` + secondary tab blocks.
@@ -132,4 +145,30 @@ GlorpUI is useful for open/close flow and pause-menu injection examples.
 
 - Cheat Menu Pro has a useful slider-like control in `sakuya_test.gui` (custom discrete implementation for monthly income amount).
 - Skiar's menu uses discrete button matrices for numeric changes; it does not rely on native `ranged_slider` controls.
-- For native slider widgets/events, use vanilla files listed in the Vanilla EU5 section above.
+- Native `ranged_slider =` audit: 9 hits across 6 files.
+- Native gameplay drag callbacks are only proven when `onvaluechanged` calls a native engine-backed data object method (`PossibleItem.OnChanged`, `CondottieriItem.OnDurationChanged`, `EconomyView.OnChangedCoinMinting`, etc.).
+- No generic script-layer bridge for CMM-owned variables was found during testing:
+  - `Player.MakeScope.GetVariable(...).SetValue`
+  - `Player.MakeScope.GetVariable(...).SetValueArg`
+  - `Player.MakeScope.GetVariable(...).SetValueFromWidget`
+  - `PdxGuiWidget.GetValue`
+  - `GetSliderValue(PdxGuiWidget.AccessSelf)`
+  - all failed to parse in gameplay GUI/data binding.
+- Hit-by-hit usefulness for CMM planning:
+  - `ui_library.gui:14485` (`raw_text = "Ranged Slider:  ranged_slider = {}"`): not useful for implementation (label/example text only).
+  - `ui_library.gui:14492-14521`: useful syntax reference for dual-handle sliders (`value_low`, `slider_low`, `dec_button_low`, `inc_button_low`), but this is UI-library demo content, not gameplay production wiring.
+  - `select_search_filter.gui:145-177`: production dual-handle reference (`value_low` + `value`, `onvaluechanged_low` + `onvaluechanged`); also shows hiding built-in +/- buttons with empty button blocks. Useful for syntax/layout, but callbacks still target native objects.
+  - `setup_mercenary_requirements.gui:651-718`: production single-handle baseline with dynamic `min/max/mincap/maxcap/step/wheelstep/value` and `onvaluechanged`. Useful for syntax/layout, but callbacks still target native objects.
+  - `setup_mercenary_requirements.gui:884-974`: production single-handle pattern where `maxcap` is lower than `max` (`GetAvailableLimit` vs `GetMax`) plus per-button enable/tooltip gating (`CanDec`/`CanInc`). Useful for syntax/layout, but callbacks still target native objects.
+  - `setup_condottieri.gui:420-487`: concise single-handle production pattern (duration slider) with minimal extra complexity. Useful for syntax/layout, but callbacks still target native objects.
+  - `setup_condottieri.gui:525-592`: concise single-handle production pattern (cost modifier slider), same shape as duration. Useful for syntax/layout, but callbacks still target native objects.
+  - `map_markers.gui:3932-4013`: compact inline slider pattern; demonstrates custom internal +/- skins (`minus_button.dds` / `plus_button.dds`) for tight rows. Useful for syntax/layout, but callbacks still target native objects.
+  - `import_export_lateralview.gui:386-469`: hybrid pattern with external +/- step buttons and slider drag support; internal slider +/- intentionally disabled (`dec_button = { button = {} }`, `inc_button = { button = {} }`). Useful for syntax/layout, but callbacks still target native objects.
+- Important non-hit reference for event contract:
+  - `economy_lateralview.gui:71` defines `type economy_slider = ranged_slider`.
+  - `economy_lateralview.gui:987-989`, `1144-1145`, `1779-1780`, `1988-1989` show `onvaluechanged` + `onchangefinish` usage in production wrappers.
+  - These are useful to understand native callback shape, but not as proof that script-owned variables can read drag state.
+- For CMM slider API planning, primary references should be:
+  - Syntax/visual references: `setup_mercenary_requirements.gui:651-718`, `import_export_lateralview.gui:386-469`, `select_search_filter.gui:145-177`, `ui_library.gui:14492-14521`.
+  - Native callback contract reference only: `economy_lateralview.gui` `economy_slider` usages.
+  - Proven script-owned implementation direction: custom discrete controls like `sakuya_test.gui`, not native `ranged_slider`.
