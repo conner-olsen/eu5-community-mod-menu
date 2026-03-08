@@ -40,7 +40,7 @@ Arguments:
 
 Notes:
 
-- `cmm_register_bool_setting`, `cmm_register_numeric_setting`, `cmm_register_slider_setting`, `cmm_register_dropdown_setting`, and their `cmm_register_global_*` variants auto-register their tab.
+- `cmm_register_bool_setting`, `cmm_register_numeric_setting`, `cmm_register_slider_setting`, `cmm_register_dropdown_setting`, `cmm_register_text_setting`, and their supported `cmm_register_global_*` variants auto-register their tab.
 - Use explicit `cmm_register_tab` only when you need an empty tab with no settings yet.
 
 ### 3) Register bool settings
@@ -192,6 +192,34 @@ cmm_register_global_dropdown_setting = {
 }
 ```
 
+### 7) Register text settings
+
+```txt
+cmm_register_text_setting = {
+    mod_id = your_mod_id
+    setting_id = your_setting_id
+    tab_id = your_tab_id
+    character_limit = 42
+    quote_text = 1
+}
+```
+
+Arguments:
+
+- `mod_id`: owner mod id.
+- `setting_id`: stable id within your mod.
+- `tab_id`: owner tab id within your mod.
+- `character_limit`: maximum number of characters allowed in the editbox. Values below `1` are clamped to `1`.
+- `quote_text`: `1` wraps submitted text in double quotes before CMM passes it to your effect; `0` forwards the raw editbox text unchanged.
+
+Notes:
+
+- Text settings are singleplayer-only. CMM disables them in multiplayer because `ExecuteConsoleCommand` cannot apply effect-backed text submissions there.
+- CMM does not persist text values. The editbox content lives only in the live GUI widget.
+- CMM does not validate or escape submitted text for you.
+- When `quote_text = 0`, your effect must expect an unquoted token. CMM will not sanitize spaces or script syntax for you.
+- There is no `cmm_register_global_text_setting`.
+
 Localization keys are derived automatically from ids:
 
 - Mod title: `<mod_id>_name`
@@ -273,16 +301,31 @@ Required scripted GUI callback:
 }
 ```
 
+### Text setting callbacks
+
+Required scripted effect:
+
+```txt
+<mod_id>__<setting_id>_on_changed = {
+    # country scope via `effect c:<player_tag> = { ... }`
+    # `text` is the submitted editbox content.
+    # If `quote_text = 1`, CMM wraps it in double quotes before calling this effect.
+    change_country_name = $text$
+}
+```
+
 Notes:
 
-- `_on_changed` is also used for row visibility (`is_shown`) checks.
+- Non-text `_on_changed` callbacks are also used for row visibility (`is_shown`) checks.
 - CMM handles numeric modes (`1x`, `5x`, `min/max`) via generic marker scripted GUIs, then executes `_on_changed`.
 - CMM handles slider track clicks and `-` / `+` modifiers via generic marker scripted GUIs, then executes `_on_changed`.
 - CMM captures dropdown selection index via a generic marker scripted GUI, then executes `_on_changed`.
 - If `is_shown` is omitted, the row is visible.
-- Checked/value state is read directly from `var:<mod_id>__<setting_id>` by CMM UI.
+- Non-text checked/value state is read directly from `var:<mod_id>__<setting_id>` by CMM UI.
 - Global settings (`cmm_register_global_*`) are writable by host only in multiplayer (`IsHost`); all players can view them.
 - Callback contract is unchanged for local vs global settings; `cmm_toggle_bool_setting`, `cmm_apply_numeric_change`, `cmm_apply_slider_change`, and `cmm_apply_dropdown_change` branch automatically.
+- Text settings do not currently use scripted GUI `_on_changed` callbacks or `is_shown` gating. Their submit path calls the scripted effect directly through `ExecuteConsoleCommand`.
+- Text setting effects must actually reference `$text$`. If they do not, the engine treats the scripted effect as argument-free and rejects the CMM call.
 
 ## Registration Hook Contract
 
@@ -332,12 +375,14 @@ CMM writes these country-scope variables/lists:
 - `cmm_setting_slider_visual_last_index_<mod_id>__<setting_id>` (slider only)
 - `cmm_setting_dropdown_count_<mod_id>__<setting_id>` (dropdown only)
 - `cmm_setting_dropdown_last_index_<mod_id>__<setting_id>` (dropdown only)
+- `cmm_setting_text_character_limit_<mod_id>__<setting_id>` (text only)
+- `cmm_setting_text_quote_<mod_id>__<setting_id>` (text only)
 - `<mod_id>__<setting_id>_name` (flag value)
 - `<mod_id>__<setting_id>_desc` (flag value)
-- `<mod_id>__<setting_id>` (country cache value used by CMM UI)
+- `<mod_id>__<setting_id>` (country cache value used by CMM UI for bool, numeric, slider, and dropdown settings)
 - global `<mod_id>__<setting_id>` (authoritative value for `cmm_register_global_*` settings)
 
-## Minimal Example (Bool + Numeric + Slider + Dropdown)
+## Minimal Example (Bool + Numeric + Slider + Dropdown + Text)
 
 ```txt
 your_mod_register_mod = {
@@ -379,6 +424,14 @@ your_mod_register_mod = {
         default_index = 1
         option_count = 3
     }
+
+    cmm_register_text_setting = {
+        mod_id = your_mod
+        setting_id = country_name
+        tab_id = general
+        character_limit = 42
+        quote_text = 1
+    }
 }
 
 your_mod__allow_feature_on_changed = {
@@ -419,6 +472,10 @@ your_mod__mode_on_changed = {
         # optional custom logic
     }
 }
+
+your_mod__country_name_on_changed = {
+    change_country_name = $text$
+}
 ```
 
 ## Localization
@@ -440,10 +497,12 @@ your_mod_mode_desc: "Dropdown mode controlled in CMM."
 your_mod__mode_option_0_name: "Off"
 your_mod__mode_option_1_name: "Standard"
 your_mod__mode_option_2_name: "Aggressive"
+your_mod_country_name_name: "Country Name"
+your_mod_country_name_desc: "Singleplayer-only text setting. Applies the entered name on submit."
 ```
 
 ## Notes
 
-- CMM v1 controls currently include bool, numeric, slider, and dropdown.
+- CMM v1 controls currently include bool, numeric, slider, dropdown, and text.
 - Keep ids stable (`mod_id`, `tab_id`, `setting_id`) across updates.
 - Keep integration/API docs in repository docs, not runtime UI localization.

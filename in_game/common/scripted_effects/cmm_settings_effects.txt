@@ -40,6 +40,14 @@ cmm_register_menu_settings = {
 		step_value = 10
 	}
 
+	cmm_register_text_setting = {
+		mod_id = cmm_core
+		setting_id = example_text
+		tab_id = general
+		character_limit = 42
+		quote_text = 1
+	}
+
 	cmm_register_dropdown_setting = {
 		mod_id = cmm_core
 		setting_id = example_dropdown
@@ -47,4 +55,11 @@ cmm_register_menu_settings = {
 		default_index = 1
 		option_count = 3
 	}
+}
+
+# Apply the core example text setting.
+# Scope: country
+# Args: text (string)
+cmm_core__example_text_on_changed = {
+	change_country_name = $text$
 }

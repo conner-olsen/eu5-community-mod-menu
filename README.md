@@ -6,7 +6,7 @@ A dependency mod for **Europa Universalis 5** that provides one shared in-game m
 
 - Pause menu button (`Mod Menu`) via intentional `ingame_menu.gui` override.
 - Dynamic left mod list (search + compact rendering).
-- Dynamic right settings panel for registered bool, numeric, slider, and dropdown settings.
+- Dynamic right settings panel for registered bool, numeric, slider, dropdown, and text settings.
 - Dynamic per-mod tabs in the right panel.
 - Mod-id-based registration API with no fixed slot cap.
 - GUI function macro layer for shared CMM data-binding expressions (`loading_screen/data_binding/cmm_macros.txt`).
@@ -26,9 +26,14 @@ A dependency mod for **Europa Universalis 5** that provides one shared in-game m
 - Dropdown settings with selector controls (`<` / `>`).
   - Click: previous/next option.
   - `Shift+click`: jump to first/last option.
+- Text settings with single-line editboxes and an `Apply` action.
+  - Click `Apply` or press `Enter`: submit the current text through a console-backed effect call.
+  - `quote_text = 1` wraps the submitted text in double quotes before CMM passes it to the callback.
+- `quote_text = 0` forwards the raw text unchanged; use it only when your effect expects an unquoted token.
+- Text settings are singleplayer-only and are not persisted by CMM.
 - Registration order is preserved.
-- Value changes are persisted as country variables.
-- UI invokes per-setting scripted GUI callbacks immediately on interaction.
+- Non-text value changes are persisted as country variables.
+- UI invokes per-setting callbacks immediately on interaction.
 
 ## Install
 
@@ -77,6 +82,14 @@ cmm_register_dropdown_setting = {
     tab_id = your_tab_id
     default_index = 1 # required
     option_count = 3  # required; >= 1 (options are 0..option_count-1)
+}
+
+cmm_register_text_setting = {
+    mod_id = your_mod_id
+    setting_id = your_setting_id
+    tab_id = your_tab_id
+    character_limit = 42 # required; >= 1
+    quote_text = 1       # required; 1 = wrap in double quotes, 0 = pass raw text
 }
 ```
 
@@ -133,9 +146,17 @@ Callback contract:
         }
     }
 }
+
+# Text callback (required; define in scripted_effects, not scripted_guis):
+<mod_id>__<setting_id>_on_changed = {
+    # country scope via `effect c:<player_tag> = { ... }`
+    # `text` is the submitted editbox content.
+    # If `quote_text = 1`, CMM wraps it in double quotes before calling this effect.
+    change_country_name = $text$
+}
 ```
 
-CMM handles numeric, slider, and dropdown change modes through generic marker scripted GUIs and then executes the setting-specific `_on_changed`.
+CMM handles numeric, slider, and dropdown change modes through generic marker scripted GUIs and then executes the setting-specific `_on_changed`. Text settings submit through `ExecuteConsoleCommand`, so they are disabled in multiplayer and currently do not use scripted GUI `is_shown` gating.
 
 Registration hook contract:
 

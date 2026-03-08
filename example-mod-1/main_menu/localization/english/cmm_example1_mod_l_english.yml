@@ -9,6 +9,8 @@
  cmm_example1_global_example_toggle_desc: "Example global toggle setting."
  cmm_example1_example_numeric_name: "Numeric"
  cmm_example1_example_numeric_desc: "Example numeric setting."
+ cmm_example1_example_text_name: "Country Name"
+ cmm_example1_example_text_desc: "Singleplayer-only text setting. Applies the entered name to the player country."
  cmm_example1_example_dropdown_name: "Dropdown"
  cmm_example1_example_dropdown_desc: "Example dropdown setting."
  cmm_example1__example_dropdown_option_0_name: "Option 1"

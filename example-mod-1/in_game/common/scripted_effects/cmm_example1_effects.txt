@@ -35,4 +35,16 @@ cmm_example1_register_mod = {
 		default_index = 1
 		option_count = 3
 	}
+
+	cmm_register_text_setting = {
+		mod_id = cmm_example1
+		setting_id = example_text
+		tab_id = general
+		character_limit = 42
+		quote_text = 1
+	}
+}
+
+cmm_example1__example_text_on_changed = {
+	change_country_name = $text$
 }
