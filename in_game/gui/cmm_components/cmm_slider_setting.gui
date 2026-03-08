@@ -1,0 +1,165 @@
+﻿types CMMSliderSettingTypes
+{
+	# Pseudo-slider setting widget for one CMM setting row.
+	# Reads:
+	# - Scope.GetFlagName [string]: current setting key in root context (`<mod_id>__<setting_id>`).
+	# - Player.MakeScope.GetVariable(Scope.GetFlagName) [value]: current slider value for fill/value display.
+	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_min_', Scope.GetFlagName)) [value]: slider minimum bound.
+	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_max_', Scope.GetFlagName)) [value]: slider maximum bound.
+	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_slider_visual_step_count_', Scope.GetFlagName)) [value]: number of clickable visual slider slots.
+	# - PdxGuiWidget.GetIndexInDataModel [int32]: current visual slot index inside the repeated track datamodel.
+	# Writes:
+	# - cmm_numeric_change_to_apply [value]: pending slider +/- delta mode for `cmm_apply_slider_change`.
+	# - cmm_slider_index_to_apply [value]: pending visual slot index for `cmm_apply_slider_change`.
+	# - <mod_id>__<setting_id> callbacks [effect]: applies slider changes via `_on_changed`.
+	type cmm_slider_setting = vbox {
+		minimumsize = { 220 0 }
+		spacing = 2
+
+		text_single = {
+			align = center
+			text = "[CMMNumericSettingValue(Scope.GetFlagName)]"
+		}
+
+		hbox = {
+			minimumsize = { 220 0 }
+			spacing = 6
+
+			button_square_minus = {
+				size = { 20 20 }
+				enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
+
+				action_tooltip = {
+					click_mode = single
+					click_type = left
+					click_modifier = default
+					title = "CMM_NUMERIC_DECREASE"
+					on_action = "[CMMMarkNumericDecrease]"
+					on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+				}
+
+				action_tooltip = {
+					click_modifier = ctrl
+					click_mode = single
+					click_type = left
+					title = "CMM_NUMERIC_DECREASE_5X"
+					on_action = "[CMMMarkNumericDecrease5x]"
+					on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+				}
+
+				action_tooltip = {
+					click_modifier = shift
+					click_mode = single
+					click_type = left
+					title = "CMM_NUMERIC_DECREASE_MIN"
+					on_action = "[CMMMarkNumericDecreaseToMin]"
+					on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+				}
+
+				tooltipwidget = {
+					BasicFunctionalTooltip = {}
+				}
+			}
+
+			widget = {
+				using = layoutpolicy_expanding
+				minimumsize = { 180 24 }
+				allow_outside = yes
+				onmousehierarchyleave = "[CMMStopSliderDrag]"
+
+				progressbar = {
+					parentanchor = vcenter
+					size = { 100% 8 }
+					using = progress_bar_blue_grey_alt
+					min = "[CMMNumericSettingMin(Scope.GetFlagName)]"
+					max = "[CMMNumericSettingMax(Scope.GetFlagName)]"
+					value = "[CMMNumericSettingValue(Scope.GetFlagName)]"
+				}
+
+				hbox = {
+					size = { 100% 24 }
+					datamodel = "[DataModelRepeatedItem(CMMSliderVisualStepCount(Scope.GetFlagName))]"
+					datamodel_reuse_widgets = yes
+
+					item = {
+						widget = {
+							using = layoutpolicy_expanding
+							layoutstretchfactor_horizontal = 1
+							size = { 0 24 }
+							allow_outside = yes
+							onmousehierarchyenter = "[GetScriptedGui(Concatenate('CMM_SliderDragHover_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+							onmousehierarchyenter = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+
+							EconomySlider_Slider = {
+								visible = "[EqualTo_int32(PdxGuiWidget.GetIndexInDataModel, CMMSliderCurrentVisualIndex(Scope.GetFlagName))]"
+								parentanchor = center
+							}
+
+							button = {
+								size = { 100% 24 }
+								alpha = 0
+								effectname = "NoHighlight"
+								enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
+								onpressed = "[CMMStartSliderDrag]"
+								onpressed = "[GetScriptedGui(Concatenate('CMM_MarkSliderSelection_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+								onpressed = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+								onreleased = "[CMMStopSliderDrag]"
+								tooltip_enabled = no
+							}
+						}
+					}
+				}
+			}
+
+			button_square_plus = {
+				size = { 20 20 }
+				enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
+
+				action_tooltip = {
+					click_mode = single
+					click_type = left
+					click_modifier = default
+					title = "CMM_NUMERIC_INCREASE"
+					on_action = "[CMMMarkNumericIncrease]"
+					on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+				}
+
+				action_tooltip = {
+					click_modifier = ctrl
+					click_mode = single
+					click_type = left
+					title = "CMM_NUMERIC_INCREASE_5X"
+					on_action = "[CMMMarkNumericIncrease5x]"
+					on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+				}
+
+				action_tooltip = {
+					click_modifier = shift
+					click_mode = single
+					click_type = left
+					title = "CMM_NUMERIC_INCREASE_MAX"
+					on_action = "[CMMMarkNumericIncreaseToMax]"
+					on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+				}
+
+				tooltipwidget = {
+					BasicFunctionalTooltip = {}
+				}
+			}
+		}
+
+		hbox = {
+			minimumsize = { 220 0 }
+
+			text_single = {
+				text = "[CMMNumericSettingMin(Scope.GetFlagName)]"
+			}
+
+			expand = {}
+
+			text_single = {
+				text = "[CMMNumericSettingMax(Scope.GetFlagName)]"
+			}
+		}
+	}
+}

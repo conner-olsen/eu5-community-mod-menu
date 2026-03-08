@@ -1,0 +1,121 @@
+﻿types CMMSettingsTypes
+{
+	# Right settings pane for the currently selected mod.
+	# Reads:
+	# - Player.MakeScope.GetList('cmm_registered_tab_keys') [list<flag>]: registered tab keys for tab rendering.
+	# - Player.MakeScope.GetList('cmm_registered_setting_keys') [list<flag>]: registered setting keys for setting rows.
+	# - GetVariableSystem.Get('cmm_selected_mod') [string]: active mod id for selected-mod UI state.
+	# - GetVariableSystem.Get('cmm_selected_tab') [string]: active tab key for tab and row filtering.
+	# Writes:
+	# - GetVariableSystem.Set('cmm_selected_tab') [string]: changes selected tab from tab clicks.
+	# - <mod_id>__<setting_id> callbacks [effect]: update setting values when controls are used.
+	type cmm_settings_panel = vbox {
+		using = layoutpolicy_expanding
+		using = bg_main_inner_alt
+		spacing = 10
+		margin = { 12 12 }
+
+		text_single = {
+			text = "CMM_SETTINGS_TITLE"
+			using = Font_Type_Headers
+		}
+
+		text_multi = {
+			visible = "[CMMNoModsRegistered]"
+			text = "CMM_NO_MODS_REGISTERED"
+			autoresize = yes
+			max_width = 680
+		}
+
+		vbox = {
+			visible = "[CMMHasRegisteredMods]"
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			spacing = 10
+
+			text_single = {
+				visible = "[CMMSelectedModExists]"
+				text = "[CMMSelectedModName]"
+				using = Font_Type_Header_Medium
+			}
+
+			text_multi = {
+				visible = "[CMMSelectedModExists]"
+				text = "[CMMSelectedModDesc]"
+				autoresize = yes
+				max_width = 680
+			}
+
+			cmm_mod_tabs = {}
+
+			scrollbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+				minimumsize = { 0 420 }
+
+				blockoverride "scrollbox_content" {
+					cmm_setting_rows = {}
+				}
+			}
+
+			text_multi = {
+				visible = "[CMMShowNoSettingsForSelectedTab]"
+				text = "CMM_NO_SETTINGS_FOR_TAB"
+				autoresize = yes
+				max_width = 680
+			}
+
+			expand = {}
+		}
+	}
+
+	# Tab bar for the selected mod.
+	# Reads:
+	# - Scope.GetFlagName [string]: current tab key (`<mod_id>__<tab_id>`) from tab datamodel.
+	# - Player.MakeScope.GetList('cmm_registered_tab_keys') [list<flag>]: tab key source list.
+	# - GetVariableSystem.Get('cmm_selected_mod') [string]: selected mod id used for owner filtering.
+	# - GetVariableSystem.Get('cmm_selected_tab') [string]: selected tab key used for down-state.
+	# Writes:
+	# - GetVariableSystem.Set('cmm_selected_tab') [string]: selects clicked tab.
+	type cmm_mod_tabs = header_secondary_tabs {
+		visible = "[CMMSelectedModExists]"
+
+		blockoverride "secondary_tabs_margin" {
+			margin_top = 2
+			spacing = 2
+		}
+
+		blockoverride "content" {
+			datamodel = "[Player.MakeScope.GetList('cmm_registered_tab_keys')]"
+			datamodel_reuse_widgets = yes
+
+			item = {
+				button_secondary_tab_alt = {
+					using = layoutpolicy_expanding
+					visible = "[GetVariableSystem.HasValue('cmm_selected_mod', CMMTabOwnerModId(Scope.GetFlagName))]"
+					text = "[CMMTabName(Scope.GetFlagName)]"
+					onclick = "[GetVariableSystem.Set('cmm_selected_tab', Scope.GetFlagName)]"
+					down = "[GetVariableSystem.HasValue('cmm_selected_tab', Scope.GetFlagName)]"
+					tooltip_enabled = no
+				}
+			}
+		}
+	}
+
+	# Datamodel-backed setting row container.
+	# Reads:
+	# - Player.MakeScope.GetList('cmm_registered_setting_keys') [list<flag>]: setting keys rendered as rows.
+	# - Scope.GetFlagName [string]: current setting key (`<mod_id>__<setting_id>`).
+	# Writes:
+	# - none [n/a]: no writes.
+	type cmm_setting_rows = vbox {
+		layoutpolicy_horizontal = expanding
+		ignoreinvisible = yes
+		spacing = 4
+		datamodel = "[Player.MakeScope.GetList('cmm_registered_setting_keys')]"
+
+		item = {
+			cmm_setting_row = {}
+		}
+	}
+}

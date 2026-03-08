@@ -1,0 +1,79 @@
+﻿types CMMSettingRowTypes
+{
+	# Single setting row for bool, button, text, numeric, dropdown, and slider settings.
+	# Reads:
+	# - Scope.GetFlagName [string]: current setting key (`<mod_id>__<setting_id>`).
+	# - GetVariableSystem.Get('cmm_selected_mod') [string]: active mod id for row visibility filtering.
+	# - GetVariableSystem.Get('cmm_selected_tab') [string]: active tab key for row visibility filtering.
+	# - Player.MakeScope.GetVariable(Scope.GetFlagName) [value]: current setting value for checked/value/option display.
+	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_min_', Scope.GetFlagName)) [value]: numeric minimum bound.
+	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_max_', Scope.GetFlagName)) [value]: numeric maximum bound.
+	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_text_character_limit_', Scope.GetFlagName)) [value]: text character limit.
+	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_slider_visual_step_count_', Scope.GetFlagName)) [value]: slider visual slot count.
+	# Writes:
+	# - ExecuteConsoleCommand(...) [effect]: submits text settings through console-backed effect calls.
+	# - GetScriptedGui(Concatenate(Scope.GetFlagName, '_on_changed')).Execute(...) [effect]: applies shared post-change setting logic.
+	# - GetScriptedGui('CMM_MarkNumeric*').Execute(...) [effect]: stores pending numeric delta mode.
+	# - GetScriptedGui('CMM_MarkDropdownSelection_<index>').Execute(...) [effect]: stores pending dropdown selected index.
+	# - GetScriptedGui('CMM_MarkSliderSelection_<index>').Execute(...) [effect]: stores pending slider visual index.
+	type cmm_setting_row = widget {
+		layoutpolicy_horizontal = expanding
+		minimumsize = { 0 68 }
+		using = bg_window_default_alt
+		visible = "[CMMSettingRowVisible(Scope.GetFlagName)]"
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			margin = { 8 6 }
+			spacing = 10
+
+			checkbox_square_alt = {
+				visible = "[CMMSettingIsBool(Scope.GetFlagName)]"
+				enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
+				onclick = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+				checked = "[CMMIsSettingEnabled(Scope.GetFlagName)]"
+				tooltip_enabled = no
+			}
+
+			button_regular = {
+				visible = "[CMMSettingIsButton(Scope.GetFlagName)]"
+				minimumsize = { 168 32 }
+				enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
+				text = "[CMMSettingName(Scope.GetFlagName)]"
+				onclick = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+				tooltip_enabled = no
+			}
+
+			cmm_dropdown_setting = {
+				visible = "[CMMSettingIsDropdown(Scope.GetFlagName)]"
+			}
+
+			cmm_text_setting = {
+				visible = "[CMMSettingIsText(Scope.GetFlagName)]"
+			}
+
+			cmm_slider_setting = {
+				visible = "[CMMSettingIsSlider(Scope.GetFlagName)]"
+			}
+
+			cmm_numeric_setting = {
+				visible = "[CMMSettingIsNumeric(Scope.GetFlagName)]"
+			}
+
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				spacing = 2
+
+				text_single = {
+					text = "[CMMSettingName(Scope.GetFlagName)]"
+				}
+
+				text_multi = {
+					text = "[CMMSettingDesc(Scope.GetFlagName)]"
+					autoresize = yes
+					max_width = 620
+				}
+			}
+		}
+	}
+}
