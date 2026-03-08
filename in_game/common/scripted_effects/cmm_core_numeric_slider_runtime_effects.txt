@@ -1,0 +1,205 @@
+﻿# Increase a numeric setting and clamp to its max value.
+# Scope: country
+# Args:
+# - setting (key): Composite setting key `<mod_id>__<setting_id>`.
+cmm_step_numeric_setting_up = {
+	if = {
+		limit = { var:cmm_setting_is_global_$setting$ = 1 }
+		set_variable = { name = cmm_tmp_numeric_value value = global_var:$setting$ }
+		change_variable = { name = cmm_tmp_numeric_value add = var:cmm_setting_step_$setting$ }
+
+		if = {
+			limit = { var:cmm_tmp_numeric_value > var:cmm_setting_max_$setting$ }
+			set_variable = { name = cmm_tmp_numeric_value value = var:cmm_setting_max_$setting$ }
+		}
+
+		set_global_variable = { name = $setting$ value = var:cmm_tmp_numeric_value }
+		remove_variable = cmm_tmp_numeric_value
+	}
+	else = {
+		change_variable = { name = $setting$ add = var:cmm_setting_step_$setting$ }
+
+		if = {
+			limit = { var:$setting$ > var:cmm_setting_max_$setting$ }
+			set_variable = { name = $setting$ value = var:cmm_setting_max_$setting$ }
+		}
+	}
+}
+
+# Increase a numeric setting by five intervals and clamp to max.
+# Scope: country
+# Args:
+# - setting (key): Composite setting key `<mod_id>__<setting_id>`.
+cmm_step_numeric_setting_up_5x = {
+	cmm_step_numeric_setting_up = { setting = $setting$ }
+	cmm_step_numeric_setting_up = { setting = $setting$ }
+	cmm_step_numeric_setting_up = { setting = $setting$ }
+	cmm_step_numeric_setting_up = { setting = $setting$ }
+	cmm_step_numeric_setting_up = { setting = $setting$ }
+}
+
+# Decrease a numeric setting and clamp to its min value.
+# Scope: country
+# Args:
+# - setting (key): Composite setting key `<mod_id>__<setting_id>`.
+cmm_step_numeric_setting_down = {
+	if = {
+		limit = { var:cmm_setting_is_global_$setting$ = 1 }
+		set_variable = { name = cmm_tmp_numeric_value value = global_var:$setting$ }
+		change_variable = { name = cmm_tmp_numeric_value subtract = var:cmm_setting_step_$setting$ }
+
+		if = {
+			limit = { var:cmm_tmp_numeric_value < var:cmm_setting_min_$setting$ }
+			set_variable = { name = cmm_tmp_numeric_value value = var:cmm_setting_min_$setting$ }
+		}
+
+		set_global_variable = { name = $setting$ value = var:cmm_tmp_numeric_value }
+		remove_variable = cmm_tmp_numeric_value
+	}
+	else = {
+		change_variable = { name = $setting$ subtract = var:cmm_setting_step_$setting$ }
+
+		if = {
+			limit = { var:$setting$ < var:cmm_setting_min_$setting$ }
+			set_variable = { name = $setting$ value = var:cmm_setting_min_$setting$ }
+		}
+	}
+}
+
+# Decrease a numeric setting by five intervals and clamp to min.
+# Scope: country
+# Args:
+# - setting (key): Composite setting key `<mod_id>__<setting_id>`.
+cmm_step_numeric_setting_down_5x = {
+	cmm_step_numeric_setting_down = { setting = $setting$ }
+	cmm_step_numeric_setting_down = { setting = $setting$ }
+	cmm_step_numeric_setting_down = { setting = $setting$ }
+	cmm_step_numeric_setting_down = { setting = $setting$ }
+	cmm_step_numeric_setting_down = { setting = $setting$ }
+}
+
+# Set a numeric setting directly to its configured max value.
+# Scope: country
+# Args:
+# - setting (key): Composite setting key `<mod_id>__<setting_id>`.
+cmm_set_numeric_setting_max = {
+	if = {
+		limit = { var:cmm_setting_is_global_$setting$ = 1 }
+		set_global_variable = { name = $setting$ value = var:cmm_setting_max_$setting$ }
+	}
+	else = {
+		set_variable = { name = $setting$ value = var:cmm_setting_max_$setting$ }
+	}
+}
+
+# Set a numeric setting directly to its configured min value.
+# Scope: country
+# Args:
+# - setting (key): Composite setting key `<mod_id>__<setting_id>`.
+cmm_set_numeric_setting_min = {
+	if = {
+		limit = { var:cmm_setting_is_global_$setting$ = 1 }
+		set_global_variable = { name = $setting$ value = var:cmm_setting_min_$setting$ }
+	}
+	else = {
+		set_variable = { name = $setting$ value = var:cmm_setting_min_$setting$ }
+	}
+}
+
+# Set a slider setting directly from the pending visual-track index and clamp to range.
+# Scope: country
+# Args:
+# - setting (key): Composite setting key `<mod_id>__<setting_id>`.
+cmm_set_slider_setting_from_visual_index = {
+	set_variable = { name = cmm_tmp_slider_actual_index value = var:cmm_slider_index_to_apply }
+	change_variable = { name = cmm_tmp_slider_actual_index multiply = var:cmm_setting_slider_actual_last_index_$setting$ }
+	change_variable = { name = cmm_tmp_slider_actual_index divide = var:cmm_setting_slider_visual_last_index_$setting$ }
+	round_variable = {
+		name = cmm_tmp_slider_actual_index
+		nearest = 1
+	}
+
+	set_variable = { name = cmm_tmp_slider_value value = var:cmm_setting_step_$setting$ }
+	change_variable = { name = cmm_tmp_slider_value multiply = var:cmm_tmp_slider_actual_index }
+	change_variable = { name = cmm_tmp_slider_value add = var:cmm_setting_min_$setting$ }
+
+	if = {
+		limit = { var:cmm_tmp_slider_value < var:cmm_setting_min_$setting$ }
+		set_variable = { name = cmm_tmp_slider_value value = var:cmm_setting_min_$setting$ }
+	}
+
+	if = {
+		limit = { var:cmm_tmp_slider_value > var:cmm_setting_max_$setting$ }
+		set_variable = { name = cmm_tmp_slider_value value = var:cmm_setting_max_$setting$ }
+	}
+
+	if = {
+		limit = { var:cmm_setting_is_global_$setting$ = 1 }
+		set_global_variable = { name = $setting$ value = var:cmm_tmp_slider_value }
+
+		cmm_sync_global_setting_cache = {
+			setting = $setting$
+		}
+	}
+	else = {
+		set_variable = { name = $setting$ value = var:cmm_tmp_slider_value }
+	}
+
+	remove_variable = cmm_tmp_slider_actual_index
+	remove_variable = cmm_tmp_slider_value
+}
+
+# Apply the pending numeric change marker to a setting and clear the marker.
+# Scope: country
+# Args:
+# - setting (key): Composite setting key `<mod_id>__<setting_id>`.
+cmm_apply_numeric_change = {
+	if = {
+		limit = { has_variable = cmm_numeric_change_to_apply }
+
+		switch = {
+			trigger = var:cmm_numeric_change_to_apply
+			1 = { cmm_step_numeric_setting_up = { setting = $setting$ } }
+			2 = { cmm_step_numeric_setting_up_5x = { setting = $setting$ } }
+			3 = { cmm_set_numeric_setting_max = { setting = $setting$ } }
+			-1 = { cmm_step_numeric_setting_down = { setting = $setting$ } }
+			-2 = { cmm_step_numeric_setting_down_5x = { setting = $setting$ } }
+			-3 = { cmm_set_numeric_setting_min = { setting = $setting$ } }
+		}
+
+		if = {
+			limit = { var:cmm_setting_is_global_$setting$ = 1 }
+			cmm_sync_global_setting_cache = {
+				setting = $setting$
+			}
+		}
+
+		remove_variable = cmm_numeric_change_to_apply
+	}
+}
+
+# Apply the pending slider track selection or numeric step marker to a slider setting.
+# Scope: country
+# Args:
+# - setting (key): Composite setting key `<mod_id>__<setting_id>`.
+cmm_apply_slider_change = {
+	if = {
+		limit = { has_variable = cmm_slider_index_to_apply }
+
+		cmm_set_slider_setting_from_visual_index = {
+			setting = $setting$
+		}
+
+		remove_variable = cmm_slider_index_to_apply
+
+		if = {
+			limit = { has_variable = cmm_numeric_change_to_apply }
+			remove_variable = cmm_numeric_change_to_apply
+		}
+	}
+	else = {
+		cmm_apply_numeric_change = {
+			setting = $setting$
+		}
+	}
+}

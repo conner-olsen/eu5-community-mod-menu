@@ -1,0 +1,138 @@
+﻿# Register a numeric setting for a mod (idempotent by mod_id + setting_id).
+# Scope: country
+# Args:
+# - mod_id (key): Owner mod id.
+# - setting_id (key): Setting id unique within mod.
+# - tab_id (key): Owner tab id within mod.
+# - default_value (number): Initial value; applied when the setting does not exist yet.
+# - min_value (number): Lower clamp bound.
+# - max_value (number): Upper clamp bound.
+# - step_value (number): Increase/decrease step size.
+cmm_register_numeric_setting = {
+	# Ensure owning tab exists before binding setting metadata.
+	cmm_register_tab = {
+		mod_id = $mod_id$
+		tab_id = $tab_id$
+	}
+
+	set_variable = { name = cmm_setting_is_global_$mod_id$__$setting_id$ value = 0 }
+	set_variable = { name = cmm_setting_is_slider_$mod_id$__$setting_id$ value = 0 }
+	set_variable = { name = cmm_setting_is_button_$mod_id$__$setting_id$ value = 0 }
+	set_variable = { name = cmm_setting_min_$mod_id$__$setting_id$ value = $min_value$ }
+	set_variable = { name = cmm_setting_max_$mod_id$__$setting_id$ value = $max_value$ }
+	set_variable = { name = cmm_setting_step_$mod_id$__$setting_id$ value = $step_value$ }
+
+	# First-time registration path for this setting key.
+	if = {
+		limit = { NOT = { has_variable = cmm_registered_setting_$mod_id$__$setting_id$ } }
+		set_variable = { name = cmm_registered_setting_$mod_id$__$setting_id$ value = yes }
+		set_variable = { name = cmm_setting_owner_mod_id_$mod_id$__$setting_id$ value = flag:$mod_id$ }
+		set_variable = { name = cmm_setting_owner_tab_key_$mod_id$__$setting_id$ value = flag:$mod_id$__$tab_id$ }
+		set_variable = { name = $mod_id$__$setting_id$_name value = flag:$mod_id$_$setting_id$_name }
+		set_variable = { name = $mod_id$__$setting_id$_desc value = flag:$mod_id$_$setting_id$_desc }
+
+		# Global setting key list; used by right-panel datamodel iteration.
+		add_to_variable_list = {
+			name = cmm_registered_setting_keys
+			target = flag:$mod_id$__$setting_id$
+		}
+
+		# Per-tab count; used for "no settings in this tab" UI state.
+		if = {
+			limit = { NOT = { has_variable = cmm_tab_setting_count_$mod_id$__$tab_id$ } }
+			set_variable = { name = cmm_tab_setting_count_$mod_id$__$tab_id$ value = 0 }
+		}
+		change_variable = { name = cmm_tab_setting_count_$mod_id$__$tab_id$ add = 1 }
+	}
+
+	# Default initialization; preserves existing save value.
+	if = {
+		limit = { NOT = { has_variable = $mod_id$__$setting_id$ } }
+		set_variable = { name = $mod_id$__$setting_id$ value = $default_value$ }
+	}
+
+	# Clamp current value into configured range.
+	if = {
+		limit = { var:$mod_id$__$setting_id$ < $min_value$ }
+		set_variable = { name = $mod_id$__$setting_id$ value = $min_value$ }
+	}
+
+	if = {
+		limit = { var:$mod_id$__$setting_id$ > $max_value$ }
+		set_variable = { name = $mod_id$__$setting_id$ value = $max_value$ }
+	}
+
+	# Benign warning suppression
+	if = {
+		limit = {
+			always = no
+			exists = flag:$mod_id$__$setting_id$
+			exists = flag:$mod_id$__$tab_id$
+			exists = flag:$mod_id$_$setting_id$_name
+			exists = flag:$mod_id$_$setting_id$_desc
+			exists = var:cmm_registered_setting_keys
+			exists = var:cmm_setting_is_global_$mod_id$__$setting_id$
+			exists = var:cmm_setting_is_slider_$mod_id$__$setting_id$
+			exists = var:cmm_setting_is_button_$mod_id$__$setting_id$
+			exists = var:cmm_setting_owner_mod_id_$mod_id$__$setting_id$
+			exists = var:cmm_setting_owner_tab_key_$mod_id$__$setting_id$
+			exists = var:cmm_setting_min_$mod_id$__$setting_id$
+			exists = var:cmm_setting_max_$mod_id$__$setting_id$
+			exists = var:cmm_setting_step_$mod_id$__$setting_id$
+			exists = var:cmm_tab_setting_count_$mod_id$__$tab_id$
+			exists = var:$mod_id$__$setting_id$_name
+			exists = var:$mod_id$__$setting_id$_desc
+		}
+	}
+}
+
+# Register a global numeric setting for a mod.
+# Scope: country
+# Args:
+# - mod_id (key): Owner mod id.
+# - setting_id (key): Setting id unique within mod.
+# - tab_id (key): Owner tab id within mod.
+# - default_value (number): Initial global value when missing.
+# - min_value (number): Lower clamp bound.
+# - max_value (number): Upper clamp bound.
+# - step_value (number): Increase/decrease step size.
+cmm_register_global_numeric_setting = {
+	cmm_register_numeric_setting = {
+		mod_id = $mod_id$
+		setting_id = $setting_id$
+		tab_id = $tab_id$
+		default_value = $default_value$
+		min_value = $min_value$
+		max_value = $max_value$
+		step_value = $step_value$
+	}
+
+	set_variable = { name = cmm_setting_is_global_$mod_id$__$setting_id$ value = 1 }
+
+	if = {
+		limit = { NOT = { has_global_variable = $mod_id$__$setting_id$ } }
+		set_global_variable = { name = $mod_id$__$setting_id$ value = $default_value$ }
+	}
+
+	if = {
+		limit = { global_var:$mod_id$__$setting_id$ < $min_value$ }
+		set_global_variable = { name = $mod_id$__$setting_id$ value = $min_value$ }
+	}
+
+	if = {
+		limit = { global_var:$mod_id$__$setting_id$ > $max_value$ }
+		set_global_variable = { name = $mod_id$__$setting_id$ value = $max_value$ }
+	}
+
+	set_variable = { name = $mod_id$__$setting_id$ value = global_var:$mod_id$__$setting_id$ }
+
+	# Benign warning suppression
+	if = {
+		limit = {
+			always = no
+			exists = var:cmm_setting_is_global_$mod_id$__$setting_id$
+			exists = global_var:$mod_id$__$setting_id$
+		}
+	}
+}
+
