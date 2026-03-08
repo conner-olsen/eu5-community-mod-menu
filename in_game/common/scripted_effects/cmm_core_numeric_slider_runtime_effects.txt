@@ -136,10 +136,6 @@ cmm_set_slider_setting_from_visual_index = {
 	if = {
 		limit = { var:cmm_setting_is_global_$setting$ = 1 }
 		set_global_variable = { name = $setting$ value = var:cmm_tmp_slider_value }
-
-		cmm_sync_global_setting_cache = {
-			setting = $setting$
-		}
 	}
 	else = {
 		set_variable = { name = $setting$ value = var:cmm_tmp_slider_value }
@@ -165,13 +161,6 @@ cmm_apply_numeric_change = {
 			-1 = { cmm_step_numeric_setting_down = { setting = $setting$ } }
 			-2 = { cmm_step_numeric_setting_down_5x = { setting = $setting$ } }
 			-3 = { cmm_set_numeric_setting_min = { setting = $setting$ } }
-		}
-
-		if = {
-			limit = { var:cmm_setting_is_global_$setting$ = 1 }
-			cmm_sync_global_setting_cache = {
-				setting = $setting$
-			}
 		}
 
 		remove_variable = cmm_numeric_change_to_apply

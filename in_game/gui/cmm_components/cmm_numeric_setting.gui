@@ -3,7 +3,8 @@
 	# Numeric setting widget for one CMM setting row.
 	# Reads:
 	# - Scope.GetFlagName [string]: current setting key in root context (`<mod_id>__<setting_id>`).
-	# - Player.MakeScope.GetVariable(Scope.GetFlagName) [value]: current numeric value for display.
+	# - GetGlobalVariable(Scope.GetFlagName).GetValue [value]: current numeric value for global settings.
+	# - Player.MakeScope.GetVariable(Scope.GetFlagName) [value]: current numeric value for local settings.
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_min_', Scope.GetFlagName)) [value]: numeric minimum bound.
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_max_', Scope.GetFlagName)) [value]: numeric maximum bound.
 	# Writes:

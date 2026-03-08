@@ -41,7 +41,7 @@ cmm_core__global_example_toggle_on_changed = {
 		}
 
 		if = {
-			limit = { var:cmm_core__global_example_toggle = 1 }
+			limit = { global_var:cmm_core__global_example_toggle = 1 }
 			# enabled effect
 		}
 		else = {

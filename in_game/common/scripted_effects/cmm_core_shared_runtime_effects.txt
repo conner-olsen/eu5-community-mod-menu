@@ -1,18 +1,4 @@
-﻿# Sync one global setting value into country cache for all human players.
-# Scope: country
-# Args:
-# - setting (key): Composite setting key `<mod_id>__<setting_id>`.
-cmm_sync_global_setting_cache = {
-	if = {
-		limit = { has_global_variable = $setting$ }
-		every_country = {
-			limit = { is_ai = no }
-			set_variable = { name = $setting$ value = global_var:$setting$ }
-		}
-	}
-}
-
-# Toggle a registered boolean setting value between `0` and `1`.
+﻿# Toggle a registered boolean setting value between `0` and `1`.
 # Scope: country
 # Args:
 # - setting (key): Composite setting key `<mod_id>__<setting_id>`.
@@ -25,10 +11,6 @@ cmm_toggle_bool_setting = {
 		}
 		else = {
 			set_global_variable = { name = $setting$ value = 1 }
-		}
-
-		cmm_sync_global_setting_cache = {
-			setting = $setting$
 		}
 	}
 	else = {
@@ -62,10 +44,6 @@ cmm_apply_dropdown_change = {
 			if = {
 				limit = { global_var:$setting$ > var:cmm_setting_dropdown_last_index_$setting$ }
 				set_global_variable = { name = $setting$ value = var:cmm_setting_dropdown_last_index_$setting$ }
-			}
-
-			cmm_sync_global_setting_cache = {
-				setting = $setting$
 			}
 		}
 		else = {

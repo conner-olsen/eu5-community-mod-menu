@@ -44,7 +44,7 @@ Implemented:
 20. Settings are filtered by both selected mod and selected tab.
 21. GUI function macro layer is in place (`loading_screen/data_binding/cmm_macros.txt`) and used by CMM GUI.
 22. Global setting registration is implemented via `cmm_register_global_bool_setting`, `cmm_register_global_button_setting`, `cmm_register_global_numeric_setting`, `cmm_register_global_slider_setting`, and `cmm_register_global_dropdown_setting`.
-23. Global stateful settings are host-editable in multiplayer and synced to player UI caches; global button settings are host-editable in multiplayer without creating synced backing values.
+23. Global stateful settings are host-editable in multiplayer and read directly from global variables in UI; global button settings are host-editable in multiplayer without creating stored value state.
 24. List ordering is registration-first; earlier registration/load order remains earlier in rendered mod, tab, and setting lists.
 
 Status:
@@ -68,6 +68,8 @@ Follow-up Work:
 8. All touched `.gui`, `.txt`, and `.yml` files must be UTF-8-BOM.
 9. Use `CMM` naming prefix for core menu systems.
 10. Right panel must support dynamic per-mod tabs (no fixed tab count).
+11. Do not run broad recursive searches from generic root folders such as `C:\Users`, `C:\Users\conne`, `C:\Program Files`, or OneDrive roots.
+12. Only run recursive searches inside directories with a reasonable expectation of relevant results (for example this repository, EU5 install/mod folders, or known reference folders). If scope is unclear, list directories first and then narrow before searching.
 
 ## Script Doc Comment Style
 
@@ -377,7 +379,7 @@ Required effect callback per text setting:
 ```
 
 Text settings are singleplayer-only and currently do not use scripted GUI `is_shown` callbacks.
-Global button settings are host-editable in multiplayer but do not create a synced backing value.
+Global button settings are host-editable in multiplayer but do not create stored value state.
 
 ## Registration Lifecycle
 

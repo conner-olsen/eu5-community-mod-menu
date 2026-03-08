@@ -92,15 +92,18 @@ cmm_register_dropdown_setting = {
 # - default_index (number): Initial global selected index.
 # - option_count (number): Number of options (`>= 1`; indexed `0..option_count-1`).
 cmm_register_global_dropdown_setting = {
-	cmm_register_dropdown_setting = {
+	set_variable = { name = cmm_setting_is_global_$mod_id$__$setting_id$ value = 1 }
+	set_variable = { name = cmm_setting_is_slider_$mod_id$__$setting_id$ value = 0 }
+	set_variable = { name = cmm_setting_is_button_$mod_id$__$setting_id$ value = 0 }
+	set_variable = { name = cmm_setting_dropdown_count_$mod_id$__$setting_id$ value = $option_count$ }
+	set_variable = { name = cmm_setting_dropdown_last_index_$mod_id$__$setting_id$ value = $option_count$ }
+	change_variable = { name = cmm_setting_dropdown_last_index_$mod_id$__$setting_id$ add = -1 }
+
+	cmm_register_setting_metadata = {
 		mod_id = $mod_id$
 		setting_id = $setting_id$
 		tab_id = $tab_id$
-		default_index = $default_index$
-		option_count = $option_count$
 	}
-
-	set_variable = { name = cmm_setting_is_global_$mod_id$__$setting_id$ value = 1 }
 
 	if = {
 		limit = { NOT = { has_global_variable = $mod_id$__$setting_id$ } }
@@ -117,13 +120,15 @@ cmm_register_global_dropdown_setting = {
 		set_global_variable = { name = $mod_id$__$setting_id$ value = var:cmm_setting_dropdown_last_index_$mod_id$__$setting_id$ }
 	}
 
-	set_variable = { name = $mod_id$__$setting_id$ value = global_var:$mod_id$__$setting_id$ }
-
 	# Benign warning suppression
 	if = {
 		limit = {
 			always = no
 			exists = var:cmm_setting_is_global_$mod_id$__$setting_id$
+			exists = var:cmm_setting_is_slider_$mod_id$__$setting_id$
+			exists = var:cmm_setting_is_button_$mod_id$__$setting_id$
+			exists = var:cmm_setting_dropdown_count_$mod_id$__$setting_id$
+			exists = var:cmm_setting_dropdown_last_index_$mod_id$__$setting_id$
 			exists = global_var:$mod_id$__$setting_id$
 		}
 	}

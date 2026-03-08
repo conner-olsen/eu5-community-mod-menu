@@ -34,7 +34,8 @@ A dependency mod for **Europa Universalis 5** that provides one shared in-game m
 - `quote_text = 0` forwards the raw text unchanged; use it only when your effect expects an unquoted token.
 - Text settings are singleplayer-only and are not persisted by CMM.
 - Registration order is preserved.
-- Bool, numeric, slider, and dropdown value changes are persisted as country variables.
+- Local bool, numeric, slider, and dropdown value changes are persisted as country variables.
+- Global bool, numeric, slider, and dropdown value changes are persisted as global variables and read directly from global scope in UI.
 - UI invokes per-setting callbacks immediately on interaction.
 
 ## Install
@@ -101,7 +102,7 @@ cmm_register_text_setting = {
 }
 ```
 
-Global variants also exist for bool, button, numeric, slider, and dropdown settings. `cmm_register_global_button_setting` only affects host-only multiplayer edit permission and does not create stored state.
+Global variants also exist for bool, button, numeric, slider, and dropdown settings. `cmm_register_global_button_setting` only affects host-only multiplayer edit permission and does not create stored value state.
 
 Localization key format is enforced by ids:
 

@@ -151,6 +151,14 @@ macro = {
 }
 
 # Args: SettingKey (string)
+# Returns: value
+macro = {
+    description = "Read current setting value from country or global scope"
+    definition = "CMMSettingValue(SettingKey)"
+    replace_with = "Select_CFixedPoint(CMMSettingIsGlobal(SettingKey), GetGlobalVariable(SettingKey).GetValue, CMMVar(SettingKey).GetValue)"
+}
+
+# Args: SettingKey (string)
 # Returns: string
 macro = {
     description = "Setting label localization"
@@ -323,7 +331,7 @@ macro = {
 macro = {
     description = "Checkbox checked state for bool settings (1 = on)"
     definition = "CMMIsSettingEnabled(SettingKey)"
-    replace_with = "EqualTo_CFixedPoint(CMMVar(SettingKey).GetValue, '(CFixedPoint)1')"
+    replace_with = "EqualTo_CFixedPoint(CMMSettingValue(SettingKey), '(CFixedPoint)1')"
 }
 
 # Args: SettingKey (string)
@@ -331,7 +339,7 @@ macro = {
 macro = {
     description = "Numeric setting value text"
     definition = "CMMNumericSettingValue(SettingKey)"
-    replace_with = "CMMVar(SettingKey).GetValue"
+    replace_with = "CMMSettingValue(SettingKey)"
 }
 
 # Args: SettingKey (string)
@@ -379,7 +387,7 @@ macro = {
 macro = {
     description = "Current actual slider step index for one setting"
     definition = "CMMSliderCurrentActualIndex(SettingKey)"
-    replace_with = "FixedPointToInt(Add_CFixedPoint(Divide_CFixedPoint(Subtract_CFixedPoint(CMMVar(SettingKey).GetValue, CMMVar(Concatenate('cmm_setting_min_', SettingKey)).GetValue), CMMVar(Concatenate('cmm_setting_step_', SettingKey)).GetValue), '(CFixedPoint)0.5'))"
+    replace_with = "FixedPointToInt(Add_CFixedPoint(Divide_CFixedPoint(Subtract_CFixedPoint(CMMSettingValue(SettingKey), CMMVar(Concatenate('cmm_setting_min_', SettingKey)).GetValue), CMMVar(Concatenate('cmm_setting_step_', SettingKey)).GetValue), '(CFixedPoint)0.5'))"
 }
 
 # Args: SettingKey (string)
@@ -419,7 +427,7 @@ macro = {
 macro = {
     description = "Dropdown selected index for one setting"
     definition = "CMMDropdownSelectedIndex(SettingKey)"
-    replace_with = "FixedPointToInt(CMMVar(SettingKey).GetValue)"
+    replace_with = "FixedPointToInt(CMMSettingValue(SettingKey))"
 }
 
 # Args: SettingKey (string)

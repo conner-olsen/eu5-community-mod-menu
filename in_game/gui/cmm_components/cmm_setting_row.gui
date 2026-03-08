@@ -5,7 +5,8 @@
 	# - Scope.GetFlagName [string]: current setting key (`<mod_id>__<setting_id>`).
 	# - GetVariableSystem.Get('cmm_selected_mod') [string]: active mod id for row visibility filtering.
 	# - GetVariableSystem.Get('cmm_selected_tab') [string]: active tab key for row visibility filtering.
-	# - Player.MakeScope.GetVariable(Scope.GetFlagName) [value]: current setting value for checked/value/option display.
+	# - GetGlobalVariable(Scope.GetFlagName).GetValue [value]: current setting value for global settings.
+	# - Player.MakeScope.GetVariable(Scope.GetFlagName) [value]: current setting value for local settings.
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_min_', Scope.GetFlagName)) [value]: numeric minimum bound.
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_max_', Scope.GetFlagName)) [value]: numeric maximum bound.
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_text_character_limit_', Scope.GetFlagName)) [value]: text character limit.

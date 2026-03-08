@@ -97,17 +97,18 @@ cmm_register_numeric_setting = {
 # - max_value (number): Upper clamp bound.
 # - step_value (number): Increase/decrease step size.
 cmm_register_global_numeric_setting = {
-	cmm_register_numeric_setting = {
+	set_variable = { name = cmm_setting_is_global_$mod_id$__$setting_id$ value = 1 }
+	set_variable = { name = cmm_setting_is_slider_$mod_id$__$setting_id$ value = 0 }
+	set_variable = { name = cmm_setting_is_button_$mod_id$__$setting_id$ value = 0 }
+	set_variable = { name = cmm_setting_min_$mod_id$__$setting_id$ value = $min_value$ }
+	set_variable = { name = cmm_setting_max_$mod_id$__$setting_id$ value = $max_value$ }
+	set_variable = { name = cmm_setting_step_$mod_id$__$setting_id$ value = $step_value$ }
+
+	cmm_register_setting_metadata = {
 		mod_id = $mod_id$
 		setting_id = $setting_id$
 		tab_id = $tab_id$
-		default_value = $default_value$
-		min_value = $min_value$
-		max_value = $max_value$
-		step_value = $step_value$
 	}
-
-	set_variable = { name = cmm_setting_is_global_$mod_id$__$setting_id$ value = 1 }
 
 	if = {
 		limit = { NOT = { has_global_variable = $mod_id$__$setting_id$ } }
@@ -124,13 +125,16 @@ cmm_register_global_numeric_setting = {
 		set_global_variable = { name = $mod_id$__$setting_id$ value = $max_value$ }
 	}
 
-	set_variable = { name = $mod_id$__$setting_id$ value = global_var:$mod_id$__$setting_id$ }
-
 	# Benign warning suppression
 	if = {
 		limit = {
 			always = no
 			exists = var:cmm_setting_is_global_$mod_id$__$setting_id$
+			exists = var:cmm_setting_is_slider_$mod_id$__$setting_id$
+			exists = var:cmm_setting_is_button_$mod_id$__$setting_id$
+			exists = var:cmm_setting_min_$mod_id$__$setting_id$
+			exists = var:cmm_setting_max_$mod_id$__$setting_id$
+			exists = var:cmm_setting_step_$mod_id$__$setting_id$
 			exists = global_var:$mod_id$__$setting_id$
 		}
 	}

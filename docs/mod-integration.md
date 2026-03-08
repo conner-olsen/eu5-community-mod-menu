@@ -221,7 +221,7 @@ cmm_register_global_button_setting = {
 Notes:
 
 - Button settings are stateless. CMM does not create or mutate `<mod_id>__<setting_id>` for them.
-- `cmm_register_global_button_setting` only marks the button as host-editable in multiplayer. It does not create global storage or country cache state.
+- `cmm_register_global_button_setting` only marks the button as host-editable in multiplayer. It does not create stored value state.
 
 ### 8) Register text settings
 
@@ -367,10 +367,12 @@ Notes:
 - CMM handles slider track clicks and `-` / `+` modifiers via generic marker scripted GUIs, then executes `_on_changed`.
 - CMM captures dropdown selection index via a generic marker scripted GUI, then executes `_on_changed`.
 - If `is_shown` is omitted, the row is visible.
-- Bool, numeric, slider, and dropdown checked/value state is read directly from `var:<mod_id>__<setting_id>` by CMM UI.
+- Local bool, numeric, slider, and dropdown checked/value state is read from `var:<mod_id>__<setting_id>` by CMM UI.
+- Global bool, numeric, slider, and dropdown checked/value state is read from `GetGlobalVariable(<mod_id>__<setting_id>)` by CMM UI.
 - Global settings (`cmm_register_global_*`) are writable by host only in multiplayer (`IsHost`); all players can view them.
 - Callback contract is unchanged for local vs global settings; `cmm_toggle_bool_setting`, `cmm_apply_numeric_change`, `cmm_apply_slider_change`, and `cmm_apply_dropdown_change` branch automatically.
-- Global button settings are writable by host only in multiplayer, but they do not create a value variable or global backing state.
+- If your callback also reads the current setting value for custom logic, use `var:<mod_id>__<setting_id>` for local settings and `global_var:<mod_id>__<setting_id>` for global settings.
+- Global button settings are writable by host only in multiplayer, but they do not create stored value state.
 - Text settings do not currently use scripted GUI `_on_changed` callbacks or `is_shown` gating. Their submit path calls the scripted effect directly through `ExecuteConsoleCommand`.
 - Text setting effects must actually reference `$text$`. If they do not, the engine treats the scripted effect as argument-free and rejects the CMM call.
 
@@ -427,8 +429,8 @@ CMM writes these country-scope variables/lists:
 - `cmm_setting_text_quote_<mod_id>__<setting_id>` (text only)
 - `<mod_id>__<setting_id>_name` (flag value)
 - `<mod_id>__<setting_id>_desc` (flag value)
-- `<mod_id>__<setting_id>` (country cache value used by CMM UI for bool, numeric, slider, and dropdown settings)
-- global `<mod_id>__<setting_id>` (authoritative value for global bool, numeric, slider, and dropdown settings)
+- local `<mod_id>__<setting_id>` (country-scope value for local bool, numeric, slider, and dropdown settings)
+- global `<mod_id>__<setting_id>` (global-scope value for global bool, numeric, slider, and dropdown settings; read directly by CMM UI)
 
 ## Minimal Example (Bool + Button + Numeric + Slider + Dropdown + Text)
 
