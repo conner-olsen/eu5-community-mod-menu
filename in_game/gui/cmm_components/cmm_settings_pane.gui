@@ -477,7 +477,7 @@
 		}
 	}
 
-	# Single setting row for bool, text, numeric, dropdown, and slider settings.
+	# Single setting row for bool, button, text, numeric, dropdown, and slider settings.
 	# Reads:
 	# - Scope.GetFlagName [string]: current setting key (`<mod_id>__<setting_id>`).
 	# - GetVariableSystem.Get('cmm_selected_mod') [string]: active mod id for row visibility filtering.
@@ -509,6 +509,15 @@
 				enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
 				onclick = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
 				checked = "[CMMIsSettingEnabled(Scope.GetFlagName)]"
+				tooltip_enabled = no
+			}
+
+			button_regular = {
+				visible = "[CMMSettingIsButton(Scope.GetFlagName)]"
+				minimumsize = { 168 32 }
+				enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
+				text = "[CMMSettingName(Scope.GetFlagName)]"
+				onclick = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
 				tooltip_enabled = no
 			}
 

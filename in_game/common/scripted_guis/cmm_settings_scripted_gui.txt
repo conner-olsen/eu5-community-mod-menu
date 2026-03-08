@@ -50,6 +50,16 @@ cmm_core__global_example_toggle_on_changed = {
 	}
 }
 
+# Run the core example button action.
+# Scope: country
+# Args: none
+cmm_core__example_button_on_changed = {
+	scope = country
+	effect = {
+		# Button effect
+	}
+}
+
 # On-changed callback for the core example numeric setting.
 # Scope: country
 # Args: none

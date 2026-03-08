@@ -89,6 +89,7 @@ cmm_register_bool_setting = {
 
 	set_variable = { name = cmm_setting_is_global_$mod_id$__$setting_id$ value = 0 }
 	set_variable = { name = cmm_setting_is_slider_$mod_id$__$setting_id$ value = 0 }
+	set_variable = { name = cmm_setting_is_button_$mod_id$__$setting_id$ value = 0 }
 
 	# First-time registration path for this setting key.
 	if = {
@@ -130,6 +131,7 @@ cmm_register_bool_setting = {
 			exists = var:cmm_registered_setting_keys
 			exists = var:cmm_setting_is_global_$mod_id$__$setting_id$
 			exists = var:cmm_setting_is_slider_$mod_id$__$setting_id$
+			exists = var:cmm_setting_is_button_$mod_id$__$setting_id$
 			exists = var:cmm_setting_owner_mod_id_$mod_id$__$setting_id$
 			exists = var:cmm_setting_owner_tab_key_$mod_id$__$setting_id$
 			exists = var:cmm_tab_setting_count_$mod_id$__$tab_id$
@@ -173,6 +175,91 @@ cmm_register_global_bool_setting = {
 	}
 }
 
+# Register a button setting for a mod (idempotent by mod_id + setting_id).
+# Scope: country
+# Args:
+# - mod_id (key): Owner mod id.
+# - setting_id (key): Setting id unique within mod.
+# - tab_id (key): Owner tab id within mod.
+cmm_register_button_setting = {
+	# Ensure owning tab exists before binding setting metadata.
+	cmm_register_tab = {
+		mod_id = $mod_id$
+		tab_id = $tab_id$
+	}
+
+	set_variable = { name = cmm_setting_is_global_$mod_id$__$setting_id$ value = 0 }
+	set_variable = { name = cmm_setting_is_slider_$mod_id$__$setting_id$ value = 0 }
+	set_variable = { name = cmm_setting_is_button_$mod_id$__$setting_id$ value = 1 }
+
+	# First-time registration path for this setting key.
+	if = {
+		limit = { NOT = { has_variable = cmm_registered_setting_$mod_id$__$setting_id$ } }
+		set_variable = { name = cmm_registered_setting_$mod_id$__$setting_id$ value = yes }
+		set_variable = { name = cmm_setting_owner_mod_id_$mod_id$__$setting_id$ value = flag:$mod_id$ }
+		set_variable = { name = cmm_setting_owner_tab_key_$mod_id$__$setting_id$ value = flag:$mod_id$__$tab_id$ }
+		set_variable = { name = $mod_id$__$setting_id$_name value = flag:$mod_id$_$setting_id$_name }
+		set_variable = { name = $mod_id$__$setting_id$_desc value = flag:$mod_id$_$setting_id$_desc }
+
+		# Global setting key list; used by right-panel datamodel iteration.
+		add_to_variable_list = {
+			name = cmm_registered_setting_keys
+			target = flag:$mod_id$__$setting_id$
+		}
+
+		# Per-tab count; used for "no settings in this tab" UI state.
+		if = {
+			limit = { NOT = { has_variable = cmm_tab_setting_count_$mod_id$__$tab_id$ } }
+			set_variable = { name = cmm_tab_setting_count_$mod_id$__$tab_id$ value = 0 }
+		}
+		change_variable = { name = cmm_tab_setting_count_$mod_id$__$tab_id$ add = 1 }
+	}
+
+	# Benign warning suppression
+	if = {
+		limit = {
+			always = no
+			exists = flag:$mod_id$__$setting_id$
+			exists = flag:$mod_id$__$tab_id$
+			exists = flag:$mod_id$_$setting_id$_name
+			exists = flag:$mod_id$_$setting_id$_desc
+			exists = var:cmm_registered_setting_keys
+			exists = var:cmm_setting_is_global_$mod_id$__$setting_id$
+			exists = var:cmm_setting_is_slider_$mod_id$__$setting_id$
+			exists = var:cmm_setting_is_button_$mod_id$__$setting_id$
+			exists = var:cmm_setting_owner_mod_id_$mod_id$__$setting_id$
+			exists = var:cmm_setting_owner_tab_key_$mod_id$__$setting_id$
+			exists = var:cmm_tab_setting_count_$mod_id$__$tab_id$
+			exists = var:$mod_id$__$setting_id$_name
+			exists = var:$mod_id$__$setting_id$_desc
+		}
+	}
+}
+
+# Register a global button setting for a mod.
+# Scope: country
+# Args:
+# - mod_id (key): Owner mod id.
+# - setting_id (key): Setting id unique within mod.
+# - tab_id (key): Owner tab id within mod.
+cmm_register_global_button_setting = {
+	cmm_register_button_setting = {
+		mod_id = $mod_id$
+		setting_id = $setting_id$
+		tab_id = $tab_id$
+	}
+
+	set_variable = { name = cmm_setting_is_global_$mod_id$__$setting_id$ value = 1 }
+
+	# Benign warning suppression
+	if = {
+		limit = {
+			always = no
+			exists = var:cmm_setting_is_global_$mod_id$__$setting_id$
+		}
+	}
+}
+
 # Register a text setting for a mod (idempotent by mod_id + setting_id).
 # Scope: country
 # Args:
@@ -190,6 +277,7 @@ cmm_register_text_setting = {
 
 	set_variable = { name = cmm_setting_is_global_$mod_id$__$setting_id$ value = 0 }
 	set_variable = { name = cmm_setting_is_slider_$mod_id$__$setting_id$ value = 0 }
+	set_variable = { name = cmm_setting_is_button_$mod_id$__$setting_id$ value = 0 }
 	set_variable = { name = cmm_setting_text_character_limit_$mod_id$__$setting_id$ value = $character_limit$ }
 	set_variable = { name = cmm_setting_text_quote_$mod_id$__$setting_id$ value = $quote_text$ }
 
@@ -232,6 +320,7 @@ cmm_register_text_setting = {
 			exists = var:cmm_registered_setting_keys
 			exists = var:cmm_setting_is_global_$mod_id$__$setting_id$
 			exists = var:cmm_setting_is_slider_$mod_id$__$setting_id$
+			exists = var:cmm_setting_is_button_$mod_id$__$setting_id$
 			exists = var:cmm_setting_owner_mod_id_$mod_id$__$setting_id$
 			exists = var:cmm_setting_owner_tab_key_$mod_id$__$setting_id$
 			exists = var:cmm_setting_text_character_limit_$mod_id$__$setting_id$
@@ -262,6 +351,7 @@ cmm_register_numeric_setting = {
 
 	set_variable = { name = cmm_setting_is_global_$mod_id$__$setting_id$ value = 0 }
 	set_variable = { name = cmm_setting_is_slider_$mod_id$__$setting_id$ value = 0 }
+	set_variable = { name = cmm_setting_is_button_$mod_id$__$setting_id$ value = 0 }
 	set_variable = { name = cmm_setting_min_$mod_id$__$setting_id$ value = $min_value$ }
 	set_variable = { name = cmm_setting_max_$mod_id$__$setting_id$ value = $max_value$ }
 	set_variable = { name = cmm_setting_step_$mod_id$__$setting_id$ value = $step_value$ }
@@ -317,6 +407,7 @@ cmm_register_numeric_setting = {
 			exists = var:cmm_registered_setting_keys
 			exists = var:cmm_setting_is_global_$mod_id$__$setting_id$
 			exists = var:cmm_setting_is_slider_$mod_id$__$setting_id$
+			exists = var:cmm_setting_is_button_$mod_id$__$setting_id$
 			exists = var:cmm_setting_owner_mod_id_$mod_id$__$setting_id$
 			exists = var:cmm_setting_owner_tab_key_$mod_id$__$setting_id$
 			exists = var:cmm_setting_min_$mod_id$__$setting_id$
@@ -459,6 +550,7 @@ cmm_register_slider_setting = {
 
 	set_variable = { name = cmm_setting_is_global_$mod_id$__$setting_id$ value = 0 }
 	set_variable = { name = cmm_setting_is_slider_$mod_id$__$setting_id$ value = 1 }
+	set_variable = { name = cmm_setting_is_button_$mod_id$__$setting_id$ value = 0 }
 	set_variable = { name = cmm_setting_min_$mod_id$__$setting_id$ value = $min_value$ }
 	set_variable = { name = cmm_setting_max_$mod_id$__$setting_id$ value = $max_value$ }
 	set_variable = { name = cmm_setting_step_$mod_id$__$setting_id$ value = $step_value$ }
@@ -544,6 +636,7 @@ cmm_register_slider_setting = {
 			exists = var:cmm_registered_setting_keys
 			exists = var:cmm_setting_is_global_$mod_id$__$setting_id$
 			exists = var:cmm_setting_is_slider_$mod_id$__$setting_id$
+			exists = var:cmm_setting_is_button_$mod_id$__$setting_id$
 			exists = var:cmm_setting_owner_mod_id_$mod_id$__$setting_id$
 			exists = var:cmm_setting_owner_tab_key_$mod_id$__$setting_id$
 			exists = var:cmm_setting_min_$mod_id$__$setting_id$
@@ -631,6 +724,7 @@ cmm_register_dropdown_setting = {
 
 	set_variable = { name = cmm_setting_is_global_$mod_id$__$setting_id$ value = 0 }
 	set_variable = { name = cmm_setting_is_slider_$mod_id$__$setting_id$ value = 0 }
+	set_variable = { name = cmm_setting_is_button_$mod_id$__$setting_id$ value = 0 }
 	set_variable = { name = cmm_setting_dropdown_count_$mod_id$__$setting_id$ value = $option_count$ }
 	set_variable = { name = cmm_setting_dropdown_last_index_$mod_id$__$setting_id$ value = $option_count$ }
 	change_variable = { name = cmm_setting_dropdown_last_index_$mod_id$__$setting_id$ add = -1 }
@@ -686,6 +780,7 @@ cmm_register_dropdown_setting = {
 			exists = var:cmm_registered_setting_keys
 			exists = var:cmm_setting_is_global_$mod_id$__$setting_id$
 			exists = var:cmm_setting_is_slider_$mod_id$__$setting_id$
+			exists = var:cmm_setting_is_button_$mod_id$__$setting_id$
 			exists = var:cmm_setting_owner_mod_id_$mod_id$__$setting_id$
 			exists = var:cmm_setting_owner_tab_key_$mod_id$__$setting_id$
 			exists = var:cmm_setting_dropdown_count_$mod_id$__$setting_id$

@@ -113,6 +113,14 @@ macro = {
 # Args: SettingKey (string)
 # Returns: boolean
 macro = {
+    description = "True when a setting key is registered as button type"
+    definition = "CMMSettingIsButton(SettingKey)"
+    replace_with = "EqualTo_CFixedPoint(CMMVar(Concatenate('cmm_setting_is_button_', SettingKey)).GetValue, '(CFixedPoint)1')"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
     description = "True when local player can edit this setting (global settings are host-only in MP)"
     definition = "CMMCanEditSetting(SettingKey)"
     replace_with = "Or(Not(CMMSettingIsGlobal(SettingKey)), Or(Not(GameIsMultiplayer), IsHost))"
@@ -139,7 +147,7 @@ macro = {
 macro = {
     description = "True when a setting key is registered as bool type"
     definition = "CMMSettingIsBool(SettingKey)"
-    replace_with = "And4(Not(CMMSettingIsNumeric(SettingKey)), Not(CMMSettingIsDropdown(SettingKey)), Not(CMMSettingIsSlider(SettingKey)), Not(CMMSettingIsText(SettingKey)))"
+    replace_with = "And(And4(Not(CMMSettingIsNumeric(SettingKey)), Not(CMMSettingIsDropdown(SettingKey)), Not(CMMSettingIsSlider(SettingKey)), Not(CMMSettingIsText(SettingKey))), Not(CMMSettingIsButton(SettingKey)))"
 }
 
 # Args: SettingKey (string)

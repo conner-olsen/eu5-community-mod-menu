@@ -13,6 +13,12 @@ cmm_register_menu_settings = {
 		default_value = 0
 	}
 
+	cmm_register_button_setting = {
+		mod_id = cmm_core
+		setting_id = example_button
+		tab_id = general
+	}
+
 	cmm_register_global_bool_setting = {
 		mod_id = cmm_core
 		setting_id = global_example_toggle

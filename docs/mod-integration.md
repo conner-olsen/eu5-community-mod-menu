@@ -40,7 +40,7 @@ Arguments:
 
 Notes:
 
-- `cmm_register_bool_setting`, `cmm_register_numeric_setting`, `cmm_register_slider_setting`, `cmm_register_dropdown_setting`, `cmm_register_text_setting`, and their supported `cmm_register_global_*` variants auto-register their tab.
+- `cmm_register_bool_setting`, `cmm_register_button_setting`, `cmm_register_numeric_setting`, `cmm_register_slider_setting`, `cmm_register_dropdown_setting`, `cmm_register_text_setting`, and their supported `cmm_register_global_*` variants auto-register their tab.
 - Use explicit `cmm_register_tab` only when you need an empty tab with no settings yet.
 
 ### 3) Register bool settings
@@ -192,7 +192,38 @@ cmm_register_global_dropdown_setting = {
 }
 ```
 
-### 7) Register text settings
+### 7) Register button settings
+
+```txt
+cmm_register_button_setting = {
+    mod_id = your_mod_id
+    setting_id = your_setting_id
+    tab_id = your_tab_id
+}
+```
+
+Arguments:
+
+- `mod_id`: owner mod id.
+- `setting_id`: stable id within your mod.
+- `tab_id`: owner tab id within your mod.
+
+Global edit-permission variant:
+
+```txt
+cmm_register_global_button_setting = {
+    mod_id = your_mod_id
+    setting_id = your_setting_id
+    tab_id = your_tab_id
+}
+```
+
+Notes:
+
+- Button settings are stateless. CMM does not create or mutate `<mod_id>__<setting_id>` for them.
+- `cmm_register_global_button_setting` only marks the button as host-editable in multiplayer. It does not create global storage or country cache state.
+
+### 8) Register text settings
 
 ```txt
 cmm_register_text_setting = {
@@ -245,6 +276,20 @@ Required scripted GUI callback:
             setting = <mod_id>__<setting_id>
         }
         # optional custom logic
+    }
+    # optional is_shown = { ... }
+}
+```
+
+### Button setting callbacks
+
+Required scripted GUI callback:
+
+```txt
+<mod_id>__<setting_id>_on_changed = {
+    scope = country
+    effect = {
+        # custom action logic
     }
     # optional is_shown = { ... }
 }
@@ -317,13 +362,15 @@ Required scripted effect:
 Notes:
 
 - Non-text `_on_changed` callbacks are also used for row visibility (`is_shown`) checks.
+- Button settings execute `_on_changed` directly on click.
 - CMM handles numeric modes (`1x`, `5x`, `min/max`) via generic marker scripted GUIs, then executes `_on_changed`.
 - CMM handles slider track clicks and `-` / `+` modifiers via generic marker scripted GUIs, then executes `_on_changed`.
 - CMM captures dropdown selection index via a generic marker scripted GUI, then executes `_on_changed`.
 - If `is_shown` is omitted, the row is visible.
-- Non-text checked/value state is read directly from `var:<mod_id>__<setting_id>` by CMM UI.
+- Bool, numeric, slider, and dropdown checked/value state is read directly from `var:<mod_id>__<setting_id>` by CMM UI.
 - Global settings (`cmm_register_global_*`) are writable by host only in multiplayer (`IsHost`); all players can view them.
 - Callback contract is unchanged for local vs global settings; `cmm_toggle_bool_setting`, `cmm_apply_numeric_change`, `cmm_apply_slider_change`, and `cmm_apply_dropdown_change` branch automatically.
+- Global button settings are writable by host only in multiplayer, but they do not create a value variable or global backing state.
 - Text settings do not currently use scripted GUI `_on_changed` callbacks or `is_shown` gating. Their submit path calls the scripted effect directly through `ExecuteConsoleCommand`.
 - Text setting effects must actually reference `$text$`. If they do not, the engine treats the scripted effect as argument-free and rejects the CMM call.
 
@@ -366,6 +413,7 @@ CMM writes these country-scope variables/lists:
 - `cmm_setting_owner_tab_key_<mod_id>__<setting_id>` (flag value)
 - `cmm_setting_is_global_<mod_id>__<setting_id>` (`0` local country setting, `1` global setting)
 - `cmm_setting_is_slider_<mod_id>__<setting_id>` (`0` non-slider, `1` slider)
+- `cmm_setting_is_button_<mod_id>__<setting_id>` (`0` non-button, `1` button)
 - `cmm_setting_min_<mod_id>__<setting_id>` (numeric and slider)
 - `cmm_setting_max_<mod_id>__<setting_id>` (numeric and slider)
 - `cmm_setting_step_<mod_id>__<setting_id>` (numeric and slider)
@@ -380,9 +428,9 @@ CMM writes these country-scope variables/lists:
 - `<mod_id>__<setting_id>_name` (flag value)
 - `<mod_id>__<setting_id>_desc` (flag value)
 - `<mod_id>__<setting_id>` (country cache value used by CMM UI for bool, numeric, slider, and dropdown settings)
-- global `<mod_id>__<setting_id>` (authoritative value for `cmm_register_global_*` settings)
+- global `<mod_id>__<setting_id>` (authoritative value for global bool, numeric, slider, and dropdown settings)
 
-## Minimal Example (Bool + Numeric + Slider + Dropdown + Text)
+## Minimal Example (Bool + Button + Numeric + Slider + Dropdown + Text)
 
 ```txt
 your_mod_register_mod = {
@@ -395,6 +443,12 @@ your_mod_register_mod = {
         setting_id = allow_feature
         tab_id = general
         default_value = 1
+    }
+
+    cmm_register_button_setting = {
+        mod_id = your_mod
+        setting_id = run_feature
+        tab_id = general
     }
 
     cmm_register_numeric_setting = {
@@ -443,6 +497,13 @@ your_mod__allow_feature_on_changed = {
     }
 }
 
+your_mod__run_feature_on_changed = {
+    scope = country
+    effect = {
+        # custom action logic
+    }
+}
+
 your_mod__amount_on_changed = {
     scope = country
     effect = {
@@ -488,6 +549,8 @@ your_mod_desc: "One-line description"
 your_mod_general_name: "General"
 your_mod_allow_feature_name: "Allow Feature"
 your_mod_allow_feature_desc: "Enables the feature when checked."
+your_mod_run_feature_name: "Run Feature"
+your_mod_run_feature_desc: "Runs the feature when pressed."
 your_mod_amount_name: "Amount"
 your_mod_amount_desc: "Numeric amount controlled in CMM."
 your_mod_intensity_name: "Intensity"
@@ -503,6 +566,6 @@ your_mod_country_name_desc: "Singleplayer-only text setting. Applies the entered
 
 ## Notes
 
-- CMM v1 controls currently include bool, numeric, slider, dropdown, and text.
+- CMM v1 controls currently include bool, button, numeric, slider, dropdown, and text.
 - Keep ids stable (`mod_id`, `tab_id`, `setting_id`) across updates.
 - Keep integration/API docs in repository docs, not runtime UI localization.

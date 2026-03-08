@@ -6,7 +6,7 @@ A dependency mod for **Europa Universalis 5** that provides one shared in-game m
 
 - Pause menu button (`Mod Menu`) via intentional `ingame_menu.gui` override.
 - Dynamic left mod list (search + compact rendering).
-- Dynamic right settings panel for registered bool, numeric, slider, dropdown, and text settings.
+- Dynamic right settings panel for registered bool, button, numeric, slider, dropdown, and text settings.
 - Dynamic per-mod tabs in the right panel.
 - Mod-id-based registration API with no fixed slot cap.
 - GUI function macro layer for shared CMM data-binding expressions (`loading_screen/data_binding/cmm_macros.txt`).
@@ -14,6 +14,8 @@ A dependency mod for **Europa Universalis 5** that provides one shared in-game m
 ## Current settings scope (v1)
 
 - Bool settings (`0`/`1`) with checkbox controls.
+- Button settings with action buttons.
+  - Click button: execute the setting-specific `_on_changed` effect immediately.
 - Numeric settings with stepper controls (`-` / `+`).
   - Click: `1x` step.
   - `Ctrl+click`: `5x` step.
@@ -32,7 +34,7 @@ A dependency mod for **Europa Universalis 5** that provides one shared in-game m
 - `quote_text = 0` forwards the raw text unchanged; use it only when your effect expects an unquoted token.
 - Text settings are singleplayer-only and are not persisted by CMM.
 - Registration order is preserved.
-- Non-text value changes are persisted as country variables.
+- Bool, numeric, slider, and dropdown value changes are persisted as country variables.
 - UI invokes per-setting callbacks immediately on interaction.
 
 ## Install
@@ -54,6 +56,12 @@ cmm_register_bool_setting = {
     setting_id = your_setting_id
     tab_id = your_tab_id
     default_value = 0 # required; 0 (off) or 1 (on)
+}
+
+cmm_register_button_setting = {
+    mod_id = your_mod_id
+    setting_id = your_setting_id
+    tab_id = your_tab_id
 }
 
 cmm_register_numeric_setting = {
@@ -93,6 +101,8 @@ cmm_register_text_setting = {
 }
 ```
 
+Global variants also exist for bool, button, numeric, slider, and dropdown settings. `cmm_register_global_button_setting` only affects host-only multiplayer edit permission and does not create stored state.
+
 Localization key format is enforced by ids:
 
 - Mod: `<mod_id>_name`, `<mod_id>_desc`
@@ -111,6 +121,15 @@ Callback contract:
             setting = <mod_id>__<setting_id>
         }
     }
+}
+
+# Button setting callback (required):
+<mod_id>__<setting_id>_on_changed = {
+    scope = country
+    effect = {
+        # custom action logic
+    }
+    # optional is_shown = { ... }
 }
 
 # Numeric shared callback (required; executed after + / -):
@@ -156,7 +175,7 @@ Callback contract:
 }
 ```
 
-CMM handles numeric, slider, and dropdown change modes through generic marker scripted GUIs and then executes the setting-specific `_on_changed`. Text settings submit through `ExecuteConsoleCommand`, so they are disabled in multiplayer and currently do not use scripted GUI `is_shown` gating.
+CMM handles numeric, slider, and dropdown change modes through generic marker scripted GUIs and then executes the setting-specific `_on_changed`. Button settings execute `_on_changed` directly on click. Text settings submit through `ExecuteConsoleCommand`, so they are disabled in multiplayer and currently do not use scripted GUI `is_shown` gating.
 
 Registration hook contract:
 

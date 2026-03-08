@@ -25,29 +25,36 @@ Implemented:
 1. Pause-menu button injection and open/close flow are working (`cmm_ingame_menu.gui` + `cmm_window.gui`).
 2. Dynamic mod registration is working via `cmm_register_mod`.
 3. Dynamic bool setting registration is working via `cmm_register_bool_setting`.
-4. Dynamic numeric setting registration is working via `cmm_register_numeric_setting`.
-5. Dynamic slider setting registration is working via `cmm_register_slider_setting`.
-6. Dynamic dropdown setting registration is working via `cmm_register_dropdown_setting`.
-7. Dynamic text setting registration is working via `cmm_register_text_setting`.
-8. Left panel is dynamic, scrollable, searchable, and physically compacts filtered results.
-9. Right panel renders selected-mod metadata and dynamic setting rows.
-10. Bool toggles are wired through scripted GUI callbacks (`<mod_id>__<setting_id>_on_changed`) and `cmm_toggle_bool_setting`.
-11. Numeric steppers are wired through generic CMM markers and per-setting scripted GUI `_on_changed` callbacks (`click=1x`, `ctrl+click=5x`, `shift+click=min/max`).
-12. Slider controls are wired through generic CMM markers and per-setting scripted GUI `_on_changed` callbacks (`track click=nearest position`, `-` / `+` buttons supported; drag behavior is the accepted partial implementation).
-13. Dropdown selectors are wired through generic CMM markers and per-setting scripted GUI `_on_changed` callbacks (`click=prev/next`, `shift+click=first/last`).
-14. Text input controls are wired through `ExecuteConsoleCommand` into per-setting effect callbacks with a single `text` arg; `quote_text` registration metadata decides whether CMM wraps the submitted text in double quotes before calling the effect. Text settings are singleplayer-only.
-15. Shared registration hook `cmm_on_mod_registration` is in place and used by example mods.
-16. Runtime localization keys are derived from ids (no extra registration args for names/descriptions).
-17. Dynamic per-mod tabs are implemented in the right panel.
-18. Settings are filtered by both selected mod and selected tab.
-19. GUI function macro layer is in place (`loading_screen/data_binding/cmm_macros.txt`) and used by CMM GUI.
-20. Global setting registration is implemented via `cmm_register_global_bool_setting`, `cmm_register_global_numeric_setting`, `cmm_register_global_slider_setting`, and `cmm_register_global_dropdown_setting`.
-21. Global settings are host-editable in multiplayer and synced to player UI caches.
+4. Dynamic button setting registration is working via `cmm_register_button_setting`.
+5. Dynamic numeric setting registration is working via `cmm_register_numeric_setting`.
+6. Dynamic slider setting registration is working via `cmm_register_slider_setting`.
+7. Dynamic dropdown setting registration is working via `cmm_register_dropdown_setting`.
+8. Dynamic text setting registration is working via `cmm_register_text_setting`.
+9. Left panel is dynamic, scrollable, searchable, and physically compacts filtered results.
+10. Right panel renders selected-mod metadata and dynamic setting rows.
+11. Bool toggles are wired through scripted GUI callbacks (`<mod_id>__<setting_id>_on_changed`) and `cmm_toggle_bool_setting`.
+12. Button controls are wired through per-setting scripted GUI `_on_changed` callbacks and run their effects directly on click.
+13. Numeric steppers are wired through generic CMM markers and per-setting scripted GUI `_on_changed` callbacks (`click=1x`, `ctrl+click=5x`, `shift+click=min/max`).
+14. Slider controls are wired through generic CMM markers and per-setting scripted GUI `_on_changed` callbacks (`track click=nearest position`, `-` / `+` buttons supported; drag behavior is the accepted partial implementation).
+15. Dropdown selectors are wired through generic CMM markers and per-setting scripted GUI `_on_changed` callbacks (`click=prev/next`, `shift+click=first/last`).
+16. Text input controls are wired through `ExecuteConsoleCommand` into per-setting effect callbacks with a single `text` arg; `quote_text` registration metadata decides whether CMM wraps the submitted text in double quotes before calling the effect. Text settings are singleplayer-only.
+17. Shared registration hook `cmm_on_mod_registration` is in place and used by example mods.
+18. Runtime localization keys are derived from ids (no extra registration args for names/descriptions).
+19. Dynamic per-mod tabs are implemented in the right panel.
+20. Settings are filtered by both selected mod and selected tab.
+21. GUI function macro layer is in place (`loading_screen/data_binding/cmm_macros.txt`) and used by CMM GUI.
+22. Global setting registration is implemented via `cmm_register_global_bool_setting`, `cmm_register_global_button_setting`, `cmm_register_global_numeric_setting`, `cmm_register_global_slider_setting`, and `cmm_register_global_dropdown_setting`.
+23. Global stateful settings are host-editable in multiplayer and synced to player UI caches; global button settings are host-editable in multiplayer without creating synced backing values.
+24. List ordering is registration-first; earlier registration/load order remains earlier in rendered mod, tab, and setting lists.
 
-Remaining:
+Status:
 
-1. Finalize list ordering policy (registration-first vs optional alpha mode).
-2. Continue expanding docs/examples after text control.
+- CMM is feature complete for the current planned scope.
+
+Follow-up Work:
+
+1. Refactoring and cleanup.
+2. UI improvement and polish.
 
 ## Constraints
 
@@ -188,6 +195,18 @@ cmm_register_global_bool_setting = {
     default_value = <required, 0|1>
 }
 
+cmm_register_button_setting = {
+    mod_id = <required>
+    setting_id = <required>
+    tab_id = <required>
+}
+
+cmm_register_global_button_setting = {
+    mod_id = <required>
+    setting_id = <required>
+    tab_id = <required>
+}
+
 cmm_register_numeric_setting = {
     mod_id = <required>
     setting_id = <required>
@@ -277,6 +296,18 @@ Required scripted GUI callbacks per bool setting:
 }
 ```
 
+Required scripted GUI callbacks per button setting:
+
+```txt
+<mod_id>__<setting_id>_on_changed = {
+    scope = country
+    effect = {
+        # custom action logic
+    }
+    # optional is_shown = { ... } for row visibility
+}
+```
+
 Required scripted GUI callbacks per numeric setting:
 
 ```txt
@@ -340,6 +371,7 @@ Required effect callback per text setting:
 ```
 
 Text settings are singleplayer-only and currently do not use scripted GUI `is_shown` callbacks.
+Global button settings are host-editable in multiplayer but do not create a synced backing value.
 
 ## Registration Lifecycle
 
