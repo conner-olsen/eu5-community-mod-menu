@@ -1,6 +1,6 @@
 ﻿# AGENTS.md
 
-Last updated: 2026-03-04
+Last updated: 2026-03-08
 
 ## Critical Context
 
@@ -26,25 +26,27 @@ Implemented:
 2. Dynamic mod registration is working via `cmm_register_mod`.
 3. Dynamic bool setting registration is working via `cmm_register_bool_setting`.
 4. Dynamic numeric setting registration is working via `cmm_register_numeric_setting`.
-5. Dynamic dropdown setting registration is working via `cmm_register_dropdown_setting`.
-6. Left panel is dynamic, scrollable, searchable, and physically compacts filtered results.
-7. Right panel renders selected-mod metadata and dynamic setting rows.
-8. Bool toggles are wired through scripted GUI callbacks (`<mod_id>__<setting_id>_on_changed`) and `cmm_toggle_bool_setting`.
-9. Numeric steppers are wired through generic CMM markers and per-setting scripted GUI `_on_changed` callbacks (`click=1x`, `ctrl+click=5x`, `shift+click=min/max`).
-10. Dropdown selectors are wired through generic CMM markers and per-setting scripted GUI `_on_changed` callbacks (`click=prev/next`, `shift+click=first/last`).
-11. Shared registration hook `cmm_on_mod_registration` is in place and used by example mods.
-12. Runtime localization keys are derived from ids (no extra registration args for names/descriptions).
-13. Dynamic per-mod tabs are implemented in the right panel.
-14. Settings are filtered by both selected mod and selected tab.
-15. GUI function macro layer is in place (`loading_screen/data_binding/cmm_macros.txt`) and used by CMM GUI.
-16. Global setting registration is implemented via `cmm_register_global_bool_setting`, `cmm_register_global_numeric_setting`, and `cmm_register_global_dropdown_setting`.
-17. Global settings are host-editable in multiplayer and synced to player UI caches.
+5. Dynamic slider setting registration is working via `cmm_register_slider_setting`.
+6. Dynamic dropdown setting registration is working via `cmm_register_dropdown_setting`.
+7. Left panel is dynamic, scrollable, searchable, and physically compacts filtered results.
+8. Right panel renders selected-mod metadata and dynamic setting rows.
+9. Bool toggles are wired through scripted GUI callbacks (`<mod_id>__<setting_id>_on_changed`) and `cmm_toggle_bool_setting`.
+10. Numeric steppers are wired through generic CMM markers and per-setting scripted GUI `_on_changed` callbacks (`click=1x`, `ctrl+click=5x`, `shift+click=min/max`).
+11. Slider controls are wired through generic CMM markers and per-setting scripted GUI `_on_changed` callbacks (`track click=nearest position`, `-` / `+` buttons supported; drag behavior is the accepted partial implementation).
+12. Dropdown selectors are wired through generic CMM markers and per-setting scripted GUI `_on_changed` callbacks (`click=prev/next`, `shift+click=first/last`).
+13. Shared registration hook `cmm_on_mod_registration` is in place and used by example mods.
+14. Runtime localization keys are derived from ids (no extra registration args for names/descriptions).
+15. Dynamic per-mod tabs are implemented in the right panel.
+16. Settings are filtered by both selected mod and selected tab.
+17. GUI function macro layer is in place (`loading_screen/data_binding/cmm_macros.txt`) and used by CMM GUI.
+18. Global setting registration is implemented via `cmm_register_global_bool_setting`, `cmm_register_global_numeric_setting`, `cmm_register_global_slider_setting`, and `cmm_register_global_dropdown_setting`.
+19. Global settings are host-editable in multiplayer and synced to player UI caches.
 
 Remaining:
 
-1. Add remaining non-bool controls (slider/text) and define stable API.
+1. Add remaining text control and define stable API.
 2. Finalize list ordering policy (registration-first vs optional alpha mode).
-3. Expand docs/examples after non-bool controls exist.
+3. Expand docs/examples after text control exists.
 
 ## Constraints
 
@@ -205,6 +207,26 @@ cmm_register_global_numeric_setting = {
     step_value = <required, number>
 }
 
+cmm_register_slider_setting = {
+    mod_id = <required>
+    setting_id = <required>
+    tab_id = <required>
+    default_value = <required, number>
+    min_value = <required, number>
+    max_value = <required, number>
+    step_value = <required, number>
+}
+
+cmm_register_global_slider_setting = {
+    mod_id = <required>
+    setting_id = <required>
+    tab_id = <required>
+    default_value = <required, number>
+    min_value = <required, number>
+    max_value = <required, number>
+    step_value = <required, number>
+}
+
 cmm_register_dropdown_setting = {
     mod_id = <required>
     setting_id = <required>
@@ -279,6 +301,23 @@ Required scripted GUI callbacks per dropdown setting:
 ```
 
 For dropdown settings, CMM marks dropdown modes generically (prev/next/first/last) and then executes setting-specific `_on_changed`.
+
+Required scripted GUI callbacks per slider setting:
+
+```txt
+<mod_id>__<setting_id>_on_changed = {
+    scope = country
+    effect = {
+        cmm_apply_slider_change = {
+            setting = <mod_id>__<setting_id>
+        }
+        # optional custom logic after slider value changes
+    }
+    # optional is_shown = { ... } for row visibility
+}
+```
+
+For slider settings, CMM marks slider modes generically (track selection and `-` / `+` modifiers) and then executes setting-specific `_on_changed`.
 
 ## Registration Lifecycle
 
