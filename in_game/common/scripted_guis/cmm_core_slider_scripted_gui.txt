@@ -1,4 +1,25 @@
-﻿# Mark the next slider interaction as visual slot `0`.
+﻿# Begin a slider drag interaction.
+# Scope: country
+# Args: none
+CMM_StartSliderDrag = {
+	effect = {
+		set_variable = { name = cmm_slider_dragging value = 1 }
+	}
+}
+
+# End a slider drag interaction.
+# Scope: country
+# Args: none
+CMM_StopSliderDrag = {
+	effect = {
+		if = {
+			limit = { has_variable = cmm_slider_dragging }
+			remove_variable = cmm_slider_dragging
+		}
+	}
+}
+
+# Mark the next slider interaction as visual slot `0`.
 # Scope: country
 # Args: none
 CMM_MarkSliderSelection_0 = {
@@ -220,5 +241,305 @@ CMM_MarkSliderSelection_23 = {
 CMM_MarkSliderSelection_24 = {
 	effect = {
 		set_variable = { name = cmm_slider_index_to_apply value = 24 }
+	}
+}
+
+# Conditionally mark visual slot `0` during a slider drag.
+# Scope: country
+# Args: none
+CMM_SliderDragHover_0 = {
+	effect = {
+		if = {
+			limit = { has_variable = cmm_slider_dragging }
+			set_variable = { name = cmm_slider_index_to_apply value = 0 }
+		}
+	}
+}
+
+# Conditionally mark visual slot `1` during a slider drag.
+# Scope: country
+# Args: none
+CMM_SliderDragHover_1 = {
+	effect = {
+		if = {
+			limit = { has_variable = cmm_slider_dragging }
+			set_variable = { name = cmm_slider_index_to_apply value = 1 }
+		}
+	}
+}
+
+# Conditionally mark visual slot `2` during a slider drag.
+# Scope: country
+# Args: none
+CMM_SliderDragHover_2 = {
+	effect = {
+		if = {
+			limit = { has_variable = cmm_slider_dragging }
+			set_variable = { name = cmm_slider_index_to_apply value = 2 }
+		}
+	}
+}
+
+# Conditionally mark visual slot `3` during a slider drag.
+# Scope: country
+# Args: none
+CMM_SliderDragHover_3 = {
+	effect = {
+		if = {
+			limit = { has_variable = cmm_slider_dragging }
+			set_variable = { name = cmm_slider_index_to_apply value = 3 }
+		}
+	}
+}
+
+# Conditionally mark visual slot `4` during a slider drag.
+# Scope: country
+# Args: none
+CMM_SliderDragHover_4 = {
+	effect = {
+		if = {
+			limit = { has_variable = cmm_slider_dragging }
+			set_variable = { name = cmm_slider_index_to_apply value = 4 }
+		}
+	}
+}
+
+# Conditionally mark visual slot `5` during a slider drag.
+# Scope: country
+# Args: none
+CMM_SliderDragHover_5 = {
+	effect = {
+		if = {
+			limit = { has_variable = cmm_slider_dragging }
+			set_variable = { name = cmm_slider_index_to_apply value = 5 }
+		}
+	}
+}
+
+# Conditionally mark visual slot `6` during a slider drag.
+# Scope: country
+# Args: none
+CMM_SliderDragHover_6 = {
+	effect = {
+		if = {
+			limit = { has_variable = cmm_slider_dragging }
+			set_variable = { name = cmm_slider_index_to_apply value = 6 }
+		}
+	}
+}
+
+# Conditionally mark visual slot `7` during a slider drag.
+# Scope: country
+# Args: none
+CMM_SliderDragHover_7 = {
+	effect = {
+		if = {
+			limit = { has_variable = cmm_slider_dragging }
+			set_variable = { name = cmm_slider_index_to_apply value = 7 }
+		}
+	}
+}
+
+# Conditionally mark visual slot `8` during a slider drag.
+# Scope: country
+# Args: none
+CMM_SliderDragHover_8 = {
+	effect = {
+		if = {
+			limit = { has_variable = cmm_slider_dragging }
+			set_variable = { name = cmm_slider_index_to_apply value = 8 }
+		}
+	}
+}
+
+# Conditionally mark visual slot `9` during a slider drag.
+# Scope: country
+# Args: none
+CMM_SliderDragHover_9 = {
+	effect = {
+		if = {
+			limit = { has_variable = cmm_slider_dragging }
+			set_variable = { name = cmm_slider_index_to_apply value = 9 }
+		}
+	}
+}
+
+# Conditionally mark visual slot `10` during a slider drag.
+# Scope: country
+# Args: none
+CMM_SliderDragHover_10 = {
+	effect = {
+		if = {
+			limit = { has_variable = cmm_slider_dragging }
+			set_variable = { name = cmm_slider_index_to_apply value = 10 }
+		}
+	}
+}
+
+# Conditionally mark visual slot `11` during a slider drag.
+# Scope: country
+# Args: none
+CMM_SliderDragHover_11 = {
+	effect = {
+		if = {
+			limit = { has_variable = cmm_slider_dragging }
+			set_variable = { name = cmm_slider_index_to_apply value = 11 }
+		}
+	}
+}
+
+# Conditionally mark visual slot `12` during a slider drag.
+# Scope: country
+# Args: none
+CMM_SliderDragHover_12 = {
+	effect = {
+		if = {
+			limit = { has_variable = cmm_slider_dragging }
+			set_variable = { name = cmm_slider_index_to_apply value = 12 }
+		}
+	}
+}
+
+# Conditionally mark visual slot `13` during a slider drag.
+# Scope: country
+# Args: none
+CMM_SliderDragHover_13 = {
+	effect = {
+		if = {
+			limit = { has_variable = cmm_slider_dragging }
+			set_variable = { name = cmm_slider_index_to_apply value = 13 }
+		}
+	}
+}
+
+# Conditionally mark visual slot `14` during a slider drag.
+# Scope: country
+# Args: none
+CMM_SliderDragHover_14 = {
+	effect = {
+		if = {
+			limit = { has_variable = cmm_slider_dragging }
+			set_variable = { name = cmm_slider_index_to_apply value = 14 }
+		}
+	}
+}
+
+# Conditionally mark visual slot `15` during a slider drag.
+# Scope: country
+# Args: none
+CMM_SliderDragHover_15 = {
+	effect = {
+		if = {
+			limit = { has_variable = cmm_slider_dragging }
+			set_variable = { name = cmm_slider_index_to_apply value = 15 }
+		}
+	}
+}
+
+# Conditionally mark visual slot `16` during a slider drag.
+# Scope: country
+# Args: none
+CMM_SliderDragHover_16 = {
+	effect = {
+		if = {
+			limit = { has_variable = cmm_slider_dragging }
+			set_variable = { name = cmm_slider_index_to_apply value = 16 }
+		}
+	}
+}
+
+# Conditionally mark visual slot `17` during a slider drag.
+# Scope: country
+# Args: none
+CMM_SliderDragHover_17 = {
+	effect = {
+		if = {
+			limit = { has_variable = cmm_slider_dragging }
+			set_variable = { name = cmm_slider_index_to_apply value = 17 }
+		}
+	}
+}
+
+# Conditionally mark visual slot `18` during a slider drag.
+# Scope: country
+# Args: none
+CMM_SliderDragHover_18 = {
+	effect = {
+		if = {
+			limit = { has_variable = cmm_slider_dragging }
+			set_variable = { name = cmm_slider_index_to_apply value = 18 }
+		}
+	}
+}
+
+# Conditionally mark visual slot `19` during a slider drag.
+# Scope: country
+# Args: none
+CMM_SliderDragHover_19 = {
+	effect = {
+		if = {
+			limit = { has_variable = cmm_slider_dragging }
+			set_variable = { name = cmm_slider_index_to_apply value = 19 }
+		}
+	}
+}
+
+# Conditionally mark visual slot `20` during a slider drag.
+# Scope: country
+# Args: none
+CMM_SliderDragHover_20 = {
+	effect = {
+		if = {
+			limit = { has_variable = cmm_slider_dragging }
+			set_variable = { name = cmm_slider_index_to_apply value = 20 }
+		}
+	}
+}
+
+# Conditionally mark visual slot `21` during a slider drag.
+# Scope: country
+# Args: none
+CMM_SliderDragHover_21 = {
+	effect = {
+		if = {
+			limit = { has_variable = cmm_slider_dragging }
+			set_variable = { name = cmm_slider_index_to_apply value = 21 }
+		}
+	}
+}
+
+# Conditionally mark visual slot `22` during a slider drag.
+# Scope: country
+# Args: none
+CMM_SliderDragHover_22 = {
+	effect = {
+		if = {
+			limit = { has_variable = cmm_slider_dragging }
+			set_variable = { name = cmm_slider_index_to_apply value = 22 }
+		}
+	}
+}
+
+# Conditionally mark visual slot `23` during a slider drag.
+# Scope: country
+# Args: none
+CMM_SliderDragHover_23 = {
+	effect = {
+		if = {
+			limit = { has_variable = cmm_slider_dragging }
+			set_variable = { name = cmm_slider_index_to_apply value = 23 }
+		}
+	}
+}
+
+# Conditionally mark visual slot `24` during a slider drag.
+# Scope: country
+# Args: none
+CMM_SliderDragHover_24 = {
+	effect = {
+		if = {
+			limit = { has_variable = cmm_slider_dragging }
+			set_variable = { name = cmm_slider_index_to_apply value = 24 }
+		}
 	}
 }

@@ -291,6 +291,7 @@
 				using = layoutpolicy_expanding
 				minimumsize = { 180 24 }
 				allow_outside = yes
+				onmousehierarchyleave = "[CMMStopSliderDrag]"
 
 				progressbar = {
 					parentanchor = vcenter
@@ -312,6 +313,8 @@
 							layoutstretchfactor_horizontal = 1
 							size = { 0 24 }
 							allow_outside = yes
+							onmousehierarchyenter = "[GetScriptedGui(Concatenate('CMM_SliderDragHover_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+							onmousehierarchyenter = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
 
 							EconomySlider_Slider = {
 								visible = "[EqualTo_int32(PdxGuiWidget.GetIndexInDataModel, CMMSliderCurrentVisualIndex(Scope.GetFlagName))]"
@@ -323,8 +326,10 @@
 								alpha = 0
 								effectname = "NoHighlight"
 								enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
-								onclick = "[GetScriptedGui(Concatenate('CMM_MarkSliderSelection_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-								onclick = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+								onpressed = "[CMMStartSliderDrag]"
+								onpressed = "[GetScriptedGui(Concatenate('CMM_MarkSliderSelection_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+								onpressed = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+								onreleased = "[CMMStopSliderDrag]"
 								tooltip_enabled = no
 							}
 						}

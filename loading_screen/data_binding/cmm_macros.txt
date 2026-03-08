@@ -334,6 +334,22 @@ macro = {
     replace_with = "Divide_int32(Multiply_int32(CMMSliderCurrentActualIndex(SettingKey), CMMSliderVisualLastIndex(SettingKey)), CMMSliderActualLastIndex(SettingKey))"
 }
 
+# Args: none
+# Returns: none
+macro = {
+    description = "Begin a slider drag interaction"
+    definition = "CMMStartSliderDrag"
+    replace_with = "GetScriptedGui('CMM_StartSliderDrag').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
+# Args: none
+# Returns: none
+macro = {
+    description = "End a slider drag interaction"
+    definition = "CMMStopSliderDrag"
+    replace_with = "GetScriptedGui('CMM_StopSliderDrag').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
 # Args: SettingKey (string)
 # Returns: int32
 macro = {
