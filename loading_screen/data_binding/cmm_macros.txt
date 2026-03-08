@@ -257,9 +257,9 @@ macro = {
 # Args: SettingKey (string)
 # Returns: string
 macro = {
-    description = "Variable-system cache key for the live text-setting command preview"
-    definition = "CMMTextSettingCommandPreviewKey(SettingKey)"
-    replace_with = "Concatenate('cmm_text_command_preview_', SettingKey)"
+    description = "Scripted effect callback key for one text setting"
+    definition = "CMMTextSettingCallbackKey(SettingKey)"
+    replace_with = "Concatenate(SettingKey, '_on_changed')"
 }
 
 # Args: none
