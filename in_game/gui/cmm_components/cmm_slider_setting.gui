@@ -27,135 +27,138 @@
 				minimumsize = { 350 20 }
 				allow_outside = yes
 
-				scrollbar = {
-					name = "cmm_slider_visual"
-					direction = horizontal
+				hbox = {
 					size = { 100% 20 }
-					minimumsize = { -1 14 }
-					min = "[CMMNumericSettingMin(Scope.GetFlagName)]"
-					max = "[CMMNumericSettingMax(Scope.GetFlagName)]"
-					step = "[CMMVar(Concatenate('cmm_setting_step_', Scope.GetFlagName)).GetValue]"
-					wheelstep = 0
-					value = "[CMMNumericSettingValue(Scope.GetFlagName)]"
-					enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
 
-					track = {
-						EconomySlider_TrackRange = {}
-					}
+					EconomySlider_DecButton = {
+						size = { 20 20 }
+						enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
 
-					slider = {
-						EconomySlider_Slider = { size = { 20 20 } }
-					}
+						action_tooltip = {
+							click_mode = single
+							click_type = left
+							click_modifier = default
+							title = "CMM_NUMERIC_DECREASE"
+							on_action = "[CMMMarkNumericDecrease]"
+							on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+						}
 
-					dec_button = {
-						EconomySlider_DecButton = {
-							size = { 20 20 }
-							enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
+						action_tooltip = {
+							click_modifier = ctrl
+							click_mode = single
+							click_type = left
+							title = "CMM_NUMERIC_DECREASE_5X"
+							on_action = "[CMMMarkNumericDecrease5x]"
+							on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+						}
 
-							action_tooltip = {
-								click_mode = single
-								click_type = left
-								click_modifier = default
-								title = "CMM_NUMERIC_DECREASE"
-								on_action = "[CMMMarkNumericDecrease]"
-								on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-							}
+						action_tooltip = {
+							click_modifier = shift
+							click_mode = single
+							click_type = left
+							title = "CMM_NUMERIC_DECREASE_MIN"
+							on_action = "[CMMMarkNumericDecreaseToMin]"
+							on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+						}
 
-							action_tooltip = {
-								click_modifier = ctrl
-								click_mode = single
-								click_type = left
-								title = "CMM_NUMERIC_DECREASE_5X"
-								on_action = "[CMMMarkNumericDecrease5x]"
-								on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-							}
-
-							action_tooltip = {
-								click_modifier = shift
-								click_mode = single
-								click_type = left
-								title = "CMM_NUMERIC_DECREASE_MIN"
-								on_action = "[CMMMarkNumericDecreaseToMin]"
-								on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-							}
-
-							tooltipwidget = {
-								BasicFunctionalTooltip = {}
-							}
+						tooltipwidget = {
+							BasicFunctionalTooltip = {}
 						}
 					}
 
-					inc_button = {
-						EconomySlider_IncButton = {
-							size = { 20 20 }
+					widget = {
+						size = { 310 20 }
+						minimumsize = { 310 20 }
+						allow_outside = yes
+						onmousehierarchyleave = "[CMMStopSliderDrag]"
+
+						scrollbar = {
+							name = "cmm_slider_visual"
+							direction = horizontal
+							size = { 100% 20 }
+							minimumsize = { -1 14 }
+							min = "[CMMNumericSettingMin(Scope.GetFlagName)]"
+							max = "[CMMNumericSettingMax(Scope.GetFlagName)]"
+							step = "[CMMVar(Concatenate('cmm_setting_step_', Scope.GetFlagName)).GetValue]"
+							wheelstep = 0
+							value = "[CMMNumericSettingValue(Scope.GetFlagName)]"
 							enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
 
-							action_tooltip = {
-								click_mode = single
-								click_type = left
-								click_modifier = default
-								title = "CMM_NUMERIC_INCREASE"
-								on_action = "[CMMMarkNumericIncrease]"
-								on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+							track = {
+								EconomySlider_TrackRange = {}
 							}
 
-							action_tooltip = {
-								click_modifier = ctrl
-								click_mode = single
-								click_type = left
-								title = "CMM_NUMERIC_INCREASE_5X"
-								on_action = "[CMMMarkNumericIncrease5x]"
-								on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+							slider = {
+								EconomySlider_Slider = { size = { 20 20 } }
 							}
 
-							action_tooltip = {
-								click_modifier = shift
-								click_mode = single
-								click_type = left
-								title = "CMM_NUMERIC_INCREASE_MAX"
-								on_action = "[CMMMarkNumericIncreaseToMax]"
-								on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-							}
-
-							tooltipwidget = {
-								BasicFunctionalTooltip = {}
-							}
+							dec_button = { button = {} }
+							inc_button = { button = {} }
 						}
-					}
-				}
 
-				widget = {
-					position = { 20 0 }
-					size = { 310 20 }
-					allow_outside = yes
-					onmousehierarchyleave = "[CMMStopSliderDrag]"
+						hbox = {
+							size = { 100% 20 }
+							datamodel = "[DataModelRepeatedItem(CMMSliderVisualStepCount(Scope.GetFlagName))]"
+							datamodel_reuse_widgets = yes
 
-					hbox = {
-						size = { 100% 20 }
-						datamodel = "[DataModelRepeatedItem(CMMSliderVisualStepCount(Scope.GetFlagName))]"
-						datamodel_reuse_widgets = yes
+							item = {
+								widget = {
+									using = layoutpolicy_expanding
+									layoutstretchfactor_horizontal = 1
+									size = { 0 20 }
+									allow_outside = yes
+									onmousehierarchyenter = "[GetScriptedGui(Concatenate('CMM_SliderDragHover_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+									onmousehierarchyenter = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
 
-						item = {
-							widget = {
-								using = layoutpolicy_expanding
-								layoutstretchfactor_horizontal = 1
-								size = { 0 20 }
-								allow_outside = yes
-								onmousehierarchyenter = "[GetScriptedGui(Concatenate('CMM_SliderDragHover_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-								onmousehierarchyenter = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-
-								button = {
-									size = { 100% 20 }
-									alpha = 0
-									effectname = "NoHighlight"
-									enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
-									onpressed = "[CMMStartSliderDrag]"
-									onpressed = "[GetScriptedGui(Concatenate('CMM_MarkSliderSelection_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-									onpressed = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-									onreleased = "[CMMStopSliderDrag]"
-									tooltip_enabled = no
+									button = {
+										size = { 100% 20 }
+										alpha = 0
+										effectname = "NoHighlight"
+										enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
+										onpressed = "[CMMStartSliderDrag]"
+										onpressed = "[GetScriptedGui(Concatenate('CMM_MarkSliderSelection_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+										onpressed = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+										onreleased = "[CMMStopSliderDrag]"
+										tooltip_enabled = no
+									}
 								}
 							}
+						}
+					}
+
+					EconomySlider_IncButton = {
+						size = { 20 20 }
+						enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
+
+						action_tooltip = {
+							click_mode = single
+							click_type = left
+							click_modifier = default
+							title = "CMM_NUMERIC_INCREASE"
+							on_action = "[CMMMarkNumericIncrease]"
+							on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+						}
+
+						action_tooltip = {
+							click_modifier = ctrl
+							click_mode = single
+							click_type = left
+							title = "CMM_NUMERIC_INCREASE_5X"
+							on_action = "[CMMMarkNumericIncrease5x]"
+							on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+						}
+
+						action_tooltip = {
+							click_modifier = shift
+							click_mode = single
+							click_type = left
+							title = "CMM_NUMERIC_INCREASE_MAX"
+							on_action = "[CMMMarkNumericIncreaseToMax]"
+							on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+						}
+
+						tooltipwidget = {
+							BasicFunctionalTooltip = {}
 						}
 					}
 				}
