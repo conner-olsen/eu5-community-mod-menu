@@ -34,7 +34,27 @@
 					EconomySlider_DecButton = {
 						size = { 20 20 }
 						enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
-						tooltip = "CMM_NUMERIC_DECREASE"
+
+						action_tooltip = {
+							click_mode = single
+							click_type = left
+							click_modifier = default
+							title = "CMM_NUMERIC_DECREASE"
+						}
+
+						action_tooltip = {
+							click_mode = single
+							click_type = left
+							click_modifier = ctrl
+							title = "CMM_NUMERIC_DECREASE_5X"
+						}
+
+						action_tooltip = {
+							click_mode = single
+							click_type = left
+							click_modifier = shift
+							title = "CMM_NUMERIC_DECREASE_MIN"
+						}
 
 						click_modifiers = {
 							ondefault = "[CMMMarkNumericDecrease]"
@@ -113,7 +133,27 @@
 					EconomySlider_IncButton = {
 						size = { 20 20 }
 						enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
-						tooltip = "CMM_NUMERIC_INCREASE"
+
+						action_tooltip = {
+							click_mode = single
+							click_type = left
+							click_modifier = default
+							title = "CMM_NUMERIC_INCREASE"
+						}
+
+						action_tooltip = {
+							click_mode = single
+							click_type = left
+							click_modifier = ctrl
+							title = "CMM_NUMERIC_INCREASE_5X"
+						}
+
+						action_tooltip = {
+							click_mode = single
+							click_type = left
+							click_modifier = shift
+							title = "CMM_NUMERIC_INCREASE_MAX"
+						}
 
 						click_modifiers = {
 							ondefault = "[CMMMarkNumericIncrease]"
