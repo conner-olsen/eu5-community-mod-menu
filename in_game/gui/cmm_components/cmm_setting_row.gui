@@ -30,6 +30,14 @@
 			margin = { 8 6 }
 			spacing = 10
 
+			text_single = {
+				layoutpolicy_horizontal = expanding
+				tagtooltip_enabled = yes
+				tooltip = "[CMMSettingDesc(Scope.GetFlagName)]"
+				tooltipwidget = { BasicFunctionalTooltip = {} }
+				text = "[CMMSettingName(Scope.GetFlagName)]"
+			}
+
 			checkbox_square_alt = {
 				visible = "[CMMSettingIsBool(Scope.GetFlagName)]"
 				enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
@@ -61,14 +69,6 @@
 
 			cmm_numeric_setting = {
 				visible = "[CMMSettingIsNumeric(Scope.GetFlagName)]"
-			}
-
-			text_single = {
-				layoutpolicy_horizontal = expanding
-				tagtooltip_enabled = yes
-				tooltip = "[CMMSettingDesc(Scope.GetFlagName)]"
-				tooltipwidget = { BasicFunctionalTooltip = {} }
-				text = "[CMMSettingName(Scope.GetFlagName)]"
 			}
 		}
 	}
