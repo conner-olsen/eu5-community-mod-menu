@@ -16,8 +16,24 @@
 		spacing = 10
 
 		window_header_alt = {
-			blockoverride "header_text" {
-				text = "CMM_WINDOW_TITLE"
+			blockoverride "header_text_object" {
+				hbox = {
+					visible = "[Not(CMMSelectedModExists)]"
+
+					header_title = {
+						text = "CMM_WINDOW_TITLE"
+					}
+				}
+
+				hbox = {
+					visible = "[CMMSelectedModExists]"
+
+					header_title = {
+						autoresize = yes
+						maximumsize = { 450 -1 }
+						text = "[CMMSelectedModName]"
+					}
+				}
 			}
 		}
 

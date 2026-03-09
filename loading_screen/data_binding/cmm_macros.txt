@@ -15,14 +15,6 @@ macro = {
 }
 
 # Args: none
-# Returns: string
-macro = {
-    description = "Registered-mod count label text"
-    definition = "CMMRegisteredModsLabel"
-    replace_with = "Concatenate(Localize('CMM_REGISTERED_MODS_LABEL'), ToString_int32(GetDataModelSize(Player.MakeScope.GetList('cmm_registered_mod_ids'))))"
-}
-
-# Args: none
 # Returns: boolean
 macro = {
     description = "True when selected mod variable-system key exists"
@@ -44,14 +36,6 @@ macro = {
     description = "Selected mod name localization"
     definition = "CMMSelectedModName"
     replace_with = "CMMVar(Concatenate(GetVariableSystem.Get('cmm_selected_mod'), '_name')).GetFlagName"
-}
-
-# Args: none
-# Returns: string
-macro = {
-    description = "Selected mod description localization"
-    definition = "CMMSelectedModDesc"
-    replace_with = "CMMVar(Concatenate(GetVariableSystem.Get('cmm_selected_mod'), '_desc')).GetFlagName"
 }
 
 # Args: TabKey (string)

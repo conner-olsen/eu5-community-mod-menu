@@ -2,7 +2,7 @@
 {
 	# Left mod-list pane with search input and mod rows.
 	# Reads:
-	# - Player.MakeScope.GetList('cmm_registered_mod_ids') [list<flag>]: registered mod ids for row datamodel and count label.
+	# - Player.MakeScope.GetList('cmm_registered_mod_ids') [list<flag>]: registered mod ids for row datamodel.
 	# - GetVariableSystem.Get('cmm_mod_search_text') [string]: current search text used by row filtering.
 	# - GetVariableSystem.Get('cmm_selected_mod') [string]: currently selected mod key for row state.
 	# Writes:
@@ -17,21 +17,6 @@
 		using = bg_main_inner_alt
 		spacing = 10
 		margin = { 12 12 }
-
-		text_single = {
-			text = "CMM_MOD_LIST_TITLE"
-			using = Font_Type_Headers
-		}
-
-		text_multi = {
-			text = "CMM_MOD_LIST_PLACEHOLDER"
-			autoresize = yes
-			max_width = 300
-		}
-
-		text_single = {
-			text = "[CMMRegisteredModsLabel]"
-		}
 
 		editbox_single = {
 			name = "cmm_mod_search_editbox"

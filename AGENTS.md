@@ -283,7 +283,6 @@ cmm_register_text_setting = {
 Derived localization keys:
 
 - Mod name: `<mod_id>_name`
-- Mod description: `<mod_id>_desc`
 - Tab label: `<mod_id>_<tab_id>_name`
 - Setting name: `<mod_id>_<setting_id>_name`
 - Setting description: `<mod_id>_<setting_id>_desc`

@@ -254,7 +254,6 @@ Notes:
 Localization keys are derived automatically from ids:
 
 - Mod title: `<mod_id>_name`
-- Mod description: `<mod_id>_desc`
 - Tab label: `<mod_id>_<tab_id>_name`
 - Setting label: `<mod_id>_<setting_id>_name`
 - Setting description: `<mod_id>_<setting_id>_desc`
@@ -408,7 +407,6 @@ CMM writes these country-scope variables/lists:
 - `cmm_registered_setting_keys` (variable list of `<mod_id>__<setting_id>`)
 - `cmm_tab_setting_count_<mod_id>__<tab_id>` (count of settings in that tab)
 - `<mod_id>_name` (flag value)
-- `<mod_id>_desc` (flag value)
 - `cmm_tab_owner_mod_id_<mod_id>__<tab_id>` (flag value)
 - `<mod_id>__<tab_id>_name` (flag value)
 - `cmm_setting_owner_mod_id_<mod_id>__<setting_id>` (flag value)
@@ -547,7 +545,6 @@ Define your keys in your own localization file:
 
 ```txt
 your_mod_name: "Your Mod Name"
-your_mod_desc: "One-line description"
 your_mod_general_name: "General"
 your_mod_allow_feature_name: "Allow Feature"
 your_mod_allow_feature_desc: "Enables the feature when checked."

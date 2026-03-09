@@ -106,7 +106,7 @@ Global variants also exist for bool, button, numeric, slider, and dropdown setti
 
 Localization key format is enforced by ids:
 
-- Mod: `<mod_id>_name`, `<mod_id>_desc`
+- Mod: `<mod_id>_name`
 - Tab: `<mod_id>_<tab_id>_name`
 - Setting: `<mod_id>_<setting_id>_name`, `<mod_id>_<setting_id>_desc`
 - Dropdown option: `<mod_id>__<setting_id>_option_<index>_name`

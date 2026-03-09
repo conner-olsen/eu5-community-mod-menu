@@ -4,7 +4,7 @@
 	# Reads:
 	# - Player.MakeScope.GetList('cmm_registered_tab_keys') [list<flag>]: registered tab keys for tab rendering.
 	# - Player.MakeScope.GetList('cmm_registered_setting_keys') [list<flag>]: registered setting keys for setting rows.
-	# - GetVariableSystem.Get('cmm_selected_mod') [string]: active mod id for selected-mod UI state.
+	# - GetVariableSystem.Get('cmm_selected_mod') [string]: active mod id for tab and row filtering.
 	# - GetVariableSystem.Get('cmm_selected_tab') [string]: active tab key for tab and row filtering.
 	# Writes:
 	# - GetVariableSystem.Set('cmm_selected_tab') [string]: changes selected tab from tab clicks.
@@ -14,11 +14,6 @@
 		using = bg_main_inner_alt
 		spacing = 10
 		margin = { 12 12 }
-
-		text_single = {
-			text = "CMM_SETTINGS_TITLE"
-			using = Font_Type_Headers
-		}
 
 		text_multi = {
 			visible = "[CMMNoModsRegistered]"
@@ -32,19 +27,6 @@
 			layoutpolicy_horizontal = expanding
 			layoutpolicy_vertical = expanding
 			spacing = 10
-
-			text_single = {
-				visible = "[CMMSelectedModExists]"
-				text = "[CMMSelectedModName]"
-				using = Font_Type_Header_Medium
-			}
-
-			text_multi = {
-				visible = "[CMMSelectedModExists]"
-				text = "[CMMSelectedModDesc]"
-				autoresize = yes
-				max_width = 680
-			}
 
 			cmm_mod_tabs = {}
 
