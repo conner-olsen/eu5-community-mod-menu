@@ -7,6 +7,7 @@
 	# - GetVariableSystem.Get('cmm_selected_tab') [string]: active tab key for row visibility filtering.
 	# - GetGlobalVariable(Scope.GetFlagName).GetValue [value]: current setting value for global settings.
 	# - Player.MakeScope.GetVariable(Scope.GetFlagName) [value]: current setting value for local settings.
+	# - Player.MakeScope.GetVariable(Concatenate(Scope.GetFlagName, '_desc')) [flag]: localized setting description used by hover tooltips.
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_min_', Scope.GetFlagName)) [value]: numeric minimum bound.
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_max_', Scope.GetFlagName)) [value]: numeric maximum bound.
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_text_character_limit_', Scope.GetFlagName)) [value]: text character limit.
@@ -42,7 +43,9 @@
 				enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
 				text = "[CMMSettingName(Scope.GetFlagName)]"
 				onclick = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-				tooltip_enabled = no
+				tagtooltip_enabled = yes
+				tooltip = "[CMMSettingDesc(Scope.GetFlagName)]"
+				tooltipwidget = { BasicFunctionalTooltip = {} }
 			}
 
 			cmm_dropdown_setting = {
@@ -61,19 +64,13 @@
 				visible = "[CMMSettingIsNumeric(Scope.GetFlagName)]"
 			}
 
-			vbox = {
+			text_single = {
+				visible = "[Not(CMMSettingIsButton(Scope.GetFlagName))]"
 				layoutpolicy_horizontal = expanding
-				spacing = 2
-
-				text_single = {
-					text = "[CMMSettingName(Scope.GetFlagName)]"
-				}
-
-				text_multi = {
-					text = "[CMMSettingDesc(Scope.GetFlagName)]"
-					autoresize = yes
-					max_width = 620
-				}
+				tagtooltip_enabled = yes
+				tooltip = "[CMMSettingDesc(Scope.GetFlagName)]"
+				tooltipwidget = { BasicFunctionalTooltip = {} }
+				text = "[CMMSettingName(Scope.GetFlagName)]"
 			}
 		}
 	}
