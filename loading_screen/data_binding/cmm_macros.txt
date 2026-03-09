@@ -158,6 +158,14 @@ macro = {
     replace_with = "CMMVar(Concatenate(SettingKey, '_desc')).GetFlagName"
 }
 
+# Args: SettingKey (string)
+# Returns: string
+macro = {
+    description = "Button setting button-text localization"
+    definition = "CMMButtonSettingText(SettingKey)"
+    replace_with = "CMMVar(Concatenate(SettingKey, '_button_text')).GetFlagName"
+}
+
 # Args: none
 # Returns: boolean
 macro = {

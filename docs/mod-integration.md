@@ -221,6 +221,7 @@ cmm_register_global_button_setting = {
 Notes:
 
 - Button settings are stateless. CMM does not create or mutate `<mod_id>__<setting_id>` for them.
+- Button rows use `<mod_id>_<setting_id>_name` for the setting label and `<mod_id>_<setting_id>_button_text` for the clickable button caption.
 - `cmm_register_global_button_setting` only marks the button as host-editable in multiplayer. It does not create stored value state.
 
 ### 8) Register text settings
@@ -257,6 +258,7 @@ Localization keys are derived automatically from ids:
 - Tab label: `<mod_id>_<tab_id>_name`
 - Setting label: `<mod_id>_<setting_id>_name`
 - Setting description: `<mod_id>_<setting_id>_desc`
+- Button setting text: `<mod_id>_<setting_id>_button_text`
 - Dropdown options: `<mod_id>__<setting_id>_option_<index>_name`
 
 ## Callback Contract
@@ -427,6 +429,7 @@ CMM writes these country-scope variables/lists:
 - `cmm_setting_text_quote_<mod_id>__<setting_id>` (text only)
 - `<mod_id>__<setting_id>_name` (flag value)
 - `<mod_id>__<setting_id>_desc` (flag value)
+- `<mod_id>__<setting_id>_button_text` (flag value; button only)
 - local `<mod_id>__<setting_id>` (country-scope value for local bool, numeric, slider, and dropdown settings)
 - global `<mod_id>__<setting_id>` (global-scope value for global bool, numeric, slider, and dropdown settings; read directly by CMM UI)
 
@@ -549,6 +552,7 @@ your_mod_general_name: "General"
 your_mod_allow_feature_name: "Allow Feature"
 your_mod_allow_feature_desc: "Enables the feature when checked."
 your_mod_run_feature_name: "Run Feature"
+your_mod_run_feature_button_text: "Run"
 your_mod_run_feature_desc: "Runs the feature when pressed."
 your_mod_amount_name: "Amount"
 your_mod_amount_desc: "Numeric amount controlled in CMM."

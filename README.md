@@ -109,6 +109,7 @@ Localization key format is enforced by ids:
 - Mod: `<mod_id>_name`
 - Tab: `<mod_id>_<tab_id>_name`
 - Setting: `<mod_id>_<setting_id>_name`, `<mod_id>_<setting_id>_desc`
+- Button setting text: `<mod_id>_<setting_id>_button_text`
 - Dropdown option: `<mod_id>__<setting_id>_option_<index>_name`
 
 Callback contract:

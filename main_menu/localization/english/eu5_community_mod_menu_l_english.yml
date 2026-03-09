@@ -30,6 +30,7 @@
  cmm_core_example_toggle_name: "Toggle"
  cmm_core_example_toggle_desc: "Example toggle setting."
  cmm_core_example_button_name: "Action Button"
+ cmm_core_example_button_button_text: "Run"
  cmm_core_example_button_desc: "Example action button."
  cmm_core_global_example_toggle_name: "Global Toggle"
  cmm_core_global_example_toggle_desc: "Example global toggle setting. In multiplayer, only the host can change this setting."

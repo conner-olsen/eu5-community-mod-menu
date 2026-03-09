@@ -286,6 +286,7 @@ Derived localization keys:
 - Tab label: `<mod_id>_<tab_id>_name`
 - Setting name: `<mod_id>_<setting_id>_name`
 - Setting description: `<mod_id>_<setting_id>_desc`
+- Button setting text: `<mod_id>_<setting_id>_button_text`
 - Dropdown option label: `<mod_id>__<setting_id>_option_<index>_name`
 
 Required scripted GUI callbacks per bool setting:
