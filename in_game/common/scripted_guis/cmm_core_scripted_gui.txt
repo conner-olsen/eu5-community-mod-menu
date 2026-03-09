@@ -1,53 +1,107 @@
-﻿# Mark the next numeric interaction as one-step decrease.
+﻿# Queue a one-step numeric decrease.
 # Scope: country
 # Args: none
 CMM_MarkNumericDecrease = {
     effect = {
-        set_variable = { name = cmm_numeric_change_to_apply value = -1 }
+        if = {
+            limit = { has_variable = cmm_numeric_step_delta_to_apply }
+            change_variable = { name = cmm_numeric_step_delta_to_apply add = -1 }
+        }
+        else = {
+            set_variable = { name = cmm_numeric_step_delta_to_apply value = -1 }
+        }
+
+        if = {
+            limit = { has_variable = cmm_numeric_change_to_apply }
+            remove_variable = cmm_numeric_change_to_apply
+        }
     }
 }
 
-# Mark the next numeric interaction as five-step decrease.
+# Queue a five-step numeric decrease.
 # Scope: country
 # Args: none
 CMM_MarkNumericDecrease5x = {
     effect = {
-        set_variable = { name = cmm_numeric_change_to_apply value = -2 }
+        if = {
+            limit = { has_variable = cmm_numeric_step_delta_to_apply }
+            change_variable = { name = cmm_numeric_step_delta_to_apply add = -5 }
+        }
+        else = {
+            set_variable = { name = cmm_numeric_step_delta_to_apply value = -5 }
+        }
+
+        if = {
+            limit = { has_variable = cmm_numeric_change_to_apply }
+            remove_variable = cmm_numeric_change_to_apply
+        }
     }
 }
 
-# Mark the next numeric interaction as jump-to-min.
+# Queue a jump-to-min numeric change.
 # Scope: country
 # Args: none
 CMM_MarkNumericDecreaseToMin = {
     effect = {
         set_variable = { name = cmm_numeric_change_to_apply value = -3 }
+
+        if = {
+            limit = { has_variable = cmm_numeric_step_delta_to_apply }
+            remove_variable = cmm_numeric_step_delta_to_apply
+        }
     }
 }
 
-# Mark the next numeric interaction as one-step increase.
+# Queue a one-step numeric increase.
 # Scope: country
 # Args: none
 CMM_MarkNumericIncrease = {
     effect = {
-        set_variable = { name = cmm_numeric_change_to_apply value = 1 }
+        if = {
+            limit = { has_variable = cmm_numeric_step_delta_to_apply }
+            change_variable = { name = cmm_numeric_step_delta_to_apply add = 1 }
+        }
+        else = {
+            set_variable = { name = cmm_numeric_step_delta_to_apply value = 1 }
+        }
+
+        if = {
+            limit = { has_variable = cmm_numeric_change_to_apply }
+            remove_variable = cmm_numeric_change_to_apply
+        }
     }
 }
 
-# Mark the next numeric interaction as five-step increase.
+# Queue a five-step numeric increase.
 # Scope: country
 # Args: none
 CMM_MarkNumericIncrease5x = {
     effect = {
-        set_variable = { name = cmm_numeric_change_to_apply value = 2 }
+        if = {
+            limit = { has_variable = cmm_numeric_step_delta_to_apply }
+            change_variable = { name = cmm_numeric_step_delta_to_apply add = 5 }
+        }
+        else = {
+            set_variable = { name = cmm_numeric_step_delta_to_apply value = 5 }
+        }
+
+        if = {
+            limit = { has_variable = cmm_numeric_change_to_apply }
+            remove_variable = cmm_numeric_change_to_apply
+        }
     }
 }
 
-# Mark the next numeric interaction as jump-to-max.
+# Queue a jump-to-max numeric change.
 # Scope: country
 # Args: none
 CMM_MarkNumericIncreaseToMax = {
     effect = {
         set_variable = { name = cmm_numeric_change_to_apply value = 3 }
+
+        if = {
+            limit = { has_variable = cmm_numeric_step_delta_to_apply }
+            remove_variable = cmm_numeric_step_delta_to_apply
+        }
     }
 }

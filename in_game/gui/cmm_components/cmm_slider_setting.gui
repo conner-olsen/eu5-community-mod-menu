@@ -11,7 +11,8 @@
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_slider_visual_step_count_', Scope.GetFlagName)) [value]: number of clickable visual slider slots.
 	# - PdxGuiWidget.GetIndexInDataModel [int32]: current visual slot index inside the repeated track datamodel.
 	# Writes:
-	# - cmm_numeric_change_to_apply [value]: pending slider +/- delta mode for `cmm_apply_slider_change`.
+	# - cmm_numeric_step_delta_to_apply [value]: pending accumulated slider +/- step delta for `cmm_apply_slider_change`.
+	# - cmm_numeric_change_to_apply [value]: pending slider min/max jump mode for `cmm_apply_slider_change`.
 	# - cmm_slider_index_to_apply [value]: pending visual slot index for `cmm_apply_slider_change`.
 	# - <mod_id>__<setting_id> callbacks [effect]: applies slider changes via `_on_changed`.
 	type cmm_slider_setting = widget {
@@ -33,32 +34,15 @@
 					EconomySlider_DecButton = {
 						size = { 20 20 }
 						enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
+						tooltip = "CMM_NUMERIC_DECREASE"
 
-						action_tooltip = {
-							click_mode = single
-							click_type = left
-							click_modifier = default
-							title = "CMM_NUMERIC_DECREASE"
-							on_action = "[CMMMarkNumericDecrease]"
-							on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-						}
-
-						action_tooltip = {
-							click_modifier = ctrl
-							click_mode = single
-							click_type = left
-							title = "CMM_NUMERIC_DECREASE_5X"
-							on_action = "[CMMMarkNumericDecrease5x]"
-							on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-						}
-
-						action_tooltip = {
-							click_modifier = shift
-							click_mode = single
-							click_type = left
-							title = "CMM_NUMERIC_DECREASE_MIN"
-							on_action = "[CMMMarkNumericDecreaseToMin]"
-							on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+						click_modifiers = {
+							ondefault = "[CMMMarkNumericDecrease]"
+							ondefault = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+							onctrl = "[CMMMarkNumericDecrease5x]"
+							onctrl = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+							onshift = "[CMMMarkNumericDecreaseToMin]"
+							onshift = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
 						}
 
 						tooltipwidget = {
@@ -129,32 +113,15 @@
 					EconomySlider_IncButton = {
 						size = { 20 20 }
 						enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
+						tooltip = "CMM_NUMERIC_INCREASE"
 
-						action_tooltip = {
-							click_mode = single
-							click_type = left
-							click_modifier = default
-							title = "CMM_NUMERIC_INCREASE"
-							on_action = "[CMMMarkNumericIncrease]"
-							on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-						}
-
-						action_tooltip = {
-							click_modifier = ctrl
-							click_mode = single
-							click_type = left
-							title = "CMM_NUMERIC_INCREASE_5X"
-							on_action = "[CMMMarkNumericIncrease5x]"
-							on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-						}
-
-						action_tooltip = {
-							click_modifier = shift
-							click_mode = single
-							click_type = left
-							title = "CMM_NUMERIC_INCREASE_MAX"
-							on_action = "[CMMMarkNumericIncreaseToMax]"
-							on_action = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+						click_modifiers = {
+							ondefault = "[CMMMarkNumericIncrease]"
+							ondefault = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+							onctrl = "[CMMMarkNumericIncrease5x]"
+							onctrl = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+							onshift = "[CMMMarkNumericIncreaseToMax]"
+							onshift = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
 						}
 
 						tooltipwidget = {

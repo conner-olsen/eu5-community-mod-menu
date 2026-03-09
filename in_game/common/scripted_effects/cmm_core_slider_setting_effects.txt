@@ -274,7 +274,7 @@ cmm_set_slider_setting_from_visual_index = {
 	remove_variable = cmm_tmp_slider_value
 }
 
-# Apply the pending slider track selection or numeric step marker to a slider setting.
+# Apply the pending slider track selection or queued slider button step change.
 # Scope: country
 # Args:
 # - setting (key): Composite setting key `<mod_id>__<setting_id>`.
@@ -287,6 +287,11 @@ cmm_apply_slider_change = {
 		}
 
 		remove_variable = cmm_slider_index_to_apply
+
+		if = {
+			limit = { has_variable = cmm_numeric_step_delta_to_apply }
+			remove_variable = cmm_numeric_step_delta_to_apply
+		}
 
 		if = {
 			limit = { has_variable = cmm_numeric_change_to_apply }

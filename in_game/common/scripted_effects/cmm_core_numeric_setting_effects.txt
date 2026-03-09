@@ -218,12 +218,69 @@ cmm_set_numeric_setting_min = {
 	}
 }
 
-# Apply the pending numeric change marker to a setting and clear the marker.
+# Apply the queued numeric step delta to a setting and clear the queue.
+# Scope: country
+# Args:
+# - setting (key): Composite setting key `<mod_id>__<setting_id>`.
+cmm_apply_numeric_step_delta = {
+	if = {
+		limit = { var:cmm_setting_is_global_$setting$ = 1 }
+		set_variable = { name = cmm_tmp_numeric_value value = global_var:$setting$ }
+		set_variable = { name = cmm_tmp_numeric_delta value = var:cmm_setting_step_$setting$ }
+		change_variable = { name = cmm_tmp_numeric_delta multiply = var:cmm_numeric_step_delta_to_apply }
+		change_variable = { name = cmm_tmp_numeric_value add = var:cmm_tmp_numeric_delta }
+
+		if = {
+			limit = { var:cmm_tmp_numeric_value > var:cmm_setting_max_$setting$ }
+			set_variable = { name = cmm_tmp_numeric_value value = var:cmm_setting_max_$setting$ }
+		}
+
+		if = {
+			limit = { var:cmm_tmp_numeric_value < var:cmm_setting_min_$setting$ }
+			set_variable = { name = cmm_tmp_numeric_value value = var:cmm_setting_min_$setting$ }
+		}
+
+		set_global_variable = { name = $setting$ value = var:cmm_tmp_numeric_value }
+		remove_variable = cmm_tmp_numeric_value
+		remove_variable = cmm_tmp_numeric_delta
+	}
+	else = {
+		set_variable = { name = cmm_tmp_numeric_value value = var:$setting$ }
+		set_variable = { name = cmm_tmp_numeric_delta value = var:cmm_setting_step_$setting$ }
+		change_variable = { name = cmm_tmp_numeric_delta multiply = var:cmm_numeric_step_delta_to_apply }
+		change_variable = { name = cmm_tmp_numeric_value add = var:cmm_tmp_numeric_delta }
+
+		if = {
+			limit = { var:cmm_tmp_numeric_value > var:cmm_setting_max_$setting$ }
+			set_variable = { name = cmm_tmp_numeric_value value = var:cmm_setting_max_$setting$ }
+		}
+
+		if = {
+			limit = { var:cmm_tmp_numeric_value < var:cmm_setting_min_$setting$ }
+			set_variable = { name = cmm_tmp_numeric_value value = var:cmm_setting_min_$setting$ }
+		}
+
+		set_variable = { name = $setting$ value = var:cmm_tmp_numeric_value }
+		remove_variable = cmm_tmp_numeric_value
+		remove_variable = cmm_tmp_numeric_delta
+	}
+
+	remove_variable = cmm_numeric_step_delta_to_apply
+}
+
+# Apply the pending numeric step queue or jump marker to a setting and clear it.
 # Scope: country
 # Args:
 # - setting (key): Composite setting key `<mod_id>__<setting_id>`.
 cmm_apply_numeric_change = {
 	if = {
+		limit = { has_variable = cmm_numeric_step_delta_to_apply }
+
+		cmm_apply_numeric_step_delta = {
+			setting = $setting$
+		}
+	}
+	else_if = {
 		limit = { has_variable = cmm_numeric_change_to_apply }
 
 		switch = {
