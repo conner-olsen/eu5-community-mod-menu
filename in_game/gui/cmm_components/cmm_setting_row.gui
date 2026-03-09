@@ -27,8 +27,8 @@
 
 		hbox = {
 			layoutpolicy_horizontal = expanding
-			margin = { 8 6 }
-			spacing = 10
+			margin = { 12 6 }
+			spacing = 12
 
 			text_single = {
 				layoutpolicy_horizontal = expanding
@@ -38,37 +38,44 @@
 				text = "[CMMSettingName(Scope.GetFlagName)]"
 			}
 
-			checkbox_square_alt = {
-				visible = "[CMMSettingIsBool(Scope.GetFlagName)]"
-				enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
-				onclick = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-				checked = "[CMMIsSettingEnabled(Scope.GetFlagName)]"
-				tooltip_enabled = no
-			}
+			hbox = {
+				minimumsize = { 280 0 }
+				ignoreinvisible = yes
 
-			button_regular = {
-				visible = "[CMMSettingIsButton(Scope.GetFlagName)]"
-				minimumsize = { 168 32 }
-				enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
-				text = "[CMMButtonSettingText(Scope.GetFlagName)]"
-				onclick = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-				tooltip_enabled = no
-			}
+				checkbox_square_alt = {
+					visible = "[CMMSettingIsBool(Scope.GetFlagName)]"
+					enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
+					onclick = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+					checked = "[CMMIsSettingEnabled(Scope.GetFlagName)]"
+					tooltip_enabled = no
+				}
 
-			cmm_dropdown_setting = {
-				visible = "[CMMSettingIsDropdown(Scope.GetFlagName)]"
-			}
+				button_regular = {
+					visible = "[CMMSettingIsButton(Scope.GetFlagName)]"
+					minimumsize = { 168 32 }
+					enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
+					text = "[CMMButtonSettingText(Scope.GetFlagName)]"
+					onclick = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+					tooltip_enabled = no
+				}
 
-			cmm_text_setting = {
-				visible = "[CMMSettingIsText(Scope.GetFlagName)]"
-			}
+				cmm_dropdown_setting = {
+					visible = "[CMMSettingIsDropdown(Scope.GetFlagName)]"
+				}
 
-			cmm_slider_setting = {
-				visible = "[CMMSettingIsSlider(Scope.GetFlagName)]"
-			}
+				cmm_text_setting = {
+					visible = "[CMMSettingIsText(Scope.GetFlagName)]"
+				}
 
-			cmm_numeric_setting = {
-				visible = "[CMMSettingIsNumeric(Scope.GetFlagName)]"
+				cmm_slider_setting = {
+					visible = "[CMMSettingIsSlider(Scope.GetFlagName)]"
+				}
+
+				cmm_numeric_setting = {
+					visible = "[CMMSettingIsNumeric(Scope.GetFlagName)]"
+				}
+
+				expand = {}
 			}
 		}
 	}
