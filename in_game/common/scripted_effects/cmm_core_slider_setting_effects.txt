@@ -61,6 +61,7 @@ cmm_quantize_slider_setting = {
 # - mod_id (key): Owner mod id.
 # - setting_id (key): Setting id unique within mod.
 # - tab_id (key): Owner tab id within mod.
+# - group_id (key): Owner group id within mod.
 # - default_value (number): Initial value; applied when the setting does not exist yet.
 # - min_value (number): Lower clamp bound.
 # - max_value (number): Upper clamp bound.
@@ -103,6 +104,7 @@ cmm_register_slider_setting = {
 		mod_id = $mod_id$
 		setting_id = $setting_id$
 		tab_id = $tab_id$
+		group_id = $group_id$
 	}
 
 	if = {
@@ -149,6 +151,7 @@ cmm_register_slider_setting = {
 # - mod_id (key): Owner mod id.
 # - setting_id (key): Setting id unique within mod.
 # - tab_id (key): Owner tab id within mod.
+# - group_id (key): Owner group id within mod.
 # - default_value (number): Initial global value when missing.
 # - min_value (number): Lower clamp bound.
 # - max_value (number): Upper clamp bound.
@@ -191,6 +194,7 @@ cmm_register_global_slider_setting = {
 		mod_id = $mod_id$
 		setting_id = $setting_id$
 		tab_id = $tab_id$
+		group_id = $group_id$
 	}
 
 	if = {

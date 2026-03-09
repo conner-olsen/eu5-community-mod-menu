@@ -4,6 +4,7 @@
 # - mod_id (key): Owner mod id.
 # - setting_id (key): Setting id unique within mod.
 # - tab_id (key): Owner tab id within mod.
+# - group_id (key): Owner group id within mod.
 # - default_index (number): Initial selected option index.
 # - option_count (number): Number of options (`>= 1`; indexed `0..option_count-1`).
 cmm_register_dropdown_setting = {
@@ -18,6 +19,7 @@ cmm_register_dropdown_setting = {
 		mod_id = $mod_id$
 		setting_id = $setting_id$
 		tab_id = $tab_id$
+		group_id = $group_id$
 	}
 
 	if = {
@@ -55,6 +57,7 @@ cmm_register_dropdown_setting = {
 # - mod_id (key): Owner mod id.
 # - setting_id (key): Setting id unique within mod.
 # - tab_id (key): Owner tab id within mod.
+# - group_id (key): Owner group id within mod.
 # - default_index (number): Initial global selected index.
 # - option_count (number): Number of options (`>= 1`; indexed `0..option_count-1`).
 cmm_register_global_dropdown_setting = {
@@ -69,6 +72,7 @@ cmm_register_global_dropdown_setting = {
 		mod_id = $mod_id$
 		setting_id = $setting_id$
 		tab_id = $tab_id$
+		group_id = $group_id$
 	}
 
 	if = {

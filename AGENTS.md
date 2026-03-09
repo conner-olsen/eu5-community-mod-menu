@@ -1,6 +1,6 @@
 ﻿# AGENTS.md
 
-Last updated: 2026-03-08
+Last updated: 2026-03-09
 
 ## Critical Context
 
@@ -46,6 +46,8 @@ Implemented:
 22. Global setting registration is implemented via `cmm_register_global_bool_setting`, `cmm_register_global_button_setting`, `cmm_register_global_numeric_setting`, `cmm_register_global_slider_setting`, and `cmm_register_global_dropdown_setting`.
 23. Global stateful settings are host-editable in multiplayer and read directly from global variables in UI; global button settings are host-editable in multiplayer without creating stored value state.
 24. List ordering is registration-first; earlier registration/load order remains earlier in rendered mod, tab, and setting lists.
+25. Dynamic group registration is working via `cmm_register_group` (also called implicitly by setting registration APIs). Settings are visually grouped within tabs using group header bars and shared background containers.
+26. Right-panel tabs use `header_main_tabs` + `button_main_tab_alt` sitting outside the `bg_main_inner_alt` content area, matching the vanilla settings screen tab blending style.
 
 Status:
 
@@ -114,6 +116,7 @@ Additional rules:
 - `in_game/common/scripted_guis/cmm_core_scripted_gui.txt`
 - `in_game/common/scripted_guis/cmm_settings_scripted_gui.txt`
 - `in_game/common/on_action/cmm_on_action.txt`
+- `in_game/gui/panes/cmm_settings_pane.gui`
 - `loading_screen/data_binding/cmm_macros.txt`
 - `docs/mod-integration.md`
 - `README.md`
@@ -189,10 +192,17 @@ cmm_register_tab = {
     tab_id = <required>
 }
 
+cmm_register_group = {
+    mod_id = <required>
+    tab_id = <required>
+    group_id = <required>
+}
+
 cmm_register_bool_setting = {
     mod_id = <required>
     setting_id = <required>
     tab_id = <required>
+    group_id = <required>
     default_value = <required, 0|1>
 }
 
@@ -200,6 +210,7 @@ cmm_register_global_bool_setting = {
     mod_id = <required>
     setting_id = <required>
     tab_id = <required>
+    group_id = <required>
     default_value = <required, 0|1>
 }
 
@@ -207,18 +218,21 @@ cmm_register_button_setting = {
     mod_id = <required>
     setting_id = <required>
     tab_id = <required>
+    group_id = <required>
 }
 
 cmm_register_global_button_setting = {
     mod_id = <required>
     setting_id = <required>
     tab_id = <required>
+    group_id = <required>
 }
 
 cmm_register_numeric_setting = {
     mod_id = <required>
     setting_id = <required>
     tab_id = <required>
+    group_id = <required>
     default_value = <required, number>
     min_value = <required, number>
     max_value = <required, number>
@@ -229,6 +243,7 @@ cmm_register_global_numeric_setting = {
     mod_id = <required>
     setting_id = <required>
     tab_id = <required>
+    group_id = <required>
     default_value = <required, number>
     min_value = <required, number>
     max_value = <required, number>
@@ -239,6 +254,7 @@ cmm_register_slider_setting = {
     mod_id = <required>
     setting_id = <required>
     tab_id = <required>
+    group_id = <required>
     default_value = <required, number>
     min_value = <required, number>
     max_value = <required, number>
@@ -249,6 +265,7 @@ cmm_register_global_slider_setting = {
     mod_id = <required>
     setting_id = <required>
     tab_id = <required>
+    group_id = <required>
     default_value = <required, number>
     min_value = <required, number>
     max_value = <required, number>
@@ -259,6 +276,7 @@ cmm_register_dropdown_setting = {
     mod_id = <required>
     setting_id = <required>
     tab_id = <required>
+    group_id = <required>
     default_index = <required, number>
     option_count = <required, number >= 1>
 }
@@ -267,6 +285,7 @@ cmm_register_global_dropdown_setting = {
     mod_id = <required>
     setting_id = <required>
     tab_id = <required>
+    group_id = <required>
     default_index = <required, number>
     option_count = <required, number >= 1>
 }
@@ -275,6 +294,7 @@ cmm_register_text_setting = {
     mod_id = <required>
     setting_id = <required>
     tab_id = <required>
+    group_id = <required>
     character_limit = <required, number >= 1>
     quote_text = <required, 0|1>
 }
@@ -284,6 +304,7 @@ Derived localization keys:
 
 - Mod name: `<mod_id>_name`
 - Tab label: `<mod_id>_<tab_id>_name`
+- Group label: `<mod_id>_<group_id>_name`
 - Setting name: `<mod_id>_<setting_id>_name`
 - Setting description: `<mod_id>_<setting_id>_desc`
 - Button setting text: `<mod_id>_<setting_id>_button_text`
@@ -400,6 +421,7 @@ Behavior:
 5. Settings rows are visible only when:
    - owner mod matches selected mod,
    - owner tab matches selected tab,
+   - owner group matches the group container rendering the row,
    - optional per-setting scripted GUI `is_shown` evaluates true.
 6. Empty-state text for settings is tab-scoped (no settings in selected tab).
 
@@ -414,6 +436,23 @@ Reference focus for this milestone:
 
 - `docs/reference-index.md` -> Cheat Menu Pro section (`sakuya_test.gui`, `sakuya_location.gui`) for tab and slider-like control patterns.
 - `docs/reference-index.md` -> Skiar's Cheats Menu section (`skiar_cheat_menu.gui`) for main+secondary tab composition and large numeric row patterns.
+
+## Groups (Implemented)
+
+Behavior:
+
+1. Groups are registered dynamically via `cmm_register_group` or implicitly when a setting registration API includes a `group_id`.
+2. Each group is scoped to a mod and a tab; groups appear only when their owning mod and tab are selected.
+3. Each group renders a header bar (`button_main_tab_texture` frame 4, yellow title text) and a `bg_secondary_section` container holding its settings.
+4. Settings within a group are iterated from per-group variable lists (`cmm_group_setting_keys_<mod_id>__<group_id>`).
+5. Group ordering follows registration order within `cmm_registered_group_keys`.
+
+Verification:
+
+1. A mod can register multiple groups under one tab and settings appear only in their registered group.
+2. Groups from different mods/tabs do not interfere.
+3. No hardcoded group slots/caps in GUI/effects.
+4. No parser/log errors from group metadata resolution.
 
 ## Acceptance Criteria (Release-Level)
 

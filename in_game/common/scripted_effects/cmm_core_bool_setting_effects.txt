@@ -4,6 +4,7 @@
 # - mod_id (key): Owner mod id.
 # - setting_id (key): Setting id unique within mod.
 # - tab_id (key): Owner tab id within mod.
+# - group_id (key): Owner group id within mod.
 # - default_value (1/0): Initial value; applied when the setting does not exist yet.
 cmm_register_bool_setting = {
 	set_variable = { name = cmm_setting_is_global_$mod_id$__$setting_id$ value = 0 }
@@ -14,6 +15,7 @@ cmm_register_bool_setting = {
 		mod_id = $mod_id$
 		setting_id = $setting_id$
 		tab_id = $tab_id$
+		group_id = $group_id$
 	}
 
 	if = {
@@ -39,6 +41,7 @@ cmm_register_bool_setting = {
 # - mod_id (key): Owner mod id.
 # - setting_id (key): Setting id unique within mod.
 # - tab_id (key): Owner tab id within mod.
+# - group_id (key): Owner group id within mod.
 # - default_value (1/0): Initial global value when missing.
 cmm_register_global_bool_setting = {
 	set_variable = { name = cmm_setting_is_global_$mod_id$__$setting_id$ value = 1 }
@@ -49,6 +52,7 @@ cmm_register_global_bool_setting = {
 		mod_id = $mod_id$
 		setting_id = $setting_id$
 		tab_id = $tab_id$
+		group_id = $group_id$
 	}
 
 	if = {

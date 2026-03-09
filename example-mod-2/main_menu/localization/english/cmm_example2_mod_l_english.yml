@@ -3,6 +3,7 @@
  cmm_example2_desc: "Second reference integration mod for Community Mod Menu."
  cmm_example2_toggles_name: "Toggles"
  cmm_example2_slider_dropdown_name: "Slider and Dropdown"
+ cmm_example2_controls_name: "Controls"
  cmm_example2_example_toggle_1_name: "Toggle 1"
  cmm_example2_example_toggle_1_desc: "Example toggle setting."
  cmm_example2_example_toggle_2_name: "Toggle 2"

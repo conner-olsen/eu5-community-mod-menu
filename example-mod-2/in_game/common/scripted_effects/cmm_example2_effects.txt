@@ -8,6 +8,7 @@ cmm_example2_register_mod = {
 		mod_id = cmm_example2
 		setting_id = example_toggle_1
 		tab_id = toggles
+		group_id = toggles
 		default_value = 0
 	}
 
@@ -15,6 +16,7 @@ cmm_example2_register_mod = {
 		mod_id = cmm_example2
 		setting_id = example_toggle_2
 		tab_id = toggles
+		group_id = toggles
 		default_value = 1
 	}
 
@@ -22,6 +24,7 @@ cmm_example2_register_mod = {
 		mod_id = cmm_example2
 		setting_id = example_slider
 		tab_id = slider_dropdown
+		group_id = controls
 		default_value = 70
 		min_value = 0
 		max_value = 100
@@ -32,6 +35,7 @@ cmm_example2_register_mod = {
 		mod_id = cmm_example2
 		setting_id = example_dropdown
 		tab_id = slider_dropdown
+		group_id = controls
 		default_index = 0
 		option_count = 3
 	}

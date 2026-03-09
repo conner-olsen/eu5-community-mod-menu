@@ -54,6 +54,38 @@ macro = {
     replace_with = "CMMVar(Concatenate(TabKey, '_name')).GetFlagName"
 }
 
+# Args: GroupKey (string)
+# Returns: string
+macro = {
+    description = "Read group owner mod id for a group key"
+    definition = "CMMGroupOwnerModId(GroupKey)"
+    replace_with = "CMMVar(Concatenate('cmm_group_owner_mod_id_', GroupKey)).GetFlagName"
+}
+
+# Args: GroupKey (string)
+# Returns: string
+macro = {
+    description = "Read group owner tab key for a group key"
+    definition = "CMMGroupOwnerTabKey(GroupKey)"
+    replace_with = "CMMVar(Concatenate('cmm_group_owner_tab_key_', GroupKey)).GetFlagName"
+}
+
+# Args: GroupKey (string)
+# Returns: string
+macro = {
+    description = "Group label localization"
+    definition = "CMMGroupName(GroupKey)"
+    replace_with = "CMMVar(Concatenate(GroupKey, '_name')).GetFlagName"
+}
+
+# Args: GroupKey (string)
+# Returns: boolean
+macro = {
+    description = "Visibility rule for one group row"
+    definition = "CMMGroupRowVisible(GroupKey)"
+    replace_with = "And(And(CMMSelectedModExists, GetVariableSystem.HasValue('cmm_selected_mod', CMMGroupOwnerModId(GroupKey))), And(CMMSelectedTabExists, GetVariableSystem.HasValue('cmm_selected_tab', CMMGroupOwnerTabKey(GroupKey))))"
+}
+
 # Args: SettingKey (string)
 # Returns: string
 macro = {

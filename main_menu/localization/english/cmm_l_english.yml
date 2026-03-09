@@ -27,6 +27,8 @@
  cmm_core_name: "Mod Menu"
  cmm_core_desc: "Shared settings hub for registered mods."
  cmm_core_general_name: "General"
+ cmm_core_toggles_name: "Toggles"
+ cmm_core_values_name: "Values"
  cmm_core_example_toggle_name: "Toggle"
  cmm_core_example_toggle_desc: "Example toggle setting."
  cmm_core_example_button_name: "Action Button"

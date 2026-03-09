@@ -43,13 +43,36 @@ Notes:
 - `cmm_register_bool_setting`, `cmm_register_button_setting`, `cmm_register_numeric_setting`, `cmm_register_slider_setting`, `cmm_register_dropdown_setting`, `cmm_register_text_setting`, and their supported `cmm_register_global_*` variants auto-register their tab.
 - Use explicit `cmm_register_tab` only when you need an empty tab with no settings yet.
 
-### 3) Register bool settings
+### 3) Register groups
+
+```txt
+cmm_register_group = {
+    mod_id = your_mod_id
+    tab_id = your_tab_id
+    group_id = your_group_id
+}
+```
+
+Arguments:
+
+- `mod_id`: owner mod id.
+- `tab_id`: owner tab id within your mod.
+- `group_id`: group id unique within your mod.
+
+Notes:
+
+- All setting registration APIs auto-register their group via `group_id`.
+- Use explicit `cmm_register_group` only when you need an empty group with no settings yet.
+- Groups provide visual structure within a tab: each group renders a header bar and a shared background container for its settings.
+
+### 4) Register bool settings
 
 ```txt
 cmm_register_bool_setting = {
     mod_id = your_mod_id
     setting_id = your_setting_id
     tab_id = your_tab_id
+    group_id = your_group_id
     default_value = 0 # 0 (off) or 1 (on)
 }
 ```
@@ -59,6 +82,7 @@ Arguments:
 - `mod_id`: owner mod id.
 - `setting_id`: stable id within your mod.
 - `tab_id`: owner tab id within your mod.
+- `group_id`: owner group id within your mod.
 - `default_value`: initial value for brand-new saves (`0` off, `1` on).
 
 Global-storage variant:
@@ -68,17 +92,19 @@ cmm_register_global_bool_setting = {
     mod_id = your_mod_id
     setting_id = your_setting_id
     tab_id = your_tab_id
+    group_id = your_group_id
     default_value = 0
 }
 ```
 
-### 4) Register numeric settings
+### 5) Register numeric settings
 
 ```txt
 cmm_register_numeric_setting = {
     mod_id = your_mod_id
     setting_id = your_setting_id
     tab_id = your_tab_id
+    group_id = your_group_id
     default_value = 10
     min_value = 0
     max_value = 100
@@ -91,6 +117,7 @@ Arguments:
 - `mod_id`: owner mod id.
 - `setting_id`: stable id within your mod.
 - `tab_id`: owner tab id within your mod.
+- `group_id`: owner group id within your mod.
 - `default_value`: initial value for brand-new saves.
 - `min_value`: minimum allowed value.
 - `max_value`: maximum allowed value.
@@ -107,6 +134,7 @@ cmm_register_global_numeric_setting = {
     mod_id = your_mod_id
     setting_id = your_setting_id
     tab_id = your_tab_id
+    group_id = your_group_id
     default_value = 10
     min_value = 0
     max_value = 100
@@ -114,13 +142,14 @@ cmm_register_global_numeric_setting = {
 }
 ```
 
-### 5) Register slider settings
+### 6) Register slider settings
 
 ```txt
 cmm_register_slider_setting = {
     mod_id = your_mod_id
     setting_id = your_setting_id
     tab_id = your_tab_id
+    group_id = your_group_id
     default_value = 50
     min_value = 0
     max_value = 100
@@ -133,6 +162,7 @@ Arguments:
 - `mod_id`: owner mod id.
 - `setting_id`: stable id within your mod.
 - `tab_id`: owner tab id within your mod.
+- `group_id`: owner group id within your mod.
 - `default_value`: initial value for brand-new saves. CMM quantizes slider values to the nearest configured step.
 - `min_value`: minimum allowed value.
 - `max_value`: maximum allowed value.
@@ -150,6 +180,7 @@ cmm_register_global_slider_setting = {
     mod_id = your_mod_id
     setting_id = your_setting_id
     tab_id = your_tab_id
+    group_id = your_group_id
     default_value = 50
     min_value = 0
     max_value = 100
@@ -157,13 +188,14 @@ cmm_register_global_slider_setting = {
 }
 ```
 
-### 6) Register dropdown settings
+### 7) Register dropdown settings
 
 ```txt
 cmm_register_dropdown_setting = {
     mod_id = your_mod_id
     setting_id = your_setting_id
     tab_id = your_tab_id
+    group_id = your_group_id
     default_index = 1
     option_count = 3
 }
@@ -174,6 +206,7 @@ Arguments:
 - `mod_id`: owner mod id.
 - `setting_id`: stable id within your mod.
 - `tab_id`: owner tab id within your mod.
+- `group_id`: owner group id within your mod.
 - `default_index`: initial selected option index for brand-new saves.
 - `option_count`: number of options (`>= 1`). Options are indexed `0..option_count-1`.
   - CMM dropdown controls support modifiers:
@@ -187,18 +220,20 @@ cmm_register_global_dropdown_setting = {
     mod_id = your_mod_id
     setting_id = your_setting_id
     tab_id = your_tab_id
+    group_id = your_group_id
     default_index = 1
     option_count = 3
 }
 ```
 
-### 7) Register button settings
+### 8) Register button settings
 
 ```txt
 cmm_register_button_setting = {
     mod_id = your_mod_id
     setting_id = your_setting_id
     tab_id = your_tab_id
+    group_id = your_group_id
 }
 ```
 
@@ -207,6 +242,7 @@ Arguments:
 - `mod_id`: owner mod id.
 - `setting_id`: stable id within your mod.
 - `tab_id`: owner tab id within your mod.
+- `group_id`: owner group id within your mod.
 
 Global edit-permission variant:
 
@@ -215,6 +251,7 @@ cmm_register_global_button_setting = {
     mod_id = your_mod_id
     setting_id = your_setting_id
     tab_id = your_tab_id
+    group_id = your_group_id
 }
 ```
 
@@ -224,13 +261,14 @@ Notes:
 - Button rows use `<mod_id>_<setting_id>_name` for the setting label and `<mod_id>_<setting_id>_button_text` for the clickable button caption.
 - `cmm_register_global_button_setting` only marks the button as host-editable in multiplayer. It does not create stored value state.
 
-### 8) Register text settings
+### 9) Register text settings
 
 ```txt
 cmm_register_text_setting = {
     mod_id = your_mod_id
     setting_id = your_setting_id
     tab_id = your_tab_id
+    group_id = your_group_id
     character_limit = 42
     quote_text = 1
 }
@@ -241,6 +279,7 @@ Arguments:
 - `mod_id`: owner mod id.
 - `setting_id`: stable id within your mod.
 - `tab_id`: owner tab id within your mod.
+- `group_id`: owner group id within your mod.
 - `character_limit`: maximum number of characters allowed in the editbox. Values below `1` are clamped to `1`.
 - `quote_text`: `1` wraps submitted text in double quotes before CMM passes it to your effect; `0` forwards the raw editbox text unchanged.
 
@@ -256,6 +295,7 @@ Localization keys are derived automatically from ids:
 
 - Mod title: `<mod_id>_name`
 - Tab label: `<mod_id>_<tab_id>_name`
+- Group label: `<mod_id>_<group_id>_name`
 - Setting label: `<mod_id>_<setting_id>_name`
 - Setting description: `<mod_id>_<setting_id>_desc`
 - Button setting text: `<mod_id>_<setting_id>_button_text`
@@ -406,13 +446,19 @@ CMM writes these country-scope variables/lists:
 
 - `cmm_registered_mod_ids` (variable list; registration order)
 - `cmm_registered_tab_keys` (variable list of `<mod_id>__<tab_id>`)
+- `cmm_registered_group_keys` (variable list of `<mod_id>__<group_id>`)
 - `cmm_registered_setting_keys` (variable list of `<mod_id>__<setting_id>`)
 - `cmm_tab_setting_count_<mod_id>__<tab_id>` (count of settings in that tab)
+- `cmm_group_setting_keys_<mod_id>__<group_id>` (variable list of setting keys in that group)
 - `<mod_id>_name` (flag value)
 - `cmm_tab_owner_mod_id_<mod_id>__<tab_id>` (flag value)
 - `<mod_id>__<tab_id>_name` (flag value)
+- `cmm_group_owner_mod_id_<mod_id>__<group_id>` (flag value)
+- `cmm_group_owner_tab_key_<mod_id>__<group_id>` (flag value)
+- `<mod_id>__<group_id>_name` (flag value)
 - `cmm_setting_owner_mod_id_<mod_id>__<setting_id>` (flag value)
 - `cmm_setting_owner_tab_key_<mod_id>__<setting_id>` (flag value)
+- `cmm_setting_owner_group_key_<mod_id>__<setting_id>` (flag value)
 - `cmm_setting_is_global_<mod_id>__<setting_id>` (`0` local country setting, `1` global setting)
 - `cmm_setting_is_slider_<mod_id>__<setting_id>` (`0` non-slider, `1` slider)
 - `cmm_setting_is_button_<mod_id>__<setting_id>` (`0` non-button, `1` button)
@@ -445,6 +491,7 @@ your_mod_register_mod = {
         mod_id = your_mod
         setting_id = allow_feature
         tab_id = general
+        group_id = general
         default_value = 1
     }
 
@@ -452,12 +499,14 @@ your_mod_register_mod = {
         mod_id = your_mod
         setting_id = run_feature
         tab_id = general
+        group_id = general
     }
 
     cmm_register_numeric_setting = {
         mod_id = your_mod
         setting_id = amount
         tab_id = general
+        group_id = general
         default_value = 10
         min_value = 0
         max_value = 100
@@ -468,6 +517,7 @@ your_mod_register_mod = {
         mod_id = your_mod
         setting_id = intensity
         tab_id = general
+        group_id = general
         default_value = 50
         min_value = 0
         max_value = 100
@@ -478,6 +528,7 @@ your_mod_register_mod = {
         mod_id = your_mod
         setting_id = mode
         tab_id = general
+        group_id = general
         default_index = 1
         option_count = 3
     }
@@ -486,6 +537,7 @@ your_mod_register_mod = {
         mod_id = your_mod
         setting_id = country_name
         tab_id = general
+        group_id = general
         character_limit = 42
         quote_text = 1
     }
@@ -548,7 +600,7 @@ Define your keys in your own localization file:
 
 ```txt
 your_mod_name: "Your Mod Name"
-your_mod_general_name: "General"
+your_mod_general_name: "General" # used for both tab and group label
 your_mod_allow_feature_name: "Allow Feature"
 your_mod_allow_feature_desc: "Enables the feature when checked."
 your_mod_run_feature_name: "Run Feature"
@@ -570,5 +622,5 @@ your_mod_country_name_desc: "Singleplayer-only text setting. Applies the entered
 ## Notes
 
 - CMM v1 controls currently include bool, button, numeric, slider, dropdown, and text.
-- Keep ids stable (`mod_id`, `tab_id`, `setting_id`) across updates.
+- Keep ids stable (`mod_id`, `tab_id`, `group_id`, `setting_id`) across updates.
 - Keep integration/API docs in repository docs, not runtime UI localization.

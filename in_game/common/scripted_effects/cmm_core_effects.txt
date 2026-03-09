@@ -69,16 +69,61 @@ cmm_register_tab = {
 	}
 }
 
+# Register a group for a mod tab (idempotent by mod_id + group_id).
+# Scope: country
+# Args:
+# - mod_id (key): Owner mod id.
+# - tab_id (key): Owner tab id within mod.
+# - group_id (key): Group id unique within mod.
+cmm_register_group = {
+	# First-time registration path for this group key.
+	if = {
+		limit = { NOT = { has_variable = cmm_registered_group_$mod_id$__$group_id$ } }
+		set_variable = { name = cmm_registered_group_$mod_id$__$group_id$ value = yes }
+		set_variable = { name = cmm_group_owner_mod_id_$mod_id$__$group_id$ value = flag:$mod_id$ }
+		set_variable = { name = cmm_group_owner_tab_key_$mod_id$__$group_id$ value = flag:$mod_id$__$tab_id$ }
+		set_variable = { name = $mod_id$__$group_id$_name value = flag:$mod_id$_$group_id$_name }
+
+		# Global group key list; used by settings-panel group datamodel iteration.
+		add_to_variable_list = {
+			name = cmm_registered_group_keys
+			target = flag:$mod_id$__$group_id$
+		}
+	}
+
+	# Benign warning suppression
+	if = {
+		limit = {
+			always = no
+			exists = flag:$mod_id$__$group_id$
+			exists = flag:$mod_id$_$group_id$_name
+			exists = flag:$mod_id$__$tab_id$
+			exists = var:cmm_registered_group_keys
+			exists = var:cmm_registered_group_$mod_id$__$group_id$
+			exists = var:cmm_group_owner_mod_id_$mod_id$__$group_id$
+			exists = var:cmm_group_owner_tab_key_$mod_id$__$group_id$
+			exists = var:$mod_id$__$group_id$_name
+		}
+	}
+}
+
 # Register shared metadata for a setting key (idempotent by mod_id + setting_id).
 # Scope: country
 # Args:
 # - mod_id (key): Owner mod id.
 # - setting_id (key): Setting id unique within mod.
 # - tab_id (key): Owner tab id within mod.
+# - group_id (key): Owner group id within mod.
 cmm_register_setting_metadata = {
 	cmm_register_tab = {
 		mod_id = $mod_id$
 		tab_id = $tab_id$
+	}
+
+	cmm_register_group = {
+		mod_id = $mod_id$
+		tab_id = $tab_id$
+		group_id = $group_id$
 	}
 
 	# First-time registration path for this setting key.
@@ -87,12 +132,19 @@ cmm_register_setting_metadata = {
 		set_variable = { name = cmm_registered_setting_$mod_id$__$setting_id$ value = yes }
 		set_variable = { name = cmm_setting_owner_mod_id_$mod_id$__$setting_id$ value = flag:$mod_id$ }
 		set_variable = { name = cmm_setting_owner_tab_key_$mod_id$__$setting_id$ value = flag:$mod_id$__$tab_id$ }
+		set_variable = { name = cmm_setting_owner_group_key_$mod_id$__$setting_id$ value = flag:$mod_id$__$group_id$ }
 		set_variable = { name = $mod_id$__$setting_id$_name value = flag:$mod_id$_$setting_id$_name }
 		set_variable = { name = $mod_id$__$setting_id$_desc value = flag:$mod_id$_$setting_id$_desc }
 
 		# Global setting key list; used by right-panel datamodel iteration.
 		add_to_variable_list = {
 			name = cmm_registered_setting_keys
+			target = flag:$mod_id$__$setting_id$
+		}
+
+		# Per-group setting key list; used by group-scoped setting rendering.
+		add_to_variable_list = {
+			name = cmm_group_setting_keys_$mod_id$__$group_id$
 			target = flag:$mod_id$__$setting_id$
 		}
 
@@ -110,12 +162,16 @@ cmm_register_setting_metadata = {
 			always = no
 			exists = flag:$mod_id$__$setting_id$
 			exists = flag:$mod_id$__$tab_id$
+			exists = flag:$mod_id$__$group_id$
 			exists = flag:$mod_id$_$setting_id$_name
 			exists = flag:$mod_id$_$setting_id$_desc
+			exists = flag:$mod_id$_$group_id$_name
 			exists = var:cmm_registered_setting_keys
 			exists = var:cmm_registered_setting_$mod_id$__$setting_id$
 			exists = var:cmm_setting_owner_mod_id_$mod_id$__$setting_id$
 			exists = var:cmm_setting_owner_tab_key_$mod_id$__$setting_id$
+			exists = var:cmm_setting_owner_group_key_$mod_id$__$setting_id$
+			exists = var:cmm_group_setting_keys_$mod_id$__$group_id$
 			exists = var:cmm_tab_setting_count_$mod_id$__$tab_id$
 			exists = var:$mod_id$__$setting_id$_name
 			exists = var:$mod_id$__$setting_id$_desc

@@ -4,6 +4,7 @@
 # - mod_id (key): Owner mod id.
 # - setting_id (key): Setting id unique within mod.
 # - tab_id (key): Owner tab id within mod.
+# - group_id (key): Owner group id within mod.
 # - character_limit (number): Maximum editbox character count; clamped to at least `1`.
 # - quote_text (1/0): Wrap submitted text in double quotes before passing it to the effect callback.
 cmm_register_text_setting = {
@@ -22,6 +23,7 @@ cmm_register_text_setting = {
 		mod_id = $mod_id$
 		setting_id = $setting_id$
 		tab_id = $tab_id$
+		group_id = $group_id$
 	}
 
 	# Benign warning suppression
