@@ -16,16 +16,16 @@
 	# - cmm_slider_index_to_apply [value]: pending visual slot index for `cmm_apply_slider_change`.
 	# - <mod_id>__<setting_id> callbacks [effect]: applies slider changes via `_on_changed`.
 	type cmm_slider_setting = widget {
-		size = { 260 34 }
-		minimumsize = { 260 34 }
+		size = { 280 34 }
+		minimumsize = { 280 34 }
 
 		hbox = {
 			margin = { 2 0 }
 			spacing = 10
 
 			widget = {
-				size = { 195 20 }
-				minimumsize = { 195 20 }
+				size = { 220 20 }
+				minimumsize = { 220 20 }
 				allow_outside = yes
 
 				hbox = {
@@ -71,8 +71,8 @@
 					}
 
 					widget = {
-						size = { 155 20 }
-						minimumsize = { 155 20 }
+						size = { 180 20 }
+						minimumsize = { 180 20 }
 						allow_outside = yes
 						onmousehierarchyleave = "[CMMStopSliderDrag]"
 
@@ -172,8 +172,9 @@
 			}
 
 			text_single = {
-				layoutpolicy_horizontal = expanding
-				size = { -1 30 }
+				size = { 50 30 }
+				minimumsize = { 50 30 }
+				align = left|nobaseline
 				text = "[CMMNumericSettingValue(Scope.GetFlagName)]"
 			}
 		}
