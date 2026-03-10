@@ -31,42 +31,47 @@
 				hbox = {
 					size = { 100% 20 }
 
-					EconomySlider_DecButton = {
+					widget = {
 						size = { 20 20 }
-						enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
+						minimumsize = { 20 20 }
 
-						action_tooltip = {
-							click_mode = single
-							click_type = left
-							click_modifier = default
-							title = "CMM_NUMERIC_DECREASE"
-						}
+						EconomySlider_DecButton = {
+							size = { 20 20 }
+							enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
 
-						action_tooltip = {
-							click_mode = single
-							click_type = left
-							click_modifier = ctrl
-							title = "CMM_NUMERIC_DECREASE_5X"
-						}
+							action_tooltip = {
+								click_mode = single
+								click_type = left
+								click_modifier = default
+								title = "CMM_NUMERIC_DECREASE"
+							}
 
-						action_tooltip = {
-							click_mode = single
-							click_type = left
-							click_modifier = shift
-							title = "CMM_NUMERIC_DECREASE_MIN"
-						}
+							action_tooltip = {
+								click_mode = single
+								click_type = left
+								click_modifier = ctrl
+								title = "CMM_NUMERIC_DECREASE_5X"
+							}
 
-						click_modifiers = {
-							ondefault = "[CMMMarkNumericDecrease]"
-							ondefault = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-							onctrl = "[CMMMarkNumericDecrease5x]"
-							onctrl = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-							onshift = "[CMMMarkNumericDecreaseToMin]"
-							onshift = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-						}
+							action_tooltip = {
+								click_mode = single
+								click_type = left
+								click_modifier = shift
+								title = "CMM_NUMERIC_DECREASE_MIN"
+							}
 
-						tooltipwidget = {
-							BasicFunctionalTooltip = {}
+							click_modifiers = {
+								ondefault = "[CMMMarkNumericDecrease]"
+								ondefault = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+								onctrl = "[CMMMarkNumericDecrease5x]"
+								onctrl = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+								onshift = "[CMMMarkNumericDecreaseToMin]"
+								onshift = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+							}
+
+							tooltipwidget = {
+								BasicFunctionalTooltip = {}
+							}
 						}
 					}
 
@@ -130,42 +135,47 @@
 						}
 					}
 
-					EconomySlider_IncButton = {
+					widget = {
 						size = { 20 20 }
-						enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
+						minimumsize = { 20 20 }
 
-						action_tooltip = {
-							click_mode = single
-							click_type = left
-							click_modifier = default
-							title = "CMM_NUMERIC_INCREASE"
-						}
+						EconomySlider_IncButton = {
+							size = { 20 20 }
+							enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
 
-						action_tooltip = {
-							click_mode = single
-							click_type = left
-							click_modifier = ctrl
-							title = "CMM_NUMERIC_INCREASE_5X"
-						}
+							action_tooltip = {
+								click_mode = single
+								click_type = left
+								click_modifier = default
+								title = "CMM_NUMERIC_INCREASE"
+							}
 
-						action_tooltip = {
-							click_mode = single
-							click_type = left
-							click_modifier = shift
-							title = "CMM_NUMERIC_INCREASE_MAX"
-						}
+							action_tooltip = {
+								click_mode = single
+								click_type = left
+								click_modifier = ctrl
+								title = "CMM_NUMERIC_INCREASE_5X"
+							}
 
-						click_modifiers = {
-							ondefault = "[CMMMarkNumericIncrease]"
-							ondefault = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-							onctrl = "[CMMMarkNumericIncrease5x]"
-							onctrl = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-							onshift = "[CMMMarkNumericIncreaseToMax]"
-							onshift = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-						}
+							action_tooltip = {
+								click_mode = single
+								click_type = left
+								click_modifier = shift
+								title = "CMM_NUMERIC_INCREASE_MAX"
+							}
 
-						tooltipwidget = {
-							BasicFunctionalTooltip = {}
+							click_modifiers = {
+								ondefault = "[CMMMarkNumericIncrease]"
+								ondefault = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+								onctrl = "[CMMMarkNumericIncrease5x]"
+								onctrl = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+								onshift = "[CMMMarkNumericIncreaseToMax]"
+								onshift = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+							}
+
+							tooltipwidget = {
+								BasicFunctionalTooltip = {}
+							}
 						}
 					}
 				}
