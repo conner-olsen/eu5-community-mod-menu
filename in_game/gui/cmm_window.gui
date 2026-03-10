@@ -29,8 +29,10 @@
 					visible = "[CMMSelectedModExists]"
 
 					header_title = {
-						autoresize = yes
-						maximumsize = { 450 -1 }
+						size = { -1 40 }
+						layoutpolicy_horizontal = expanding
+						autoresize = no
+						maximumsize = { 450 40 }
 						text = "[CMMSelectedModName]"
 					}
 				}
