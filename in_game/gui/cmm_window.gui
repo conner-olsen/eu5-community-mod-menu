@@ -6,7 +6,7 @@
 	movable = no
 	parentanchor = center
 	widgetanchor = center
-	size = { 1120 760 }
+	size = { 1140 760 }
 	using = bg_window_default_alt
 	allow_outside = yes
 	visible = "[GetVariableSystem.Exists('cmm_window_open')]"

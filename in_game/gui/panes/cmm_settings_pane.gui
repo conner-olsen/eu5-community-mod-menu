@@ -104,6 +104,8 @@
 		layoutpolicy_horizontal = expanding
 		ignoreinvisible = yes
 		spacing = 8
+		margin_left = 6
+		margin_right = 14
 		datamodel = "[Player.MakeScope.GetList('cmm_registered_group_keys')]"
 
 		item = {
