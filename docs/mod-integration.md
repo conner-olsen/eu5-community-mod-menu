@@ -411,6 +411,7 @@ Notes:
 - Local bool, numeric, slider, and dropdown checked/value state is read from `var:<mod_id>__<setting_id>` by CMM UI.
 - Global bool, numeric, slider, and dropdown checked/value state is read from `GetGlobalVariable(<mod_id>__<setting_id>)` by CMM UI.
 - Global settings (`cmm_register_global_*`) are writable by host only in multiplayer (`IsHost`); all players can view them.
+- Core CMM can additionally lock global settings behind its `Enable Host-Only Tools` toggle. The built-in toggle itself remains editable so the gate can be turned back on.
 - Callback contract is unchanged for local vs global settings; `cmm_toggle_bool_setting`, `cmm_apply_numeric_change`, `cmm_apply_slider_change`, and `cmm_apply_dropdown_change` branch automatically.
 - If your callback also reads the current setting value for custom logic, use `var:<mod_id>__<setting_id>` for local settings and `global_var:<mod_id>__<setting_id>` for global settings.
 - Global button settings are writable by host only in multiplayer, but they do not create stored value state.
@@ -452,11 +453,10 @@ is_host = {
 
 Notes:
 
-- `is_host` reflects CMM's stored host-country marker in multiplayer, not a native engine host query.
-- When `has_multiple_players = no`, `is_host` is also true for the current human country.
-- The multiplayer host sets the multiplayer host-country variable from the core CMM `Host Country` button.
-- That button is a global button setting, so only the host can click it in multiplayer.
-- Clicking it overwrites the previous host country with the current country.
+- `is_host` is gated by CMM's core `Enable Host-Only Tools` toggle. If that toggle is off, `is_host` is false in both singleplayer and multiplayer.
+- When the toggle is on and `has_multiple_players = no`, `is_host` is true for the current human country.
+- When the toggle is on and `has_multiple_players = yes`, `is_host` reflects CMM's stored host-country marker in multiplayer, not a native engine host query.
+- CMM updates that multiplayer host-country marker automatically when the actual multiplayer host opens Mod Menu.
 
 ## Data Contract (Runtime Variables)
 
@@ -496,7 +496,8 @@ CMM writes these country-scope variables/lists:
 - `<mod_id>__<setting_id>_button_text` (flag value; button only)
 - local `<mod_id>__<setting_id>` (country-scope value for local bool, numeric, slider, and dropdown settings)
 - global `<mod_id>__<setting_id>` (global-scope value for global bool, numeric, slider, and dropdown settings; read directly by CMM UI)
-- global `cmm_core_host_country` (country reference used by CMM's core host-country button and multiplayer `is_host` checks)
+- global `cmm_core__enable_host_only_tools` (bool gate controlling whether host-only settings and `is_host`-gated tools are enabled)
+- global `cmm_core_host_country` (country reference used by CMM's multiplayer host marker and multiplayer `is_host` checks)
 
 ## Minimal Example (Bool + Button + Numeric + Slider + Dropdown + Text)
 

@@ -137,9 +137,25 @@ macro = {
 # Args: SettingKey (string)
 # Returns: boolean
 macro = {
-    description = "True when local player can edit this setting (global settings are host-only in MP)"
+    description = "True when this is the core host-only-tools gate setting"
+    definition = "CMMIsHostOnlyToolsSetting(SettingKey)"
+    replace_with = "EqualTo_string(SettingKey, 'cmm_core__enable_host_only_tools')"
+}
+
+# Args: none
+# Returns: boolean
+macro = {
+    description = "True when the core host-only-tools gate is enabled"
+    definition = "CMMHostOnlyToolsEnabled"
+    replace_with = "And(GetGlobalVariable('cmm_core__enable_host_only_tools').IsSet, EqualTo_CFixedPoint(GetGlobalVariable('cmm_core__enable_host_only_tools').GetValue, '(CFixedPoint)1'))"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when local player can edit this setting (global settings are host-only in MP and gated by the core host-only-tools toggle)"
     definition = "CMMCanEditSetting(SettingKey)"
-    replace_with = "Or(Not(CMMSettingIsGlobal(SettingKey)), Or(Not(GameIsMultiplayer), IsHost))"
+    replace_with = "Or(Not(CMMSettingIsGlobal(SettingKey)), And(Or(CMMIsHostOnlyToolsSetting(SettingKey), CMMHostOnlyToolsEnabled), Or(Not(GameIsMultiplayer), IsHost)))"
 }
 
 # Args: SettingKey (string)
