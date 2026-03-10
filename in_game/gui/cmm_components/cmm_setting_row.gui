@@ -21,13 +21,13 @@
 	# - GetScriptedGui('CMM_MarkSliderSelection_<index>').Execute(...) [effect]: stores pending slider visual index.
 	type cmm_setting_row = widget {
 		layoutpolicy_horizontal = expanding
-		minimumsize = { 0 68 }
+		minimumsize = { 0 60 }
 		using = bg_window_default_alt
 		visible = "[CMMSettingRowVisible(Scope.GetFlagName)]"
 
 		hbox = {
 			layoutpolicy_horizontal = expanding
-			margin = { 12 6 }
+			margin = { 12 4 }
 			spacing = 12
 
 			text_single = {
