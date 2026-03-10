@@ -1,4 +1,4 @@
-﻿# CMM Mod Integration
+# CMM Mod Integration
 
 This document is for mod authors integrating with **EU5 Community Mod Menu (CMM)**.
 
@@ -440,6 +440,24 @@ your_mod_on_register_mod = {
 }
 ```
 
+## Built-in Host Marker
+
+CMM also provides a country-scope scripted trigger named `is_host`.
+
+```txt
+is_host = {
+    # scope = country
+}
+```
+
+Notes:
+
+- `is_host` reflects CMM's stored host-country marker in multiplayer, not a native engine host query.
+- When `has_multiple_players = no`, `is_host` is also true for the current human country.
+- The multiplayer host sets the multiplayer host-country variable from the core CMM `Host Country` button.
+- That button is a global button setting, so only the host can click it in multiplayer.
+- Clicking it overwrites the previous host country with the current country.
+
 ## Data Contract (Runtime Variables)
 
 CMM writes these country-scope variables/lists:
@@ -478,6 +496,7 @@ CMM writes these country-scope variables/lists:
 - `<mod_id>__<setting_id>_button_text` (flag value; button only)
 - local `<mod_id>__<setting_id>` (country-scope value for local bool, numeric, slider, and dropdown settings)
 - global `<mod_id>__<setting_id>` (global-scope value for global bool, numeric, slider, and dropdown settings; read directly by CMM UI)
+- global `cmm_core_host_country` (country reference used by CMM's core host-country button and multiplayer `is_host` checks)
 
 ## Minimal Example (Bool + Button + Numeric + Slider + Dropdown + Text)
 

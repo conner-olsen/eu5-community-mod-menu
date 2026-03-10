@@ -1,0 +1,16 @@
+﻿# True for the multiplayer-marked host country or the singleplayer human country.
+# Scope: country
+# Args: none
+is_host = {
+	OR = {
+		AND = {
+			has_multiple_players = no
+			is_human = yes
+		}
+		AND = {
+			has_multiple_players = yes
+			has_global_variable = cmm_core_host_country
+			this ?= global_var:cmm_core_host_country
+		}
+	}
+}

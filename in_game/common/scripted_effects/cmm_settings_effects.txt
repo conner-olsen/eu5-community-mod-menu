@@ -1,4 +1,4 @@
-﻿# Register CMM menu settings and demo entries.
+﻿# Register built-in CMM settings.
 # Scope: country
 # Args: none
 cmm_register_menu_settings = {
@@ -6,73 +6,17 @@ cmm_register_menu_settings = {
 		mod_id = cmm_core
 	}
 
-	cmm_register_bool_setting = {
+	cmm_register_global_button_setting = {
 		mod_id = cmm_core
-		setting_id = example_toggle
+		setting_id = mark_host_country
 		tab_id = general
-		group_id = toggles
-		default_value = 0
-	}
-
-	cmm_register_global_bool_setting = {
-		mod_id = cmm_core
-		setting_id = global_example_toggle
-		tab_id = general
-		group_id = toggles
-		default_value = 0
-	}
-
-	cmm_register_button_setting = {
-		mod_id = cmm_core
-		setting_id = example_button
-		tab_id = general
-		group_id = toggles
-	}
-
-	cmm_register_numeric_setting = {
-		mod_id = cmm_core
-		setting_id = example_numeric
-		tab_id = general
-		group_id = values
-		default_value = 5
-		min_value = 0
-		max_value = 10
-		step_value = 1
-	}
-
-	cmm_register_slider_setting = {
-		mod_id = cmm_core
-		setting_id = example_slider
-		tab_id = general
-		group_id = values
-		default_value = 50
-		min_value = 0
-		max_value = 100
-		step_value = 10
-	}
-
-	cmm_register_text_setting = {
-		mod_id = cmm_core
-		setting_id = example_text
-		tab_id = general
-		group_id = values
-		character_limit = 42
-		quote_text = 1
-	}
-
-	cmm_register_dropdown_setting = {
-		mod_id = cmm_core
-		setting_id = example_dropdown
-		tab_id = general
-		group_id = values
-		default_index = 1
-		option_count = 3
+		group_id = session
 	}
 }
 
-# Apply the core example text setting.
+# Mark the current country as the CMM host country.
 # Scope: country
-# Args: text (string)
-cmm_core__example_text_on_changed = {
-	change_country_name = $text$
+# Args: none
+cmm_mark_host_country = {
+	set_global_variable = { name = cmm_core_host_country value = this }
 }

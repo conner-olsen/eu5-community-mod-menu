@@ -104,6 +104,8 @@ cmm_register_text_setting = {
 
 Global variants also exist for bool, button, numeric, slider, and dropdown settings. `cmm_register_global_button_setting` only affects host-only multiplayer edit permission and does not create stored value state.
 
+CMM also ships a country-scope scripted trigger named `is_host`. It becomes true for the country manually marked through the core CMM `Host Country` button in multiplayer, and for the current human country whenever `has_multiple_players = no`.
+
 Localization key format is enforced by ids:
 
 - Mod: `<mod_id>_name`
