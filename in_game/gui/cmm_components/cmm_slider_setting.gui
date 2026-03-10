@@ -16,8 +16,8 @@
 	# - cmm_slider_index_to_apply [value]: pending visual slot index for `cmm_apply_slider_change`.
 	# - <mod_id>__<setting_id> callbacks [effect]: applies slider changes via `_on_changed`.
 	type cmm_slider_setting = widget {
-		size = { 450 34 }
-		minimumsize = { 450 34 }
+		size = { 260 34 }
+		minimumsize = { 260 34 }
 
 		hbox = {
 			margin = { 2 0 }
