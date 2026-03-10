@@ -24,8 +24,8 @@
 			spacing = 10
 
 			widget = {
-				size = { 350 20 }
-				minimumsize = { 350 20 }
+				size = { 195 20 }
+				minimumsize = { 195 20 }
 				allow_outside = yes
 
 				hbox = {
@@ -71,8 +71,8 @@
 					}
 
 					widget = {
-						size = { 310 20 }
-						minimumsize = { 310 20 }
+						size = { 155 20 }
+						minimumsize = { 155 20 }
 						allow_outside = yes
 						onmousehierarchyleave = "[CMMStopSliderDrag]"
 
