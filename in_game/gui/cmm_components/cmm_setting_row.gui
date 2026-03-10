@@ -32,6 +32,7 @@
 
 			text_single = {
 				layoutpolicy_horizontal = expanding
+				layoutstretchfactor_horizontal = 1
 				tagtooltip_enabled = yes
 				tooltip = "[CMMSettingDesc(Scope.GetFlagName)]"
 				tooltipwidget = { BasicFunctionalTooltip = {} }
@@ -39,6 +40,8 @@
 			}
 
 			hbox = {
+				layoutpolicy_horizontal = expanding
+				layoutstretchfactor_horizontal = 1
 				minimumsize = { 280 0 }
 				ignoreinvisible = yes
 
