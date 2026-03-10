@@ -9,6 +9,8 @@
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_max_', Scope.GetFlagName)) [value]: slider maximum bound.
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_step_', Scope.GetFlagName)) [value]: slider logical step size.
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_slider_visual_step_count_', Scope.GetFlagName)) [value]: number of clickable visual slider slots.
+	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_slider_actual_last_index_', Scope.GetFlagName)) [value]: last logical slider step index.
+	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_slider_visual_last_index_', Scope.GetFlagName)) [value]: last rendered slider slot index.
 	# - PdxGuiWidget.GetIndexInDataModel [int32]: current visual slot index inside the repeated track datamodel.
 	# Writes:
 	# - cmm_numeric_step_delta_to_apply [value]: pending accumulated slider +/- step delta for `cmm_apply_slider_change`.
@@ -93,7 +95,11 @@
 							}
 
 							slider = {
-								EconomySlider_Slider = { size = { 20 20 } }
+								EconomySlider_Slider = {
+									size = { 20 20 }
+									alpha = 0
+									tooltip_enabled = no
+								}
 							}
 
 							dec_button = { button = {} }
@@ -126,6 +132,60 @@
 										tooltip_enabled = no
 									}
 								}
+							}
+						}
+
+						hbox = {
+							size = { 100% 20 }
+
+							widget = {
+								size = { 10 20 }
+							}
+
+							hbox = {
+								using = layoutpolicy_expanding
+								size = { -1 20 }
+								datamodel = "[DataModelRepeatedItem(CMMSliderVisualLastIndex(Scope.GetFlagName))]"
+								datamodel_reuse_widgets = yes
+
+								item = {
+									widget = {
+										using = layoutpolicy_expanding
+										layoutstretchfactor_horizontal = 1
+										size = { 0 20 }
+										allow_outside = yes
+
+										EconomySlider_Slider = {
+											size = { 20 20 }
+											parentanchor = left|vcenter
+											position = { -10 0 }
+											visible = "[And(EqualTo_int32(PdxGuiWidget.GetIndexInDataModel, '(int32)0'), EqualTo_int32(CMMSliderCurrentVisualIndex(Scope.GetFlagName), '(int32)0'))]"
+											enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
+											onpressed = "[CMMStartSliderDrag]"
+											onpressed = "[GetScriptedGui('CMM_MarkSliderSelection_0').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+											onpressed = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+											onreleased = "[CMMStopSliderDrag]"
+											tooltip_enabled = no
+										}
+
+										EconomySlider_Slider = {
+											size = { 20 20 }
+											parentanchor = right|vcenter
+											position = { 10 0 }
+											visible = "[EqualTo_int32(Add_int32(PdxGuiWidget.GetIndexInDataModel, '(int32)1'), CMMSliderCurrentVisualIndex(Scope.GetFlagName))]"
+											enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
+											onpressed = "[CMMStartSliderDrag]"
+											onpressed = "[GetScriptedGui(Concatenate('CMM_MarkSliderSelection_', ToString_int32(Add_int32(PdxGuiWidget.GetIndexInDataModel, '(int32)1')))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+											onpressed = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+											onreleased = "[CMMStopSliderDrag]"
+											tooltip_enabled = no
+										}
+									}
+								}
+							}
+
+							widget = {
+								size = { 10 20 }
 							}
 						}
 					}
