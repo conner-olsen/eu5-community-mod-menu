@@ -340,20 +340,13 @@
 										button_drop = {
 											enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 											onclick = "[GetVariableSystem.Set('cmm_dropdown_hover_index', ToString_int32(CMMListFieldDropdownSelectedIndex0(Scope.GetFlagName)))]"
+											tooltip_enabled = no
 
 											action_tooltip = {
 												click_mode = single
 												click_type = left
 												click_modifier = shift
 												title = "CMM_LIST_APPLY_OPTION_TO_ALL"
-											}
-
-											click_modifiers = {
-												onshift = "[CMMMarkHoveredListPosition]"
-												onshift = "[CMMMarkListFieldSlot0]"
-												onshift = "[CMMMarkListFieldSelectDropdownAll]"
-												onshift = "[GetScriptedGui(Concatenate('CMM_MarkDropdownSelection_', ToString_int32(CMMListFieldDropdownSelectedIndex0(Scope.GetFlagName)))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-												onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 											}
 
 											tooltipwidget = { BasicFunctionalTooltip = {} }
@@ -439,6 +432,33 @@
 								}
 							}
 
+							button = {
+								size = { 132 28 }
+								parentanchor = center
+								widgetanchor = center
+								visible = "[And(CMMListFieldIsDropdown0(CMMListItemOwnerSettingKey(Scope.GetFlagName)), UIAction.IsLeftClickModifierEnabled('shift'))]"
+								enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								alpha = 0
+								effectname = "NoHighlight"
+
+								action_tooltip = {
+									click_mode = single
+									click_type = left
+									click_modifier = shift
+									title = "CMM_LIST_APPLY_OPTION_TO_ALL"
+								}
+
+								click_modifiers = {
+									onshift = "[CMMMarkHoveredListPosition]"
+									onshift = "[CMMMarkListFieldSlot0]"
+									onshift = "[CMMMarkListFieldSelectDropdownAll]"
+									onshift = "[GetScriptedGui(Concatenate('CMM_MarkDropdownSelection_', ToString_int32(CMMListFieldDropdownSelectedIndex0(Scope.GetFlagName)))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+									onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								}
+
+								tooltipwidget = { BasicFunctionalTooltip = {} }
+							}
+
 						}
 
 						widget = {
@@ -509,20 +529,13 @@
 										button_drop = {
 											enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 											onclick = "[GetVariableSystem.Set('cmm_dropdown_hover_index', ToString_int32(CMMListFieldDropdownSelectedIndex1(Scope.GetFlagName)))]"
+											tooltip_enabled = no
 
 											action_tooltip = {
 												click_mode = single
 												click_type = left
 												click_modifier = shift
 												title = "CMM_LIST_APPLY_OPTION_TO_ALL"
-											}
-
-											click_modifiers = {
-												onshift = "[CMMMarkHoveredListPosition]"
-												onshift = "[CMMMarkListFieldSlot1]"
-												onshift = "[CMMMarkListFieldSelectDropdownAll]"
-												onshift = "[GetScriptedGui(Concatenate('CMM_MarkDropdownSelection_', ToString_int32(CMMListFieldDropdownSelectedIndex1(Scope.GetFlagName)))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-												onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 											}
 
 											tooltipwidget = { BasicFunctionalTooltip = {} }
@@ -608,6 +621,33 @@
 								}
 							}
 
+							button = {
+								size = { 132 28 }
+								parentanchor = center
+								widgetanchor = center
+								visible = "[And(CMMListFieldIsDropdown1(CMMListItemOwnerSettingKey(Scope.GetFlagName)), UIAction.IsLeftClickModifierEnabled('shift'))]"
+								enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								alpha = 0
+								effectname = "NoHighlight"
+
+								action_tooltip = {
+									click_mode = single
+									click_type = left
+									click_modifier = shift
+									title = "CMM_LIST_APPLY_OPTION_TO_ALL"
+								}
+
+								click_modifiers = {
+									onshift = "[CMMMarkHoveredListPosition]"
+									onshift = "[CMMMarkListFieldSlot1]"
+									onshift = "[CMMMarkListFieldSelectDropdownAll]"
+									onshift = "[GetScriptedGui(Concatenate('CMM_MarkDropdownSelection_', ToString_int32(CMMListFieldDropdownSelectedIndex1(Scope.GetFlagName)))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+									onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								}
+
+								tooltipwidget = { BasicFunctionalTooltip = {} }
+							}
+
 						}
 
 						widget = {
@@ -678,20 +718,13 @@
 										button_drop = {
 											enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 											onclick = "[GetVariableSystem.Set('cmm_dropdown_hover_index', ToString_int32(CMMListFieldDropdownSelectedIndex2(Scope.GetFlagName)))]"
+											tooltip_enabled = no
 
 											action_tooltip = {
 												click_mode = single
 												click_type = left
 												click_modifier = shift
 												title = "CMM_LIST_APPLY_OPTION_TO_ALL"
-											}
-
-											click_modifiers = {
-												onshift = "[CMMMarkHoveredListPosition]"
-												onshift = "[CMMMarkListFieldSlot2]"
-												onshift = "[CMMMarkListFieldSelectDropdownAll]"
-												onshift = "[GetScriptedGui(Concatenate('CMM_MarkDropdownSelection_', ToString_int32(CMMListFieldDropdownSelectedIndex2(Scope.GetFlagName)))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-												onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 											}
 
 											tooltipwidget = { BasicFunctionalTooltip = {} }
@@ -777,6 +810,33 @@
 								}
 							}
 
+							button = {
+								size = { 132 28 }
+								parentanchor = center
+								widgetanchor = center
+								visible = "[And(CMMListFieldIsDropdown2(CMMListItemOwnerSettingKey(Scope.GetFlagName)), UIAction.IsLeftClickModifierEnabled('shift'))]"
+								enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								alpha = 0
+								effectname = "NoHighlight"
+
+								action_tooltip = {
+									click_mode = single
+									click_type = left
+									click_modifier = shift
+									title = "CMM_LIST_APPLY_OPTION_TO_ALL"
+								}
+
+								click_modifiers = {
+									onshift = "[CMMMarkHoveredListPosition]"
+									onshift = "[CMMMarkListFieldSlot2]"
+									onshift = "[CMMMarkListFieldSelectDropdownAll]"
+									onshift = "[GetScriptedGui(Concatenate('CMM_MarkDropdownSelection_', ToString_int32(CMMListFieldDropdownSelectedIndex2(Scope.GetFlagName)))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+									onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								}
+
+								tooltipwidget = { BasicFunctionalTooltip = {} }
+							}
+
 						}
 
 						widget = {
@@ -847,20 +907,13 @@
 										button_drop = {
 											enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 											onclick = "[GetVariableSystem.Set('cmm_dropdown_hover_index', ToString_int32(CMMListFieldDropdownSelectedIndex3(Scope.GetFlagName)))]"
+											tooltip_enabled = no
 
 											action_tooltip = {
 												click_mode = single
 												click_type = left
 												click_modifier = shift
 												title = "CMM_LIST_APPLY_OPTION_TO_ALL"
-											}
-
-											click_modifiers = {
-												onshift = "[CMMMarkHoveredListPosition]"
-												onshift = "[CMMMarkListFieldSlot3]"
-												onshift = "[CMMMarkListFieldSelectDropdownAll]"
-												onshift = "[GetScriptedGui(Concatenate('CMM_MarkDropdownSelection_', ToString_int32(CMMListFieldDropdownSelectedIndex3(Scope.GetFlagName)))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-												onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 											}
 
 											tooltipwidget = { BasicFunctionalTooltip = {} }
@@ -946,6 +999,33 @@
 								}
 							}
 
+							button = {
+								size = { 132 28 }
+								parentanchor = center
+								widgetanchor = center
+								visible = "[And(CMMListFieldIsDropdown3(CMMListItemOwnerSettingKey(Scope.GetFlagName)), UIAction.IsLeftClickModifierEnabled('shift'))]"
+								enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								alpha = 0
+								effectname = "NoHighlight"
+
+								action_tooltip = {
+									click_mode = single
+									click_type = left
+									click_modifier = shift
+									title = "CMM_LIST_APPLY_OPTION_TO_ALL"
+								}
+
+								click_modifiers = {
+									onshift = "[CMMMarkHoveredListPosition]"
+									onshift = "[CMMMarkListFieldSlot3]"
+									onshift = "[CMMMarkListFieldSelectDropdownAll]"
+									onshift = "[GetScriptedGui(Concatenate('CMM_MarkDropdownSelection_', ToString_int32(CMMListFieldDropdownSelectedIndex3(Scope.GetFlagName)))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+									onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								}
+
+								tooltipwidget = { BasicFunctionalTooltip = {} }
+							}
+
 						}
 
 						widget = {
@@ -1016,20 +1096,13 @@
 										button_drop = {
 											enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 											onclick = "[GetVariableSystem.Set('cmm_dropdown_hover_index', ToString_int32(CMMListFieldDropdownSelectedIndex4(Scope.GetFlagName)))]"
+											tooltip_enabled = no
 
 											action_tooltip = {
 												click_mode = single
 												click_type = left
 												click_modifier = shift
 												title = "CMM_LIST_APPLY_OPTION_TO_ALL"
-											}
-
-											click_modifiers = {
-												onshift = "[CMMMarkHoveredListPosition]"
-												onshift = "[CMMMarkListFieldSlot4]"
-												onshift = "[CMMMarkListFieldSelectDropdownAll]"
-												onshift = "[GetScriptedGui(Concatenate('CMM_MarkDropdownSelection_', ToString_int32(CMMListFieldDropdownSelectedIndex4(Scope.GetFlagName)))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
-												onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 											}
 
 											tooltipwidget = { BasicFunctionalTooltip = {} }
@@ -1113,6 +1186,33 @@
 										}
 									}
 								}
+							}
+
+							button = {
+								size = { 132 28 }
+								parentanchor = center
+								widgetanchor = center
+								visible = "[And(CMMListFieldIsDropdown4(CMMListItemOwnerSettingKey(Scope.GetFlagName)), UIAction.IsLeftClickModifierEnabled('shift'))]"
+								enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								alpha = 0
+								effectname = "NoHighlight"
+
+								action_tooltip = {
+									click_mode = single
+									click_type = left
+									click_modifier = shift
+									title = "CMM_LIST_APPLY_OPTION_TO_ALL"
+								}
+
+								click_modifiers = {
+									onshift = "[CMMMarkHoveredListPosition]"
+									onshift = "[CMMMarkListFieldSlot4]"
+									onshift = "[CMMMarkListFieldSelectDropdownAll]"
+									onshift = "[GetScriptedGui(Concatenate('CMM_MarkDropdownSelection_', ToString_int32(CMMListFieldDropdownSelectedIndex4(Scope.GetFlagName)))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+									onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								}
+
+								tooltipwidget = { BasicFunctionalTooltip = {} }
 							}
 
 						}
