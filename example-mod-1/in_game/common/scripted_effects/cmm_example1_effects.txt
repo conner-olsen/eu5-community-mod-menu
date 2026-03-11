@@ -8,15 +8,7 @@ cmm_example1_register_mod = {
 		mod_id = cmm_example1
 		setting_id = example_toggle
 		tab_id = general
-		group_id = toggles
-		default_value = 0
-	}
-
-	cmm_register_global_bool_setting = {
-		mod_id = cmm_example1
-		setting_id = global_example_toggle
-		tab_id = general
-		group_id = toggles
+		group_id = general_toggles
 		default_value = 0
 	}
 
@@ -24,14 +16,14 @@ cmm_example1_register_mod = {
 		mod_id = cmm_example1
 		setting_id = example_button
 		tab_id = general
-		group_id = toggles
+		group_id = general_toggles
 	}
 
 	cmm_register_numeric_setting = {
 		mod_id = cmm_example1
 		setting_id = example_numeric
 		tab_id = general
-		group_id = values
+		group_id = general_values
 		default_value = 5
 		min_value = 0
 		max_value = 10
@@ -42,7 +34,7 @@ cmm_example1_register_mod = {
 		mod_id = cmm_example1
 		setting_id = example_slider
 		tab_id = general
-		group_id = values
+		group_id = general_values
 		default_value = 50
 		min_value = 0
 		max_value = 100
@@ -53,7 +45,7 @@ cmm_example1_register_mod = {
 		mod_id = cmm_example1
 		setting_id = example_text
 		tab_id = general
-		group_id = values
+		group_id = general_values
 		character_limit = 42
 		quote_text = 1
 	}
@@ -62,7 +54,53 @@ cmm_example1_register_mod = {
 		mod_id = cmm_example1
 		setting_id = example_dropdown
 		tab_id = general
-		group_id = values
+		group_id = general_values
+		default_index = 1
+		option_count = 3
+	}
+
+	cmm_register_global_bool_setting = {
+		mod_id = cmm_example1
+		setting_id = global_example_toggle
+		tab_id = global
+		group_id = global_toggles
+		default_value = 0
+	}
+
+	cmm_register_global_button_setting = {
+		mod_id = cmm_example1
+		setting_id = global_example_button
+		tab_id = global
+		group_id = global_toggles
+	}
+
+	cmm_register_global_numeric_setting = {
+		mod_id = cmm_example1
+		setting_id = global_example_numeric
+		tab_id = global
+		group_id = global_values
+		default_value = 5
+		min_value = 0
+		max_value = 10
+		step_value = 1
+	}
+
+	cmm_register_global_slider_setting = {
+		mod_id = cmm_example1
+		setting_id = global_example_slider
+		tab_id = global
+		group_id = global_values
+		default_value = 50
+		min_value = 0
+		max_value = 100
+		step_value = 10
+	}
+
+	cmm_register_global_dropdown_setting = {
+		mod_id = cmm_example1
+		setting_id = global_example_dropdown
+		tab_id = global
+		group_id = global_values
 		default_index = 1
 		option_count = 3
 	}
