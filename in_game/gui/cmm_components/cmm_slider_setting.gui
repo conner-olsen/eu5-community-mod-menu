@@ -16,16 +16,16 @@
 	# - cmm_slider_index_to_apply [value]: pending visual slot index for `cmm_apply_slider_change`.
 	# - <mod_id>__<setting_id> callbacks [effect]: applies slider changes via `_on_changed`.
 	type cmm_slider_setting = widget {
-		size = { 280 34 }
-		minimumsize = { 280 34 }
+		size = { 320 34 }
+		minimumsize = { 320 34 }
 
 		hbox = {
 			margin = { 2 0 }
 			spacing = 10
 
 			widget = {
-				size = { 220 20 }
-				minimumsize = { 220 20 }
+				size = { 260 20 }
+				minimumsize = { 260 20 }
 				allow_outside = yes
 
 				hbox = {
@@ -76,8 +76,8 @@
 					}
 
 					widget = {
-						size = { 180 20 }
-						minimumsize = { 180 20 }
+						size = { 220 20 }
+						minimumsize = { 220 20 }
 						allow_outside = yes
 						onmousehierarchyleave = "[CMMExecuteGui('CMM_StopSliderDrag')]"
 
@@ -107,29 +107,76 @@
 
 						hbox = {
 							size = { 100% 20 }
-							datamodel = "[DataModelRepeatedItem(CMMMetadataInt('cmm_setting_slider_visual_step_count_', Scope.GetFlagName))]"
-							datamodel_reuse_widgets = yes
+							widget = {
+								size = { 9 20 }
+								minimumsize = { 9 20 }
+								allow_outside = yes
+								onmousehierarchyenter = "[CMMExecuteGui('CMM_SliderDragHover_0')]"
+								onmousehierarchyenter = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
 
-							item = {
-								widget = {
-									using = layoutpolicy_expanding
-									layoutstretchfactor_horizontal = 1
-									size = { 0 20 }
-									allow_outside = yes
-									onmousehierarchyenter = "[CMMExecuteGuiSuffix('CMM_SliderDragHover_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
-									onmousehierarchyenter = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+								button = {
+									size = { 100% 20 }
+									alpha = 0
+									effectname = "NoHighlight"
+									enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
+									onpressed = "[CMMExecuteGui('CMM_StartSliderDrag')]"
+									onpressed = "[CMMExecuteGui('CMM_MarkSliderSelection_0')]"
+									onpressed = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+									onreleased = "[CMMExecuteGui('CMM_StopSliderDrag')]"
+									tooltip_enabled = no
+								}
+							}
 
-									button = {
-										size = { 100% 20 }
-										alpha = 0
-										effectname = "NoHighlight"
-										enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
-										onpressed = "[CMMExecuteGui('CMM_StartSliderDrag')]"
-										onpressed = "[CMMExecuteGuiSuffix('CMM_MarkSliderSelection_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
-										onpressed = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-										onreleased = "[CMMExecuteGui('CMM_StopSliderDrag')]"
-										tooltip_enabled = no
+							widget = {
+								size = { 202 20 }
+								minimumsize = { 202 20 }
+
+								hbox = {
+									size = { 100% 20 }
+									datamodel = "[DataModelRepeatedItem(CMMMetadataInt('cmm_setting_slider_visual_step_count_', Scope.GetFlagName))]"
+									datamodel_reuse_widgets = yes
+
+									item = {
+										widget = {
+											size = { 2 20 }
+											minimumsize = { 2 20 }
+											allow_outside = yes
+											onmousehierarchyenter = "[CMMExecuteGuiSuffix('CMM_SliderDragHover_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
+											onmousehierarchyenter = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+
+											button = {
+												size = { 100% 20 }
+												alpha = 0
+												effectname = "NoHighlight"
+												enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
+												onpressed = "[CMMExecuteGui('CMM_StartSliderDrag')]"
+												onpressed = "[CMMExecuteGuiSuffix('CMM_MarkSliderSelection_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
+												onpressed = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+												onreleased = "[CMMExecuteGui('CMM_StopSliderDrag')]"
+												tooltip_enabled = no
+											}
+										}
 									}
+								}
+							}
+
+							widget = {
+								size = { 9 20 }
+								minimumsize = { 9 20 }
+								allow_outside = yes
+								onmousehierarchyenter = "[CMMExecuteGui('CMM_SliderDragHover_100')]"
+								onmousehierarchyenter = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+
+								button = {
+									size = { 100% 20 }
+									alpha = 0
+									effectname = "NoHighlight"
+									enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
+									onpressed = "[CMMExecuteGui('CMM_StartSliderDrag')]"
+									onpressed = "[CMMExecuteGui('CMM_MarkSliderSelection_100')]"
+									onpressed = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
+									onreleased = "[CMMExecuteGui('CMM_StopSliderDrag')]"
+									tooltip_enabled = no
 								}
 							}
 						}

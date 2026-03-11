@@ -88,12 +88,7 @@ cmm_register_slider_setting = {
 		set_variable = { name = cmm_setting_slider_actual_step_count_$mod_id$__$setting_id$ value = 2 }
 	}
 
-	set_variable = { name = cmm_setting_slider_visual_step_count_$mod_id$__$setting_id$ value = var:cmm_setting_slider_actual_step_count_$mod_id$__$setting_id$ }
-
-	if = {
-		limit = { var:cmm_setting_slider_visual_step_count_$mod_id$__$setting_id$ > 25 }
-		set_variable = { name = cmm_setting_slider_visual_step_count_$mod_id$__$setting_id$ value = 25 }
-	}
+	set_variable = { name = cmm_setting_slider_visual_step_count_$mod_id$__$setting_id$ value = 101 }
 
 	set_variable = { name = cmm_setting_slider_actual_last_index_$mod_id$__$setting_id$ value = var:cmm_setting_slider_actual_step_count_$mod_id$__$setting_id$ }
 	change_variable = { name = cmm_setting_slider_actual_last_index_$mod_id$__$setting_id$ add = -1 }
@@ -178,12 +173,7 @@ cmm_register_global_slider_setting = {
 		set_variable = { name = cmm_setting_slider_actual_step_count_$mod_id$__$setting_id$ value = 2 }
 	}
 
-	set_variable = { name = cmm_setting_slider_visual_step_count_$mod_id$__$setting_id$ value = var:cmm_setting_slider_actual_step_count_$mod_id$__$setting_id$ }
-
-	if = {
-		limit = { var:cmm_setting_slider_visual_step_count_$mod_id$__$setting_id$ > 25 }
-		set_variable = { name = cmm_setting_slider_visual_step_count_$mod_id$__$setting_id$ value = 25 }
-	}
+	set_variable = { name = cmm_setting_slider_visual_step_count_$mod_id$__$setting_id$ value = 101 }
 
 	set_variable = { name = cmm_setting_slider_actual_last_index_$mod_id$__$setting_id$ value = var:cmm_setting_slider_actual_step_count_$mod_id$__$setting_id$ }
 	change_variable = { name = cmm_setting_slider_actual_last_index_$mod_id$__$setting_id$ add = -1 }

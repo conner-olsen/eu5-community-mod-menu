@@ -38,7 +38,7 @@ cmm_example1_register_mod = {
 		default_value = 50
 		min_value = 0
 		max_value = 100
-		step_value = 10
+		step_value = 1
 	}
 
 	cmm_register_text_setting = {
@@ -125,7 +125,7 @@ cmm_example1_register_mod = {
 		default_value = 50
 		min_value = 0
 		max_value = 100
-		step_value = 10
+		step_value = 1
 	}
 
 	cmm_register_global_dropdown_setting = {
