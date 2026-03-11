@@ -1,0 +1,55 @@
+{{Modding tool
+|type=Shared Mod Menu
+|author=Conner
+|status=Upcoming
+|github=conner-olsen/eu5-community-mod-menu
+}}
+
+The Community Mod Menu (CMM) is a dependency mod that allows multiple mods to hook into a single shared setting menu through a simple registration API.
+
+The guide below will be based on the CMM Example Mod, which can be found [TODO here on the workshop] or [https://github.com/conner-olsen/eu5-community-mod-menu/tree/main/submods/example-mod here on GitHub], where <code>example-mod</code> is the root mod folder. 
+
+== Basic Setup ==
+First, create an effect file such as <code>example-mod\in_game\common\scripted_effects\cmm_example_menu_registration_effects.txt</code> Within it, use the <code>cmm_register_mod</code> effect to register your mod with a unique ID, such as:
+<syntaxhighlight lang="text">
+cmm_example_register_mod = {
+	cmm_register_mod = {
+		mod_id = cmm_example
+	}
+}
+</syntaxhighlight>
+* <code>cmm_example_register_mod </code>, this is your registration effect and can be named whatever you want.
+* <code>cmm_example</code> is the unique mod ID that you will choose. 
+
+Next, you will need to hook into the shared <code>on_action</code>. Create an <code>on_action</code> file in <code>example-mod\in_game\common\on_action\cmm_example_on_action.txt</code> and inside it, you will need to connect to the CMM on_action, such as:
+<syntaxhighlight lang="text">
+cmm_on_mod_registration = {
+	on_actions = {
+		cmm_example_on_register_mod
+	}
+}
+
+cmm_example_on_register_mod = {
+	effect = {
+		cmm_example_register_mod = yes
+	}
+}
+</syntaxhighlight>
+* <code>cmm_example_on_register_mod</code> is your on_action that will run your registration effect and can be named whatever you want. 
+* <code>cmm_example_register_mod</code> is the effect that we created above, and must match the name you chose before.
+
+That is all that is required for your mod to show up in the menu. But now you will want to add localization so the mod's name is displayed instead of its ID. 
+
+Create a localization file such as <code>example-mod\main_menu\localization\english\cmm_example_mod_l_english.yml</code>, inside it you will want to create keys for your mod name and description, for the above example it would be:
+<syntaxhighlight lang="yaml">
+l_english:
+ cmm_example_name: "CMM Example Mod"
+ cmm_example_desc: "Reference integration mod for Community Mod Menu."
+</syntaxhighlight>
+* The key names are based on the unique mod ID you choose, with <code>[you-mod-id]_name</code> setting the name that appears in the searchbar and menu title, and <code>[your-mod-id]_desc</code> appearing as the tooltip when you hover over it.
+
+Now, as long as CMM is enabled and loaded above your mod, you can access your mod menu through the shared interface.
+
+{{Modding navbox
+|category=Modding tools
+}}
