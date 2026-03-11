@@ -9,7 +9,7 @@ A dependency mod for **Europa Universalis 5** that provides one shared in-game m
 - Dynamic right settings panel for registered bool, button, numeric, slider, dropdown, text, and ordered list settings.
 - Dynamic per-mod tabs in the right panel.
 - Mod-id-based registration API with no fixed slot cap.
-- GUI function macro layer for shared CMM data-binding expressions (`loading_screen/data_binding/cmm_macros.txt`).
+- GUI function macro layer for shared CMM data-binding expressions (`loading_screen/data_binding/cmm_macros.txt` plus split descriptive companion files such as `cmm_macros_view.txt`, `cmm_macros_settings.txt`, and `cmm_macros_list.txt`).
 
 ## Current settings scope (v1)
 

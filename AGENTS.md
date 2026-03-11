@@ -42,7 +42,7 @@ Implemented:
 18. Runtime localization keys are derived from ids (no extra registration args for names/descriptions).
 19. Dynamic per-mod tabs are implemented in the right panel.
 20. Settings are filtered by both selected mod and selected tab.
-21. GUI function macro layer is in place (`loading_screen/data_binding/cmm_macros.txt`) and used by CMM GUI.
+21. GUI function macro layer is in place (`loading_screen/data_binding/cmm_macros.txt` plus split descriptive companion files) and used by CMM GUI.
 22. Global setting registration is implemented via `cmm_register_global_bool_setting`, `cmm_register_global_button_setting`, `cmm_register_global_numeric_setting`, `cmm_register_global_slider_setting`, and `cmm_register_global_dropdown_setting`.
 23. Global stateful settings are host-editable in multiplayer and read directly from global variables in UI; global button settings are host-editable in multiplayer without creating stored value state.
 24. List ordering is registration-first; earlier registration/load order remains earlier in rendered mod, tab, and setting lists.
@@ -124,6 +124,9 @@ Additional rules:
 - `in_game/gui/panes/cmm_settings_pane.gui`
 - `in_game/gui/cmm_components/cmm_list_setting.gui`
 - `loading_screen/data_binding/cmm_macros.txt`
+- `loading_screen/data_binding/cmm_macros_view.txt`
+- `loading_screen/data_binding/cmm_macros_settings.txt`
+- `loading_screen/data_binding/cmm_macros_list.txt`
 - `docs/mod-integration.md`
 - `README.md`
 
@@ -131,7 +134,8 @@ Additional rules:
 
 Use GUI function macros for repeated GUI data-binding expressions in CMM core GUI files.
 
-- Define CMM macros in `loading_screen/data_binding/cmm_macros.txt`.
+- Define core CMM macros in `loading_screen/data_binding/cmm_macros.txt`.
+- Split themed macro groups into adjacent descriptive `loading_screen/data_binding/cmm_macros_<topic>.txt` files when it improves maintainability.
 - Keep macro names `CMM*`.
 - Prefer macros for repeated variable lookups, label/description resolution, and selected-mod/tab accessors.
 - Keep behavior unchanged during macro refactors (no logic change unless explicitly requested).
@@ -139,7 +143,7 @@ Use GUI function macros for repeated GUI data-binding expressions in CMM core GU
 
 ## GUI Macro Doc Comment Style
 
-Use this comment format for macro definitions in `loading_screen/data_binding/cmm_macros.txt`.
+Use this comment format for macro definitions in `loading_screen/data_binding/cmm_macros.txt` and split companion macro files under `loading_screen/data_binding/`.
 
 Standard form:
 
