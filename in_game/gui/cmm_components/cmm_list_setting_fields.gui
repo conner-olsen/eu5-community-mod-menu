@@ -50,10 +50,11 @@
 	# - PdxGuiWidget.GetIndexInDataModel [int32]: current field slot index in the repeated field datamodel.
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_list_field_<slot>_type_', <setting_key>)) [value]: field type metadata.
 	# Writes:
-	# - none [n/a]: no writes.
+	# - GetVariableSystem.Set('cmm_list_hover_field_slot', ...) [effect]: caches the currently hovered field slot.
 	type cmm_list_setting_field_cell = widget {
 		size = { 132 28 }
 		minimumsize = { 132 28 }
+		onmousehierarchyenter = "[GetVariableSystem.Set('cmm_list_hover_field_slot', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
 
 		cmm_list_setting_bool_field = {
 			visible = "[CMMListFieldIsBool(CMMListItemOwnerSettingKey(Scope.GetFlagName), ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
@@ -73,6 +74,7 @@
 	# - Scope.GetFlagName [string]: current ordered list item key.
 	# - PdxGuiWidget.GetIndexInDataModel [int32]: current field slot index in the repeated field datamodel.
 	# - Player.MakeScope.GetVariable(Concatenate(Scope.GetFlagName, '_field_<slot>')) [value]: current bool field value for this row item.
+	# - GetVariableSystem.Get('cmm_list_hover_field_slot') [string]: cached hovered field slot for nested button actions.
 	# Writes:
 	# - GetScriptedGui('CMM_MarkListPosition_<index>').Execute(...) [effect]: marks the hovered row position.
 	# - GetScriptedGui('CMM_MarkListFieldSlot_<slot>').Execute(...) [effect]: marks the clicked field slot.
@@ -108,11 +110,11 @@
 
 			click_modifiers = {
 				ondefault = "[CMMExecuteGuiSuffix('CMM_MarkListPosition_', GetVariableSystem.Get('cmm_list_hover_index'))]"
-				ondefault = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
+				ondefault = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', GetVariableSystem.Get('cmm_list_hover_field_slot'))]"
 				ondefault = "[CMMExecuteGui('CMM_MarkListFieldToggle')]"
 				ondefault = "[CMMExecuteListItemSettingChanged(Scope.GetFlagName)]"
 				onshift = "[CMMExecuteGuiSuffix('CMM_MarkListPosition_', GetVariableSystem.Get('cmm_list_hover_index'))]"
-				onshift = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
+				onshift = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', GetVariableSystem.Get('cmm_list_hover_field_slot'))]"
 				onshift = "[CMMExecuteGui('CMM_MarkListFieldToggleAll')]"
 				onshift = "[CMMExecuteListItemSettingChanged(Scope.GetFlagName)]"
 			}
@@ -130,6 +132,7 @@
 	# - Player.MakeScope.GetVariable(Concatenate(Scope.GetFlagName, '_field_<slot>')) [value]: current numeric field value for this row item.
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_list_field_<slot>_min_', <setting_key>)) [value]: numeric minimum bound.
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_list_field_<slot>_max_', <setting_key>)) [value]: numeric maximum bound.
+	# - GetVariableSystem.Get('cmm_list_hover_field_slot') [string]: cached hovered field slot for nested button actions and tooltip text.
 	# Writes:
 	# - GetScriptedGui('CMM_MarkListPosition_<index>').Execute(...) [effect]: marks the hovered row position.
 	# - GetScriptedGui('CMM_MarkListFieldSlot_<slot>').Execute(...) [effect]: marks the clicked field slot.
@@ -170,15 +173,15 @@
 
 			click_modifiers = {
 				ondefault = "[CMMExecuteGuiSuffix('CMM_MarkListPosition_', GetVariableSystem.Get('cmm_list_hover_index'))]"
-				ondefault = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
+				ondefault = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', GetVariableSystem.Get('cmm_list_hover_field_slot'))]"
 				ondefault = "[CMMExecuteGui('CMM_MarkNumericDecrease')]"
 				ondefault = "[CMMExecuteListItemSettingChanged(Scope.GetFlagName)]"
 				onctrl = "[CMMExecuteGuiSuffix('CMM_MarkListPosition_', GetVariableSystem.Get('cmm_list_hover_index'))]"
-				onctrl = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
+				onctrl = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', GetVariableSystem.Get('cmm_list_hover_field_slot'))]"
 				onctrl = "[CMMExecuteGui('CMM_MarkNumericDecrease5x')]"
 				onctrl = "[CMMExecuteListItemSettingChanged(Scope.GetFlagName)]"
 				onshift = "[CMMExecuteGuiSuffix('CMM_MarkListPosition_', GetVariableSystem.Get('cmm_list_hover_index'))]"
-				onshift = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
+				onshift = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', GetVariableSystem.Get('cmm_list_hover_field_slot'))]"
 				onshift = "[CMMExecuteGui('CMM_MarkNumericDecreaseToMin')]"
 				onshift = "[CMMExecuteListItemSettingChanged(Scope.GetFlagName)]"
 			}
@@ -227,7 +230,7 @@
 
 					click_modifiers = {
 						onshift = "[CMMExecuteGuiSuffix('CMM_MarkListPosition_', GetVariableSystem.Get('cmm_list_hover_index'))]"
-						onshift = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
+						onshift = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', GetVariableSystem.Get('cmm_list_hover_field_slot'))]"
 						onshift = "[CMMExecuteGui('CMM_MarkListFieldSelectNumericAll')]"
 						onshift = "[CMMExecuteListItemSettingChanged(Scope.GetFlagName)]"
 					}
@@ -243,7 +246,7 @@
 									textbox = {
 										using = text_single_template
 										align = left|nobaseline
-										raw_text = "[CMMListFieldMetadataValue(CMMListItemOwnerSettingKey(Scope.GetFlagName), ToString_int32(PdxGuiWidget.GetIndexInDataModel), '_min_')] - [CMMListFieldMetadataValue(CMMListItemOwnerSettingKey(Scope.GetFlagName), ToString_int32(PdxGuiWidget.GetIndexInDataModel), '_max_')]"
+										raw_text = "[CMMListFieldMetadataValue(CMMListItemOwnerSettingKey(Scope.GetFlagName), GetVariableSystem.Get('cmm_list_hover_field_slot'), '_min_')] - [CMMListFieldMetadataValue(CMMListItemOwnerSettingKey(Scope.GetFlagName), GetVariableSystem.Get('cmm_list_hover_field_slot'), '_max_')]"
 									}
 								}
 							}
@@ -288,15 +291,15 @@
 
 			click_modifiers = {
 				ondefault = "[CMMExecuteGuiSuffix('CMM_MarkListPosition_', GetVariableSystem.Get('cmm_list_hover_index'))]"
-				ondefault = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
+				ondefault = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', GetVariableSystem.Get('cmm_list_hover_field_slot'))]"
 				ondefault = "[CMMExecuteGui('CMM_MarkNumericIncrease')]"
 				ondefault = "[CMMExecuteListItemSettingChanged(Scope.GetFlagName)]"
 				onctrl = "[CMMExecuteGuiSuffix('CMM_MarkListPosition_', GetVariableSystem.Get('cmm_list_hover_index'))]"
-				onctrl = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
+				onctrl = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', GetVariableSystem.Get('cmm_list_hover_field_slot'))]"
 				onctrl = "[CMMExecuteGui('CMM_MarkNumericIncrease5x')]"
 				onctrl = "[CMMExecuteListItemSettingChanged(Scope.GetFlagName)]"
 				onshift = "[CMMExecuteGuiSuffix('CMM_MarkListPosition_', GetVariableSystem.Get('cmm_list_hover_index'))]"
-				onshift = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
+				onshift = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', GetVariableSystem.Get('cmm_list_hover_field_slot'))]"
 				onshift = "[CMMExecuteGui('CMM_MarkNumericIncreaseToMax')]"
 				onshift = "[CMMExecuteListItemSettingChanged(Scope.GetFlagName)]"
 			}
