@@ -881,9 +881,25 @@ macro = {
 # Args: none
 # Returns: none
 macro = {
+    description = "Mark the next ordered list interaction as toggling one bool field for all rows"
+    definition = "CMMMarkListFieldToggleAll"
+    replace_with = "GetScriptedGui('CMM_MarkListFieldToggleAll').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
+# Args: none
+# Returns: none
+macro = {
     description = "Mark the next ordered list interaction as selecting a dropdown-field option"
     definition = "CMMMarkListFieldSelectDropdown"
     replace_with = "GetScriptedGui('CMM_MarkListFieldSelectDropdown').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
+# Args: none
+# Returns: none
+macro = {
+    description = "Mark the next ordered list interaction as selecting a dropdown-field option for all rows"
+    definition = "CMMMarkListFieldSelectDropdownAll"
+    replace_with = "GetScriptedGui('CMM_MarkListFieldSelectDropdownAll').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
 }
 
 # Args: none
@@ -1029,3 +1045,5 @@ macro = {
     definition = "CMMShowNoSettingsForSelectedTab"
     replace_with = "And(CMMSelectedModExists, Or3(Not(CMMSelectedTabExists), Not(CMMSelectedTabCountIsSet), EqualTo_CFixedPoint(CMMSelectedTabCountValue, '(CFixedPoint)0')))"
 }
+
+

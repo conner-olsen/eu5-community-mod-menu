@@ -51,40 +51,40 @@
 			}
 
 			text_single = {
-				size = { 120 0 }
-				minimumsize = { 120 0 }
+				size = { 132 0 }
+				minimumsize = { 132 0 }
 				align = center|nobaseline
 				visible = "[CMMListFieldHasSlot0(Scope.GetFlagName)]"
 				text = "[CMMListFieldName0(Scope.GetFlagName)]"
 			}
 
 			text_single = {
-				size = { 120 0 }
-				minimumsize = { 120 0 }
+				size = { 132 0 }
+				minimumsize = { 132 0 }
 				align = center|nobaseline
 				visible = "[CMMListFieldHasSlot1(Scope.GetFlagName)]"
 				text = "[CMMListFieldName1(Scope.GetFlagName)]"
 			}
 
 			text_single = {
-				size = { 120 0 }
-				minimumsize = { 120 0 }
+				size = { 132 0 }
+				minimumsize = { 132 0 }
 				align = center|nobaseline
 				visible = "[CMMListFieldHasSlot2(Scope.GetFlagName)]"
 				text = "[CMMListFieldName2(Scope.GetFlagName)]"
 			}
 
 			text_single = {
-				size = { 120 0 }
-				minimumsize = { 120 0 }
+				size = { 132 0 }
+				minimumsize = { 132 0 }
 				align = center|nobaseline
 				visible = "[CMMListFieldHasSlot3(Scope.GetFlagName)]"
 				text = "[CMMListFieldName3(Scope.GetFlagName)]"
 			}
 
 			text_single = {
-				size = { 120 0 }
-				minimumsize = { 120 0 }
+				size = { 132 0 }
+				minimumsize = { 132 0 }
 				align = center|nobaseline
 				visible = "[CMMListFieldHasSlot4(Scope.GetFlagName)]"
 				text = "[CMMListFieldName4(Scope.GetFlagName)]"
@@ -120,7 +120,7 @@
 					hbox = {
 						layoutpolicy_horizontal = expanding
 						ignoreinvisible = yes
-						margin = { 8 2 }
+						margin = { 0 2 }
 						spacing = 8
 
 						widget = {
@@ -168,7 +168,8 @@
 										text_single = {
 											parentanchor = center
 											widgetanchor = center
-											raw_text = "^"
+											position = { 2 0 }
+											raw_text = "↑"
 										}
 									}
 								}
@@ -209,7 +210,8 @@
 										text_single = {
 											parentanchor = center
 											widgetanchor = center
-											raw_text = "v"
+											position = { 2 0 }
+											raw_text = "↓"
 										}
 									}
 								}
@@ -223,8 +225,8 @@
 						}
 
 						widget = {
-							size = { 120 28 }
-							minimumsize = { 120 28 }
+							size = { 132 28 }
+							minimumsize = { 132 28 }
 							visible = "[CMMListFieldHasSlot0(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 
 							checkbox_square_alt = {
@@ -233,16 +235,44 @@
 								visible = "[CMMListFieldIsBool0(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 								enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 								checked = "[CMMListFieldBoolChecked0(Scope.GetFlagName)]"
-								onclick = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
-								onclick = "[CMMMarkListFieldSlot0]"
-								onclick = "[CMMMarkListFieldToggle]"
-								onclick = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 								tooltip_enabled = no
 							}
 
+							button = {
+								size = { 24 24 }
+								parentanchor = center
+								widgetanchor = center
+								visible = "[CMMListFieldIsBool0(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								alpha = 0
+								effectname = "NoHighlight"
+
+								action_tooltip = {
+									click_mode = single
+									click_type = left
+									click_modifier = shift
+									title = "CMM_LIST_TOGGLE_ALL"
+								}
+
+								click_modifiers = {
+									ondefault = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+									ondefault = "[CMMMarkListFieldSlot0]"
+									ondefault = "[CMMMarkListFieldToggle]"
+									ondefault = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+									onshift = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+									onshift = "[CMMMarkListFieldSlot0]"
+									onshift = "[CMMMarkListFieldToggleAll]"
+									onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								}
+
+								tooltipwidget = {
+									BasicFunctionalTooltip = {}
+								}
+							}
+
 							dropDown = {
-								size = { 120 28 }
-								minimumsize = { 120 28 }
+								size = { 132 28 }
+								minimumsize = { 132 28 }
 								parentanchor = center
 								widgetanchor = center
 								visible = "[CMMListFieldIsDropdown0(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
@@ -262,7 +292,23 @@
 										button_drop = {
 											enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 											onclick = "[GetVariableSystem.Set('cmm_dropdown_hover_index', ToString_int32(CMMListFieldDropdownSelectedIndex0(Scope.GetFlagName)))]"
-											tooltip_enabled = no
+
+											action_tooltip = {
+												click_mode = single
+												click_type = left
+												click_modifier = shift
+												title = "CMM_LIST_APPLY_OPTION_TO_ALL"
+											}
+
+											click_modifiers = {
+												onshift = "[CMMMarkHoveredListPosition]"
+												onshift = "[CMMMarkListFieldSlot0]"
+												onshift = "[CMMMarkListFieldSelectDropdownAll]"
+												onshift = "[GetScriptedGui(Concatenate('CMM_MarkDropdownSelection_', ToString_int32(CMMListFieldDropdownSelectedIndex0(Scope.GetFlagName)))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+												onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+											}
+
+											tooltipwidget = { BasicFunctionalTooltip = {} }
 										}
 
 										hbox = {
@@ -344,11 +390,12 @@
 									}
 								}
 							}
+
 						}
 
 						widget = {
-							size = { 120 28 }
-							minimumsize = { 120 28 }
+							size = { 132 28 }
+							minimumsize = { 132 28 }
 							visible = "[CMMListFieldHasSlot1(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 
 							checkbox_square_alt = {
@@ -357,16 +404,44 @@
 								visible = "[CMMListFieldIsBool1(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 								enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 								checked = "[CMMListFieldBoolChecked1(Scope.GetFlagName)]"
-								onclick = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
-								onclick = "[CMMMarkListFieldSlot1]"
-								onclick = "[CMMMarkListFieldToggle]"
-								onclick = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 								tooltip_enabled = no
 							}
 
+							button = {
+								size = { 24 24 }
+								parentanchor = center
+								widgetanchor = center
+								visible = "[CMMListFieldIsBool1(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								alpha = 0
+								effectname = "NoHighlight"
+
+								action_tooltip = {
+									click_mode = single
+									click_type = left
+									click_modifier = shift
+									title = "CMM_LIST_TOGGLE_ALL"
+								}
+
+								click_modifiers = {
+									ondefault = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+									ondefault = "[CMMMarkListFieldSlot1]"
+									ondefault = "[CMMMarkListFieldToggle]"
+									ondefault = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+									onshift = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+									onshift = "[CMMMarkListFieldSlot1]"
+									onshift = "[CMMMarkListFieldToggleAll]"
+									onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								}
+
+								tooltipwidget = {
+									BasicFunctionalTooltip = {}
+								}
+							}
+
 							dropDown = {
-								size = { 120 28 }
-								minimumsize = { 120 28 }
+								size = { 132 28 }
+								minimumsize = { 132 28 }
 								parentanchor = center
 								widgetanchor = center
 								visible = "[CMMListFieldIsDropdown1(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
@@ -386,7 +461,23 @@
 										button_drop = {
 											enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 											onclick = "[GetVariableSystem.Set('cmm_dropdown_hover_index', ToString_int32(CMMListFieldDropdownSelectedIndex1(Scope.GetFlagName)))]"
-											tooltip_enabled = no
+
+											action_tooltip = {
+												click_mode = single
+												click_type = left
+												click_modifier = shift
+												title = "CMM_LIST_APPLY_OPTION_TO_ALL"
+											}
+
+											click_modifiers = {
+												onshift = "[CMMMarkHoveredListPosition]"
+												onshift = "[CMMMarkListFieldSlot1]"
+												onshift = "[CMMMarkListFieldSelectDropdownAll]"
+												onshift = "[GetScriptedGui(Concatenate('CMM_MarkDropdownSelection_', ToString_int32(CMMListFieldDropdownSelectedIndex1(Scope.GetFlagName)))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+												onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+											}
+
+											tooltipwidget = { BasicFunctionalTooltip = {} }
 										}
 
 										hbox = {
@@ -468,11 +559,12 @@
 									}
 								}
 							}
+
 						}
 
 						widget = {
-							size = { 120 28 }
-							minimumsize = { 120 28 }
+							size = { 132 28 }
+							minimumsize = { 132 28 }
 							visible = "[CMMListFieldHasSlot2(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 
 							checkbox_square_alt = {
@@ -481,16 +573,44 @@
 								visible = "[CMMListFieldIsBool2(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 								enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 								checked = "[CMMListFieldBoolChecked2(Scope.GetFlagName)]"
-								onclick = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
-								onclick = "[CMMMarkListFieldSlot2]"
-								onclick = "[CMMMarkListFieldToggle]"
-								onclick = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 								tooltip_enabled = no
 							}
 
+							button = {
+								size = { 24 24 }
+								parentanchor = center
+								widgetanchor = center
+								visible = "[CMMListFieldIsBool2(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								alpha = 0
+								effectname = "NoHighlight"
+
+								action_tooltip = {
+									click_mode = single
+									click_type = left
+									click_modifier = shift
+									title = "CMM_LIST_TOGGLE_ALL"
+								}
+
+								click_modifiers = {
+									ondefault = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+									ondefault = "[CMMMarkListFieldSlot2]"
+									ondefault = "[CMMMarkListFieldToggle]"
+									ondefault = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+									onshift = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+									onshift = "[CMMMarkListFieldSlot2]"
+									onshift = "[CMMMarkListFieldToggleAll]"
+									onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								}
+
+								tooltipwidget = {
+									BasicFunctionalTooltip = {}
+								}
+							}
+
 							dropDown = {
-								size = { 120 28 }
-								minimumsize = { 120 28 }
+								size = { 132 28 }
+								minimumsize = { 132 28 }
 								parentanchor = center
 								widgetanchor = center
 								visible = "[CMMListFieldIsDropdown2(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
@@ -510,7 +630,23 @@
 										button_drop = {
 											enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 											onclick = "[GetVariableSystem.Set('cmm_dropdown_hover_index', ToString_int32(CMMListFieldDropdownSelectedIndex2(Scope.GetFlagName)))]"
-											tooltip_enabled = no
+
+											action_tooltip = {
+												click_mode = single
+												click_type = left
+												click_modifier = shift
+												title = "CMM_LIST_APPLY_OPTION_TO_ALL"
+											}
+
+											click_modifiers = {
+												onshift = "[CMMMarkHoveredListPosition]"
+												onshift = "[CMMMarkListFieldSlot2]"
+												onshift = "[CMMMarkListFieldSelectDropdownAll]"
+												onshift = "[GetScriptedGui(Concatenate('CMM_MarkDropdownSelection_', ToString_int32(CMMListFieldDropdownSelectedIndex2(Scope.GetFlagName)))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+												onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+											}
+
+											tooltipwidget = { BasicFunctionalTooltip = {} }
 										}
 
 										hbox = {
@@ -592,11 +728,12 @@
 									}
 								}
 							}
+
 						}
 
 						widget = {
-							size = { 120 28 }
-							minimumsize = { 120 28 }
+							size = { 132 28 }
+							minimumsize = { 132 28 }
 							visible = "[CMMListFieldHasSlot3(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 
 							checkbox_square_alt = {
@@ -605,16 +742,44 @@
 								visible = "[CMMListFieldIsBool3(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 								enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 								checked = "[CMMListFieldBoolChecked3(Scope.GetFlagName)]"
-								onclick = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
-								onclick = "[CMMMarkListFieldSlot3]"
-								onclick = "[CMMMarkListFieldToggle]"
-								onclick = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 								tooltip_enabled = no
 							}
 
+							button = {
+								size = { 24 24 }
+								parentanchor = center
+								widgetanchor = center
+								visible = "[CMMListFieldIsBool3(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								alpha = 0
+								effectname = "NoHighlight"
+
+								action_tooltip = {
+									click_mode = single
+									click_type = left
+									click_modifier = shift
+									title = "CMM_LIST_TOGGLE_ALL"
+								}
+
+								click_modifiers = {
+									ondefault = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+									ondefault = "[CMMMarkListFieldSlot3]"
+									ondefault = "[CMMMarkListFieldToggle]"
+									ondefault = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+									onshift = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+									onshift = "[CMMMarkListFieldSlot3]"
+									onshift = "[CMMMarkListFieldToggleAll]"
+									onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								}
+
+								tooltipwidget = {
+									BasicFunctionalTooltip = {}
+								}
+							}
+
 							dropDown = {
-								size = { 120 28 }
-								minimumsize = { 120 28 }
+								size = { 132 28 }
+								minimumsize = { 132 28 }
 								parentanchor = center
 								widgetanchor = center
 								visible = "[CMMListFieldIsDropdown3(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
@@ -634,7 +799,23 @@
 										button_drop = {
 											enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 											onclick = "[GetVariableSystem.Set('cmm_dropdown_hover_index', ToString_int32(CMMListFieldDropdownSelectedIndex3(Scope.GetFlagName)))]"
-											tooltip_enabled = no
+
+											action_tooltip = {
+												click_mode = single
+												click_type = left
+												click_modifier = shift
+												title = "CMM_LIST_APPLY_OPTION_TO_ALL"
+											}
+
+											click_modifiers = {
+												onshift = "[CMMMarkHoveredListPosition]"
+												onshift = "[CMMMarkListFieldSlot3]"
+												onshift = "[CMMMarkListFieldSelectDropdownAll]"
+												onshift = "[GetScriptedGui(Concatenate('CMM_MarkDropdownSelection_', ToString_int32(CMMListFieldDropdownSelectedIndex3(Scope.GetFlagName)))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+												onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+											}
+
+											tooltipwidget = { BasicFunctionalTooltip = {} }
 										}
 
 										hbox = {
@@ -716,11 +897,12 @@
 									}
 								}
 							}
+
 						}
 
 						widget = {
-							size = { 120 28 }
-							minimumsize = { 120 28 }
+							size = { 132 28 }
+							minimumsize = { 132 28 }
 							visible = "[CMMListFieldHasSlot4(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 
 							checkbox_square_alt = {
@@ -729,16 +911,44 @@
 								visible = "[CMMListFieldIsBool4(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 								enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 								checked = "[CMMListFieldBoolChecked4(Scope.GetFlagName)]"
-								onclick = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
-								onclick = "[CMMMarkListFieldSlot4]"
-								onclick = "[CMMMarkListFieldToggle]"
-								onclick = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 								tooltip_enabled = no
 							}
 
+							button = {
+								size = { 24 24 }
+								parentanchor = center
+								widgetanchor = center
+								visible = "[CMMListFieldIsBool4(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								alpha = 0
+								effectname = "NoHighlight"
+
+								action_tooltip = {
+									click_mode = single
+									click_type = left
+									click_modifier = shift
+									title = "CMM_LIST_TOGGLE_ALL"
+								}
+
+								click_modifiers = {
+									ondefault = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+									ondefault = "[CMMMarkListFieldSlot4]"
+									ondefault = "[CMMMarkListFieldToggle]"
+									ondefault = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+									onshift = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+									onshift = "[CMMMarkListFieldSlot4]"
+									onshift = "[CMMMarkListFieldToggleAll]"
+									onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								}
+
+								tooltipwidget = {
+									BasicFunctionalTooltip = {}
+								}
+							}
+
 							dropDown = {
-								size = { 120 28 }
-								minimumsize = { 120 28 }
+								size = { 132 28 }
+								minimumsize = { 132 28 }
 								parentanchor = center
 								widgetanchor = center
 								visible = "[CMMListFieldIsDropdown4(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
@@ -758,7 +968,23 @@
 										button_drop = {
 											enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
 											onclick = "[GetVariableSystem.Set('cmm_dropdown_hover_index', ToString_int32(CMMListFieldDropdownSelectedIndex4(Scope.GetFlagName)))]"
-											tooltip_enabled = no
+
+											action_tooltip = {
+												click_mode = single
+												click_type = left
+												click_modifier = shift
+												title = "CMM_LIST_APPLY_OPTION_TO_ALL"
+											}
+
+											click_modifiers = {
+												onshift = "[CMMMarkHoveredListPosition]"
+												onshift = "[CMMMarkListFieldSlot4]"
+												onshift = "[CMMMarkListFieldSelectDropdownAll]"
+												onshift = "[GetScriptedGui(Concatenate('CMM_MarkDropdownSelection_', ToString_int32(CMMListFieldDropdownSelectedIndex4(Scope.GetFlagName)))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+												onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+											}
+
+											tooltipwidget = { BasicFunctionalTooltip = {} }
 										}
 
 										hbox = {
@@ -840,6 +1066,7 @@
 									}
 								}
 							}
+
 						}
 					}
 				}

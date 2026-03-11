@@ -268,12 +268,30 @@ CMM_MarkListFieldToggle = {
 	}
 }
 
+# Mark the next ordered list interaction as toggling one bool field for all rows.
+# Scope: country
+# Args: none
+CMM_MarkListFieldToggleAll = {
+	effect = {
+		set_variable = { name = cmm_list_action_to_apply value = 9 }
+	}
+}
+
 # Mark the next ordered list interaction as selecting a dropdown-field option.
 # Scope: country
 # Args: none
 CMM_MarkListFieldSelectDropdown = {
 	effect = {
 		set_variable = { name = cmm_list_action_to_apply value = 8 }
+	}
+}
+
+# Mark the next ordered list interaction as selecting one dropdown-field option for all rows.
+# Scope: country
+# Args: none
+CMM_MarkListFieldSelectDropdownAll = {
+	effect = {
+		set_variable = { name = cmm_list_action_to_apply value = 10 }
 	}
 }
 

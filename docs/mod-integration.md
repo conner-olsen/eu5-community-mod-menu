@@ -1,4 +1,4 @@
-# CMM Mod Integration
+﻿# CMM Mod Integration
 
 This document is for mod authors integrating with **EU5 Community Mod Menu (CMM)**.
 
@@ -337,9 +337,8 @@ Notes:
 - Each list may register up to 5 fields total.
 - Field columns render left-to-right in registration order.
 - Bool fields render as checkboxes.
-- Dropdown fields render as compact click-to-cycle buttons:
-  - Click: next option.
-  - `Shift+click`: previous option.
+- Dropdown fields render as compact dropdowns.
+- `Shift+click` the closed dropdown control to apply that row's current dropdown value to all rows in the same field.
 - Ordered list rows support:
   - Click up/down: move one row.
   - `Shift+click` up/down: move to top/bottom.
