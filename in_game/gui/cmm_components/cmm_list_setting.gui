@@ -6,6 +6,7 @@
 	# - Player.MakeScope.GetList(Concatenate('cmm_list_items_', Scope.GetFlagName)) [list<flag>]: ordered item keys for the active list setting.
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_list_item_owner_setting_', Scope.GetFlagName)) [flag]: owner setting key for one item row.
 	# - Player.MakeScope.GetVariable(Concatenate(Scope.GetFlagName, '_name')) [flag]: localized item label for one item row.
+	# - Player.MakeScope.GetVariable(Concatenate('cmm_list_item_column_name_', <setting_key>)) [flag]: item-column header localization key for one list.
 	# - Player.MakeScope.GetVariable(Concatenate(Scope.GetFlagName, '_field_<slot>')) [value]: per-item field values for one item row.
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_list_field_<slot>_type_', <setting_key>)) [value]: field type metadata for one slot.
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_list_field_<slot>_name_', <setting_key>)) [flag]: field header localization key for one slot.
@@ -35,59 +36,80 @@
 			text = "[CMMSettingName(Scope.GetFlagName)]"
 		}
 
-		hbox = {
+		widget = {
 			layoutpolicy_horizontal = expanding
-			ignoreinvisible = yes
-			spacing = 8
-			visible = "[CMMListHasFields(Scope.GetFlagName)]"
+			minimumsize = { 0 32 }
+			using = bg_square_outline_tile
 
-			widget = {
-				size = { 56 0 }
-				minimumsize = { 56 0 }
+			background = {
+				using = color_dark_brown_texture
+				margin = { 2 2 }
+				alpha = 0.2
 			}
 
-			widget = {
+			background = {
+				using = overlay_window_texture
+				margin = { 2 2 }
+				blend_mode = overlay
+				alpha = 0.1
+			}
+
+			hbox = {
 				layoutpolicy_horizontal = expanding
-			}
+				ignoreinvisible = yes
+				margin = { 0 2 }
+				spacing = 8
 
-			text_single = {
-				size = { 132 0 }
-				minimumsize = { 132 0 }
-				align = center|nobaseline
-				visible = "[CMMListFieldHasSlot0(Scope.GetFlagName)]"
-				text = "[CMMListFieldName0(Scope.GetFlagName)]"
-			}
+				widget = {
+					size = { 56 0 }
+					minimumsize = { 56 0 }
+				}
 
-			text_single = {
-				size = { 132 0 }
-				minimumsize = { 132 0 }
-				align = center|nobaseline
-				visible = "[CMMListFieldHasSlot1(Scope.GetFlagName)]"
-				text = "[CMMListFieldName1(Scope.GetFlagName)]"
-			}
+				text_single = {
+					layoutpolicy_horizontal = expanding
+					align = left|nobaseline
+					text = "[CMMListItemColumnName(Scope.GetFlagName)]"
+				}
 
-			text_single = {
-				size = { 132 0 }
-				minimumsize = { 132 0 }
-				align = center|nobaseline
-				visible = "[CMMListFieldHasSlot2(Scope.GetFlagName)]"
-				text = "[CMMListFieldName2(Scope.GetFlagName)]"
-			}
+				text_single = {
+					size = { 132 0 }
+					minimumsize = { 132 0 }
+					align = center|nobaseline
+					visible = "[CMMListFieldHasSlot0(Scope.GetFlagName)]"
+					text = "[CMMListFieldName0(Scope.GetFlagName)]"
+				}
 
-			text_single = {
-				size = { 132 0 }
-				minimumsize = { 132 0 }
-				align = center|nobaseline
-				visible = "[CMMListFieldHasSlot3(Scope.GetFlagName)]"
-				text = "[CMMListFieldName3(Scope.GetFlagName)]"
-			}
+				text_single = {
+					size = { 132 0 }
+					minimumsize = { 132 0 }
+					align = center|nobaseline
+					visible = "[CMMListFieldHasSlot1(Scope.GetFlagName)]"
+					text = "[CMMListFieldName1(Scope.GetFlagName)]"
+				}
 
-			text_single = {
-				size = { 132 0 }
-				minimumsize = { 132 0 }
-				align = center|nobaseline
-				visible = "[CMMListFieldHasSlot4(Scope.GetFlagName)]"
-				text = "[CMMListFieldName4(Scope.GetFlagName)]"
+				text_single = {
+					size = { 132 0 }
+					minimumsize = { 132 0 }
+					align = center|nobaseline
+					visible = "[CMMListFieldHasSlot2(Scope.GetFlagName)]"
+					text = "[CMMListFieldName2(Scope.GetFlagName)]"
+				}
+
+				text_single = {
+					size = { 132 0 }
+					minimumsize = { 132 0 }
+					align = center|nobaseline
+					visible = "[CMMListFieldHasSlot3(Scope.GetFlagName)]"
+					text = "[CMMListFieldName3(Scope.GetFlagName)]"
+				}
+
+				text_single = {
+					size = { 132 0 }
+					minimumsize = { 132 0 }
+					align = center|nobaseline
+					visible = "[CMMListFieldHasSlot4(Scope.GetFlagName)]"
+					text = "[CMMListFieldName4(Scope.GetFlagName)]"
+				}
 			}
 		}
 

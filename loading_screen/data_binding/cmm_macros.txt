@@ -385,6 +385,14 @@ macro = {
 # Args: SettingKey (string)
 # Returns: string
 macro = {
+    description = "Ordered list item-column header localization"
+    definition = "CMMListItemColumnName(SettingKey)"
+    replace_with = "CMMVar(Concatenate('cmm_list_item_column_name_', SettingKey)).GetFlagName"
+}
+
+# Args: SettingKey (string)
+# Returns: string
+macro = {
     description = "Ordered list field slot 0 header localization"
     definition = "CMMListFieldName0(SettingKey)"
     replace_with = "CMMVar(Concatenate('cmm_list_field_0_name_', SettingKey)).GetFlagName"

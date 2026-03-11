@@ -33,6 +33,11 @@ cmm_register_list_setting = {
 		set_variable = { name = cmm_list_field_count_$mod_id$__$setting_id$ value = 0 }
 	}
 
+	set_variable = {
+		name = cmm_list_item_column_name_$mod_id$__$setting_id$
+		value = flag:$mod_id$_$setting_id$_item_column_name
+	}
+
 	cmm_register_setting_metadata = {
 		mod_id = $mod_id$
 		setting_id = $setting_id$
@@ -1359,6 +1364,7 @@ cmm_suppress_list_setting_warnings = {
 			exists = var:cmm_list_field_count_$mod_id$__$setting_id$
 			exists = var:cmm_list_initialized_$mod_id$__$setting_id$
 			exists = var:cmm_list_items_$mod_id$__$setting_id$
+			exists = var:cmm_list_item_column_name_$mod_id$__$setting_id$
 			exists = var:cmm_list_item_owner_setting_$mod_id$__$setting_id$_item_0
 			exists = var:cmm_list_item_owner_setting_$mod_id$__$setting_id$_item_1
 			exists = var:cmm_list_item_owner_setting_$mod_id$__$setting_id$_item_2
@@ -1419,6 +1425,7 @@ cmm_suppress_list_setting_warnings = {
 			exists = flag:$mod_id$_$setting_id$_item_17_name
 			exists = flag:$mod_id$_$setting_id$_item_18_name
 			exists = flag:$mod_id$_$setting_id$_item_19_name
+			exists = flag:$mod_id$_$setting_id$_item_column_name
 		}
 	}
 }

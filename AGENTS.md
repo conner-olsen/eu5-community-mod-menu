@@ -336,6 +336,7 @@ Derived localization keys:
 - Setting description: `<mod_id>_<setting_id>_desc`
 - Button setting text: `<mod_id>_<setting_id>_button_text`
 - Dropdown option label: `<mod_id>__<setting_id>_option_<index>_name`
+- List item column label: `<mod_id>_<setting_id>_item_column_name`
 - List item label: `<mod_id>_<setting_id>_item_<index>_name`
 - List field label: `<mod_id>_<setting_id>_<field_id>_name`
 - List dropdown option label: `<mod_id>_<setting_id>_<field_id>_option_<index>_name`
