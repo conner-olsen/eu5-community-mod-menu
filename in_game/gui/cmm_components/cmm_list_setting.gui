@@ -171,7 +171,7 @@
 								parentanchor = center
 								widgetanchor = center
 								position = { 2 0 }
-								raw_text = "â†‘"
+								raw_text = "↑"
 							}
 						}
 					}
@@ -213,7 +213,7 @@
 								parentanchor = center
 								widgetanchor = center
 								position = { 2 0 }
-								raw_text = "â†“"
+								raw_text = "↓"
 							}
 						}
 					}
