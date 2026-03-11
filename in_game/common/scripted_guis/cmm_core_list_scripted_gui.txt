@@ -295,6 +295,15 @@ CMM_MarkListFieldSelectDropdownAll = {
 	}
 }
 
+# Mark the next ordered list interaction as applying one numeric-field value to all rows.
+# Scope: country
+# Args: none
+CMM_MarkListFieldSelectNumericAll = {
+	effect = {
+		set_variable = { name = cmm_list_action_to_apply value = 11 }
+	}
+}
+
 # Mark the next ordered list interaction as a dropdown-field next cycle.
 # Scope: country
 # Args: none

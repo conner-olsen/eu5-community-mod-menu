@@ -357,6 +357,7 @@ Notes:
   - Click `-` / `+`: `1x` step.
   - `Ctrl+click` `-` / `+`: `5x` step.
   - `Shift+click` `-` / `+`: jump to min/max.
+- `Shift+click` the numeric value box to apply that row's current numeric value to all rows in the same field.
 - `Shift+click` the closed dropdown control to apply that row's current dropdown value to all rows in the same field.
 - Ordered list rows support:
   - Click up/down: move one row.

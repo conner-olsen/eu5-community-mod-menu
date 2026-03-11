@@ -1073,6 +1073,14 @@ macro = {
 # Args: none
 # Returns: none
 macro = {
+    description = "Mark the next ordered list interaction as applying a numeric-field value to all rows"
+    definition = "CMMMarkListFieldSelectNumericAll"
+    replace_with = "GetScriptedGui('CMM_MarkListFieldSelectNumericAll').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
+# Args: none
+# Returns: none
+macro = {
     description = "Mark the next ordered list interaction as a dropdown-field next cycle"
     definition = "CMMMarkListFieldCycleNext"
     replace_with = "GetScriptedGui('CMM_MarkListFieldCycleNext').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"

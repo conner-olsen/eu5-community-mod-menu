@@ -20,6 +20,7 @@
  CMM_LIST_MOVE_TO_BOTTOM: "Move to Bottom"
  CMM_LIST_TOGGLE_ALL: "Toggle This Field for All Rows"
  CMM_LIST_APPLY_OPTION_TO_ALL: "Apply This Option to All Rows"
+ CMM_LIST_APPLY_NUMBER_TO_ALL: "Apply This Number to All Rows"
  CMM_DROPDOWN_PREVIOUS: "Previous Option"
  CMM_DROPDOWN_FIRST: "First Option"
  CMM_DROPDOWN_NEXT: "Next Option"

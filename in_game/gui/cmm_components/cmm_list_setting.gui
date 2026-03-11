@@ -405,6 +405,20 @@
 											effectname = "NoHighlight"
 											tooltip_enabled = yes
 
+											action_tooltip = {
+												click_mode = single
+												click_type = left
+												click_modifier = shift
+												title = "CMM_LIST_APPLY_NUMBER_TO_ALL"
+											}
+
+											click_modifiers = {
+												onshift = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+												onshift = "[CMMMarkListFieldSlot0]"
+												onshift = "[CMMMarkListFieldSelectNumericAll]"
+												onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+											}
+
 											tooltipwidget = {
 												ContextualTooltipType = {
 													blockoverride "tooltip_title" {}
@@ -751,6 +765,20 @@
 											alpha = 0
 											effectname = "NoHighlight"
 											tooltip_enabled = yes
+
+											action_tooltip = {
+												click_mode = single
+												click_type = left
+												click_modifier = shift
+												title = "CMM_LIST_APPLY_NUMBER_TO_ALL"
+											}
+
+											click_modifiers = {
+												onshift = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+												onshift = "[CMMMarkListFieldSlot1]"
+												onshift = "[CMMMarkListFieldSelectNumericAll]"
+												onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+											}
 
 											tooltipwidget = {
 												ContextualTooltipType = {
@@ -1099,6 +1127,20 @@
 											effectname = "NoHighlight"
 											tooltip_enabled = yes
 
+											action_tooltip = {
+												click_mode = single
+												click_type = left
+												click_modifier = shift
+												title = "CMM_LIST_APPLY_NUMBER_TO_ALL"
+											}
+
+											click_modifiers = {
+												onshift = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+												onshift = "[CMMMarkListFieldSlot2]"
+												onshift = "[CMMMarkListFieldSelectNumericAll]"
+												onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+											}
+
 											tooltipwidget = {
 												ContextualTooltipType = {
 													blockoverride "tooltip_title" {}
@@ -1446,6 +1488,20 @@
 											effectname = "NoHighlight"
 											tooltip_enabled = yes
 
+											action_tooltip = {
+												click_mode = single
+												click_type = left
+												click_modifier = shift
+												title = "CMM_LIST_APPLY_NUMBER_TO_ALL"
+											}
+
+											click_modifiers = {
+												onshift = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+												onshift = "[CMMMarkListFieldSlot3]"
+												onshift = "[CMMMarkListFieldSelectNumericAll]"
+												onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+											}
+
 											tooltipwidget = {
 												ContextualTooltipType = {
 													blockoverride "tooltip_title" {}
@@ -1792,6 +1848,20 @@
 											alpha = 0
 											effectname = "NoHighlight"
 											tooltip_enabled = yes
+
+											action_tooltip = {
+												click_mode = single
+												click_type = left
+												click_modifier = shift
+												title = "CMM_LIST_APPLY_NUMBER_TO_ALL"
+											}
+
+											click_modifiers = {
+												onshift = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+												onshift = "[CMMMarkListFieldSlot4]"
+												onshift = "[CMMMarkListFieldSelectNumericAll]"
+												onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+											}
 
 											tooltipwidget = {
 												ContextualTooltipType = {
