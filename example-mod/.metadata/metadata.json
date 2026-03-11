@@ -1,6 +1,6 @@
 {
-    "name": "Community Mod Menu Example Mod 1",
-    "id": "community.mod.menu.example1",
+    "name": "Community Mod Menu Example Mod",
+    "id": "community.mod.menu.example",
     "version": "0.1",
     "game_id": "eu5",
     "supported_game_version": "1.1.*",
