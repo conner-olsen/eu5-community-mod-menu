@@ -28,14 +28,6 @@
 		spacing = 8
 		margin = { 12 8 }
 
-		text_single = {
-			layoutpolicy_horizontal = expanding
-			tagtooltip_enabled = yes
-			tooltip = "[CMMSettingDesc(Scope.GetFlagName)]"
-			tooltipwidget = { BasicFunctionalTooltip = {} }
-			text = "[CMMSettingName(Scope.GetFlagName)]"
-		}
-
 		widget = {
 			layoutpolicy_horizontal = expanding
 			minimumsize = { 0 32 }

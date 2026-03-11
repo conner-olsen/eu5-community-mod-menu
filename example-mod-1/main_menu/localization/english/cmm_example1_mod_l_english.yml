@@ -5,7 +5,6 @@
  cmm_example1_global_name: "Global"
  cmm_example1_general_toggles_name: "Toggles"
  cmm_example1_general_values_name: "Values"
- cmm_example1_general_lists_name: "Lists"
  cmm_example1_global_toggles_name: "Toggles"
  cmm_example1_global_values_name: "Values"
  cmm_example1_example_toggle_name: "Toggle"

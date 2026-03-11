@@ -63,7 +63,6 @@ cmm_example1_register_mod = {
 		mod_id = cmm_example1
 		setting_id = example_list
 		tab_id = general
-		group_id = general_lists
 		item_count = 5
 	}
 

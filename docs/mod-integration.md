@@ -298,7 +298,6 @@ cmm_register_list_setting = {
     mod_id = your_mod_id
     setting_id = build_priority
     tab_id = general
-    group_id = automation
     item_count = 5
 }
 
@@ -323,7 +322,6 @@ Arguments:
 - `mod_id`: owner mod id.
 - `setting_id`: stable id within your mod.
 - `tab_id`: owner tab id within your mod.
-- `group_id`: owner group id within your mod.
 - `item_count`: number of ordered list items. CMM clamps values into `1..20`.
 - `field_id`: stable per-list field id unique within the list setting.
 - `default_value`: initial bool-field value for brand-new saves (`0` or `1`).
@@ -334,6 +332,8 @@ Notes:
 
 - List settings are local country-scope only in CMM v1. There is no global list-setting API.
 - Register the list first, then register its fields.
+- Each list setting creates and owns a dedicated group keyed by `setting_id`. You do not pass `group_id` and you do not need a separate `cmm_register_group` call for that list.
+- The dedicated group header uses `<mod_id>_<setting_id>_name`, so the list widget itself does not render a second title line inside that group.
 - Each list may register up to 5 fields total.
 - Field columns render left-to-right in registration order.
 - Bool fields render as checkboxes.

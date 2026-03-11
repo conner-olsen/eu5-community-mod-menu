@@ -4,7 +4,6 @@
 # - mod_id (key): Owner mod id.
 # - setting_id (key): Setting id unique within mod.
 # - tab_id (key): Owner tab id within mod.
-# - group_id (key): Owner group id within mod.
 # - item_count (number): Number of ordered list items (`1..20`).
 cmm_register_list_setting = {
 	set_variable = { name = cmm_setting_is_global_$mod_id$__$setting_id$ value = 0 }
@@ -42,7 +41,7 @@ cmm_register_list_setting = {
 		mod_id = $mod_id$
 		setting_id = $setting_id$
 		tab_id = $tab_id$
-		group_id = $group_id$
+		group_id = $setting_id$
 	}
 
 	if = {

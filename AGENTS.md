@@ -307,7 +307,6 @@ cmm_register_list_setting = {
     mod_id = <required>
     setting_id = <required>
     tab_id = <required>
-    group_id = <required>
     item_count = <required, number 1-20>
 }
 
