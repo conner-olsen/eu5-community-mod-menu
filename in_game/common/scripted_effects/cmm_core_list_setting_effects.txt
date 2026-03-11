@@ -1507,6 +1507,18 @@ cmm_list_apply_field_at_item = {
 				set_variable = { name = $setting$_item_$item$_field_0 value = var:cmm_list_field_0_dropdown_last_index_$setting$ }
 			}
 		}
+		else_if = {
+			limit = { AND = { var:cmm_list_action_to_apply = 8 var:cmm_list_field_0_type_$setting$ = 2 has_variable = cmm_dropdown_index_to_apply } }
+			set_variable = { name = $setting$_item_$item$_field_0 value = var:cmm_dropdown_index_to_apply }
+			if = {
+				limit = { var:$setting$_item_$item$_field_0 < 0 }
+				set_variable = { name = $setting$_item_$item$_field_0 value = 0 }
+			}
+			if = {
+				limit = { var:$setting$_item_$item$_field_0 > var:cmm_list_field_0_dropdown_last_index_$setting$ }
+				set_variable = { name = $setting$_item_$item$_field_0 value = var:cmm_list_field_0_dropdown_last_index_$setting$ }
+			}
+		}
 	}
 
 	if = {
@@ -1534,6 +1546,18 @@ cmm_list_apply_field_at_item = {
 			change_variable = { name = $setting$_item_$item$_field_1 add = -1 }
 			if = {
 				limit = { var:$setting$_item_$item$_field_1 < 0 }
+				set_variable = { name = $setting$_item_$item$_field_1 value = var:cmm_list_field_1_dropdown_last_index_$setting$ }
+			}
+		}
+		else_if = {
+			limit = { AND = { var:cmm_list_action_to_apply = 8 var:cmm_list_field_1_type_$setting$ = 2 has_variable = cmm_dropdown_index_to_apply } }
+			set_variable = { name = $setting$_item_$item$_field_1 value = var:cmm_dropdown_index_to_apply }
+			if = {
+				limit = { var:$setting$_item_$item$_field_1 < 0 }
+				set_variable = { name = $setting$_item_$item$_field_1 value = 0 }
+			}
+			if = {
+				limit = { var:$setting$_item_$item$_field_1 > var:cmm_list_field_1_dropdown_last_index_$setting$ }
 				set_variable = { name = $setting$_item_$item$_field_1 value = var:cmm_list_field_1_dropdown_last_index_$setting$ }
 			}
 		}
@@ -1567,6 +1591,18 @@ cmm_list_apply_field_at_item = {
 				set_variable = { name = $setting$_item_$item$_field_2 value = var:cmm_list_field_2_dropdown_last_index_$setting$ }
 			}
 		}
+		else_if = {
+			limit = { AND = { var:cmm_list_action_to_apply = 8 var:cmm_list_field_2_type_$setting$ = 2 has_variable = cmm_dropdown_index_to_apply } }
+			set_variable = { name = $setting$_item_$item$_field_2 value = var:cmm_dropdown_index_to_apply }
+			if = {
+				limit = { var:$setting$_item_$item$_field_2 < 0 }
+				set_variable = { name = $setting$_item_$item$_field_2 value = 0 }
+			}
+			if = {
+				limit = { var:$setting$_item_$item$_field_2 > var:cmm_list_field_2_dropdown_last_index_$setting$ }
+				set_variable = { name = $setting$_item_$item$_field_2 value = var:cmm_list_field_2_dropdown_last_index_$setting$ }
+			}
+		}
 	}
 
 	if = {
@@ -1597,6 +1633,18 @@ cmm_list_apply_field_at_item = {
 				set_variable = { name = $setting$_item_$item$_field_3 value = var:cmm_list_field_3_dropdown_last_index_$setting$ }
 			}
 		}
+		else_if = {
+			limit = { AND = { var:cmm_list_action_to_apply = 8 var:cmm_list_field_3_type_$setting$ = 2 has_variable = cmm_dropdown_index_to_apply } }
+			set_variable = { name = $setting$_item_$item$_field_3 value = var:cmm_dropdown_index_to_apply }
+			if = {
+				limit = { var:$setting$_item_$item$_field_3 < 0 }
+				set_variable = { name = $setting$_item_$item$_field_3 value = 0 }
+			}
+			if = {
+				limit = { var:$setting$_item_$item$_field_3 > var:cmm_list_field_3_dropdown_last_index_$setting$ }
+				set_variable = { name = $setting$_item_$item$_field_3 value = var:cmm_list_field_3_dropdown_last_index_$setting$ }
+			}
+		}
 	}
 
 	if = {
@@ -1624,6 +1672,18 @@ cmm_list_apply_field_at_item = {
 			change_variable = { name = $setting$_item_$item$_field_4 add = -1 }
 			if = {
 				limit = { var:$setting$_item_$item$_field_4 < 0 }
+				set_variable = { name = $setting$_item_$item$_field_4 value = var:cmm_list_field_4_dropdown_last_index_$setting$ }
+			}
+		}
+		else_if = {
+			limit = { AND = { var:cmm_list_action_to_apply = 8 var:cmm_list_field_4_type_$setting$ = 2 has_variable = cmm_dropdown_index_to_apply } }
+			set_variable = { name = $setting$_item_$item$_field_4 value = var:cmm_dropdown_index_to_apply }
+			if = {
+				limit = { var:$setting$_item_$item$_field_4 < 0 }
+				set_variable = { name = $setting$_item_$item$_field_4 value = 0 }
+			}
+			if = {
+				limit = { var:$setting$_item_$item$_field_4 > var:cmm_list_field_4_dropdown_last_index_$setting$ }
 				set_variable = { name = $setting$_item_$item$_field_4 value = var:cmm_list_field_4_dropdown_last_index_$setting$ }
 			}
 		}
@@ -1660,7 +1720,7 @@ cmm_apply_list_change = {
 		else_if = {
 			limit = {
 				AND = {
-					OR = { var:cmm_list_action_to_apply = 5 var:cmm_list_action_to_apply = 6 var:cmm_list_action_to_apply = 7 }
+					OR = { var:cmm_list_action_to_apply = 5 var:cmm_list_action_to_apply = 6 var:cmm_list_action_to_apply = 7 var:cmm_list_action_to_apply = 8 }
 					has_variable = cmm_list_field_slot_to_apply
 				}
 			}
@@ -1711,5 +1771,10 @@ cmm_apply_list_change = {
 	if = {
 		limit = { has_variable = cmm_list_field_slot_to_apply }
 		remove_variable = cmm_list_field_slot_to_apply
+	}
+
+	if = {
+		limit = { has_variable = cmm_dropdown_index_to_apply }
+		remove_variable = cmm_dropdown_index_to_apply
 	}
 }

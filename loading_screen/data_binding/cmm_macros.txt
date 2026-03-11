@@ -502,6 +502,126 @@ macro = {
     replace_with = "Localize(Concatenate(Concatenate(CMMVar(Concatenate('cmm_list_field_4_option_root_', CMMListItemOwnerSettingKey(ItemKey))).GetFlagName, '_option_'), Concatenate(ToString_int32(FixedPointToInt(CMMVar(Concatenate(ItemKey, '_field_4')).GetValue)), '_name')))"
 }
 
+# Args: ItemKey (string)
+# Returns: int32
+macro = {
+    description = "Dropdown option count for ordered list field slot 0"
+    definition = "CMMListFieldDropdownCount0(ItemKey)"
+    replace_with = "FixedPointToInt(CMMVar(Concatenate('cmm_list_field_0_dropdown_count_', CMMListItemOwnerSettingKey(ItemKey))).GetValue)"
+}
+
+# Args: ItemKey (string)
+# Returns: int32
+macro = {
+    description = "Dropdown option count for ordered list field slot 1"
+    definition = "CMMListFieldDropdownCount1(ItemKey)"
+    replace_with = "FixedPointToInt(CMMVar(Concatenate('cmm_list_field_1_dropdown_count_', CMMListItemOwnerSettingKey(ItemKey))).GetValue)"
+}
+
+# Args: ItemKey (string)
+# Returns: int32
+macro = {
+    description = "Dropdown option count for ordered list field slot 2"
+    definition = "CMMListFieldDropdownCount2(ItemKey)"
+    replace_with = "FixedPointToInt(CMMVar(Concatenate('cmm_list_field_2_dropdown_count_', CMMListItemOwnerSettingKey(ItemKey))).GetValue)"
+}
+
+# Args: ItemKey (string)
+# Returns: int32
+macro = {
+    description = "Dropdown option count for ordered list field slot 3"
+    definition = "CMMListFieldDropdownCount3(ItemKey)"
+    replace_with = "FixedPointToInt(CMMVar(Concatenate('cmm_list_field_3_dropdown_count_', CMMListItemOwnerSettingKey(ItemKey))).GetValue)"
+}
+
+# Args: ItemKey (string)
+# Returns: int32
+macro = {
+    description = "Dropdown option count for ordered list field slot 4"
+    definition = "CMMListFieldDropdownCount4(ItemKey)"
+    replace_with = "FixedPointToInt(CMMVar(Concatenate('cmm_list_field_4_dropdown_count_', CMMListItemOwnerSettingKey(ItemKey))).GetValue)"
+}
+
+# Args: ItemKey (string)
+# Returns: int32
+macro = {
+    description = "Selected dropdown index for ordered list field slot 0"
+    definition = "CMMListFieldDropdownSelectedIndex0(ItemKey)"
+    replace_with = "FixedPointToInt(CMMVar(Concatenate(ItemKey, '_field_0')).GetValue)"
+}
+
+# Args: ItemKey (string)
+# Returns: int32
+macro = {
+    description = "Selected dropdown index for ordered list field slot 1"
+    definition = "CMMListFieldDropdownSelectedIndex1(ItemKey)"
+    replace_with = "FixedPointToInt(CMMVar(Concatenate(ItemKey, '_field_1')).GetValue)"
+}
+
+# Args: ItemKey (string)
+# Returns: int32
+macro = {
+    description = "Selected dropdown index for ordered list field slot 2"
+    definition = "CMMListFieldDropdownSelectedIndex2(ItemKey)"
+    replace_with = "FixedPointToInt(CMMVar(Concatenate(ItemKey, '_field_2')).GetValue)"
+}
+
+# Args: ItemKey (string)
+# Returns: int32
+macro = {
+    description = "Selected dropdown index for ordered list field slot 3"
+    definition = "CMMListFieldDropdownSelectedIndex3(ItemKey)"
+    replace_with = "FixedPointToInt(CMMVar(Concatenate(ItemKey, '_field_3')).GetValue)"
+}
+
+# Args: ItemKey (string)
+# Returns: int32
+macro = {
+    description = "Selected dropdown index for ordered list field slot 4"
+    definition = "CMMListFieldDropdownSelectedIndex4(ItemKey)"
+    replace_with = "FixedPointToInt(CMMVar(Concatenate(ItemKey, '_field_4')).GetValue)"
+}
+
+# Args: ItemKey (string), Index (int32)
+# Returns: string
+macro = {
+    description = "Localized dropdown list label for ordered list field slot 0"
+    definition = "CMMListFieldDropdownOptionLabel0(ItemKey,Index)"
+    replace_with = "Localize(Concatenate(Concatenate(CMMVar(Concatenate('cmm_list_field_0_option_root_', CMMListItemOwnerSettingKey(ItemKey))).GetFlagName, '_option_'), Concatenate(ToString_int32(Index), '_name')))"
+}
+
+# Args: ItemKey (string), Index (int32)
+# Returns: string
+macro = {
+    description = "Localized dropdown list label for ordered list field slot 1"
+    definition = "CMMListFieldDropdownOptionLabel1(ItemKey,Index)"
+    replace_with = "Localize(Concatenate(Concatenate(CMMVar(Concatenate('cmm_list_field_1_option_root_', CMMListItemOwnerSettingKey(ItemKey))).GetFlagName, '_option_'), Concatenate(ToString_int32(Index), '_name')))"
+}
+
+# Args: ItemKey (string), Index (int32)
+# Returns: string
+macro = {
+    description = "Localized dropdown list label for ordered list field slot 2"
+    definition = "CMMListFieldDropdownOptionLabel2(ItemKey,Index)"
+    replace_with = "Localize(Concatenate(Concatenate(CMMVar(Concatenate('cmm_list_field_2_option_root_', CMMListItemOwnerSettingKey(ItemKey))).GetFlagName, '_option_'), Concatenate(ToString_int32(Index), '_name')))"
+}
+
+# Args: ItemKey (string), Index (int32)
+# Returns: string
+macro = {
+    description = "Localized dropdown list label for ordered list field slot 3"
+    definition = "CMMListFieldDropdownOptionLabel3(ItemKey,Index)"
+    replace_with = "Localize(Concatenate(Concatenate(CMMVar(Concatenate('cmm_list_field_3_option_root_', CMMListItemOwnerSettingKey(ItemKey))).GetFlagName, '_option_'), Concatenate(ToString_int32(Index), '_name')))"
+}
+
+# Args: ItemKey (string), Index (int32)
+# Returns: string
+macro = {
+    description = "Localized dropdown list label for ordered list field slot 4"
+    definition = "CMMListFieldDropdownOptionLabel4(ItemKey,Index)"
+    replace_with = "Localize(Concatenate(Concatenate(CMMVar(Concatenate('cmm_list_field_4_option_root_', CMMListItemOwnerSettingKey(ItemKey))).GetFlagName, '_option_'), Concatenate(ToString_int32(Index), '_name')))"
+}
+
 # Args: SettingKey (string)
 # Returns: string
 macro = {
@@ -705,6 +825,14 @@ macro = {
 # Args: none
 # Returns: none
 macro = {
+    description = "Mark the next ordered list interaction with the cached hovered row position"
+    definition = "CMMMarkHoveredListPosition"
+    replace_with = "GetScriptedGui(Concatenate('CMM_MarkListPosition_', GetVariableSystem.Get('cmm_list_hover_index'))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
+# Args: none
+# Returns: none
+macro = {
     description = "Mark the next ordered list interaction with field slot 0"
     definition = "CMMMarkListFieldSlot0"
     replace_with = "GetScriptedGui('CMM_MarkListFieldSlot_0').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
@@ -748,6 +876,14 @@ macro = {
     description = "Mark the next ordered list interaction as a bool-field toggle"
     definition = "CMMMarkListFieldToggle"
     replace_with = "GetScriptedGui('CMM_MarkListFieldToggle').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
+# Args: none
+# Returns: none
+macro = {
+    description = "Mark the next ordered list interaction as selecting a dropdown-field option"
+    definition = "CMMMarkListFieldSelectDropdown"
+    replace_with = "GetScriptedGui('CMM_MarkListFieldSelectDropdown').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
 }
 
 # Args: none
