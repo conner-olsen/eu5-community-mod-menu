@@ -6,12 +6,116 @@ macro = {
     replace_with = "Player.MakeScope.GetVariable(Name)"
 }
 
-# Args: ModId (string)
+# Args: Prefix (string), Key (string)
+# Returns: variable
+macro = {
+    description = "Metadata variable accessor"
+    definition = "CMMMetadataVar(Prefix,Key)"
+    replace_with = "CMMVar(Concatenate(Prefix, Key))"
+}
+
+# Args: Prefix (string), Key (string)
 # Returns: string
 macro = {
-    description = "Default tab key for a mod id"
-    definition = "CMMDefaultTab(ModId)"
-    replace_with = "CMMVar(Concatenate('cmm_mod_default_tab_', ModId)).GetFlagName"
+    description = "Metadata flag-name accessor"
+    definition = "CMMMetadataFlag(Prefix,Key)"
+    replace_with = "CMMMetadataVar(Prefix, Key).GetFlagName"
+}
+
+# Args: Prefix (string), Key (string)
+# Returns: value
+macro = {
+    description = "Metadata value accessor"
+    definition = "CMMMetadataValue(Prefix,Key)"
+    replace_with = "CMMMetadataVar(Prefix, Key).GetValue"
+}
+
+# Args: Prefix (string), Key (string)
+# Returns: int32
+macro = {
+    description = "Metadata int accessor"
+    definition = "CMMMetadataInt(Prefix,Key)"
+    replace_with = "FixedPointToInt(CMMMetadataValue(Prefix, Key))"
+}
+
+# Args: Prefix (string), Key (string)
+# Returns: boolean
+macro = {
+    description = "True when one metadata key is set"
+    definition = "CMMMetadataIsSet(Prefix,Key)"
+    replace_with = "CMMMetadataVar(Prefix, Key).IsSet"
+}
+
+# Args: Value (value)
+# Returns: boolean
+macro = {
+    description = "True when one numeric value equals 1"
+    definition = "CMMValueEqualsOne(Value)"
+    replace_with = "EqualTo_CFixedPoint(Value, '(CFixedPoint)1')"
+}
+
+# Args: Prefix (string), Key (string)
+# Returns: boolean
+macro = {
+    description = "True when one metadata value equals 1"
+    definition = "CMMMetadataEqualsOne(Prefix,Key)"
+    replace_with = "CMMValueEqualsOne(CMMMetadataValue(Prefix, Key))"
+}
+
+# Args: Key (string), Suffix (string)
+# Returns: string
+macro = {
+    description = "Localization lookup for one runtime key plus suffix"
+    definition = "CMMLocalizedSuffix(Key,Suffix)"
+    replace_with = "CMMVar(Concatenate(Key, Suffix)).GetFlagName"
+}
+
+# Args: OptionRoot (string), Index (int32)
+# Returns: string
+macro = {
+    description = "Localized dropdown option label"
+    definition = "CMMOptionLabel(OptionRoot,Index)"
+    replace_with = "Localize(Concatenate(Concatenate(OptionRoot, '_option_'), Concatenate(ToString_int32(Index), '_name')))"
+}
+
+# Args: Name (string)
+# Returns: boolean
+macro = {
+    description = "True when one variable-system key exists"
+    definition = "CMMSelectedValueExists(Name)"
+    replace_with = "GetVariableSystem.Exists(Name)"
+}
+
+# Args: Name (string), Value (string)
+# Returns: boolean
+macro = {
+    description = "True when one variable-system key exists and matches one value"
+    definition = "CMMSelectedHasValue(Name,Value)"
+    replace_with = "And(CMMSelectedValueExists(Name), GetVariableSystem.HasValue(Name, Value))"
+}
+
+# Args: Name (string)
+# Returns: none
+macro = {
+    description = "Execute one scripted GUI callback"
+    definition = "CMMExecuteGui(Name)"
+    replace_with = "GetScriptedGui(Name).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
+# Args: Prefix (string), Suffix (string)
+# Returns: none
+macro = {
+    description = "Execute one scripted GUI callback resolved from prefix plus suffix"
+    definition = "CMMExecuteGuiSuffix(Prefix,Suffix)"
+    replace_with = "CMMExecuteGui(Concatenate(Prefix, Suffix))"
+}
+
+# Args: Name (string)
+# Returns: boolean
+macro = {
+    description = "True when one scripted GUI callback is shown"
+    definition = "CMMGuiIsShown(Name)"
+    replace_with = "GetScriptedGui(Name).IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
 }
 
 # Args: none
@@ -19,7 +123,7 @@ macro = {
 macro = {
     description = "True when selected mod variable-system key exists"
     definition = "CMMSelectedModExists"
-    replace_with = "GetVariableSystem.Exists('cmm_selected_mod')"
+    replace_with = "CMMSelectedValueExists('cmm_selected_mod')"
 }
 
 # Args: none
@@ -27,55 +131,15 @@ macro = {
 macro = {
     description = "True when selected tab variable-system key exists"
     definition = "CMMSelectedTabExists"
-    replace_with = "GetVariableSystem.Exists('cmm_selected_tab')"
+    replace_with = "CMMSelectedValueExists('cmm_selected_tab')"
 }
 
-# Args: none
-# Returns: string
+# Args: ModId (string), TabKey (string)
+# Returns: boolean
 macro = {
-    description = "Selected mod name localization"
-    definition = "CMMSelectedModName"
-    replace_with = "CMMVar(Concatenate(GetVariableSystem.Get('cmm_selected_mod'), '_name')).GetFlagName"
-}
-
-# Args: TabKey (string)
-# Returns: string
-macro = {
-    description = "Read tab owner mod id for a tab key"
-    definition = "CMMTabOwnerModId(TabKey)"
-    replace_with = "CMMVar(Concatenate('cmm_tab_owner_mod_id_', TabKey)).GetFlagName"
-}
-
-# Args: TabKey (string)
-# Returns: string
-macro = {
-    description = "Tab label localization"
-    definition = "CMMTabName(TabKey)"
-    replace_with = "CMMVar(Concatenate(TabKey, '_name')).GetFlagName"
-}
-
-# Args: GroupKey (string)
-# Returns: string
-macro = {
-    description = "Read group owner mod id for a group key"
-    definition = "CMMGroupOwnerModId(GroupKey)"
-    replace_with = "CMMVar(Concatenate('cmm_group_owner_mod_id_', GroupKey)).GetFlagName"
-}
-
-# Args: GroupKey (string)
-# Returns: string
-macro = {
-    description = "Read group owner tab key for a group key"
-    definition = "CMMGroupOwnerTabKey(GroupKey)"
-    replace_with = "CMMVar(Concatenate('cmm_group_owner_tab_key_', GroupKey)).GetFlagName"
-}
-
-# Args: GroupKey (string)
-# Returns: string
-macro = {
-    description = "Group label localization"
-    definition = "CMMGroupName(GroupKey)"
-    replace_with = "CMMVar(Concatenate(GroupKey, '_name')).GetFlagName"
+    description = "True when one mod id and tab key match the current selection"
+    definition = "CMMMatchesSelectedModAndTab(ModId,TabKey)"
+    replace_with = "And(CMMSelectedHasValue('cmm_selected_mod', ModId), CMMSelectedHasValue('cmm_selected_tab', TabKey))"
 }
 
 # Args: GroupKey (string)
@@ -83,359 +147,7 @@ macro = {
 macro = {
     description = "Visibility rule for one group row"
     definition = "CMMGroupRowVisible(GroupKey)"
-    replace_with = "And(And(CMMSelectedModExists, GetVariableSystem.HasValue('cmm_selected_mod', CMMGroupOwnerModId(GroupKey))), And(CMMSelectedTabExists, GetVariableSystem.HasValue('cmm_selected_tab', CMMGroupOwnerTabKey(GroupKey))))"
-}
-
-# Args: SettingKey (string)
-# Returns: string
-macro = {
-    description = "Read setting owner mod id for a setting key"
-    definition = "CMMSettingOwnerModId(SettingKey)"
-    replace_with = "CMMVar(Concatenate('cmm_setting_owner_mod_id_', SettingKey)).GetFlagName"
-}
-
-# Args: SettingKey (string)
-# Returns: string
-macro = {
-    description = "Read setting owner tab key for a setting key"
-    definition = "CMMSettingOwnerTabKey(SettingKey)"
-    replace_with = "CMMVar(Concatenate('cmm_setting_owner_tab_key_', SettingKey)).GetFlagName"
-}
-
-# Args: SettingKey (string)
-# Returns: boolean
-macro = {
-    description = "True when a setting key stores value in global scope"
-    definition = "CMMSettingIsGlobal(SettingKey)"
-    replace_with = "EqualTo_CFixedPoint(CMMVar(Concatenate('cmm_setting_is_global_', SettingKey)).GetValue, '(CFixedPoint)1')"
-}
-
-# Args: SettingKey (string)
-# Returns: boolean
-macro = {
-    description = "True when a setting key is registered as text type"
-    definition = "CMMSettingIsText(SettingKey)"
-    replace_with = "CMMVar(Concatenate('cmm_setting_text_character_limit_', SettingKey)).IsSet"
-}
-
-# Args: SettingKey (string)
-# Returns: boolean
-macro = {
-    description = "True when a setting key is registered as slider type"
-    definition = "CMMSettingIsSlider(SettingKey)"
-    replace_with = "EqualTo_CFixedPoint(CMMVar(Concatenate('cmm_setting_is_slider_', SettingKey)).GetValue, '(CFixedPoint)1')"
-}
-
-# Args: SettingKey (string)
-# Returns: boolean
-macro = {
-    description = "True when a setting key is registered as button type"
-    definition = "CMMSettingIsButton(SettingKey)"
-    replace_with = "EqualTo_CFixedPoint(CMMVar(Concatenate('cmm_setting_is_button_', SettingKey)).GetValue, '(CFixedPoint)1')"
-}
-
-# Args: SettingKey (string)
-# Returns: boolean
-macro = {
-    description = "True when a setting key is registered as list type"
-    definition = "CMMSettingIsList(SettingKey)"
-    replace_with = "CMMVar(Concatenate('cmm_setting_list_count_', SettingKey)).IsSet"
-}
-
-# Args: SettingKey (string)
-# Returns: boolean
-macro = {
-    description = "True when this is the core host-only-tools gate setting"
-    definition = "CMMIsHostOnlyToolsSetting(SettingKey)"
-    replace_with = "EqualTo_string(SettingKey, 'cmm_core__enable_host_only_tools')"
-}
-
-# Args: none
-# Returns: boolean
-macro = {
-    description = "True when the core host-only-tools gate is enabled"
-    definition = "CMMHostOnlyToolsEnabled"
-    replace_with = "And(GetGlobalVariable('cmm_core__enable_host_only_tools').IsSet, EqualTo_CFixedPoint(GetGlobalVariable('cmm_core__enable_host_only_tools').GetValue, '(CFixedPoint)1'))"
-}
-
-# Args: SettingKey (string)
-# Returns: boolean
-macro = {
-    description = "True when local player can edit this setting (global settings are host-only in MP and gated by the core host-only-tools toggle)"
-    definition = "CMMCanEditSetting(SettingKey)"
-    replace_with = "Or(Not(CMMSettingIsGlobal(SettingKey)), And(Or(CMMIsHostOnlyToolsSetting(SettingKey), CMMHostOnlyToolsEnabled), Or(Not(GameIsMultiplayer), IsHost)))"
-}
-
-# Args: SettingKey (string)
-# Returns: boolean
-macro = {
-    description = "True when a setting key is registered as dropdown type"
-    definition = "CMMSettingIsDropdown(SettingKey)"
-    replace_with = "CMMVar(Concatenate('cmm_setting_dropdown_count_', SettingKey)).IsSet"
-}
-
-# Args: SettingKey (string)
-# Returns: boolean
-macro = {
-    description = "True when a setting key is registered as numeric type"
-    definition = "CMMSettingIsNumeric(SettingKey)"
-    replace_with = "And(CMMVar(Concatenate('cmm_setting_step_', SettingKey)).IsSet, Not(CMMSettingIsSlider(SettingKey)))"
-}
-
-# Args: SettingKey (string)
-# Returns: boolean
-macro = {
-    description = "True when a setting key is registered as bool type"
-    definition = "CMMSettingIsBool(SettingKey)"
-    replace_with = "And(And4(Not(CMMSettingIsNumeric(SettingKey)), Not(CMMSettingIsDropdown(SettingKey)), Not(CMMSettingIsSlider(SettingKey)), Not(CMMSettingIsText(SettingKey))), And(Not(CMMSettingIsButton(SettingKey)), Not(CMMSettingIsList(SettingKey))))"
-}
-
-# Args: SettingKey (string)
-# Returns: value
-macro = {
-    description = "Read current setting value from country or global scope"
-    definition = "CMMSettingValue(SettingKey)"
-    replace_with = "Select_CFixedPoint(CMMSettingIsGlobal(SettingKey), GetGlobalVariable(SettingKey).GetValue, CMMVar(SettingKey).GetValue)"
-}
-
-# Args: SettingKey (string)
-# Returns: string
-macro = {
-    description = "Setting label localization"
-    definition = "CMMSettingName(SettingKey)"
-    replace_with = "CMMVar(Concatenate(SettingKey, '_name')).GetFlagName"
-}
-
-# Args: SettingKey (string)
-# Returns: string
-macro = {
-    description = "Setting description localization"
-    definition = "CMMSettingDesc(SettingKey)"
-    replace_with = "CMMVar(Concatenate(SettingKey, '_desc')).GetFlagName"
-}
-
-# Args: SettingKey (string)
-# Returns: int32
-macro = {
-    description = "Ordered list item count for one setting"
-    definition = "CMMListItemCount(SettingKey)"
-    replace_with = "FixedPointToInt(CMMVar(Concatenate('cmm_setting_list_count_', SettingKey)).GetValue)"
-}
-
-# Args: SettingKey (string)
-# Returns: int32
-macro = {
-    description = "Ordered list last valid position for one setting"
-    definition = "CMMListLastIndex(SettingKey)"
-    replace_with = "FixedPointToInt(CMMVar(Concatenate('cmm_setting_list_last_index_', SettingKey)).GetValue)"
-}
-
-# Args: ItemKey (string)
-# Returns: string
-macro = {
-    description = "Owner setting key for one ordered list item key"
-    definition = "CMMListItemOwnerSettingKey(ItemKey)"
-    replace_with = "CMMVar(Concatenate('cmm_list_item_owner_setting_', ItemKey)).GetFlagName"
-}
-
-# Args: ItemKey (string)
-# Returns: boolean
-macro = {
-    description = "True when local player can edit the owner setting for one ordered list item"
-    definition = "CMMCanEditListItemSetting(ItemKey)"
-    replace_with = "CMMCanEditSetting(CMMListItemOwnerSettingKey(ItemKey))"
-}
-
-# Args: ItemKey (string)
-# Returns: none
-macro = {
-    description = "Execute the owner setting callback for one ordered list item"
-    definition = "CMMExecuteListItemSettingChanged(ItemKey)"
-    replace_with = "CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(ItemKey))"
-}
-
-# Args: ItemKey (string)
-# Returns: string
-macro = {
-    description = "Ordered list item label localization"
-    definition = "CMMListItemName(ItemKey)"
-    replace_with = "CMMVar(Concatenate(ItemKey, '_name')).GetFlagName"
-}
-
-# Args: SettingKey (string)
-# Returns: int32
-macro = {
-    description = "Ordered list field count for one setting"
-    definition = "CMMListFieldCount(SettingKey)"
-    replace_with = "FixedPointToInt(CMMVar(Concatenate('cmm_list_field_count_', SettingKey)).GetValue)"
-}
-
-# Args: SettingKey (string)
-# Returns: boolean
-macro = {
-    description = "True when an ordered list setting has at least one registered field"
-    definition = "CMMListHasFields(SettingKey)"
-    replace_with = "Not(EqualTo_CFixedPoint(CMMVar(Concatenate('cmm_list_field_count_', SettingKey)).GetValue, '(CFixedPoint)0'))"
-}
-
-# Args: SettingKey (string), SlotKey (string), Suffix (string)
-# Returns: variable
-macro = {
-    description = "Ordered list field metadata variable accessor"
-    definition = "CMMListFieldMetadataVar(SettingKey,SlotKey,Suffix)"
-    replace_with = "CMMVar(Concatenate(Concatenate('cmm_list_field_', SlotKey), Concatenate(Suffix, SettingKey)))"
-}
-
-# Args: ItemKey (string), SlotKey (string)
-# Returns: variable
-macro = {
-    description = "Ordered list item field variable accessor"
-    definition = "CMMListItemFieldVar(ItemKey,SlotKey)"
-    replace_with = "CMMVar(Concatenate(ItemKey, Concatenate('_field_', SlotKey)))"
-}
-
-# Args: SettingKey (string), SlotKey (string)
-# Returns: boolean
-macro = {
-    description = "True when one ordered list field slot exists"
-    definition = "CMMListFieldHasSlot(SettingKey,SlotKey)"
-    replace_with = "CMMListFieldMetadataVar(SettingKey, SlotKey, '_type_').IsSet"
-}
-
-# Args: SettingKey (string), SlotKey (string)
-# Returns: boolean
-macro = {
-    description = "True when one ordered list field slot is bool"
-    definition = "CMMListFieldIsBool(SettingKey,SlotKey)"
-    replace_with = "EqualTo_CFixedPoint(CMMListFieldMetadataVar(SettingKey, SlotKey, '_type_').GetValue, '(CFixedPoint)1')"
-}
-
-# Args: SettingKey (string), SlotKey (string)
-# Returns: boolean
-macro = {
-    description = "True when one ordered list field slot is dropdown"
-    definition = "CMMListFieldIsDropdown(SettingKey,SlotKey)"
-    replace_with = "EqualTo_CFixedPoint(CMMListFieldMetadataVar(SettingKey, SlotKey, '_type_').GetValue, '(CFixedPoint)2')"
-}
-
-# Args: SettingKey (string), SlotKey (string)
-# Returns: boolean
-macro = {
-    description = "True when one ordered list field slot is numeric"
-    definition = "CMMListFieldIsNumeric(SettingKey,SlotKey)"
-    replace_with = "EqualTo_CFixedPoint(CMMListFieldMetadataVar(SettingKey, SlotKey, '_type_').GetValue, '(CFixedPoint)3')"
-}
-
-# Args: SettingKey (string)
-# Returns: string
-macro = {
-    description = "Ordered list item-column header localization"
-    definition = "CMMListItemColumnName(SettingKey)"
-    replace_with = "CMMVar(Concatenate('cmm_list_item_column_name_', SettingKey)).GetFlagName"
-}
-
-# Args: SettingKey (string), SlotKey (string)
-# Returns: string
-macro = {
-    description = "Ordered list field header localization"
-    definition = "CMMListFieldName(SettingKey,SlotKey)"
-    replace_with = "CMMListFieldMetadataVar(SettingKey, SlotKey, '_name_').GetFlagName"
-}
-
-# Args: ItemKey (string), SlotKey (string)
-# Returns: boolean
-macro = {
-    description = "Checkbox state for one ordered list field"
-    definition = "CMMListFieldBoolChecked(ItemKey,SlotKey)"
-    replace_with = "EqualTo_CFixedPoint(CMMListItemFieldVar(ItemKey, SlotKey).GetValue, '(CFixedPoint)1')"
-}
-
-# Args: ItemKey (string), SlotKey (string)
-# Returns: string
-macro = {
-    description = "Dropdown option-root localization key for one ordered list field"
-    definition = "CMMListFieldOptionRoot(ItemKey,SlotKey)"
-    replace_with = "CMMListFieldMetadataVar(CMMListItemOwnerSettingKey(ItemKey), SlotKey, '_option_root_').GetFlagName"
-}
-
-# Args: ItemKey (string), SlotKey (string)
-# Returns: string
-macro = {
-    description = "Localized selected dropdown label for one ordered list field"
-    definition = "CMMListFieldDropdownLabel(ItemKey,SlotKey)"
-    replace_with = "Localize(Concatenate(Concatenate(CMMListFieldOptionRoot(ItemKey, SlotKey), '_option_'), Concatenate(ToString_int32(FixedPointToInt(CMMListItemFieldVar(ItemKey, SlotKey).GetValue)), '_name')))"
-}
-
-# Args: ItemKey (string), SlotKey (string)
-# Returns: int32
-macro = {
-    description = "Dropdown option count for one ordered list field"
-    definition = "CMMListFieldDropdownCount(ItemKey,SlotKey)"
-    replace_with = "FixedPointToInt(CMMListFieldMetadataVar(CMMListItemOwnerSettingKey(ItemKey), SlotKey, '_dropdown_count_').GetValue)"
-}
-
-# Args: ItemKey (string), SlotKey (string)
-# Returns: int32
-macro = {
-    description = "Selected dropdown index for one ordered list field"
-    definition = "CMMListFieldDropdownSelectedIndex(ItemKey,SlotKey)"
-    replace_with = "FixedPointToInt(CMMListItemFieldVar(ItemKey, SlotKey).GetValue)"
-}
-
-# Args: ItemKey (string), SlotKey (string)
-# Returns: value
-macro = {
-    description = "Numeric value for one ordered list field"
-    definition = "CMMListFieldNumericValue(ItemKey,SlotKey)"
-    replace_with = "CMMListItemFieldVar(ItemKey, SlotKey).GetValue"
-}
-
-# Args: ItemKey (string), SlotKey (string)
-# Returns: value
-macro = {
-    description = "Numeric minimum bound for one ordered list field"
-    definition = "CMMListFieldNumericMin(ItemKey,SlotKey)"
-    replace_with = "CMMListFieldMetadataVar(CMMListItemOwnerSettingKey(ItemKey), SlotKey, '_min_').GetValue"
-}
-
-# Args: ItemKey (string), SlotKey (string)
-# Returns: value
-macro = {
-    description = "Numeric maximum bound for one ordered list field"
-    definition = "CMMListFieldNumericMax(ItemKey,SlotKey)"
-    replace_with = "CMMListFieldMetadataVar(CMMListItemOwnerSettingKey(ItemKey), SlotKey, '_max_').GetValue"
-}
-
-# Args: ItemKey (string), SlotKey (string), Index (int32)
-# Returns: string
-macro = {
-    description = "Localized dropdown list label for one ordered list field"
-    definition = "CMMListFieldDropdownOptionLabel(ItemKey,SlotKey,Index)"
-    replace_with = "Localize(Concatenate(Concatenate(CMMListFieldOptionRoot(ItemKey, SlotKey), '_option_'), Concatenate(ToString_int32(Index), '_name')))"
-}
-
-# Args: SettingKey (string)
-# Returns: string
-macro = {
-    description = "Button setting button-text localization"
-    definition = "CMMButtonSettingText(SettingKey)"
-    replace_with = "CMMVar(Concatenate(SettingKey, '_button_text')).GetFlagName"
-}
-
-# Args: none
-# Returns: boolean
-macro = {
-    description = "True when selected tab has a tab-setting-count variable"
-    definition = "CMMSelectedTabCountIsSet"
-    replace_with = "CMMVar(Concatenate('cmm_tab_setting_count_', GetVariableSystem.Get('cmm_selected_tab'))).IsSet"
-}
-
-# Args: none
-# Returns: value
-macro = {
-    description = "Selected tab setting count value"
-    definition = "CMMSelectedTabCountValue"
-    replace_with = "CMMVar(Concatenate('cmm_tab_setting_count_', GetVariableSystem.Get('cmm_selected_tab'))).GetValue"
+    replace_with = "CMMMatchesSelectedModAndTab(CMMMetadataFlag('cmm_group_owner_mod_id_', GroupKey), CMMMetadataFlag('cmm_group_owner_tab_key_', GroupKey))"
 }
 
 # Args: none
@@ -459,15 +171,87 @@ macro = {
 macro = {
     description = "Filter match for one mod row against current search text"
     definition = "CMMModMatchesSearch(ModId)"
-    replace_with = "Or4(Not(GetVariableSystem.Exists('cmm_mod_search_text')), StringIsEmpty(GetVariableSystem.Get('cmm_mod_search_text')), StringContains(CMMVar(Concatenate(ModId, '_name')).GetFlagName, GetVariableSystem.Get('cmm_mod_search_text')), StringContains(ModId, GetVariableSystem.Get('cmm_mod_search_text')))"
+    replace_with = "Or4(Not(CMMSelectedValueExists('cmm_mod_search_text')), StringIsEmpty(GetVariableSystem.Get('cmm_mod_search_text')), StringContains(CMMLocalizedSuffix(ModId, '_name'), GetVariableSystem.Get('cmm_mod_search_text')), StringContains(ModId, GetVariableSystem.Get('cmm_mod_search_text')))"
 }
 
-# Args: ModId (string)
-# Returns: string
+# Args: SettingKey (string)
+# Returns: boolean
 macro = {
-    description = "Localized row label for one mod row"
-    definition = "CMMModRowLabel(ModId)"
-    replace_with = "CMMVar(Concatenate(ModId, '_name')).GetFlagName"
+    description = "True when a setting key is registered as global"
+    definition = "CMMSettingIsGlobal(SettingKey)"
+    replace_with = "CMMMetadataEqualsOne('cmm_setting_is_global_', SettingKey)"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when a setting key is registered as text type"
+    definition = "CMMSettingIsText(SettingKey)"
+    replace_with = "CMMMetadataIsSet('cmm_setting_text_character_limit_', SettingKey)"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when a setting key is registered as slider type"
+    definition = "CMMSettingIsSlider(SettingKey)"
+    replace_with = "CMMMetadataEqualsOne('cmm_setting_is_slider_', SettingKey)"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when a setting key is registered as button type"
+    definition = "CMMSettingIsButton(SettingKey)"
+    replace_with = "CMMMetadataEqualsOne('cmm_setting_is_button_', SettingKey)"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when a setting key is registered as list type"
+    definition = "CMMSettingIsList(SettingKey)"
+    replace_with = "CMMMetadataIsSet('cmm_setting_list_count_', SettingKey)"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when local player can edit this setting"
+    definition = "CMMCanEditSetting(SettingKey)"
+    replace_with = "Or(Not(CMMSettingIsGlobal(SettingKey)), And(Or(EqualTo_string(SettingKey, 'cmm_core__enable_host_only_tools'), And(GetGlobalVariable('cmm_core__enable_host_only_tools').IsSet, CMMValueEqualsOne(GetGlobalVariable('cmm_core__enable_host_only_tools').GetValue))), Or(Not(GameIsMultiplayer), IsHost)))"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when a setting key is registered as dropdown type"
+    definition = "CMMSettingIsDropdown(SettingKey)"
+    replace_with = "CMMMetadataIsSet('cmm_setting_dropdown_count_', SettingKey)"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when a setting key is registered as numeric type"
+    definition = "CMMSettingIsNumeric(SettingKey)"
+    replace_with = "And(CMMMetadataIsSet('cmm_setting_step_', SettingKey), Not(CMMSettingIsSlider(SettingKey)))"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when a setting key is registered as bool type"
+    definition = "CMMSettingIsBool(SettingKey)"
+    replace_with = "And(And4(Not(CMMSettingIsNumeric(SettingKey)), Not(CMMSettingIsDropdown(SettingKey)), Not(CMMSettingIsSlider(SettingKey)), Not(CMMSettingIsText(SettingKey))), And(Not(CMMSettingIsButton(SettingKey)), Not(CMMSettingIsList(SettingKey))))"
+}
+
+# Args: SettingKey (string)
+# Returns: value
+macro = {
+    description = "Read current setting value from country or global scope"
+    definition = "CMMSettingValue(SettingKey)"
+    replace_with = "Select_CFixedPoint(CMMSettingIsGlobal(SettingKey), GetGlobalVariable(SettingKey).GetValue, CMMVar(SettingKey).GetValue)"
 }
 
 # Args: SettingKey (string)
@@ -475,7 +259,7 @@ macro = {
 macro = {
     description = "Visibility rule for one setting row"
     definition = "CMMSettingRowVisible(SettingKey)"
-    replace_with = "And3(And(CMMSelectedModExists, GetVariableSystem.HasValue('cmm_selected_mod', CMMSettingOwnerModId(SettingKey))), And(CMMSelectedTabExists, GetVariableSystem.HasValue('cmm_selected_tab', CMMSettingOwnerTabKey(SettingKey))), Or(CMMSettingIsText(SettingKey), GetScriptedGui(Concatenate(SettingKey, '_on_changed')).IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)))"
+    replace_with = "And(CMMMatchesSelectedModAndTab(CMMMetadataFlag('cmm_setting_owner_mod_id_', SettingKey), CMMMetadataFlag('cmm_setting_owner_tab_key_', SettingKey)), Or(CMMSettingIsText(SettingKey), CMMGuiIsShown(Concatenate(SettingKey, '_on_changed'))))"
 }
 
 # Args: SettingKey (string)
@@ -483,7 +267,39 @@ macro = {
 macro = {
     description = "Execute setting on-changed scripted GUI callback"
     definition = "CMMExecuteSettingChanged(SettingKey)"
-    replace_with = "GetScriptedGui(Concatenate(SettingKey, '_on_changed')).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+    replace_with = "CMMExecuteGui(Concatenate(SettingKey, '_on_changed'))"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "Checkbox checked state for bool settings (1 = on)"
+    definition = "CMMIsSettingEnabled(SettingKey)"
+    replace_with = "CMMValueEqualsOne(CMMSettingValue(SettingKey))"
+}
+
+# Args: SettingKey (string)
+# Returns: int32
+macro = {
+    description = "Dropdown option count for one setting"
+    definition = "CMMDropdownOptionCount(SettingKey)"
+    replace_with = "CMMMetadataInt('cmm_setting_dropdown_count_', SettingKey)"
+}
+
+# Args: SettingKey (string)
+# Returns: int32
+macro = {
+    description = "Dropdown selected index for one setting"
+    definition = "CMMDropdownSelectedIndex(SettingKey)"
+    replace_with = "FixedPointToInt(CMMSettingValue(SettingKey))"
+}
+
+# Args: none
+# Returns: boolean
+macro = {
+    description = "Show empty-state text when selected tab has zero visible settings"
+    definition = "CMMShowNoSettingsForSelectedTab"
+    replace_with = "And(CMMSelectedModExists, Or3(Not(CMMSelectedTabExists), Not(CMMMetadataIsSet('cmm_tab_setting_count_', GetVariableSystem.Get('cmm_selected_tab'))), EqualTo_CFixedPoint(CMMMetadataValue('cmm_tab_setting_count_', GetVariableSystem.Get('cmm_selected_tab')), '(CFixedPoint)0')))"
 }
 
 # Args: none
@@ -499,7 +315,7 @@ macro = {
 macro = {
     description = "Text setting editbox character limit"
     definition = "CMMTextSettingCharacterLimit(SettingKey)"
-    replace_with = "FixedPointToInt(CMMVar(Concatenate('cmm_setting_text_character_limit_', SettingKey)).GetValue)"
+    replace_with = "CMMMetadataInt('cmm_setting_text_character_limit_', SettingKey)"
 }
 
 # Args: SettingKey (string)
@@ -507,7 +323,7 @@ macro = {
 macro = {
     description = "True when submitted text should be wrapped in double quotes"
     definition = "CMMTextSettingQuoteText(SettingKey)"
-    replace_with = "EqualTo_CFixedPoint(CMMVar(Concatenate('cmm_setting_text_quote_', SettingKey)).GetValue, '(CFixedPoint)1')"
+    replace_with = "CMMMetadataEqualsOne('cmm_setting_text_quote_', SettingKey)"
 }
 
 # Args: SettingKey (string)
@@ -526,300 +342,114 @@ macro = {
     replace_with = "Concatenate(SettingKey, '_on_changed')"
 }
 
-# Args: none
-# Returns: none
-macro = {
-    description = "Mark pending numeric change as one-step decrease"
-    definition = "CMMMarkNumericDecrease"
-    replace_with = "GetScriptedGui('CMM_MarkNumericDecrease').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
-}
-
-# Args: none
-# Returns: none
-macro = {
-    description = "Mark pending numeric change as five-step decrease"
-    definition = "CMMMarkNumericDecrease5x"
-    replace_with = "GetScriptedGui('CMM_MarkNumericDecrease5x').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
-}
-
-# Args: none
-# Returns: none
-macro = {
-    description = "Mark pending numeric change as jump-to-min"
-    definition = "CMMMarkNumericDecreaseToMin"
-    replace_with = "GetScriptedGui('CMM_MarkNumericDecreaseToMin').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
-}
-
-# Args: none
-# Returns: none
-macro = {
-    description = "Mark pending numeric change as one-step increase"
-    definition = "CMMMarkNumericIncrease"
-    replace_with = "GetScriptedGui('CMM_MarkNumericIncrease').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
-}
-
-# Args: none
-# Returns: none
-macro = {
-    description = "Mark pending numeric change as five-step increase"
-    definition = "CMMMarkNumericIncrease5x"
-    replace_with = "GetScriptedGui('CMM_MarkNumericIncrease5x').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
-}
-
-# Args: none
-# Returns: none
-macro = {
-    description = "Mark pending numeric change as jump-to-max"
-    definition = "CMMMarkNumericIncreaseToMax"
-    replace_with = "GetScriptedGui('CMM_MarkNumericIncreaseToMax').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
-}
-
-# Args: Index (int32)
-# Returns: none
-macro = {
-    description = "Mark the next ordered list interaction with one row position"
-    definition = "CMMMarkListPosition(Index)"
-    replace_with = "GetScriptedGui(Concatenate('CMM_MarkListPosition_', ToString_int32(Index))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
-}
-
-# Args: none
-# Returns: none
-macro = {
-    description = "Mark the next ordered list interaction as move-up"
-    definition = "CMMMarkListMoveUp"
-    replace_with = "GetScriptedGui('CMM_MarkListMoveUp').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
-}
-
-# Args: none
-# Returns: none
-macro = {
-    description = "Mark the next ordered list interaction as move-down"
-    definition = "CMMMarkListMoveDown"
-    replace_with = "GetScriptedGui('CMM_MarkListMoveDown').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
-}
-
-# Args: none
-# Returns: none
-macro = {
-    description = "Mark the next ordered list interaction as move-to-top"
-    definition = "CMMMarkListMoveToTop"
-    replace_with = "GetScriptedGui('CMM_MarkListMoveToTop').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
-}
-
-# Args: none
-# Returns: none
-macro = {
-    description = "Mark the next ordered list interaction as move-to-bottom"
-    definition = "CMMMarkListMoveToBottom"
-    replace_with = "GetScriptedGui('CMM_MarkListMoveToBottom').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
-}
-
-# Args: none
-# Returns: none
-macro = {
-    description = "Mark the next ordered list interaction with the cached hovered row position"
-    definition = "CMMMarkHoveredListPosition"
-    replace_with = "GetScriptedGui(Concatenate('CMM_MarkListPosition_', GetVariableSystem.Get('cmm_list_hover_index'))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
-}
-
-# Args: SlotKey (string)
-# Returns: none
-macro = {
-    description = "Mark the next ordered list interaction with one field slot"
-    definition = "CMMMarkListFieldSlot(SlotKey)"
-    replace_with = "GetScriptedGui(Concatenate('CMM_MarkListFieldSlot_', SlotKey)).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
-}
-
-# Args: none
-# Returns: none
-macro = {
-    description = "Mark the next ordered list interaction as a bool-field toggle"
-    definition = "CMMMarkListFieldToggle"
-    replace_with = "GetScriptedGui('CMM_MarkListFieldToggle').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
-}
-
-# Args: none
-# Returns: none
-macro = {
-    description = "Mark the next ordered list interaction as toggling one bool field for all rows"
-    definition = "CMMMarkListFieldToggleAll"
-    replace_with = "GetScriptedGui('CMM_MarkListFieldToggleAll').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
-}
-
-# Args: none
-# Returns: none
-macro = {
-    description = "Mark the next ordered list interaction as selecting a dropdown-field option"
-    definition = "CMMMarkListFieldSelectDropdown"
-    replace_with = "GetScriptedGui('CMM_MarkListFieldSelectDropdown').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
-}
-
-# Args: none
-# Returns: none
-macro = {
-    description = "Mark the next ordered list interaction as selecting a dropdown-field option for all rows"
-    definition = "CMMMarkListFieldSelectDropdownAll"
-    replace_with = "GetScriptedGui('CMM_MarkListFieldSelectDropdownAll').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
-}
-
-# Args: none
-# Returns: none
-macro = {
-    description = "Mark the next ordered list interaction as applying a numeric-field value to all rows"
-    definition = "CMMMarkListFieldSelectNumericAll"
-    replace_with = "GetScriptedGui('CMM_MarkListFieldSelectNumericAll').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
-}
-
-# Args: none
-# Returns: none
-macro = {
-    description = "Mark the next ordered list interaction as a dropdown-field next cycle"
-    definition = "CMMMarkListFieldCycleNext"
-    replace_with = "GetScriptedGui('CMM_MarkListFieldCycleNext').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
-}
-
-# Args: none
-# Returns: none
-macro = {
-    description = "Mark the next ordered list interaction as a dropdown-field previous cycle"
-    definition = "CMMMarkListFieldCyclePrev"
-    replace_with = "GetScriptedGui('CMM_MarkListFieldCyclePrev').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
-}
-
-# Args: IndexKey (string)
-# Returns: none
-macro = {
-    description = "Mark the next dropdown interaction with one selected option index"
-    definition = "CMMMarkDropdownSelection(IndexKey)"
-    replace_with = "GetScriptedGui(Concatenate('CMM_MarkDropdownSelection_', IndexKey)).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
-}
-
-# Args: SettingKey (string)
-# Returns: boolean
-macro = {
-    description = "Checkbox checked state for bool settings (1 = on)"
-    definition = "CMMIsSettingEnabled(SettingKey)"
-    replace_with = "EqualTo_CFixedPoint(CMMSettingValue(SettingKey), '(CFixedPoint)1')"
-}
-
-# Args: SettingKey (string)
-# Returns: value
-macro = {
-    description = "Numeric setting value text"
-    definition = "CMMNumericSettingValue(SettingKey)"
-    replace_with = "CMMSettingValue(SettingKey)"
-}
-
-# Args: SettingKey (string)
-# Returns: value
-macro = {
-    description = "Numeric setting minimum bound text"
-    definition = "CMMNumericSettingMin(SettingKey)"
-    replace_with = "CMMVar(Concatenate('cmm_setting_min_', SettingKey)).GetValue"
-}
-
-# Args: SettingKey (string)
-# Returns: value
-macro = {
-    description = "Numeric setting maximum bound text"
-    definition = "CMMNumericSettingMax(SettingKey)"
-    replace_with = "CMMVar(Concatenate('cmm_setting_max_', SettingKey)).GetValue"
-}
-
-# Args: SettingKey (string)
-# Returns: int32
-macro = {
-    description = "Slider visual step count for one setting"
-    definition = "CMMSliderVisualStepCount(SettingKey)"
-    replace_with = "FixedPointToInt(CMMVar(Concatenate('cmm_setting_slider_visual_step_count_', SettingKey)).GetValue)"
-}
-
-# Args: SettingKey (string)
-# Returns: int32
-macro = {
-    description = "Slider actual last index for one setting"
-    definition = "CMMSliderActualLastIndex(SettingKey)"
-    replace_with = "FixedPointToInt(CMMVar(Concatenate('cmm_setting_slider_actual_last_index_', SettingKey)).GetValue)"
-}
-
-# Args: SettingKey (string)
-# Returns: int32
-macro = {
-    description = "Slider visual last index for one setting"
-    definition = "CMMSliderVisualLastIndex(SettingKey)"
-    replace_with = "FixedPointToInt(CMMVar(Concatenate('cmm_setting_slider_visual_last_index_', SettingKey)).GetValue)"
-}
-
-# Args: SettingKey (string)
-# Returns: int32
-macro = {
-    description = "Current actual slider step index for one setting"
-    definition = "CMMSliderCurrentActualIndex(SettingKey)"
-    replace_with = "FixedPointToInt(Add_CFixedPoint(Divide_CFixedPoint(Subtract_CFixedPoint(CMMSettingValue(SettingKey), CMMVar(Concatenate('cmm_setting_min_', SettingKey)).GetValue), CMMVar(Concatenate('cmm_setting_step_', SettingKey)).GetValue), '(CFixedPoint)0.5'))"
-}
-
-# Args: SettingKey (string)
-# Returns: int32
-macro = {
-    description = "Current visual slider slot index for one setting"
-    definition = "CMMSliderCurrentVisualIndex(SettingKey)"
-    replace_with = "Divide_int32(Multiply_int32(CMMSliderCurrentActualIndex(SettingKey), CMMSliderVisualLastIndex(SettingKey)), CMMSliderActualLastIndex(SettingKey))"
-}
-
-# Args: none
-# Returns: none
-macro = {
-    description = "Begin a slider drag interaction"
-    definition = "CMMStartSliderDrag"
-    replace_with = "GetScriptedGui('CMM_StartSliderDrag').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
-}
-
-# Args: none
-# Returns: none
-macro = {
-    description = "End a slider drag interaction"
-    definition = "CMMStopSliderDrag"
-    replace_with = "GetScriptedGui('CMM_StopSliderDrag').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
-}
-
-# Args: SettingKey (string)
-# Returns: int32
-macro = {
-    description = "Dropdown option count for one setting"
-    definition = "CMMDropdownOptionCount(SettingKey)"
-    replace_with = "FixedPointToInt(CMMVar(Concatenate('cmm_setting_dropdown_count_', SettingKey)).GetValue)"
-}
-
-# Args: SettingKey (string)
-# Returns: int32
-macro = {
-    description = "Dropdown selected index for one setting"
-    definition = "CMMDropdownSelectedIndex(SettingKey)"
-    replace_with = "FixedPointToInt(CMMSettingValue(SettingKey))"
-}
-
-# Args: SettingKey (string)
+# Args: ItemKey (string)
 # Returns: string
 macro = {
-    description = "Localized selected dropdown label for one setting"
-    definition = "CMMDropdownSelectedLabel(SettingKey)"
-    replace_with = "Localize(Concatenate(Concatenate(SettingKey, '_option_'), Concatenate(ToString_int32(CMMDropdownSelectedIndex(SettingKey)), '_name')))"
+    description = "Owner setting key for one ordered list item key"
+    definition = "CMMListItemOwnerSettingKey(ItemKey)"
+    replace_with = "CMMMetadataFlag('cmm_list_item_owner_setting_', ItemKey)"
 }
 
-# Args: SettingKey (string), Index (int32)
-# Returns: string
-macro = {
-    description = "Localized dropdown list label for one setting and option index"
-    definition = "CMMDropdownListLabel(SettingKey,Index)"
-    replace_with = "Localize(Concatenate(Concatenate(SettingKey, '_option_'), Concatenate(ToString_int32(Index), '_name')))"
-}
-
-# Args: none
+# Args: ItemKey (string)
 # Returns: boolean
 macro = {
-    description = "Show empty-state text when selected tab has zero visible settings"
-    definition = "CMMShowNoSettingsForSelectedTab"
-    replace_with = "And(CMMSelectedModExists, Or3(Not(CMMSelectedTabExists), Not(CMMSelectedTabCountIsSet), EqualTo_CFixedPoint(CMMSelectedTabCountValue, '(CFixedPoint)0')))"
+    description = "True when local player can edit the owner setting for one ordered list item"
+    definition = "CMMCanEditListItemSetting(ItemKey)"
+    replace_with = "CMMCanEditSetting(CMMListItemOwnerSettingKey(ItemKey))"
 }
 
+# Args: ItemKey (string)
+# Returns: none
+macro = {
+    description = "Execute the owner setting callback for one ordered list item"
+    definition = "CMMExecuteListItemSettingChanged(ItemKey)"
+    replace_with = "CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(ItemKey))"
+}
 
+# Args: SettingKey (string)
+# Returns: int32
+macro = {
+    description = "Ordered list field count for one setting"
+    definition = "CMMListFieldCount(SettingKey)"
+    replace_with = "CMMMetadataInt('cmm_list_field_count_', SettingKey)"
+}
+
+# Args: SettingKey (string), SlotKey (string), Suffix (string)
+# Returns: variable
+macro = {
+    description = "Ordered list field metadata variable accessor"
+    definition = "CMMListFieldMetadataVar(SettingKey,SlotKey,Suffix)"
+    replace_with = "CMMVar(Concatenate(Concatenate('cmm_list_field_', SlotKey), Concatenate(Suffix, SettingKey)))"
+}
+
+# Args: SettingKey (string), SlotKey (string), Suffix (string)
+# Returns: string
+macro = {
+    description = "Ordered list field metadata flag-name accessor"
+    definition = "CMMListFieldMetadataFlag(SettingKey,SlotKey,Suffix)"
+    replace_with = "CMMListFieldMetadataVar(SettingKey, SlotKey, Suffix).GetFlagName"
+}
+
+# Args: SettingKey (string), SlotKey (string), Suffix (string)
+# Returns: value
+macro = {
+    description = "Ordered list field metadata value accessor"
+    definition = "CMMListFieldMetadataValue(SettingKey,SlotKey,Suffix)"
+    replace_with = "CMMListFieldMetadataVar(SettingKey, SlotKey, Suffix).GetValue"
+}
+
+# Args: SettingKey (string), SlotKey (string), Suffix (string)
+# Returns: int32
+macro = {
+    description = "Ordered list field metadata int accessor"
+    definition = "CMMListFieldMetadataInt(SettingKey,SlotKey,Suffix)"
+    replace_with = "FixedPointToInt(CMMListFieldMetadataValue(SettingKey, SlotKey, Suffix))"
+}
+
+# Args: ItemKey (string), SlotKey (string)
+# Returns: variable
+macro = {
+    description = "Ordered list item field variable accessor"
+    definition = "CMMListItemFieldVar(ItemKey,SlotKey)"
+    replace_with = "CMMVar(Concatenate(ItemKey, Concatenate('_field_', SlotKey)))"
+}
+
+# Args: ItemKey (string), SlotKey (string)
+# Returns: value
+macro = {
+    description = "Ordered list item field value accessor"
+    definition = "CMMListItemFieldValue(ItemKey,SlotKey)"
+    replace_with = "CMMListItemFieldVar(ItemKey, SlotKey).GetValue"
+}
+
+# Args: ItemKey (string), SlotKey (string)
+# Returns: int32
+macro = {
+    description = "Ordered list item field int accessor"
+    definition = "CMMListItemFieldInt(ItemKey,SlotKey)"
+    replace_with = "FixedPointToInt(CMMListItemFieldValue(ItemKey, SlotKey))"
+}
+
+# Args: SettingKey (string), SlotKey (string)
+# Returns: boolean
+macro = {
+    description = "True when one ordered list field slot is bool"
+    definition = "CMMListFieldIsBool(SettingKey,SlotKey)"
+    replace_with = "EqualTo_CFixedPoint(CMMListFieldMetadataValue(SettingKey, SlotKey, '_type_'), '(CFixedPoint)1')"
+}
+
+# Args: SettingKey (string), SlotKey (string)
+# Returns: boolean
+macro = {
+    description = "True when one ordered list field slot is dropdown"
+    definition = "CMMListFieldIsDropdown(SettingKey,SlotKey)"
+    replace_with = "EqualTo_CFixedPoint(CMMListFieldMetadataValue(SettingKey, SlotKey, '_type_'), '(CFixedPoint)2')"
+}
+
+# Args: SettingKey (string), SlotKey (string)
+# Returns: boolean
+macro = {
+    description = "True when one ordered list field slot is numeric"
+    definition = "CMMListFieldIsNumeric(SettingKey,SlotKey)"
+    replace_with = "EqualTo_CFixedPoint(CMMListFieldMetadataValue(SettingKey, SlotKey, '_type_'), '(CFixedPoint)3')"
+}

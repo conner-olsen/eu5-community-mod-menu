@@ -46,11 +46,11 @@
 				}
 
 				click_modifiers = {
-					ondefault = "[CMMMarkNumericDecrease]"
+					ondefault = "[CMMExecuteGui('CMM_MarkNumericDecrease')]"
 					ondefault = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-					onctrl = "[CMMMarkNumericDecrease5x]"
+					onctrl = "[CMMExecuteGui('CMM_MarkNumericDecrease5x')]"
 					onctrl = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-					onshift = "[CMMMarkNumericDecreaseToMin]"
+					onshift = "[CMMExecuteGui('CMM_MarkNumericDecreaseToMin')]"
 					onshift = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
 				}
 
@@ -101,7 +101,7 @@
 										textbox = {
 											using = text_single_template
 											align = left|nobaseline
-											raw_text = "[CMMNumericSettingMin(Scope.GetFlagName)] - [CMMNumericSettingMax(Scope.GetFlagName)]"
+											raw_text = "[CMMMetadataValue('cmm_setting_min_', Scope.GetFlagName)] - [CMMMetadataValue('cmm_setting_max_', Scope.GetFlagName)]"
 										}
 									}
 								}
@@ -113,7 +113,7 @@
 						size = { 100% 100% }
 						align = center|nobaseline
 						autoresize = no
-						text = "[CMMNumericSettingValue(Scope.GetFlagName)]"
+						text = "[CMMSettingValue(Scope.GetFlagName)]"
 					}
 				}
 			}
@@ -145,11 +145,11 @@
 				}
 
 				click_modifiers = {
-					ondefault = "[CMMMarkNumericIncrease]"
+					ondefault = "[CMMExecuteGui('CMM_MarkNumericIncrease')]"
 					ondefault = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-					onctrl = "[CMMMarkNumericIncrease5x]"
+					onctrl = "[CMMExecuteGui('CMM_MarkNumericIncrease5x')]"
 					onctrl = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-					onshift = "[CMMMarkNumericIncreaseToMax]"
+					onshift = "[CMMExecuteGui('CMM_MarkNumericIncreaseToMax')]"
 					onshift = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
 				}
 

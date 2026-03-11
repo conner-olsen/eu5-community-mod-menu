@@ -16,7 +16,7 @@
 		alwaystransparent = no
 		datamodel = "[DataModelRepeatedItem(CMMDropdownOptionCount(Scope.GetFlagName))]"
 		selectedindex = "[CMMDropdownSelectedIndex(Scope.GetFlagName)]"
-		onselectionchanged = "[GetScriptedGui(Concatenate('CMM_MarkDropdownSelection_', GetVariableSystem.Get('cmm_dropdown_hover_index'))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+		onselectionchanged = "[CMMExecuteGuiSuffix('CMM_MarkDropdownSelection_', GetVariableSystem.Get('cmm_dropdown_hover_index'))]"
 		onselectionchanged = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
 
 		active_item = {
@@ -38,7 +38,7 @@
 						autoresize = no
 						align = left|nobaseline
 						fontsize_min = 13
-						text = "[CMMDropdownSelectedLabel(Scope.GetFlagName)]"
+						text = "[CMMOptionLabel(Scope.GetFlagName, CMMDropdownSelectedIndex(Scope.GetFlagName))]"
 					}
 
 					icon = {
@@ -72,7 +72,7 @@
 					align = left|nobaseline
 					fontsize_min = 13
 					default_format = "#medium"
-					text = "[CMMDropdownListLabel(Scope.GetFlagName,PdxGuiWidget.GetIndexInDataModel)]"
+					text = "[CMMOptionLabel(Scope.GetFlagName, PdxGuiWidget.GetIndexInDataModel)]"
 				}
 			}
 		}

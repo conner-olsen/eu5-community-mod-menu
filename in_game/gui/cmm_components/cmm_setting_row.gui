@@ -37,9 +37,9 @@
 			text_single = {
 				layoutpolicy_horizontal = expanding
 				tagtooltip_enabled = yes
-				tooltip = "[CMMSettingDesc(Scope.GetFlagName)]"
+				tooltip = "[CMMLocalizedSuffix(Scope.GetFlagName, '_desc')]"
 				tooltipwidget = { BasicFunctionalTooltip = {} }
-				text = "[CMMSettingName(Scope.GetFlagName)]"
+				text = "[CMMLocalizedSuffix(Scope.GetFlagName, '_name')]"
 			}
 
 			hbox = {
@@ -58,7 +58,7 @@
 					visible = "[CMMSettingIsButton(Scope.GetFlagName)]"
 					minimumsize = { 168 32 }
 					enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
-					text = "[CMMButtonSettingText(Scope.GetFlagName)]"
+					text = "[CMMLocalizedSuffix(Scope.GetFlagName, '_button_text')]"
 					onclick = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
 					tooltip_enabled = no
 				}

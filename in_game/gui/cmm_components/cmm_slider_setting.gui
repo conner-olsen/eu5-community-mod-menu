@@ -61,11 +61,11 @@
 							}
 
 							click_modifiers = {
-								ondefault = "[CMMMarkNumericDecrease]"
+								ondefault = "[CMMExecuteGui('CMM_MarkNumericDecrease')]"
 								ondefault = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-								onctrl = "[CMMMarkNumericDecrease5x]"
+								onctrl = "[CMMExecuteGui('CMM_MarkNumericDecrease5x')]"
 								onctrl = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-								onshift = "[CMMMarkNumericDecreaseToMin]"
+								onshift = "[CMMExecuteGui('CMM_MarkNumericDecreaseToMin')]"
 								onshift = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
 							}
 
@@ -79,18 +79,18 @@
 						size = { 180 20 }
 						minimumsize = { 180 20 }
 						allow_outside = yes
-						onmousehierarchyleave = "[CMMStopSliderDrag]"
+						onmousehierarchyleave = "[CMMExecuteGui('CMM_StopSliderDrag')]"
 
 						scrollbar = {
 							name = "cmm_slider_visual"
 							direction = horizontal
 							size = { 100% 20 }
 							minimumsize = { -1 14 }
-							min = "[CMMNumericSettingMin(Scope.GetFlagName)]"
-							max = "[CMMNumericSettingMax(Scope.GetFlagName)]"
-							step = "[CMMVar(Concatenate('cmm_setting_step_', Scope.GetFlagName)).GetValue]"
+							min = "[CMMMetadataValue('cmm_setting_min_', Scope.GetFlagName)]"
+							max = "[CMMMetadataValue('cmm_setting_max_', Scope.GetFlagName)]"
+							step = "[CMMMetadataValue('cmm_setting_step_', Scope.GetFlagName)]"
 							wheelstep = 0
-							value = "[CMMNumericSettingValue(Scope.GetFlagName)]"
+							value = "[CMMSettingValue(Scope.GetFlagName)]"
 							enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
 
 							track = {
@@ -107,7 +107,7 @@
 
 						hbox = {
 							size = { 100% 20 }
-							datamodel = "[DataModelRepeatedItem(CMMSliderVisualStepCount(Scope.GetFlagName))]"
+							datamodel = "[DataModelRepeatedItem(CMMMetadataInt('cmm_setting_slider_visual_step_count_', Scope.GetFlagName))]"
 							datamodel_reuse_widgets = yes
 
 							item = {
@@ -116,7 +116,7 @@
 									layoutstretchfactor_horizontal = 1
 									size = { 0 20 }
 									allow_outside = yes
-									onmousehierarchyenter = "[GetScriptedGui(Concatenate('CMM_SliderDragHover_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+									onmousehierarchyenter = "[CMMExecuteGuiSuffix('CMM_SliderDragHover_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
 									onmousehierarchyenter = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
 
 									button = {
@@ -124,10 +124,10 @@
 										alpha = 0
 										effectname = "NoHighlight"
 										enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
-										onpressed = "[CMMStartSliderDrag]"
-										onpressed = "[GetScriptedGui(Concatenate('CMM_MarkSliderSelection_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+										onpressed = "[CMMExecuteGui('CMM_StartSliderDrag')]"
+										onpressed = "[CMMExecuteGuiSuffix('CMM_MarkSliderSelection_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
 										onpressed = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-										onreleased = "[CMMStopSliderDrag]"
+										onreleased = "[CMMExecuteGui('CMM_StopSliderDrag')]"
 										tooltip_enabled = no
 									}
 								}
@@ -165,11 +165,11 @@
 							}
 
 							click_modifiers = {
-								ondefault = "[CMMMarkNumericIncrease]"
+								ondefault = "[CMMExecuteGui('CMM_MarkNumericIncrease')]"
 								ondefault = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-								onctrl = "[CMMMarkNumericIncrease5x]"
+								onctrl = "[CMMExecuteGui('CMM_MarkNumericIncrease5x')]"
 								onctrl = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
-								onshift = "[CMMMarkNumericIncreaseToMax]"
+								onshift = "[CMMExecuteGui('CMM_MarkNumericIncreaseToMax')]"
 								onshift = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
 							}
 
@@ -185,7 +185,7 @@
 				size = { 50 30 }
 				minimumsize = { 50 30 }
 				align = left|nobaseline
-				text = "[CMMNumericSettingValue(Scope.GetFlagName)]"
+				text = "[CMMSettingValue(Scope.GetFlagName)]"
 			}
 		}
 	}

@@ -82,9 +82,9 @@
 
 			button_regular = {
 				using = layoutpolicy_expanding
-				text = "[CMMModRowLabel(Scope.GetFlagName)]"
+				text = "[CMMLocalizedSuffix(Scope.GetFlagName, '_name')]"
 				onclick = "[GetVariableSystem.Set('cmm_selected_mod', Scope.GetFlagName)]"
-				onclick = "[GetVariableSystem.Set('cmm_selected_tab', CMMDefaultTab(Scope.GetFlagName))]"
+				onclick = "[GetVariableSystem.Set('cmm_selected_tab', CMMMetadataFlag('cmm_mod_default_tab_', Scope.GetFlagName))]"
 				down = "[GetVariableSystem.HasValue('cmm_selected_mod', Scope.GetFlagName)]"
 				tooltip_enabled = no
 			}

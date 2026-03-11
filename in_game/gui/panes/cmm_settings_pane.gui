@@ -73,7 +73,7 @@
 				button_main_tab_alt = {
 					using = layoutpolicy_expanding
 					size = { -1 40 }
-					visible = "[GetVariableSystem.HasValue('cmm_selected_mod', CMMTabOwnerModId(Scope.GetFlagName))]"
+					visible = "[CMMSelectedHasValue('cmm_selected_mod', CMMMetadataFlag('cmm_tab_owner_mod_id_', Scope.GetFlagName))]"
 					onclick = "[GetVariableSystem.Set('cmm_selected_tab', Scope.GetFlagName)]"
 					down = "[GetVariableSystem.HasValue('cmm_selected_tab', Scope.GetFlagName)]"
 					tooltip_enabled = no
@@ -82,7 +82,7 @@
 						margin = { 5 0 }
 						margin_top = 4
 						text_single = {
-							text = "[CMMTabName(Scope.GetFlagName)]"
+							text = "[CMMLocalizedSuffix(Scope.GetFlagName, '_name')]"
 							using = Font_Type_Headers
 							using = layoutpolicy_expanding
 							align = center
@@ -148,7 +148,7 @@
 				margin_top = 10
 				autoresize = no
 				default_format = "#yellow_titles"
-				text = "[CMMGroupName(Scope.GetFlagName)]"
+				text = "[CMMLocalizedSuffix(Scope.GetFlagName, '_name')]"
 			}
 		}
 

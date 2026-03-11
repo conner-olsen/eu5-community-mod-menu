@@ -33,7 +33,7 @@
 						layoutpolicy_horizontal = expanding
 						autoresize = no
 						maximumsize = { 450 40 }
-						text = "[CMMSelectedModName]"
+						text = "[CMMLocalizedSuffix(GetVariableSystem.Get('cmm_selected_mod'), '_name')]"
 					}
 				}
 			}

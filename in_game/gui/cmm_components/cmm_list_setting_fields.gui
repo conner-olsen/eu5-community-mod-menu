@@ -21,7 +21,7 @@
 				autoresize = no
 				default_format = "#medium"
 				align = center|nobaseline
-				text = "[CMMListFieldName(Scope.GetFlagName, ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
+				text = "[CMMListFieldMetadataFlag(Scope.GetFlagName, ToString_int32(PdxGuiWidget.GetIndexInDataModel), '_name_')]"
 			}
 		}
 	}
@@ -87,7 +87,7 @@
 			parentanchor = center
 			widgetanchor = center
 			enabled = "[CMMCanEditListItemSetting(Scope.GetFlagName)]"
-			checked = "[CMMListFieldBoolChecked(Scope.GetFlagName, ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
+			checked = "[CMMValueEqualsOne(CMMListItemFieldValue(Scope.GetFlagName, ToString_int32(PdxGuiWidget.GetIndexInDataModel)))]"
 			tooltip_enabled = no
 		}
 
@@ -107,13 +107,13 @@
 			}
 
 			click_modifiers = {
-				ondefault = "[CMMMarkHoveredListPosition]"
-				ondefault = "[CMMMarkListFieldSlot(ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
-				ondefault = "[CMMMarkListFieldToggle]"
+				ondefault = "[CMMExecuteGuiSuffix('CMM_MarkListPosition_', GetVariableSystem.Get('cmm_list_hover_index'))]"
+				ondefault = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
+				ondefault = "[CMMExecuteGui('CMM_MarkListFieldToggle')]"
 				ondefault = "[CMMExecuteListItemSettingChanged(Scope.GetFlagName)]"
-				onshift = "[CMMMarkHoveredListPosition]"
-				onshift = "[CMMMarkListFieldSlot(ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
-				onshift = "[CMMMarkListFieldToggleAll]"
+				onshift = "[CMMExecuteGuiSuffix('CMM_MarkListPosition_', GetVariableSystem.Get('cmm_list_hover_index'))]"
+				onshift = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
+				onshift = "[CMMExecuteGui('CMM_MarkListFieldToggleAll')]"
 				onshift = "[CMMExecuteListItemSettingChanged(Scope.GetFlagName)]"
 			}
 
@@ -169,17 +169,17 @@
 			}
 
 			click_modifiers = {
-				ondefault = "[CMMMarkHoveredListPosition]"
-				ondefault = "[CMMMarkListFieldSlot(ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
-				ondefault = "[CMMMarkNumericDecrease]"
+				ondefault = "[CMMExecuteGuiSuffix('CMM_MarkListPosition_', GetVariableSystem.Get('cmm_list_hover_index'))]"
+				ondefault = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
+				ondefault = "[CMMExecuteGui('CMM_MarkNumericDecrease')]"
 				ondefault = "[CMMExecuteListItemSettingChanged(Scope.GetFlagName)]"
-				onctrl = "[CMMMarkHoveredListPosition]"
-				onctrl = "[CMMMarkListFieldSlot(ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
-				onctrl = "[CMMMarkNumericDecrease5x]"
+				onctrl = "[CMMExecuteGuiSuffix('CMM_MarkListPosition_', GetVariableSystem.Get('cmm_list_hover_index'))]"
+				onctrl = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
+				onctrl = "[CMMExecuteGui('CMM_MarkNumericDecrease5x')]"
 				onctrl = "[CMMExecuteListItemSettingChanged(Scope.GetFlagName)]"
-				onshift = "[CMMMarkHoveredListPosition]"
-				onshift = "[CMMMarkListFieldSlot(ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
-				onshift = "[CMMMarkNumericDecreaseToMin]"
+				onshift = "[CMMExecuteGuiSuffix('CMM_MarkListPosition_', GetVariableSystem.Get('cmm_list_hover_index'))]"
+				onshift = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
+				onshift = "[CMMExecuteGui('CMM_MarkNumericDecreaseToMin')]"
 				onshift = "[CMMExecuteListItemSettingChanged(Scope.GetFlagName)]"
 			}
 
@@ -226,9 +226,9 @@
 					}
 
 					click_modifiers = {
-						onshift = "[CMMMarkHoveredListPosition]"
-						onshift = "[CMMMarkListFieldSlot(ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
-						onshift = "[CMMMarkListFieldSelectNumericAll]"
+						onshift = "[CMMExecuteGuiSuffix('CMM_MarkListPosition_', GetVariableSystem.Get('cmm_list_hover_index'))]"
+						onshift = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
+						onshift = "[CMMExecuteGui('CMM_MarkListFieldSelectNumericAll')]"
 						onshift = "[CMMExecuteListItemSettingChanged(Scope.GetFlagName)]"
 					}
 
@@ -243,7 +243,7 @@
 									textbox = {
 										using = text_single_template
 										align = left|nobaseline
-										raw_text = "[CMMListFieldNumericMin(Scope.GetFlagName, ToString_int32(PdxGuiWidget.GetIndexInDataModel))] - [CMMListFieldNumericMax(Scope.GetFlagName, ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
+										raw_text = "[CMMListFieldMetadataValue(CMMListItemOwnerSettingKey(Scope.GetFlagName), ToString_int32(PdxGuiWidget.GetIndexInDataModel), '_min_')] - [CMMListFieldMetadataValue(CMMListItemOwnerSettingKey(Scope.GetFlagName), ToString_int32(PdxGuiWidget.GetIndexInDataModel), '_max_')]"
 									}
 								}
 							}
@@ -255,7 +255,7 @@
 					size = { 100% 100% }
 					align = center|nobaseline
 					autoresize = no
-					text = "[CMMListFieldNumericValue(Scope.GetFlagName, ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
+					text = "[CMMListItemFieldValue(Scope.GetFlagName, ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
 				}
 			}
 		}
@@ -287,17 +287,17 @@
 			}
 
 			click_modifiers = {
-				ondefault = "[CMMMarkHoveredListPosition]"
-				ondefault = "[CMMMarkListFieldSlot(ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
-				ondefault = "[CMMMarkNumericIncrease]"
+				ondefault = "[CMMExecuteGuiSuffix('CMM_MarkListPosition_', GetVariableSystem.Get('cmm_list_hover_index'))]"
+				ondefault = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
+				ondefault = "[CMMExecuteGui('CMM_MarkNumericIncrease')]"
 				ondefault = "[CMMExecuteListItemSettingChanged(Scope.GetFlagName)]"
-				onctrl = "[CMMMarkHoveredListPosition]"
-				onctrl = "[CMMMarkListFieldSlot(ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
-				onctrl = "[CMMMarkNumericIncrease5x]"
+				onctrl = "[CMMExecuteGuiSuffix('CMM_MarkListPosition_', GetVariableSystem.Get('cmm_list_hover_index'))]"
+				onctrl = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
+				onctrl = "[CMMExecuteGui('CMM_MarkNumericIncrease5x')]"
 				onctrl = "[CMMExecuteListItemSettingChanged(Scope.GetFlagName)]"
-				onshift = "[CMMMarkHoveredListPosition]"
-				onshift = "[CMMMarkListFieldSlot(ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
-				onshift = "[CMMMarkNumericIncreaseToMax]"
+				onshift = "[CMMExecuteGuiSuffix('CMM_MarkListPosition_', GetVariableSystem.Get('cmm_list_hover_index'))]"
+				onshift = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
+				onshift = "[CMMExecuteGui('CMM_MarkNumericIncreaseToMax')]"
 				onshift = "[CMMExecuteListItemSettingChanged(Scope.GetFlagName)]"
 			}
 
@@ -334,12 +334,12 @@
 			widgetanchor = center
 			visible = "[EqualTo_int32(PdxGuiWidget.GetIndexInDataModel, '(int32)0')]"
 			alwaystransparent = no
-			datamodel = "[DataModelRepeatedItem(CMMListFieldDropdownCount(Scope.GetFlagName, '0'))]"
-			selectedindex = "[CMMListFieldDropdownSelectedIndex(Scope.GetFlagName, '0')]"
-			onselectionchanged = "[CMMMarkHoveredListPosition]"
-			onselectionchanged = "[CMMMarkListFieldSlot('0')]"
-			onselectionchanged = "[CMMMarkListFieldSelectDropdown]"
-			onselectionchanged = "[CMMMarkDropdownSelection(GetVariableSystem.Get('cmm_dropdown_hover_index'))]"
+			datamodel = "[DataModelRepeatedItem(CMMListFieldMetadataInt(CMMListItemOwnerSettingKey(Scope.GetFlagName), '0', '_dropdown_count_'))]"
+			selectedindex = "[CMMListItemFieldInt(Scope.GetFlagName, '0')]"
+			onselectionchanged = "[CMMExecuteGuiSuffix('CMM_MarkListPosition_', GetVariableSystem.Get('cmm_list_hover_index'))]"
+			onselectionchanged = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', '0')]"
+			onselectionchanged = "[CMMExecuteGui('CMM_MarkListFieldSelectDropdown')]"
+			onselectionchanged = "[CMMExecuteGuiSuffix('CMM_MarkDropdownSelection_', GetVariableSystem.Get('cmm_dropdown_hover_index'))]"
 			onselectionchanged = "[CMMExecuteListItemSettingChanged(Scope.GetFlagName)]"
 
 			active_item = {
@@ -348,7 +348,7 @@
 
 					button_drop = {
 						enabled = "[CMMCanEditListItemSetting(Scope.GetFlagName)]"
-						onclick = "[GetVariableSystem.Set('cmm_dropdown_hover_index', ToString_int32(CMMListFieldDropdownSelectedIndex(Scope.GetFlagName, '0')))]"
+						onclick = "[GetVariableSystem.Set('cmm_dropdown_hover_index', ToString_int32(CMMListItemFieldInt(Scope.GetFlagName, '0')))]"
 						tooltip_enabled = no
 
 						action_tooltip = {
@@ -371,7 +371,7 @@
 							autoresize = no
 							align = left|nobaseline
 							fontsize_min = 13
-							text = "[CMMListFieldDropdownLabel(Scope.GetFlagName, '0')]"
+							text = "[CMMOptionLabel(CMMListFieldMetadataFlag(CMMListItemOwnerSettingKey(Scope.GetFlagName), '0', '_option_root_'), CMMListItemFieldInt(Scope.GetFlagName, '0'))]"
 						}
 
 						icon = {
@@ -405,7 +405,7 @@
 						align = left|nobaseline
 						fontsize_min = 13
 						default_format = "#medium"
-						text = "[CMMListFieldDropdownOptionLabel(Scope.GetFlagName, '0', PdxGuiWidget.GetIndexInDataModel)]"
+						text = "[CMMOptionLabel(CMMListFieldMetadataFlag(CMMListItemOwnerSettingKey(Scope.GetFlagName), '0', '_option_root_'), PdxGuiWidget.GetIndexInDataModel)]"
 					}
 				}
 			}
@@ -448,12 +448,12 @@
 			widgetanchor = center
 			visible = "[EqualTo_int32(PdxGuiWidget.GetIndexInDataModel, '(int32)1')]"
 			alwaystransparent = no
-			datamodel = "[DataModelRepeatedItem(CMMListFieldDropdownCount(Scope.GetFlagName, '1'))]"
-			selectedindex = "[CMMListFieldDropdownSelectedIndex(Scope.GetFlagName, '1')]"
-			onselectionchanged = "[CMMMarkHoveredListPosition]"
-			onselectionchanged = "[CMMMarkListFieldSlot('1')]"
-			onselectionchanged = "[CMMMarkListFieldSelectDropdown]"
-			onselectionchanged = "[CMMMarkDropdownSelection(GetVariableSystem.Get('cmm_dropdown_hover_index'))]"
+			datamodel = "[DataModelRepeatedItem(CMMListFieldMetadataInt(CMMListItemOwnerSettingKey(Scope.GetFlagName), '1', '_dropdown_count_'))]"
+			selectedindex = "[CMMListItemFieldInt(Scope.GetFlagName, '1')]"
+			onselectionchanged = "[CMMExecuteGuiSuffix('CMM_MarkListPosition_', GetVariableSystem.Get('cmm_list_hover_index'))]"
+			onselectionchanged = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', '1')]"
+			onselectionchanged = "[CMMExecuteGui('CMM_MarkListFieldSelectDropdown')]"
+			onselectionchanged = "[CMMExecuteGuiSuffix('CMM_MarkDropdownSelection_', GetVariableSystem.Get('cmm_dropdown_hover_index'))]"
 			onselectionchanged = "[CMMExecuteListItemSettingChanged(Scope.GetFlagName)]"
 
 			active_item = {
@@ -462,7 +462,7 @@
 
 					button_drop = {
 						enabled = "[CMMCanEditListItemSetting(Scope.GetFlagName)]"
-						onclick = "[GetVariableSystem.Set('cmm_dropdown_hover_index', ToString_int32(CMMListFieldDropdownSelectedIndex(Scope.GetFlagName, '1')))]"
+						onclick = "[GetVariableSystem.Set('cmm_dropdown_hover_index', ToString_int32(CMMListItemFieldInt(Scope.GetFlagName, '1')))]"
 						tooltip_enabled = no
 
 						action_tooltip = {
@@ -485,7 +485,7 @@
 							autoresize = no
 							align = left|nobaseline
 							fontsize_min = 13
-							text = "[CMMListFieldDropdownLabel(Scope.GetFlagName, '1')]"
+							text = "[CMMOptionLabel(CMMListFieldMetadataFlag(CMMListItemOwnerSettingKey(Scope.GetFlagName), '1', '_option_root_'), CMMListItemFieldInt(Scope.GetFlagName, '1'))]"
 						}
 
 						icon = {
@@ -519,7 +519,7 @@
 						align = left|nobaseline
 						fontsize_min = 13
 						default_format = "#medium"
-						text = "[CMMListFieldDropdownOptionLabel(Scope.GetFlagName, '1', PdxGuiWidget.GetIndexInDataModel)]"
+						text = "[CMMOptionLabel(CMMListFieldMetadataFlag(CMMListItemOwnerSettingKey(Scope.GetFlagName), '1', '_option_root_'), PdxGuiWidget.GetIndexInDataModel)]"
 					}
 				}
 			}
@@ -562,12 +562,12 @@
 			widgetanchor = center
 			visible = "[EqualTo_int32(PdxGuiWidget.GetIndexInDataModel, '(int32)2')]"
 			alwaystransparent = no
-			datamodel = "[DataModelRepeatedItem(CMMListFieldDropdownCount(Scope.GetFlagName, '2'))]"
-			selectedindex = "[CMMListFieldDropdownSelectedIndex(Scope.GetFlagName, '2')]"
-			onselectionchanged = "[CMMMarkHoveredListPosition]"
-			onselectionchanged = "[CMMMarkListFieldSlot('2')]"
-			onselectionchanged = "[CMMMarkListFieldSelectDropdown]"
-			onselectionchanged = "[CMMMarkDropdownSelection(GetVariableSystem.Get('cmm_dropdown_hover_index'))]"
+			datamodel = "[DataModelRepeatedItem(CMMListFieldMetadataInt(CMMListItemOwnerSettingKey(Scope.GetFlagName), '2', '_dropdown_count_'))]"
+			selectedindex = "[CMMListItemFieldInt(Scope.GetFlagName, '2')]"
+			onselectionchanged = "[CMMExecuteGuiSuffix('CMM_MarkListPosition_', GetVariableSystem.Get('cmm_list_hover_index'))]"
+			onselectionchanged = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', '2')]"
+			onselectionchanged = "[CMMExecuteGui('CMM_MarkListFieldSelectDropdown')]"
+			onselectionchanged = "[CMMExecuteGuiSuffix('CMM_MarkDropdownSelection_', GetVariableSystem.Get('cmm_dropdown_hover_index'))]"
 			onselectionchanged = "[CMMExecuteListItemSettingChanged(Scope.GetFlagName)]"
 
 			active_item = {
@@ -576,7 +576,7 @@
 
 					button_drop = {
 						enabled = "[CMMCanEditListItemSetting(Scope.GetFlagName)]"
-						onclick = "[GetVariableSystem.Set('cmm_dropdown_hover_index', ToString_int32(CMMListFieldDropdownSelectedIndex(Scope.GetFlagName, '2')))]"
+						onclick = "[GetVariableSystem.Set('cmm_dropdown_hover_index', ToString_int32(CMMListItemFieldInt(Scope.GetFlagName, '2')))]"
 						tooltip_enabled = no
 
 						action_tooltip = {
@@ -599,7 +599,7 @@
 							autoresize = no
 							align = left|nobaseline
 							fontsize_min = 13
-							text = "[CMMListFieldDropdownLabel(Scope.GetFlagName, '2')]"
+							text = "[CMMOptionLabel(CMMListFieldMetadataFlag(CMMListItemOwnerSettingKey(Scope.GetFlagName), '2', '_option_root_'), CMMListItemFieldInt(Scope.GetFlagName, '2'))]"
 						}
 
 						icon = {
@@ -633,7 +633,7 @@
 						align = left|nobaseline
 						fontsize_min = 13
 						default_format = "#medium"
-						text = "[CMMListFieldDropdownOptionLabel(Scope.GetFlagName, '2', PdxGuiWidget.GetIndexInDataModel)]"
+						text = "[CMMOptionLabel(CMMListFieldMetadataFlag(CMMListItemOwnerSettingKey(Scope.GetFlagName), '2', '_option_root_'), PdxGuiWidget.GetIndexInDataModel)]"
 					}
 				}
 			}
@@ -676,12 +676,12 @@
 			widgetanchor = center
 			visible = "[EqualTo_int32(PdxGuiWidget.GetIndexInDataModel, '(int32)3')]"
 			alwaystransparent = no
-			datamodel = "[DataModelRepeatedItem(CMMListFieldDropdownCount(Scope.GetFlagName, '3'))]"
-			selectedindex = "[CMMListFieldDropdownSelectedIndex(Scope.GetFlagName, '3')]"
-			onselectionchanged = "[CMMMarkHoveredListPosition]"
-			onselectionchanged = "[CMMMarkListFieldSlot('3')]"
-			onselectionchanged = "[CMMMarkListFieldSelectDropdown]"
-			onselectionchanged = "[CMMMarkDropdownSelection(GetVariableSystem.Get('cmm_dropdown_hover_index'))]"
+			datamodel = "[DataModelRepeatedItem(CMMListFieldMetadataInt(CMMListItemOwnerSettingKey(Scope.GetFlagName), '3', '_dropdown_count_'))]"
+			selectedindex = "[CMMListItemFieldInt(Scope.GetFlagName, '3')]"
+			onselectionchanged = "[CMMExecuteGuiSuffix('CMM_MarkListPosition_', GetVariableSystem.Get('cmm_list_hover_index'))]"
+			onselectionchanged = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', '3')]"
+			onselectionchanged = "[CMMExecuteGui('CMM_MarkListFieldSelectDropdown')]"
+			onselectionchanged = "[CMMExecuteGuiSuffix('CMM_MarkDropdownSelection_', GetVariableSystem.Get('cmm_dropdown_hover_index'))]"
 			onselectionchanged = "[CMMExecuteListItemSettingChanged(Scope.GetFlagName)]"
 
 			active_item = {
@@ -690,7 +690,7 @@
 
 					button_drop = {
 						enabled = "[CMMCanEditListItemSetting(Scope.GetFlagName)]"
-						onclick = "[GetVariableSystem.Set('cmm_dropdown_hover_index', ToString_int32(CMMListFieldDropdownSelectedIndex(Scope.GetFlagName, '3')))]"
+						onclick = "[GetVariableSystem.Set('cmm_dropdown_hover_index', ToString_int32(CMMListItemFieldInt(Scope.GetFlagName, '3')))]"
 						tooltip_enabled = no
 
 						action_tooltip = {
@@ -713,7 +713,7 @@
 							autoresize = no
 							align = left|nobaseline
 							fontsize_min = 13
-							text = "[CMMListFieldDropdownLabel(Scope.GetFlagName, '3')]"
+							text = "[CMMOptionLabel(CMMListFieldMetadataFlag(CMMListItemOwnerSettingKey(Scope.GetFlagName), '3', '_option_root_'), CMMListItemFieldInt(Scope.GetFlagName, '3'))]"
 						}
 
 						icon = {
@@ -747,7 +747,7 @@
 						align = left|nobaseline
 						fontsize_min = 13
 						default_format = "#medium"
-						text = "[CMMListFieldDropdownOptionLabel(Scope.GetFlagName, '3', PdxGuiWidget.GetIndexInDataModel)]"
+						text = "[CMMOptionLabel(CMMListFieldMetadataFlag(CMMListItemOwnerSettingKey(Scope.GetFlagName), '3', '_option_root_'), PdxGuiWidget.GetIndexInDataModel)]"
 					}
 				}
 			}
@@ -790,12 +790,12 @@
 			widgetanchor = center
 			visible = "[EqualTo_int32(PdxGuiWidget.GetIndexInDataModel, '(int32)4')]"
 			alwaystransparent = no
-			datamodel = "[DataModelRepeatedItem(CMMListFieldDropdownCount(Scope.GetFlagName, '4'))]"
-			selectedindex = "[CMMListFieldDropdownSelectedIndex(Scope.GetFlagName, '4')]"
-			onselectionchanged = "[CMMMarkHoveredListPosition]"
-			onselectionchanged = "[CMMMarkListFieldSlot('4')]"
-			onselectionchanged = "[CMMMarkListFieldSelectDropdown]"
-			onselectionchanged = "[CMMMarkDropdownSelection(GetVariableSystem.Get('cmm_dropdown_hover_index'))]"
+			datamodel = "[DataModelRepeatedItem(CMMListFieldMetadataInt(CMMListItemOwnerSettingKey(Scope.GetFlagName), '4', '_dropdown_count_'))]"
+			selectedindex = "[CMMListItemFieldInt(Scope.GetFlagName, '4')]"
+			onselectionchanged = "[CMMExecuteGuiSuffix('CMM_MarkListPosition_', GetVariableSystem.Get('cmm_list_hover_index'))]"
+			onselectionchanged = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', '4')]"
+			onselectionchanged = "[CMMExecuteGui('CMM_MarkListFieldSelectDropdown')]"
+			onselectionchanged = "[CMMExecuteGuiSuffix('CMM_MarkDropdownSelection_', GetVariableSystem.Get('cmm_dropdown_hover_index'))]"
 			onselectionchanged = "[CMMExecuteListItemSettingChanged(Scope.GetFlagName)]"
 
 			active_item = {
@@ -804,7 +804,7 @@
 
 					button_drop = {
 						enabled = "[CMMCanEditListItemSetting(Scope.GetFlagName)]"
-						onclick = "[GetVariableSystem.Set('cmm_dropdown_hover_index', ToString_int32(CMMListFieldDropdownSelectedIndex(Scope.GetFlagName, '4')))]"
+						onclick = "[GetVariableSystem.Set('cmm_dropdown_hover_index', ToString_int32(CMMListItemFieldInt(Scope.GetFlagName, '4')))]"
 						tooltip_enabled = no
 
 						action_tooltip = {
@@ -827,7 +827,7 @@
 							autoresize = no
 							align = left|nobaseline
 							fontsize_min = 13
-							text = "[CMMListFieldDropdownLabel(Scope.GetFlagName, '4')]"
+							text = "[CMMOptionLabel(CMMListFieldMetadataFlag(CMMListItemOwnerSettingKey(Scope.GetFlagName), '4', '_option_root_'), CMMListItemFieldInt(Scope.GetFlagName, '4'))]"
 						}
 
 						icon = {
@@ -861,7 +861,7 @@
 						align = left|nobaseline
 						fontsize_min = 13
 						default_format = "#medium"
-						text = "[CMMListFieldDropdownOptionLabel(Scope.GetFlagName, '4', PdxGuiWidget.GetIndexInDataModel)]"
+						text = "[CMMOptionLabel(CMMListFieldMetadataFlag(CMMListItemOwnerSettingKey(Scope.GetFlagName), '4', '_option_root_'), PdxGuiWidget.GetIndexInDataModel)]"
 					}
 				}
 			}
@@ -914,10 +914,10 @@
 			}
 
 			click_modifiers = {
-				onshift = "[CMMMarkHoveredListPosition]"
-				onshift = "[CMMMarkListFieldSlot(ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
-				onshift = "[CMMMarkListFieldSelectDropdownAll]"
-				onshift = "[CMMMarkDropdownSelection(ToString_int32(CMMListFieldDropdownSelectedIndex(Scope.GetFlagName, ToString_int32(PdxGuiWidget.GetIndexInDataModel))))]"
+				onshift = "[CMMExecuteGuiSuffix('CMM_MarkListPosition_', GetVariableSystem.Get('cmm_list_hover_index'))]"
+				onshift = "[CMMExecuteGuiSuffix('CMM_MarkListFieldSlot_', ToString_int32(PdxGuiWidget.GetIndexInDataModel))]"
+				onshift = "[CMMExecuteGui('CMM_MarkListFieldSelectDropdownAll')]"
+				onshift = "[CMMExecuteGuiSuffix('CMM_MarkDropdownSelection_', ToString_int32(CMMListItemFieldInt(Scope.GetFlagName, ToString_int32(PdxGuiWidget.GetIndexInDataModel))))]"
 				onshift = "[CMMExecuteListItemSettingChanged(Scope.GetFlagName)]"
 			}
 
