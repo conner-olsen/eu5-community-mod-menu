@@ -291,6 +291,69 @@ Notes:
 - When `quote_text = 0`, your effect must expect an unquoted token. CMM will not sanitize spaces or script syntax for you.
 - There is no `cmm_register_global_text_setting`.
 
+### 10) Register ordered list settings
+
+```txt
+cmm_register_list_setting = {
+    mod_id = your_mod_id
+    setting_id = build_priority
+    tab_id = general
+    group_id = automation
+    item_count = 5
+}
+
+cmm_register_list_bool_field = {
+    mod_id = your_mod_id
+    setting_id = build_priority
+    field_id = enabled
+    default_value = 1
+}
+
+cmm_register_list_dropdown_field = {
+    mod_id = your_mod_id
+    setting_id = build_priority
+    field_id = mode
+    default_index = 1
+    option_count = 3
+}
+```
+
+Arguments:
+
+- `mod_id`: owner mod id.
+- `setting_id`: stable id within your mod.
+- `tab_id`: owner tab id within your mod.
+- `group_id`: owner group id within your mod.
+- `item_count`: number of ordered list items. CMM clamps values into `1..20`.
+- `field_id`: stable per-list field id unique within the list setting.
+- `default_value`: initial bool-field value for brand-new saves (`0` or `1`).
+- `default_index`: initial dropdown-field option index for brand-new saves.
+- `option_count`: number of dropdown options (`>= 1`).
+
+Notes:
+
+- List settings are local country-scope only in CMM v1. There is no global list-setting API.
+- Register the list first, then register its fields.
+- Each list may register up to 5 fields total.
+- Field columns render left-to-right in registration order.
+- Bool fields render as checkboxes.
+- Dropdown fields render as compact click-to-cycle buttons:
+  - Click: next option.
+  - `Shift+click`: previous option.
+- Ordered list rows support:
+  - Click up/down: move one row.
+  - `Shift+click` up/down: move to top/bottom.
+
+Runtime data shape:
+
+- Ordered row sequence is stored in `cmm_list_items_<mod_id>__<setting_id>`.
+- Stable item identity keys are `flag:<mod_id>__<setting_id>_item_<index>`.
+- Per-item field values are stored on the stable item identity, not on the visible row position:
+  - `<mod_id>__<setting_id>_item_<index>_field_0`
+  - `<mod_id>__<setting_id>_item_<index>_field_1`
+  - ...
+- When iterating your ordered list in script, compare the current list entry against `flag:<mod_id>__<setting_id>_item_<index>` to identify which item you are handling.
+
 Localization keys are derived automatically from ids:
 
 - Mod title: `<mod_id>_name`
@@ -300,6 +363,9 @@ Localization keys are derived automatically from ids:
 - Setting description: `<mod_id>_<setting_id>_desc`
 - Button setting text: `<mod_id>_<setting_id>_button_text`
 - Dropdown options: `<mod_id>__<setting_id>_option_<index>_name`
+- List item labels: `<mod_id>_<setting_id>_item_<index>_name`
+- List field labels: `<mod_id>_<setting_id>_<field_id>_name`
+- List dropdown options: `<mod_id>_<setting_id>_<field_id>_option_<index>_name`
 
 ## Callback Contract
 
@@ -387,6 +453,23 @@ Required scripted GUI callback:
 }
 ```
 
+### List setting callbacks
+
+Required scripted GUI callback:
+
+```txt
+<mod_id>__<setting_id>_on_changed = {
+    scope = country
+    effect = {
+        cmm_apply_list_change = {
+            setting = <mod_id>__<setting_id>
+        }
+        # optional custom logic after order or field values change
+    }
+    # optional is_shown = { ... }
+}
+```
+
 ### Text setting callbacks
 
 Required scripted effect:
@@ -407,6 +490,7 @@ Notes:
 - CMM handles numeric modes (`1x`, `5x`, `min/max`) via generic marker scripted GUIs, then executes `_on_changed`.
 - CMM handles slider track clicks and `-` / `+` modifiers via generic marker scripted GUIs, then executes `_on_changed`.
 - CMM captures dropdown selection index via a generic marker scripted GUI, then executes `_on_changed`.
+- CMM captures ordered-list row position, move action, and field action via generic marker scripted GUIs, then executes `_on_changed`.
 - If `is_shown` is omitted, the row is visible.
 - Local bool, numeric, slider, and dropdown checked/value state is read from `var:<mod_id>__<setting_id>` by CMM UI.
 - Global bool, numeric, slider, and dropdown checked/value state is read from `GetGlobalVariable(<mod_id>__<setting_id>)` by CMM UI.
@@ -489,6 +573,18 @@ CMM writes these country-scope variables/lists:
 - `cmm_setting_slider_visual_last_index_<mod_id>__<setting_id>` (slider only)
 - `cmm_setting_dropdown_count_<mod_id>__<setting_id>` (dropdown only)
 - `cmm_setting_dropdown_last_index_<mod_id>__<setting_id>` (dropdown only)
+- `cmm_setting_list_count_<mod_id>__<setting_id>` (list only)
+- `cmm_setting_list_last_index_<mod_id>__<setting_id>` (list only)
+- `cmm_list_items_<mod_id>__<setting_id>` (list-only variable list of stable item keys)
+- `cmm_list_field_count_<mod_id>__<setting_id>` (list only)
+- `cmm_list_field_<slot>_type_<mod_id>__<setting_id>` (list only; `1` bool, `2` dropdown)
+- `cmm_list_field_<slot>_name_<mod_id>__<setting_id>` (list only; flag value)
+- `cmm_list_field_<slot>_option_root_<mod_id>__<setting_id>` (list only; flag value for list dropdown localization)
+- `cmm_list_field_<slot>_dropdown_count_<mod_id>__<setting_id>` (list dropdown fields only)
+- `cmm_list_field_<slot>_dropdown_last_index_<mod_id>__<setting_id>` (list dropdown fields only)
+- `cmm_list_item_owner_setting_<mod_id>__<setting_id>_item_<index>` (list only; flag value)
+- `<mod_id>__<setting_id>_item_<index>_name` (list only; flag value)
+- `<mod_id>__<setting_id>_item_<index>_field_<slot>` (list only; per-item field value)
 - `cmm_setting_text_character_limit_<mod_id>__<setting_id>` (text only)
 - `cmm_setting_text_quote_<mod_id>__<setting_id>` (text only)
 - `<mod_id>__<setting_id>_name` (flag value)
@@ -641,6 +737,6 @@ your_mod_country_name_desc: "Singleplayer-only text setting. Applies the entered
 
 ## Notes
 
-- CMM v1 controls currently include bool, button, numeric, slider, dropdown, and text.
+- CMM v1 controls currently include bool, button, numeric, slider, dropdown, text, and ordered list settings.
 - Keep ids stable (`mod_id`, `tab_id`, `group_id`, `setting_id`) across updates.
 - Keep integration/API docs in repository docs, not runtime UI localization.

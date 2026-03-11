@@ -32,4 +32,11 @@ cmm_register_menu_settings = {
 # Args: none
 cmm_mark_host_country = {
 	set_global_variable = { name = cmm_core_host_country value = this }
+
+	if = {
+		limit = {
+			always = no
+			exists = global_var:cmm_core_host_country
+		}
+	}
 }

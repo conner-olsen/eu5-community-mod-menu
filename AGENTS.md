@@ -48,6 +48,7 @@ Implemented:
 24. List ordering is registration-first; earlier registration/load order remains earlier in rendered mod, tab, and setting lists.
 25. Dynamic group registration is working via `cmm_register_group` (also called implicitly by setting registration APIs). Settings are visually grouped within tabs using group header bars and shared background containers.
 26. Right-panel tabs use `header_main_tabs` + `button_main_tab_alt` sitting outside the `bg_main_inner_alt` content area, matching the vanilla settings screen tab blending style.
+27. Dynamic list setting registration is working via `cmm_register_list_setting`, `cmm_register_list_bool_field`, and `cmm_register_list_dropdown_field`.
 
 Status:
 
@@ -112,11 +113,14 @@ Additional rules:
 - `in_game/common/scripted_effects/cmm_core_numeric_setting_effects.txt`
 - `in_game/common/scripted_effects/cmm_core_slider_setting_effects.txt`
 - `in_game/common/scripted_effects/cmm_core_dropdown_setting_effects.txt`
+- `in_game/common/scripted_effects/cmm_core_list_setting_effects.txt`
 - `in_game/common/scripted_effects/cmm_settings_effects.txt`
 - `in_game/common/scripted_guis/cmm_core_scripted_gui.txt`
+- `in_game/common/scripted_guis/cmm_core_list_scripted_gui.txt`
 - `in_game/common/scripted_guis/cmm_settings_scripted_gui.txt`
 - `in_game/common/on_action/cmm_on_action.txt`
 - `in_game/gui/panes/cmm_settings_pane.gui`
+- `in_game/gui/cmm_components/cmm_list_setting.gui`
 - `loading_screen/data_binding/cmm_macros.txt`
 - `docs/mod-integration.md`
 - `README.md`
@@ -298,6 +302,29 @@ cmm_register_text_setting = {
     character_limit = <required, number >= 1>
     quote_text = <required, 0|1>
 }
+
+cmm_register_list_setting = {
+    mod_id = <required>
+    setting_id = <required>
+    tab_id = <required>
+    group_id = <required>
+    item_count = <required, number 1-20>
+}
+
+cmm_register_list_bool_field = {
+    mod_id = <required>
+    setting_id = <required>
+    field_id = <required>
+    default_value = <required, 0|1>
+}
+
+cmm_register_list_dropdown_field = {
+    mod_id = <required>
+    setting_id = <required>
+    field_id = <required>
+    default_index = <required, number>
+    option_count = <required, number >= 1>
+}
 ```
 
 Derived localization keys:
@@ -309,6 +336,9 @@ Derived localization keys:
 - Setting description: `<mod_id>_<setting_id>_desc`
 - Button setting text: `<mod_id>_<setting_id>_button_text`
 - Dropdown option label: `<mod_id>__<setting_id>_option_<index>_name`
+- List item label: `<mod_id>_<setting_id>_item_<index>_name`
+- List field label: `<mod_id>_<setting_id>_<field_id>_name`
+- List dropdown option label: `<mod_id>_<setting_id>_<field_id>_option_<index>_name`
 
 Required scripted GUI callbacks per bool setting:
 
@@ -387,6 +417,23 @@ Required scripted GUI callbacks per slider setting:
 ```
 
 For slider settings, CMM marks slider modes generically (track selection and `-` / `+` modifiers) and then executes setting-specific `_on_changed`.
+
+Required scripted GUI callbacks per list setting:
+
+```txt
+<mod_id>__<setting_id>_on_changed = {
+    scope = country
+    effect = {
+        cmm_apply_list_change = {
+            setting = <mod_id>__<setting_id>
+        }
+        # optional custom logic after list order or per-item field values change
+    }
+    # optional is_shown = { ... } for row visibility
+}
+```
+
+For list settings, CMM marks row position and action generically (`move up/down`, `shift+click=top/bottom`, `bool toggle`, `dropdown next/prev`) and then executes setting-specific `_on_changed`.
 
 Required effect callback per text setting:
 

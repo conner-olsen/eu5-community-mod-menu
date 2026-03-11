@@ -137,6 +137,14 @@ macro = {
 # Args: SettingKey (string)
 # Returns: boolean
 macro = {
+    description = "True when a setting key is registered as list type"
+    definition = "CMMSettingIsList(SettingKey)"
+    replace_with = "CMMVar(Concatenate('cmm_setting_list_count_', SettingKey)).IsSet"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
     description = "True when this is the core host-only-tools gate setting"
     definition = "CMMIsHostOnlyToolsSetting(SettingKey)"
     replace_with = "EqualTo_string(SettingKey, 'cmm_core__enable_host_only_tools')"
@@ -179,7 +187,7 @@ macro = {
 macro = {
     description = "True when a setting key is registered as bool type"
     definition = "CMMSettingIsBool(SettingKey)"
-    replace_with = "And(And4(Not(CMMSettingIsNumeric(SettingKey)), Not(CMMSettingIsDropdown(SettingKey)), Not(CMMSettingIsSlider(SettingKey)), Not(CMMSettingIsText(SettingKey))), Not(CMMSettingIsButton(SettingKey)))"
+    replace_with = "And(And4(Not(CMMSettingIsNumeric(SettingKey)), Not(CMMSettingIsDropdown(SettingKey)), Not(CMMSettingIsSlider(SettingKey)), Not(CMMSettingIsText(SettingKey))), And(Not(CMMSettingIsButton(SettingKey)), Not(CMMSettingIsList(SettingKey))))"
 }
 
 # Args: SettingKey (string)
@@ -204,6 +212,294 @@ macro = {
     description = "Setting description localization"
     definition = "CMMSettingDesc(SettingKey)"
     replace_with = "CMMVar(Concatenate(SettingKey, '_desc')).GetFlagName"
+}
+
+# Args: SettingKey (string)
+# Returns: int32
+macro = {
+    description = "Ordered list item count for one setting"
+    definition = "CMMListItemCount(SettingKey)"
+    replace_with = "FixedPointToInt(CMMVar(Concatenate('cmm_setting_list_count_', SettingKey)).GetValue)"
+}
+
+# Args: SettingKey (string)
+# Returns: int32
+macro = {
+    description = "Ordered list last valid position for one setting"
+    definition = "CMMListLastIndex(SettingKey)"
+    replace_with = "FixedPointToInt(CMMVar(Concatenate('cmm_setting_list_last_index_', SettingKey)).GetValue)"
+}
+
+# Args: ItemKey (string)
+# Returns: string
+macro = {
+    description = "Owner setting key for one ordered list item key"
+    definition = "CMMListItemOwnerSettingKey(ItemKey)"
+    replace_with = "CMMVar(Concatenate('cmm_list_item_owner_setting_', ItemKey)).GetFlagName"
+}
+
+# Args: ItemKey (string)
+# Returns: string
+macro = {
+    description = "Ordered list item label localization"
+    definition = "CMMListItemName(ItemKey)"
+    replace_with = "CMMVar(Concatenate(ItemKey, '_name')).GetFlagName"
+}
+
+# Args: SettingKey (string)
+# Returns: int32
+macro = {
+    description = "Ordered list field count for one setting"
+    definition = "CMMListFieldCount(SettingKey)"
+    replace_with = "FixedPointToInt(CMMVar(Concatenate('cmm_list_field_count_', SettingKey)).GetValue)"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when an ordered list setting has at least one registered field"
+    definition = "CMMListHasFields(SettingKey)"
+    replace_with = "Not(EqualTo_CFixedPoint(CMMVar(Concatenate('cmm_list_field_count_', SettingKey)).GetValue, '(CFixedPoint)0'))"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when ordered list field slot 0 exists"
+    definition = "CMMListFieldHasSlot0(SettingKey)"
+    replace_with = "CMMVar(Concatenate('cmm_list_field_0_type_', SettingKey)).IsSet"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when ordered list field slot 1 exists"
+    definition = "CMMListFieldHasSlot1(SettingKey)"
+    replace_with = "CMMVar(Concatenate('cmm_list_field_1_type_', SettingKey)).IsSet"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when ordered list field slot 2 exists"
+    definition = "CMMListFieldHasSlot2(SettingKey)"
+    replace_with = "CMMVar(Concatenate('cmm_list_field_2_type_', SettingKey)).IsSet"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when ordered list field slot 3 exists"
+    definition = "CMMListFieldHasSlot3(SettingKey)"
+    replace_with = "CMMVar(Concatenate('cmm_list_field_3_type_', SettingKey)).IsSet"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when ordered list field slot 4 exists"
+    definition = "CMMListFieldHasSlot4(SettingKey)"
+    replace_with = "CMMVar(Concatenate('cmm_list_field_4_type_', SettingKey)).IsSet"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when ordered list field slot 0 is bool"
+    definition = "CMMListFieldIsBool0(SettingKey)"
+    replace_with = "EqualTo_CFixedPoint(CMMVar(Concatenate('cmm_list_field_0_type_', SettingKey)).GetValue, '(CFixedPoint)1')"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when ordered list field slot 1 is bool"
+    definition = "CMMListFieldIsBool1(SettingKey)"
+    replace_with = "EqualTo_CFixedPoint(CMMVar(Concatenate('cmm_list_field_1_type_', SettingKey)).GetValue, '(CFixedPoint)1')"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when ordered list field slot 2 is bool"
+    definition = "CMMListFieldIsBool2(SettingKey)"
+    replace_with = "EqualTo_CFixedPoint(CMMVar(Concatenate('cmm_list_field_2_type_', SettingKey)).GetValue, '(CFixedPoint)1')"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when ordered list field slot 3 is bool"
+    definition = "CMMListFieldIsBool3(SettingKey)"
+    replace_with = "EqualTo_CFixedPoint(CMMVar(Concatenate('cmm_list_field_3_type_', SettingKey)).GetValue, '(CFixedPoint)1')"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when ordered list field slot 4 is bool"
+    definition = "CMMListFieldIsBool4(SettingKey)"
+    replace_with = "EqualTo_CFixedPoint(CMMVar(Concatenate('cmm_list_field_4_type_', SettingKey)).GetValue, '(CFixedPoint)1')"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when ordered list field slot 0 is dropdown"
+    definition = "CMMListFieldIsDropdown0(SettingKey)"
+    replace_with = "EqualTo_CFixedPoint(CMMVar(Concatenate('cmm_list_field_0_type_', SettingKey)).GetValue, '(CFixedPoint)2')"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when ordered list field slot 1 is dropdown"
+    definition = "CMMListFieldIsDropdown1(SettingKey)"
+    replace_with = "EqualTo_CFixedPoint(CMMVar(Concatenate('cmm_list_field_1_type_', SettingKey)).GetValue, '(CFixedPoint)2')"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when ordered list field slot 2 is dropdown"
+    definition = "CMMListFieldIsDropdown2(SettingKey)"
+    replace_with = "EqualTo_CFixedPoint(CMMVar(Concatenate('cmm_list_field_2_type_', SettingKey)).GetValue, '(CFixedPoint)2')"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when ordered list field slot 3 is dropdown"
+    definition = "CMMListFieldIsDropdown3(SettingKey)"
+    replace_with = "EqualTo_CFixedPoint(CMMVar(Concatenate('cmm_list_field_3_type_', SettingKey)).GetValue, '(CFixedPoint)2')"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when ordered list field slot 4 is dropdown"
+    definition = "CMMListFieldIsDropdown4(SettingKey)"
+    replace_with = "EqualTo_CFixedPoint(CMMVar(Concatenate('cmm_list_field_4_type_', SettingKey)).GetValue, '(CFixedPoint)2')"
+}
+
+# Args: SettingKey (string)
+# Returns: string
+macro = {
+    description = "Ordered list field slot 0 header localization"
+    definition = "CMMListFieldName0(SettingKey)"
+    replace_with = "CMMVar(Concatenate('cmm_list_field_0_name_', SettingKey)).GetFlagName"
+}
+
+# Args: SettingKey (string)
+# Returns: string
+macro = {
+    description = "Ordered list field slot 1 header localization"
+    definition = "CMMListFieldName1(SettingKey)"
+    replace_with = "CMMVar(Concatenate('cmm_list_field_1_name_', SettingKey)).GetFlagName"
+}
+
+# Args: SettingKey (string)
+# Returns: string
+macro = {
+    description = "Ordered list field slot 2 header localization"
+    definition = "CMMListFieldName2(SettingKey)"
+    replace_with = "CMMVar(Concatenate('cmm_list_field_2_name_', SettingKey)).GetFlagName"
+}
+
+# Args: SettingKey (string)
+# Returns: string
+macro = {
+    description = "Ordered list field slot 3 header localization"
+    definition = "CMMListFieldName3(SettingKey)"
+    replace_with = "CMMVar(Concatenate('cmm_list_field_3_name_', SettingKey)).GetFlagName"
+}
+
+# Args: SettingKey (string)
+# Returns: string
+macro = {
+    description = "Ordered list field slot 4 header localization"
+    definition = "CMMListFieldName4(SettingKey)"
+    replace_with = "CMMVar(Concatenate('cmm_list_field_4_name_', SettingKey)).GetFlagName"
+}
+
+# Args: ItemKey (string)
+# Returns: boolean
+macro = {
+    description = "Checkbox state for ordered list field slot 0"
+    definition = "CMMListFieldBoolChecked0(ItemKey)"
+    replace_with = "EqualTo_CFixedPoint(CMMVar(Concatenate(ItemKey, '_field_0')).GetValue, '(CFixedPoint)1')"
+}
+
+# Args: ItemKey (string)
+# Returns: boolean
+macro = {
+    description = "Checkbox state for ordered list field slot 1"
+    definition = "CMMListFieldBoolChecked1(ItemKey)"
+    replace_with = "EqualTo_CFixedPoint(CMMVar(Concatenate(ItemKey, '_field_1')).GetValue, '(CFixedPoint)1')"
+}
+
+# Args: ItemKey (string)
+# Returns: boolean
+macro = {
+    description = "Checkbox state for ordered list field slot 2"
+    definition = "CMMListFieldBoolChecked2(ItemKey)"
+    replace_with = "EqualTo_CFixedPoint(CMMVar(Concatenate(ItemKey, '_field_2')).GetValue, '(CFixedPoint)1')"
+}
+
+# Args: ItemKey (string)
+# Returns: boolean
+macro = {
+    description = "Checkbox state for ordered list field slot 3"
+    definition = "CMMListFieldBoolChecked3(ItemKey)"
+    replace_with = "EqualTo_CFixedPoint(CMMVar(Concatenate(ItemKey, '_field_3')).GetValue, '(CFixedPoint)1')"
+}
+
+# Args: ItemKey (string)
+# Returns: boolean
+macro = {
+    description = "Checkbox state for ordered list field slot 4"
+    definition = "CMMListFieldBoolChecked4(ItemKey)"
+    replace_with = "EqualTo_CFixedPoint(CMMVar(Concatenate(ItemKey, '_field_4')).GetValue, '(CFixedPoint)1')"
+}
+
+# Args: ItemKey (string)
+# Returns: string
+macro = {
+    description = "Localized dropdown label for ordered list field slot 0"
+    definition = "CMMListFieldDropdownLabel0(ItemKey)"
+    replace_with = "Localize(Concatenate(Concatenate(CMMVar(Concatenate('cmm_list_field_0_option_root_', CMMListItemOwnerSettingKey(ItemKey))).GetFlagName, '_option_'), Concatenate(ToString_int32(FixedPointToInt(CMMVar(Concatenate(ItemKey, '_field_0')).GetValue)), '_name')))"
+}
+
+# Args: ItemKey (string)
+# Returns: string
+macro = {
+    description = "Localized dropdown label for ordered list field slot 1"
+    definition = "CMMListFieldDropdownLabel1(ItemKey)"
+    replace_with = "Localize(Concatenate(Concatenate(CMMVar(Concatenate('cmm_list_field_1_option_root_', CMMListItemOwnerSettingKey(ItemKey))).GetFlagName, '_option_'), Concatenate(ToString_int32(FixedPointToInt(CMMVar(Concatenate(ItemKey, '_field_1')).GetValue)), '_name')))"
+}
+
+# Args: ItemKey (string)
+# Returns: string
+macro = {
+    description = "Localized dropdown label for ordered list field slot 2"
+    definition = "CMMListFieldDropdownLabel2(ItemKey)"
+    replace_with = "Localize(Concatenate(Concatenate(CMMVar(Concatenate('cmm_list_field_2_option_root_', CMMListItemOwnerSettingKey(ItemKey))).GetFlagName, '_option_'), Concatenate(ToString_int32(FixedPointToInt(CMMVar(Concatenate(ItemKey, '_field_2')).GetValue)), '_name')))"
+}
+
+# Args: ItemKey (string)
+# Returns: string
+macro = {
+    description = "Localized dropdown label for ordered list field slot 3"
+    definition = "CMMListFieldDropdownLabel3(ItemKey)"
+    replace_with = "Localize(Concatenate(Concatenate(CMMVar(Concatenate('cmm_list_field_3_option_root_', CMMListItemOwnerSettingKey(ItemKey))).GetFlagName, '_option_'), Concatenate(ToString_int32(FixedPointToInt(CMMVar(Concatenate(ItemKey, '_field_3')).GetValue)), '_name')))"
+}
+
+# Args: ItemKey (string)
+# Returns: string
+macro = {
+    description = "Localized dropdown label for ordered list field slot 4"
+    definition = "CMMListFieldDropdownLabel4(ItemKey)"
+    replace_with = "Localize(Concatenate(Concatenate(CMMVar(Concatenate('cmm_list_field_4_option_root_', CMMListItemOwnerSettingKey(ItemKey))).GetFlagName, '_option_'), Concatenate(ToString_int32(FixedPointToInt(CMMVar(Concatenate(ItemKey, '_field_4')).GetValue)), '_name')))"
 }
 
 # Args: SettingKey (string)
@@ -364,6 +660,110 @@ macro = {
     description = "Mark pending numeric change as jump-to-max"
     definition = "CMMMarkNumericIncreaseToMax"
     replace_with = "GetScriptedGui('CMM_MarkNumericIncreaseToMax').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
+# Args: Index (int32)
+# Returns: none
+macro = {
+    description = "Mark the next ordered list interaction with one row position"
+    definition = "CMMMarkListPosition(Index)"
+    replace_with = "GetScriptedGui(Concatenate('CMM_MarkListPosition_', ToString_int32(Index))).Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
+# Args: none
+# Returns: none
+macro = {
+    description = "Mark the next ordered list interaction as move-up"
+    definition = "CMMMarkListMoveUp"
+    replace_with = "GetScriptedGui('CMM_MarkListMoveUp').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
+# Args: none
+# Returns: none
+macro = {
+    description = "Mark the next ordered list interaction as move-down"
+    definition = "CMMMarkListMoveDown"
+    replace_with = "GetScriptedGui('CMM_MarkListMoveDown').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
+# Args: none
+# Returns: none
+macro = {
+    description = "Mark the next ordered list interaction as move-to-top"
+    definition = "CMMMarkListMoveToTop"
+    replace_with = "GetScriptedGui('CMM_MarkListMoveToTop').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
+# Args: none
+# Returns: none
+macro = {
+    description = "Mark the next ordered list interaction as move-to-bottom"
+    definition = "CMMMarkListMoveToBottom"
+    replace_with = "GetScriptedGui('CMM_MarkListMoveToBottom').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
+# Args: none
+# Returns: none
+macro = {
+    description = "Mark the next ordered list interaction with field slot 0"
+    definition = "CMMMarkListFieldSlot0"
+    replace_with = "GetScriptedGui('CMM_MarkListFieldSlot_0').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
+# Args: none
+# Returns: none
+macro = {
+    description = "Mark the next ordered list interaction with field slot 1"
+    definition = "CMMMarkListFieldSlot1"
+    replace_with = "GetScriptedGui('CMM_MarkListFieldSlot_1').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
+# Args: none
+# Returns: none
+macro = {
+    description = "Mark the next ordered list interaction with field slot 2"
+    definition = "CMMMarkListFieldSlot2"
+    replace_with = "GetScriptedGui('CMM_MarkListFieldSlot_2').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
+# Args: none
+# Returns: none
+macro = {
+    description = "Mark the next ordered list interaction with field slot 3"
+    definition = "CMMMarkListFieldSlot3"
+    replace_with = "GetScriptedGui('CMM_MarkListFieldSlot_3').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
+# Args: none
+# Returns: none
+macro = {
+    description = "Mark the next ordered list interaction with field slot 4"
+    definition = "CMMMarkListFieldSlot4"
+    replace_with = "GetScriptedGui('CMM_MarkListFieldSlot_4').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
+# Args: none
+# Returns: none
+macro = {
+    description = "Mark the next ordered list interaction as a bool-field toggle"
+    definition = "CMMMarkListFieldToggle"
+    replace_with = "GetScriptedGui('CMM_MarkListFieldToggle').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
+# Args: none
+# Returns: none
+macro = {
+    description = "Mark the next ordered list interaction as a dropdown-field next cycle"
+    definition = "CMMMarkListFieldCycleNext"
+    replace_with = "GetScriptedGui('CMM_MarkListFieldCycleNext').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
+}
+
+# Args: none
+# Returns: none
+macro = {
+    description = "Mark the next ordered list interaction as a dropdown-field previous cycle"
+    definition = "CMMMarkListFieldCyclePrev"
+    replace_with = "GetScriptedGui('CMM_MarkListFieldCyclePrev').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End)"
 }
 
 # Args: SettingKey (string)

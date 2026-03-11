@@ -59,6 +59,29 @@ cmm_example1_register_mod = {
 		option_count = 3
 	}
 
+	cmm_register_list_setting = {
+		mod_id = cmm_example1
+		setting_id = example_list
+		tab_id = general
+		group_id = general_lists
+		item_count = 5
+	}
+
+	cmm_register_list_bool_field = {
+		mod_id = cmm_example1
+		setting_id = example_list
+		field_id = enabled
+		default_value = 1
+	}
+
+	cmm_register_list_dropdown_field = {
+		mod_id = cmm_example1
+		setting_id = example_list
+		field_id = mode
+		default_index = 1
+		option_count = 3
+	}
+
 	cmm_register_global_bool_setting = {
 		mod_id = cmm_example1
 		setting_id = global_example_toggle

@@ -1,0 +1,488 @@
+﻿types CMMListSettingTypes
+{
+	# Ordered list setting widget with per-item move controls and configurable field columns.
+	# Reads:
+	# - Scope.GetFlagName [string]: current setting key in root context or current item key in row context.
+	# - Player.MakeScope.GetList(Concatenate('cmm_list_items_', Scope.GetFlagName)) [list<flag>]: ordered item keys for the active list setting.
+	# - Player.MakeScope.GetVariable(Concatenate('cmm_list_item_owner_setting_', Scope.GetFlagName)) [flag]: owner setting key for one item row.
+	# - Player.MakeScope.GetVariable(Concatenate(Scope.GetFlagName, '_name')) [flag]: localized item label for one item row.
+	# - Player.MakeScope.GetVariable(Concatenate(Scope.GetFlagName, '_field_<slot>')) [value]: per-item field values for one item row.
+	# - Player.MakeScope.GetVariable(Concatenate('cmm_list_field_<slot>_type_', <setting_key>)) [value]: field type metadata for one slot.
+	# - Player.MakeScope.GetVariable(Concatenate('cmm_list_field_<slot>_name_', <setting_key>)) [flag]: field header localization key for one slot.
+	# - Player.MakeScope.GetVariable(Concatenate('cmm_list_field_<slot>_option_root_', <setting_key>)) [flag]: dropdown option localization root for one slot.
+	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_list_last_index_', <setting_key>)) [value]: last valid row position for move-button visibility.
+	# Writes:
+	# - GetScriptedGui('CMM_MarkListPosition_<index>').Execute(...) [effect]: stores the clicked row position.
+	# - GetScriptedGui('CMM_MarkListMove*').Execute(...) [effect]: stores the pending reorder action.
+	# - GetScriptedGui('CMM_MarkListFieldSlot_<slot>').Execute(...) [effect]: stores the pending field slot.
+	# - GetScriptedGui('CMM_MarkListField*').Execute(...) [effect]: stores the pending bool/dropdown field action.
+	# - GetScriptedGui(Concatenate(<setting_key>, '_on_changed')).Execute(...) [effect]: applies list changes via `cmm_apply_list_change`.
+	type cmm_list_setting = vbox {
+		layoutpolicy_horizontal = expanding
+		spacing = 8
+		margin = { 12 8 }
+
+		text_single = {
+			layoutpolicy_horizontal = expanding
+			tagtooltip_enabled = yes
+			tooltip = "[CMMSettingDesc(Scope.GetFlagName)]"
+			tooltipwidget = { BasicFunctionalTooltip = {} }
+			text = "[CMMSettingName(Scope.GetFlagName)]"
+		}
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			ignoreinvisible = yes
+			spacing = 8
+			visible = "[CMMListHasFields(Scope.GetFlagName)]"
+
+			widget = {
+				size = { 56 0 }
+				minimumsize = { 56 0 }
+			}
+
+			widget = {
+				layoutpolicy_horizontal = expanding
+			}
+
+			text_single = {
+				size = { 120 0 }
+				minimumsize = { 120 0 }
+				align = center|nobaseline
+				visible = "[CMMListFieldHasSlot0(Scope.GetFlagName)]"
+				text = "[CMMListFieldName0(Scope.GetFlagName)]"
+			}
+
+			text_single = {
+				size = { 120 0 }
+				minimumsize = { 120 0 }
+				align = center|nobaseline
+				visible = "[CMMListFieldHasSlot1(Scope.GetFlagName)]"
+				text = "[CMMListFieldName1(Scope.GetFlagName)]"
+			}
+
+			text_single = {
+				size = { 120 0 }
+				minimumsize = { 120 0 }
+				align = center|nobaseline
+				visible = "[CMMListFieldHasSlot2(Scope.GetFlagName)]"
+				text = "[CMMListFieldName2(Scope.GetFlagName)]"
+			}
+
+			text_single = {
+				size = { 120 0 }
+				minimumsize = { 120 0 }
+				align = center|nobaseline
+				visible = "[CMMListFieldHasSlot3(Scope.GetFlagName)]"
+				text = "[CMMListFieldName3(Scope.GetFlagName)]"
+			}
+
+			text_single = {
+				size = { 120 0 }
+				minimumsize = { 120 0 }
+				align = center|nobaseline
+				visible = "[CMMListFieldHasSlot4(Scope.GetFlagName)]"
+				text = "[CMMListFieldName4(Scope.GetFlagName)]"
+			}
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			spacing = 4
+			datamodel = "[Player.MakeScope.GetList(Concatenate('cmm_list_items_', Scope.GetFlagName))]"
+			datamodel_reuse_widgets = yes
+
+			item = {
+				widget = {
+					layoutpolicy_horizontal = expanding
+					minimumsize = { 0 28 }
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						ignoreinvisible = yes
+						spacing = 8
+
+						widget = {
+							size = { 56 28 }
+							minimumsize = { 56 28 }
+
+							hbox = {
+								parentanchor = center
+								widgetanchor = center
+								spacing = 4
+
+								widget = {
+									size = { 26 26 }
+									minimumsize = { 26 26 }
+
+									button_default = {
+										size = { 24 24 }
+										parentanchor = center
+										widgetanchor = center
+										visible = "[Not(EqualTo_int32(PdxGuiWidget.GetIndexInDataModel, '(int32)0'))]"
+										enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+
+										action_tooltip = {
+											click_mode = single
+											click_type = left
+											click_modifier = default
+											title = "CMM_LIST_MOVE_UP"
+											on_action = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+											on_action = "[CMMMarkListMoveUp]"
+											on_action = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+										}
+
+										action_tooltip = {
+											click_mode = single
+											click_type = left
+											click_modifier = shift
+											title = "CMM_LIST_MOVE_TO_TOP"
+											on_action = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+											on_action = "[CMMMarkListMoveToTop]"
+											on_action = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+										}
+
+										tooltipwidget = { BasicFunctionalTooltip = {} }
+
+										text_single = {
+											parentanchor = center
+											widgetanchor = center
+											raw_text = "^"
+										}
+									}
+								}
+
+								widget = {
+									size = { 26 26 }
+									minimumsize = { 26 26 }
+
+									button_default = {
+										size = { 24 24 }
+										parentanchor = center
+										widgetanchor = center
+										visible = "[Not(EqualTo_int32(PdxGuiWidget.GetIndexInDataModel, CMMListLastIndex(CMMListItemOwnerSettingKey(Scope.GetFlagName))))]"
+										enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+
+										action_tooltip = {
+											click_mode = single
+											click_type = left
+											click_modifier = default
+											title = "CMM_LIST_MOVE_DOWN"
+											on_action = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+											on_action = "[CMMMarkListMoveDown]"
+											on_action = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+										}
+
+										action_tooltip = {
+											click_mode = single
+											click_type = left
+											click_modifier = shift
+											title = "CMM_LIST_MOVE_TO_BOTTOM"
+											on_action = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+											on_action = "[CMMMarkListMoveToBottom]"
+											on_action = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+										}
+
+										tooltipwidget = { BasicFunctionalTooltip = {} }
+
+										text_single = {
+											parentanchor = center
+											widgetanchor = center
+											raw_text = "v"
+										}
+									}
+								}
+							}
+						}
+
+						text_single = {
+							layoutpolicy_horizontal = expanding
+							align = left|nobaseline
+							text = "[CMMListItemName(Scope.GetFlagName)]"
+						}
+
+						widget = {
+							size = { 120 28 }
+							minimumsize = { 120 28 }
+							visible = "[CMMListFieldHasSlot0(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+
+							checkbox_square_alt = {
+								parentanchor = center
+								widgetanchor = center
+								visible = "[CMMListFieldIsBool0(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								checked = "[CMMListFieldBoolChecked0(Scope.GetFlagName)]"
+								onclick = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+								onclick = "[CMMMarkListFieldSlot0]"
+								onclick = "[CMMMarkListFieldToggle]"
+								onclick = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								tooltip_enabled = no
+							}
+
+							button_regular = {
+								size = { 120 28 }
+								minimumsize = { 120 28 }
+								parentanchor = center
+								widgetanchor = center
+								visible = "[CMMListFieldIsDropdown0(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								text = "[CMMListFieldDropdownLabel0(Scope.GetFlagName)]"
+
+								action_tooltip = {
+									click_mode = single
+									click_type = left
+									click_modifier = default
+									title = "CMM_DROPDOWN_NEXT"
+								}
+
+								action_tooltip = {
+									click_mode = single
+									click_type = left
+									click_modifier = shift
+									title = "CMM_DROPDOWN_PREVIOUS"
+								}
+
+								click_modifiers = {
+									ondefault = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+									ondefault = "[CMMMarkListFieldSlot0]"
+									ondefault = "[CMMMarkListFieldCycleNext]"
+									ondefault = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+									onshift = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+									onshift = "[CMMMarkListFieldSlot0]"
+									onshift = "[CMMMarkListFieldCyclePrev]"
+									onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								}
+
+								tooltipwidget = { BasicFunctionalTooltip = {} }
+							}
+						}
+
+						widget = {
+							size = { 120 28 }
+							minimumsize = { 120 28 }
+							visible = "[CMMListFieldHasSlot1(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+
+							checkbox_square_alt = {
+								parentanchor = center
+								widgetanchor = center
+								visible = "[CMMListFieldIsBool1(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								checked = "[CMMListFieldBoolChecked1(Scope.GetFlagName)]"
+								onclick = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+								onclick = "[CMMMarkListFieldSlot1]"
+								onclick = "[CMMMarkListFieldToggle]"
+								onclick = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								tooltip_enabled = no
+							}
+
+							button_regular = {
+								size = { 120 28 }
+								minimumsize = { 120 28 }
+								parentanchor = center
+								widgetanchor = center
+								visible = "[CMMListFieldIsDropdown1(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								text = "[CMMListFieldDropdownLabel1(Scope.GetFlagName)]"
+
+								action_tooltip = {
+									click_mode = single
+									click_type = left
+									click_modifier = default
+									title = "CMM_DROPDOWN_NEXT"
+								}
+
+								action_tooltip = {
+									click_mode = single
+									click_type = left
+									click_modifier = shift
+									title = "CMM_DROPDOWN_PREVIOUS"
+								}
+
+								click_modifiers = {
+									ondefault = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+									ondefault = "[CMMMarkListFieldSlot1]"
+									ondefault = "[CMMMarkListFieldCycleNext]"
+									ondefault = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+									onshift = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+									onshift = "[CMMMarkListFieldSlot1]"
+									onshift = "[CMMMarkListFieldCyclePrev]"
+									onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								}
+
+								tooltipwidget = { BasicFunctionalTooltip = {} }
+							}
+						}
+
+						widget = {
+							size = { 120 28 }
+							minimumsize = { 120 28 }
+							visible = "[CMMListFieldHasSlot2(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+
+							checkbox_square_alt = {
+								parentanchor = center
+								widgetanchor = center
+								visible = "[CMMListFieldIsBool2(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								checked = "[CMMListFieldBoolChecked2(Scope.GetFlagName)]"
+								onclick = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+								onclick = "[CMMMarkListFieldSlot2]"
+								onclick = "[CMMMarkListFieldToggle]"
+								onclick = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								tooltip_enabled = no
+							}
+
+							button_regular = {
+								size = { 120 28 }
+								minimumsize = { 120 28 }
+								parentanchor = center
+								widgetanchor = center
+								visible = "[CMMListFieldIsDropdown2(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								text = "[CMMListFieldDropdownLabel2(Scope.GetFlagName)]"
+
+								action_tooltip = {
+									click_mode = single
+									click_type = left
+									click_modifier = default
+									title = "CMM_DROPDOWN_NEXT"
+								}
+
+								action_tooltip = {
+									click_mode = single
+									click_type = left
+									click_modifier = shift
+									title = "CMM_DROPDOWN_PREVIOUS"
+								}
+
+								click_modifiers = {
+									ondefault = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+									ondefault = "[CMMMarkListFieldSlot2]"
+									ondefault = "[CMMMarkListFieldCycleNext]"
+									ondefault = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+									onshift = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+									onshift = "[CMMMarkListFieldSlot2]"
+									onshift = "[CMMMarkListFieldCyclePrev]"
+									onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								}
+
+								tooltipwidget = { BasicFunctionalTooltip = {} }
+							}
+						}
+
+						widget = {
+							size = { 120 28 }
+							minimumsize = { 120 28 }
+							visible = "[CMMListFieldHasSlot3(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+
+							checkbox_square_alt = {
+								parentanchor = center
+								widgetanchor = center
+								visible = "[CMMListFieldIsBool3(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								checked = "[CMMListFieldBoolChecked3(Scope.GetFlagName)]"
+								onclick = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+								onclick = "[CMMMarkListFieldSlot3]"
+								onclick = "[CMMMarkListFieldToggle]"
+								onclick = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								tooltip_enabled = no
+							}
+
+							button_regular = {
+								size = { 120 28 }
+								minimumsize = { 120 28 }
+								parentanchor = center
+								widgetanchor = center
+								visible = "[CMMListFieldIsDropdown3(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								text = "[CMMListFieldDropdownLabel3(Scope.GetFlagName)]"
+
+								action_tooltip = {
+									click_mode = single
+									click_type = left
+									click_modifier = default
+									title = "CMM_DROPDOWN_NEXT"
+								}
+
+								action_tooltip = {
+									click_mode = single
+									click_type = left
+									click_modifier = shift
+									title = "CMM_DROPDOWN_PREVIOUS"
+								}
+
+								click_modifiers = {
+									ondefault = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+									ondefault = "[CMMMarkListFieldSlot3]"
+									ondefault = "[CMMMarkListFieldCycleNext]"
+									ondefault = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+									onshift = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+									onshift = "[CMMMarkListFieldSlot3]"
+									onshift = "[CMMMarkListFieldCyclePrev]"
+									onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								}
+
+								tooltipwidget = { BasicFunctionalTooltip = {} }
+							}
+						}
+
+						widget = {
+							size = { 120 28 }
+							minimumsize = { 120 28 }
+							visible = "[CMMListFieldHasSlot4(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+
+							checkbox_square_alt = {
+								parentanchor = center
+								widgetanchor = center
+								visible = "[CMMListFieldIsBool4(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								checked = "[CMMListFieldBoolChecked4(Scope.GetFlagName)]"
+								onclick = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+								onclick = "[CMMMarkListFieldSlot4]"
+								onclick = "[CMMMarkListFieldToggle]"
+								onclick = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								tooltip_enabled = no
+							}
+
+							button_regular = {
+								size = { 120 28 }
+								minimumsize = { 120 28 }
+								parentanchor = center
+								widgetanchor = center
+								visible = "[CMMListFieldIsDropdown4(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								text = "[CMMListFieldDropdownLabel4(Scope.GetFlagName)]"
+
+								action_tooltip = {
+									click_mode = single
+									click_type = left
+									click_modifier = default
+									title = "CMM_DROPDOWN_NEXT"
+								}
+
+								action_tooltip = {
+									click_mode = single
+									click_type = left
+									click_modifier = shift
+									title = "CMM_DROPDOWN_PREVIOUS"
+								}
+
+								click_modifiers = {
+									ondefault = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+									ondefault = "[CMMMarkListFieldSlot4]"
+									ondefault = "[CMMMarkListFieldCycleNext]"
+									ondefault = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+									onshift = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+									onshift = "[CMMMarkListFieldSlot4]"
+									onshift = "[CMMMarkListFieldCyclePrev]"
+									onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+								}
+
+								tooltipwidget = { BasicFunctionalTooltip = {} }
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

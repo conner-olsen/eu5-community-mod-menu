@@ -105,6 +105,17 @@ cmm_example1__example_dropdown_on_changed = {
 	}
 }
 
+cmm_example1__example_list_on_changed = {
+	scope = country
+
+	effect = {
+		cmm_apply_list_change = {
+			setting = cmm_example1__example_list
+		}
+		# optional custom logic
+	}
+}
+
 cmm_example1__global_example_dropdown_on_changed = {
 	scope = country
 
