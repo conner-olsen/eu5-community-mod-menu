@@ -114,6 +114,8 @@ Additional rules:
 - `in_game/common/scripted_effects/cmm_core_slider_setting_effects.txt`
 - `in_game/common/scripted_effects/cmm_core_dropdown_setting_effects.txt`
 - `in_game/common/scripted_effects/cmm_core_list_setting_effects.txt`
+- `in_game/common/scripted_effects/cmm_core_list_setting_init_effects.txt`
+- `in_game/common/scripted_effects/cmm_core_list_setting_runtime_effects.txt`
 - `in_game/common/scripted_effects/cmm_settings_effects.txt`
 - `in_game/common/scripted_guis/cmm_core_scripted_gui.txt`
 - `in_game/common/scripted_guis/cmm_core_list_scripted_gui.txt`
