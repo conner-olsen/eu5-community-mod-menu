@@ -1,9 +1,10 @@
 ﻿types CMMListSettingTypes
 {
-	# Ordered list setting widget with per-item move controls and dynamic field columns.
+	# List setting widget with optional per-item move controls and dynamic field columns.
 	# Reads:
 	# - Scope.GetFlagName [string]: current list setting key in root context or current item key in row context.
-	# - Player.MakeScope.GetList(Concatenate('cmm_list_items_', Scope.GetFlagName)) [list<flag>]: ordered item keys for the active list setting.
+	# - Player.MakeScope.GetList(Concatenate('cmm_list_items_', Scope.GetFlagName)) [list<flag>]: item keys for the active list setting.
+	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_list_is_ordered_', Scope.GetFlagName)) [value]: whether move controls are shown for the active list setting.
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_list_item_owner_setting_', Scope.GetFlagName)) [flag]: owner setting key for one item row.
 	# - Player.MakeScope.GetVariable(Concatenate(Scope.GetFlagName, '_name')) [flag]: localized item label for one item row.
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_list_last_index_', <setting_key>)) [value]: last valid row position for move-button visibility.
@@ -45,6 +46,7 @@
 				widget = {
 					size = { 56 0 }
 					minimumsize = { 56 0 }
+					visible = "[CMMListSettingIsOrdered(Scope.GetFlagName)]"
 				}
 
 				text_single = {
@@ -88,17 +90,18 @@
 		}
 	}
 
-	# Single ordered list item row with movement controls and dynamic field cells.
+	# Single list item row with optional movement controls and dynamic field cells.
 	# Reads:
-	# - Scope.GetFlagName [string]: current ordered list item key (`<mod_id>__<setting_id>_item_<index>`).
-	# - PdxGuiWidget.GetIndexInDataModel [int32]: current visible row index in the ordered list datamodel.
+	# - Scope.GetFlagName [string]: current list item key (`<mod_id>__<setting_id>_item_<index>`).
+	# - PdxGuiWidget.GetIndexInDataModel [int32]: current visible row index in the list datamodel.
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_list_item_owner_setting_', Scope.GetFlagName)) [flag]: owner setting key for the row item.
 	# - Player.MakeScope.GetVariable(Concatenate(Scope.GetFlagName, '_name')) [flag]: localized row item label.
+	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_list_is_ordered_', <setting_key>)) [value]: whether move controls are shown for the owner setting.
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_list_last_index_', <setting_key>)) [value]: last valid visible row index.
 	# Writes:
 	# - GetVariableSystem.Set('cmm_list_hover_index', ...) [effect]: caches the currently hovered row position.
 	# - GetScriptedGui('CMM_MarkListPosition_<index>').Execute(...) [effect]: stores the clicked row position.
-	# - GetScriptedGui('CMM_MarkListMove*').Execute(...) [effect]: stores the pending reorder action.
+	# - GetScriptedGui('CMM_MarkListMove*').Execute(...) [effect]: stores the pending reorder action for ordered lists.
 	# - GetScriptedGui(Concatenate(<setting_key>, '_on_changed')).Execute(...) [effect]: applies the queued list change.
 	type cmm_list_setting_row_widget = widget {
 		layoutpolicy_horizontal = expanding
@@ -128,6 +131,7 @@
 			widget = {
 				size = { 56 28 }
 				minimumsize = { 56 28 }
+				visible = "[CMMListItemSettingIsOrdered(Scope.GetFlagName)]"
 
 				hbox = {
 					parentanchor = center

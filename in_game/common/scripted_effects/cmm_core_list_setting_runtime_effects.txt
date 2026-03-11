@@ -424,7 +424,7 @@ cmm_list_apply_field_value_to_all_items = {
 	cmm_list_apply_dispatch_to_all_items = { setting = $setting$ }
 }
 
-# Apply the pending ordered list reorder or field action and clear its markers.
+# Apply the pending list reorder (ordered lists only) or field action and clear its markers.
 # Scope: country
 # Args:
 # - setting (key): Composite setting key `<mod_id>__<setting_id>`.
@@ -441,22 +441,22 @@ cmm_apply_list_change = {
 			}
 		}
 		if = {
-			limit = { AND = { has_variable = cmm_list_action_to_apply var:cmm_list_action_to_apply = 1 var:cmm_list_position_to_apply > 0 } }
+			limit = { AND = { has_variable = cmm_list_action_to_apply var:cmm_setting_list_is_ordered_$setting$ = 1 var:cmm_list_action_to_apply = 1 var:cmm_list_position_to_apply > 0 } }
 			set_local_variable = { name = cmm_list_target_index value = { value = var:cmm_list_position_to_apply subtract = 1 } }
 			cmm_reorder_list_setting = { setting = $setting$ }
 		}
 		else_if = {
-			limit = { AND = { has_variable = cmm_list_action_to_apply var:cmm_list_action_to_apply = 2 var:cmm_list_position_to_apply < var:cmm_setting_list_last_index_$setting$ } }
+			limit = { AND = { has_variable = cmm_list_action_to_apply var:cmm_setting_list_is_ordered_$setting$ = 1 var:cmm_list_action_to_apply = 2 var:cmm_list_position_to_apply < var:cmm_setting_list_last_index_$setting$ } }
 			set_local_variable = { name = cmm_list_target_index value = { value = var:cmm_list_position_to_apply add = 1 } }
 			cmm_reorder_list_setting = { setting = $setting$ }
 		}
 		else_if = {
-			limit = { AND = { has_variable = cmm_list_action_to_apply var:cmm_list_action_to_apply = 3 var:cmm_list_position_to_apply > 0 } }
+			limit = { AND = { has_variable = cmm_list_action_to_apply var:cmm_setting_list_is_ordered_$setting$ = 1 var:cmm_list_action_to_apply = 3 var:cmm_list_position_to_apply > 0 } }
 			set_local_variable = { name = cmm_list_target_index value = 0 }
 			cmm_reorder_list_setting = { setting = $setting$ }
 		}
 		else_if = {
-			limit = { AND = { has_variable = cmm_list_action_to_apply var:cmm_list_action_to_apply = 4 var:cmm_list_position_to_apply < var:cmm_setting_list_last_index_$setting$ } }
+			limit = { AND = { has_variable = cmm_list_action_to_apply var:cmm_setting_list_is_ordered_$setting$ = 1 var:cmm_list_action_to_apply = 4 var:cmm_list_position_to_apply < var:cmm_setting_list_last_index_$setting$ } }
 			set_local_variable = { name = cmm_list_target_index value = var:cmm_setting_list_last_index_$setting$ }
 			cmm_reorder_list_setting = { setting = $setting$ }
 		}

@@ -291,14 +291,15 @@ Notes:
 - When `quote_text = 0`, your effect must expect an unquoted token. CMM will not sanitize spaces or script syntax for you.
 - There is no `cmm_register_global_text_setting`.
 
-### 10) Register ordered list settings
+### 10) Register list settings
 
 ```txt
-cmm_register_list_setting = {
+cmm_register_settings_list = {
     mod_id = your_mod_id
     setting_id = build_priority
     tab_id = general
     item_count = 5
+    is_ordered = 1
 }
 
 cmm_register_list_bool_field = {
@@ -332,7 +333,8 @@ Arguments:
 - `mod_id`: owner mod id.
 - `setting_id`: stable id within your mod.
 - `tab_id`: owner tab id within your mod.
-- `item_count`: number of ordered list items. CMM clamps values into `1..20`.
+- `item_count`: number of list items. CMM clamps values into `1..20`.
+- `is_ordered`: `1` shows row move controls, `0` hides them.
 - `field_id`: stable per-list field id unique within the list setting.
 - `default_value`: initial bool-field value for brand-new saves (`0` or `1`).
 - `default_index`: initial dropdown-field option index for brand-new saves.
@@ -346,6 +348,8 @@ Notes:
 
 - List settings are local country-scope only in CMM v1. There is no global list-setting API.
 - Register the list first, then register its fields.
+- `cmm_register_settings_list` supports both ordered and unordered lists through `is_ordered`.
+- `cmm_register_list_bool_field`, `cmm_register_list_dropdown_field`, and `cmm_register_list_numeric_field` work the same for both list variants.
 - Each list setting creates and owns a dedicated group keyed by `setting_id`. You do not pass `group_id` and you do not need a separate `cmm_register_group` call for that list.
 - The dedicated group header uses `<mod_id>_<setting_id>_name`, so the list widget itself does not render a second title line inside that group.
 - Each list may register up to 5 fields total.
@@ -359,19 +363,20 @@ Notes:
   - `Shift+click` `-` / `+`: jump to min/max.
 - `Shift+click` the numeric value box to apply that row's current numeric value to all rows in the same field.
 - `Shift+click` the closed dropdown control to apply that row's current dropdown value to all rows in the same field.
-- Ordered list rows support:
+- Ordered list rows additionally support:
   - Click up/down: move one row.
   - `Shift+click` up/down: move to top/bottom.
+- Unordered lists keep the same runtime item sequence but do not expose row move controls in CMM UI.
 
 Runtime data shape:
 
-- Ordered row sequence is stored in `cmm_list_items_<mod_id>__<setting_id>`.
+- Row sequence is stored in `cmm_list_items_<mod_id>__<setting_id>`.
 - Stable item identity keys are `flag:<mod_id>__<setting_id>_item_<index>`.
 - Per-item field values are stored on the stable item identity, not on the visible row position:
   - `<mod_id>__<setting_id>_item_<index>_field_0`
   - `<mod_id>__<setting_id>_item_<index>_field_1`
   - ...
-- When iterating your ordered list in script, compare the current list entry against `flag:<mod_id>__<setting_id>_item_<index>` to identify which item you are handling.
+- When iterating your list in script, compare the current list entry against `flag:<mod_id>__<setting_id>_item_<index>` to identify which item you are handling.
 
 Localization keys are derived automatically from ids:
 
@@ -510,7 +515,8 @@ Notes:
 - CMM handles numeric modes (`1x`, `5x`, `min/max`) via generic marker scripted GUIs, then executes `_on_changed`.
 - CMM handles slider track clicks and `-` / `+` modifiers via generic marker scripted GUIs, then executes `_on_changed`.
 - CMM captures dropdown selection index via a generic marker scripted GUI, then executes `_on_changed`.
-- CMM captures ordered-list row position, move action, and field action via generic marker scripted GUIs, then executes `_on_changed`.
+- CMM captures list row position and field action via generic marker scripted GUIs, then executes `_on_changed`.
+- Ordered lists additionally capture row move actions through that same list callback.
 - If `is_shown` is omitted, the row is visible.
 - Local bool, numeric, slider, and dropdown checked/value state is read from `var:<mod_id>__<setting_id>` by CMM UI.
 - Global bool, numeric, slider, and dropdown checked/value state is read from `GetGlobalVariable(<mod_id>__<setting_id>)` by CMM UI.
@@ -594,6 +600,7 @@ CMM writes these country-scope variables/lists:
 - `cmm_setting_dropdown_count_<mod_id>__<setting_id>` (dropdown only)
 - `cmm_setting_dropdown_last_index_<mod_id>__<setting_id>` (dropdown only)
 - `cmm_setting_list_count_<mod_id>__<setting_id>` (list only)
+- `cmm_setting_list_is_ordered_<mod_id>__<setting_id>` (list only; `1` ordered, `0` unordered)
 - `cmm_setting_list_last_index_<mod_id>__<setting_id>` (list only)
 - `cmm_list_items_<mod_id>__<setting_id>` (list-only variable list of stable item keys)
 - `cmm_list_field_count_<mod_id>__<setting_id>` (list only)
@@ -757,6 +764,6 @@ your_mod_country_name_desc: "Singleplayer-only text setting. Applies the entered
 
 ## Notes
 
-- CMM v1 controls currently include bool, button, numeric, slider, dropdown, text, and ordered list settings.
+- CMM v1 controls currently include bool, button, numeric, slider, dropdown, text, and list settings (`ordered` or `unordered`).
 - Keep ids stable (`mod_id`, `tab_id`, `group_id`, `setting_id`) across updates.
 - Keep integration/API docs in repository docs, not runtime UI localization.

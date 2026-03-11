@@ -1,15 +1,43 @@
-﻿# Register an ordered list setting for a mod (idempotent by mod_id + setting_id).
+﻿# Register a settings list for a mod (idempotent by mod_id + setting_id).
 # Scope: country
 # Args:
 # - mod_id (key): Owner mod id.
 # - setting_id (key): Setting id unique within mod.
 # - tab_id (key): Owner tab id within mod.
-# - item_count (number): Number of ordered list items (`1..20`).
-cmm_register_list_setting = {
+# - item_count (number): Number of list items (`1..20`).
+# - is_ordered (1/0): `1` shows row move controls, `0` hides them.
+cmm_register_settings_list = {
+	cmm_register_list_setting_internal = {
+		mod_id = $mod_id$
+		setting_id = $setting_id$
+		tab_id = $tab_id$
+		item_count = $item_count$
+		is_ordered = $is_ordered$
+	}
+}
+
+# Register shared list-setting metadata and storage for a mod (idempotent by mod_id + setting_id).
+# Scope: country
+# Args:
+# - mod_id (key): Owner mod id.
+# - setting_id (key): Setting id unique within mod.
+# - tab_id (key): Owner tab id within mod.
+# - item_count (number): Number of list items (`1..20`).
+# - is_ordered (1/0): `1` shows row move controls, `0` hides them.
+cmm_register_list_setting_internal = {
 	set_variable = { name = cmm_setting_is_global_$mod_id$__$setting_id$ value = 0 }
 	set_variable = { name = cmm_setting_is_slider_$mod_id$__$setting_id$ value = 0 }
 	set_variable = { name = cmm_setting_is_button_$mod_id$__$setting_id$ value = 0 }
+	set_variable = { name = cmm_setting_list_is_ordered_$mod_id$__$setting_id$ value = $is_ordered$ }
 	set_variable = { name = cmm_setting_list_count_$mod_id$__$setting_id$ value = $item_count$ }
+
+	if = {
+		limit = { var:cmm_setting_list_is_ordered_$mod_id$__$setting_id$ > 0 }
+		set_variable = { name = cmm_setting_list_is_ordered_$mod_id$__$setting_id$ value = 1 }
+	}
+	else = {
+		set_variable = { name = cmm_setting_list_is_ordered_$mod_id$__$setting_id$ value = 0 }
+	}
 
 	if = {
 		limit = { var:cmm_setting_list_count_$mod_id$__$setting_id$ < 1 }
@@ -66,7 +94,7 @@ cmm_register_list_setting = {
 	}
 }
 
-# Register a bool field shared by every item in one ordered list setting.
+# Register a bool field shared by every item in one list setting.
 # Scope: country
 # Args:
 # - mod_id (key): Owner mod id.
@@ -104,7 +132,7 @@ cmm_register_list_bool_field = {
 	}
 }
 
-# Register a dropdown field shared by every item in one ordered list setting.
+# Register a dropdown field shared by every item in one list setting.
 # Scope: country
 # Args:
 # - mod_id (key): Owner mod id.
@@ -143,7 +171,7 @@ cmm_register_list_dropdown_field = {
 	}
 }
 
-# Register a numeric field shared by every item in one ordered list setting.
+# Register a numeric field shared by every item in one list setting.
 # Scope: country
 # Args:
 # - mod_id (key): Owner mod id.

@@ -59,11 +59,12 @@ cmm_example1_register_mod = {
 		option_count = 3
 	}
 
-	cmm_register_list_setting = {
+	cmm_register_settings_list = {
 		mod_id = cmm_example1
 		setting_id = example_list
 		tab_id = general
 		item_count = 5
+		is_ordered = 1
 	}
 
 	cmm_register_list_bool_field = {
@@ -86,6 +87,39 @@ cmm_example1_register_mod = {
 		setting_id = example_list
 		field_id = weight
 		default_value = 5
+		min_value = 0
+		max_value = 10
+		step_value = 1
+	}
+
+	cmm_register_settings_list = {
+		mod_id = cmm_example1
+		setting_id = example_unordered_list
+		tab_id = general
+		item_count = 4
+		is_ordered = 0
+	}
+
+	cmm_register_list_bool_field = {
+		mod_id = cmm_example1
+		setting_id = example_unordered_list
+		field_id = enabled
+		default_value = 1
+	}
+
+	cmm_register_list_dropdown_field = {
+		mod_id = cmm_example1
+		setting_id = example_unordered_list
+		field_id = mode
+		default_index = 1
+		option_count = 3
+	}
+
+	cmm_register_list_numeric_field = {
+		mod_id = cmm_example1
+		setting_id = example_unordered_list
+		field_id = weight
+		default_value = 3
 		min_value = 0
 		max_value = 10
 		step_value = 1

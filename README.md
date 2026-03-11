@@ -1,4 +1,4 @@
-# EU5 Community Mod Menu (CMM)
+﻿# EU5 Community Mod Menu (CMM)
 
 A dependency mod for **Europa Universalis 5** that provides one shared in-game mod settings window.
 
@@ -6,7 +6,7 @@ A dependency mod for **Europa Universalis 5** that provides one shared in-game m
 
 - Pause menu button (`Mod Menu`) via intentional `ingame_menu.gui` override.
 - Dynamic left mod list (search + compact rendering).
-- Dynamic right settings panel for registered bool, button, numeric, slider, dropdown, text, and ordered list settings.
+- Dynamic right settings panel for registered bool, button, numeric, slider, dropdown, text, and list settings.
 - Dynamic per-mod tabs in the right panel.
 - Mod-id-based registration API with no fixed slot cap.
 - GUI function macro layer for shared CMM data-binding expressions (`loading_screen/data_binding/cmm_macros.txt` plus split descriptive companion files such as `cmm_macros_view.txt`, `cmm_macros_settings.txt`, and `cmm_macros_list.txt`).
@@ -28,9 +28,9 @@ A dependency mod for **Europa Universalis 5** that provides one shared in-game m
 - Dropdown settings with selector controls (`<` / `>`).
   - Click: previous/next option.
   - `Shift+click`: jump to first/last option.
-- Ordered list settings with per-item move controls and configurable field columns.
-  - Click up/down: move one row.
-  - `Shift+click` up/down: move to top/bottom.
+- List settings with configurable field columns.
+  - Ordered lists expose per-item move controls (`click` up/down = move one row, `Shift+click` = move to top/bottom).
+  - Unordered lists reuse the same fields without row move controls.
   - Bool fields: checkbox toggle.
   - Dropdown fields: click next, `Shift+click` previous.
 - Text settings with single-line editboxes and an `Apply` action.
@@ -106,11 +106,12 @@ cmm_register_text_setting = {
     quote_text = 1       # required; 1 = wrap in double quotes, 0 = pass raw text
 }
 
-cmm_register_list_setting = {
+cmm_register_settings_list = {
     mod_id = your_mod_id
     setting_id = your_setting_id
     tab_id = your_tab_id
     item_count = 5 # required; 1..20
+    is_ordered = 1 # required; 1 = ordered, 0 = unordered
 }
 
 cmm_register_list_bool_field = {
@@ -200,7 +201,7 @@ Callback contract:
     }
 }
 
-# Ordered list shared callback (required; executed after move or field interaction):
+# List shared callback (required; executed after field interaction and ordered-list row moves):
 <mod_id>__<setting_id>_on_changed = {
     scope = country
     effect = {
@@ -219,7 +220,7 @@ Callback contract:
 }
 ```
 
-CMM handles numeric, slider, dropdown, and ordered-list change modes through generic marker scripted GUIs and then executes the setting-specific `_on_changed`. Button settings execute `_on_changed` directly on click. Text settings submit through `ExecuteConsoleCommand`, so they are disabled in multiplayer and currently do not use scripted GUI `is_shown` gating.
+CMM handles numeric, slider, dropdown, and list change modes through generic marker scripted GUIs and then executes the setting-specific `_on_changed`. Ordered lists additionally expose row move actions through that same list callback. Button settings execute `_on_changed` directly on click. Text settings submit through `ExecuteConsoleCommand`, so they are disabled in multiplayer and currently do not use scripted GUI `is_shown` gating.
 
 Registration hook contract:
 

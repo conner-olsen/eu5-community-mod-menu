@@ -649,6 +649,7 @@ cmm_suppress_list_setting_warnings = {
 			exists = var:cmm_setting_is_global_$mod_id$__$setting_id$
 			exists = var:cmm_setting_is_slider_$mod_id$__$setting_id$
 			exists = var:cmm_setting_is_button_$mod_id$__$setting_id$
+			exists = var:cmm_setting_list_is_ordered_$mod_id$__$setting_id$
 			exists = var:cmm_setting_list_count_$mod_id$__$setting_id$
 			exists = var:cmm_setting_list_last_index_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_count_$mod_id$__$setting_id$
