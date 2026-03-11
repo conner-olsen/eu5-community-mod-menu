@@ -48,7 +48,7 @@ Implemented:
 24. List ordering is registration-first; earlier registration/load order remains earlier in rendered mod, tab, and setting lists.
 25. Dynamic group registration is working via `cmm_register_group` (also called implicitly by setting registration APIs). Settings are visually grouped within tabs using group header bars and shared background containers.
 26. Right-panel tabs use `header_main_tabs` + `button_main_tab_alt` sitting outside the `bg_main_inner_alt` content area, matching the vanilla settings screen tab blending style.
-27. Dynamic list setting registration is working via `cmm_register_list_setting`, `cmm_register_list_bool_field`, and `cmm_register_list_dropdown_field`.
+27. Dynamic list setting registration is working via `cmm_register_list_setting`, `cmm_register_list_bool_field`, `cmm_register_list_dropdown_field`, and `cmm_register_list_numeric_field`.
 
 Status:
 
@@ -323,6 +323,16 @@ cmm_register_list_dropdown_field = {
     field_id = <required>
     default_index = <required, number>
     option_count = <required, number >= 1>
+}
+
+cmm_register_list_numeric_field = {
+    mod_id = <required>
+    setting_id = <required>
+    field_id = <required>
+    default_value = <required, number>
+    min_value = <required, number>
+    max_value = <required, number>
+    step_value = <required, number>
 }
 ```
 

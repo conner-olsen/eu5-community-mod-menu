@@ -315,6 +315,16 @@ cmm_register_list_dropdown_field = {
     default_index = 1
     option_count = 3
 }
+
+cmm_register_list_numeric_field = {
+    mod_id = your_mod_id
+    setting_id = build_priority
+    field_id = weight
+    default_value = 5
+    min_value = 0
+    max_value = 10
+    step_value = 1
+}
 ```
 
 Arguments:
@@ -327,6 +337,10 @@ Arguments:
 - `default_value`: initial bool-field value for brand-new saves (`0` or `1`).
 - `default_index`: initial dropdown-field option index for brand-new saves.
 - `option_count`: number of dropdown options (`>= 1`).
+- `default_value` (numeric field): initial numeric-field value for brand-new saves.
+- `min_value`: numeric-field minimum allowed value.
+- `max_value`: numeric-field maximum allowed value.
+- `step_value`: numeric-field increase/decrease step size.
 
 Notes:
 
@@ -338,6 +352,11 @@ Notes:
 - Field columns render left-to-right in registration order.
 - Bool fields render as checkboxes.
 - Dropdown fields render as compact dropdowns.
+- Numeric fields render as compact steppers.
+- Numeric list-field controls match standard numeric setting behavior:
+  - Click `-` / `+`: `1x` step.
+  - `Ctrl+click` `-` / `+`: `5x` step.
+  - `Shift+click` `-` / `+`: jump to min/max.
 - `Shift+click` the closed dropdown control to apply that row's current dropdown value to all rows in the same field.
 - Ordered list rows support:
   - Click up/down: move one row.

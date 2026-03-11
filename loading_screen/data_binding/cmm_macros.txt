@@ -383,6 +383,46 @@ macro = {
 }
 
 # Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when ordered list field slot 0 is numeric"
+    definition = "CMMListFieldIsNumeric0(SettingKey)"
+    replace_with = "EqualTo_CFixedPoint(CMMVar(Concatenate('cmm_list_field_0_type_', SettingKey)).GetValue, '(CFixedPoint)3')"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when ordered list field slot 1 is numeric"
+    definition = "CMMListFieldIsNumeric1(SettingKey)"
+    replace_with = "EqualTo_CFixedPoint(CMMVar(Concatenate('cmm_list_field_1_type_', SettingKey)).GetValue, '(CFixedPoint)3')"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when ordered list field slot 2 is numeric"
+    definition = "CMMListFieldIsNumeric2(SettingKey)"
+    replace_with = "EqualTo_CFixedPoint(CMMVar(Concatenate('cmm_list_field_2_type_', SettingKey)).GetValue, '(CFixedPoint)3')"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when ordered list field slot 3 is numeric"
+    definition = "CMMListFieldIsNumeric3(SettingKey)"
+    replace_with = "EqualTo_CFixedPoint(CMMVar(Concatenate('cmm_list_field_3_type_', SettingKey)).GetValue, '(CFixedPoint)3')"
+}
+
+# Args: SettingKey (string)
+# Returns: boolean
+macro = {
+    description = "True when ordered list field slot 4 is numeric"
+    definition = "CMMListFieldIsNumeric4(SettingKey)"
+    replace_with = "EqualTo_CFixedPoint(CMMVar(Concatenate('cmm_list_field_4_type_', SettingKey)).GetValue, '(CFixedPoint)3')"
+}
+
+# Args: SettingKey (string)
 # Returns: string
 macro = {
     description = "Ordered list item-column header localization"
@@ -588,6 +628,126 @@ macro = {
     description = "Selected dropdown index for ordered list field slot 4"
     definition = "CMMListFieldDropdownSelectedIndex4(ItemKey)"
     replace_with = "FixedPointToInt(CMMVar(Concatenate(ItemKey, '_field_4')).GetValue)"
+}
+
+# Args: ItemKey (string)
+# Returns: value
+macro = {
+    description = "Numeric value for ordered list field slot 0"
+    definition = "CMMListFieldNumericValue0(ItemKey)"
+    replace_with = "CMMVar(Concatenate(ItemKey, '_field_0')).GetValue"
+}
+
+# Args: ItemKey (string)
+# Returns: value
+macro = {
+    description = "Numeric value for ordered list field slot 1"
+    definition = "CMMListFieldNumericValue1(ItemKey)"
+    replace_with = "CMMVar(Concatenate(ItemKey, '_field_1')).GetValue"
+}
+
+# Args: ItemKey (string)
+# Returns: value
+macro = {
+    description = "Numeric value for ordered list field slot 2"
+    definition = "CMMListFieldNumericValue2(ItemKey)"
+    replace_with = "CMMVar(Concatenate(ItemKey, '_field_2')).GetValue"
+}
+
+# Args: ItemKey (string)
+# Returns: value
+macro = {
+    description = "Numeric value for ordered list field slot 3"
+    definition = "CMMListFieldNumericValue3(ItemKey)"
+    replace_with = "CMMVar(Concatenate(ItemKey, '_field_3')).GetValue"
+}
+
+# Args: ItemKey (string)
+# Returns: value
+macro = {
+    description = "Numeric value for ordered list field slot 4"
+    definition = "CMMListFieldNumericValue4(ItemKey)"
+    replace_with = "CMMVar(Concatenate(ItemKey, '_field_4')).GetValue"
+}
+
+# Args: ItemKey (string)
+# Returns: value
+macro = {
+    description = "Numeric minimum bound for ordered list field slot 0"
+    definition = "CMMListFieldNumericMin0(ItemKey)"
+    replace_with = "CMMVar(Concatenate('cmm_list_field_0_min_', CMMListItemOwnerSettingKey(ItemKey))).GetValue"
+}
+
+# Args: ItemKey (string)
+# Returns: value
+macro = {
+    description = "Numeric minimum bound for ordered list field slot 1"
+    definition = "CMMListFieldNumericMin1(ItemKey)"
+    replace_with = "CMMVar(Concatenate('cmm_list_field_1_min_', CMMListItemOwnerSettingKey(ItemKey))).GetValue"
+}
+
+# Args: ItemKey (string)
+# Returns: value
+macro = {
+    description = "Numeric minimum bound for ordered list field slot 2"
+    definition = "CMMListFieldNumericMin2(ItemKey)"
+    replace_with = "CMMVar(Concatenate('cmm_list_field_2_min_', CMMListItemOwnerSettingKey(ItemKey))).GetValue"
+}
+
+# Args: ItemKey (string)
+# Returns: value
+macro = {
+    description = "Numeric minimum bound for ordered list field slot 3"
+    definition = "CMMListFieldNumericMin3(ItemKey)"
+    replace_with = "CMMVar(Concatenate('cmm_list_field_3_min_', CMMListItemOwnerSettingKey(ItemKey))).GetValue"
+}
+
+# Args: ItemKey (string)
+# Returns: value
+macro = {
+    description = "Numeric minimum bound for ordered list field slot 4"
+    definition = "CMMListFieldNumericMin4(ItemKey)"
+    replace_with = "CMMVar(Concatenate('cmm_list_field_4_min_', CMMListItemOwnerSettingKey(ItemKey))).GetValue"
+}
+
+# Args: ItemKey (string)
+# Returns: value
+macro = {
+    description = "Numeric maximum bound for ordered list field slot 0"
+    definition = "CMMListFieldNumericMax0(ItemKey)"
+    replace_with = "CMMVar(Concatenate('cmm_list_field_0_max_', CMMListItemOwnerSettingKey(ItemKey))).GetValue"
+}
+
+# Args: ItemKey (string)
+# Returns: value
+macro = {
+    description = "Numeric maximum bound for ordered list field slot 1"
+    definition = "CMMListFieldNumericMax1(ItemKey)"
+    replace_with = "CMMVar(Concatenate('cmm_list_field_1_max_', CMMListItemOwnerSettingKey(ItemKey))).GetValue"
+}
+
+# Args: ItemKey (string)
+# Returns: value
+macro = {
+    description = "Numeric maximum bound for ordered list field slot 2"
+    definition = "CMMListFieldNumericMax2(ItemKey)"
+    replace_with = "CMMVar(Concatenate('cmm_list_field_2_max_', CMMListItemOwnerSettingKey(ItemKey))).GetValue"
+}
+
+# Args: ItemKey (string)
+# Returns: value
+macro = {
+    description = "Numeric maximum bound for ordered list field slot 3"
+    definition = "CMMListFieldNumericMax3(ItemKey)"
+    replace_with = "CMMVar(Concatenate('cmm_list_field_3_max_', CMMListItemOwnerSettingKey(ItemKey))).GetValue"
+}
+
+# Args: ItemKey (string)
+# Returns: value
+macro = {
+    description = "Numeric maximum bound for ordered list field slot 4"
+    definition = "CMMListFieldNumericMax4(ItemKey)"
+    replace_with = "CMMVar(Concatenate('cmm_list_field_4_max_', CMMListItemOwnerSettingKey(ItemKey))).GetValue"
 }
 
 # Args: ItemKey (string), Index (int32)

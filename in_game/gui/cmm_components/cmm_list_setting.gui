@@ -10,6 +10,9 @@
 	# - Player.MakeScope.GetVariable(Concatenate(Scope.GetFlagName, '_field_<slot>')) [value]: per-item field values for one item row.
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_list_field_<slot>_type_', <setting_key>)) [value]: field type metadata for one slot.
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_list_field_<slot>_name_', <setting_key>)) [flag]: field header localization key for one slot.
+	# - Player.MakeScope.GetVariable(Concatenate('cmm_list_field_<slot>_min_', <setting_key>)) [value]: numeric minimum bound for one slot.
+	# - Player.MakeScope.GetVariable(Concatenate('cmm_list_field_<slot>_max_', <setting_key>)) [value]: numeric maximum bound for one slot.
+	# - Player.MakeScope.GetVariable(Concatenate('cmm_list_field_<slot>_step_', <setting_key>)) [value]: numeric step size for one slot.
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_list_field_<slot>_option_root_', <setting_key>)) [flag]: dropdown option localization root for one slot.
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_list_last_index_', <setting_key>)) [value]: last valid row position for move-button visibility.
 	# - GetVariableSystem.Get('cmm_list_hover_index') [string]: cached hovered row position for nested dropdown callbacks.
@@ -21,6 +24,7 @@
 	# - GetScriptedGui('CMM_MarkListMove*').Execute(...) [effect]: stores the pending reorder action.
 	# - GetScriptedGui('CMM_MarkListFieldSlot_<slot>').Execute(...) [effect]: stores the pending field slot.
 	# - GetScriptedGui('CMM_MarkListField*').Execute(...) [effect]: stores the pending bool/dropdown field action.
+	# - GetScriptedGui('CMM_MarkNumeric*').Execute(...) [effect]: stores the pending numeric step or min/max jump for one list field.
 	# - GetScriptedGui('CMM_MarkDropdownSelection_<index>').Execute(...) [effect]: stores the selected dropdown option index for a list field.
 	# - GetScriptedGui(Concatenate(<setting_key>, '_on_changed')).Execute(...) [effect]: applies list changes via `cmm_apply_list_change`.
 	type cmm_list_setting = vbox {
@@ -318,6 +322,164 @@
 								}
 							}
 
+							hbox = {
+								minimumsize = { 120 28 }
+								parentanchor = center
+								widgetanchor = center
+								spacing = 0
+								visible = "[CMMListFieldIsNumeric0(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+
+								button_regular = {
+									minimumsize = { 32 28 }
+									enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+									text = "-"
+
+									action_tooltip = {
+										click_mode = single
+										click_type = left
+										click_modifier = default
+										title = "CMM_NUMERIC_DECREASE"
+									}
+
+									action_tooltip = {
+										click_mode = single
+										click_type = left
+										click_modifier = ctrl
+										title = "CMM_NUMERIC_DECREASE_5X"
+									}
+
+									action_tooltip = {
+										click_mode = single
+										click_type = left
+										click_modifier = shift
+										title = "CMM_NUMERIC_DECREASE_MIN"
+									}
+
+									click_modifiers = {
+										ondefault = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+										ondefault = "[CMMMarkListFieldSlot0]"
+										ondefault = "[CMMMarkNumericDecrease]"
+										ondefault = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+										onctrl = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+										onctrl = "[CMMMarkListFieldSlot0]"
+										onctrl = "[CMMMarkNumericDecrease5x]"
+										onctrl = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+										onshift = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+										onshift = "[CMMMarkListFieldSlot0]"
+										onshift = "[CMMMarkNumericDecreaseToMin]"
+										onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+									}
+
+									tooltipwidget = {
+										BasicFunctionalTooltip = {}
+									}
+								}
+
+								widget = {
+									size = { 56 28 }
+									minimumsize = { 56 28 }
+
+									widget = {
+										size = { 56 24 }
+										minimumsize = { 56 24 }
+										parentanchor = vcenter
+										widgetanchor = vcenter
+										using = bg_square_outline_tile
+
+										background = {
+											using = color_dark_brown_texture
+											margin = { 2 2 }
+											alpha = 0.55
+										}
+
+										background = {
+											using = overlay_window_texture
+											margin = { 2 2 }
+											blend_mode = overlay
+											alpha = 0.1
+										}
+
+										button = {
+											size = { 100% 100% }
+											alpha = 0
+											effectname = "NoHighlight"
+											tooltip_enabled = yes
+
+											tooltipwidget = {
+												ContextualTooltipType = {
+													blockoverride "tooltip_title" {}
+													blockoverride "tooltip_content_margin" { margin = { 10 6 } }
+													blockoverride "tooltip_content" {
+														hbox = {
+															set_parent_size_to_minimum = yes
+
+															textbox = {
+																using = text_single_template
+																align = left|nobaseline
+																raw_text = "[CMMListFieldNumericMin0(Scope.GetFlagName)] - [CMMListFieldNumericMax0(Scope.GetFlagName)]"
+															}
+														}
+													}
+												}
+											}
+										}
+
+										text_single = {
+											size = { 100% 100% }
+											align = center|nobaseline
+											autoresize = no
+											text = "[CMMListFieldNumericValue0(Scope.GetFlagName)]"
+										}
+									}
+								}
+
+								button_regular = {
+									minimumsize = { 32 28 }
+									enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+									text = "+"
+
+									action_tooltip = {
+										click_mode = single
+										click_type = left
+										click_modifier = default
+										title = "CMM_NUMERIC_INCREASE"
+									}
+
+									action_tooltip = {
+										click_mode = single
+										click_type = left
+										click_modifier = ctrl
+										title = "CMM_NUMERIC_INCREASE_5X"
+									}
+
+									action_tooltip = {
+										click_mode = single
+										click_type = left
+										click_modifier = shift
+										title = "CMM_NUMERIC_INCREASE_MAX"
+									}
+
+									click_modifiers = {
+										ondefault = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+										ondefault = "[CMMMarkListFieldSlot0]"
+										ondefault = "[CMMMarkNumericIncrease]"
+										ondefault = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+										onctrl = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+										onctrl = "[CMMMarkListFieldSlot0]"
+										onctrl = "[CMMMarkNumericIncrease5x]"
+										onctrl = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+										onshift = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+										onshift = "[CMMMarkListFieldSlot0]"
+										onshift = "[CMMMarkNumericIncreaseToMax]"
+										onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+									}
+
+									tooltipwidget = {
+										BasicFunctionalTooltip = {}
+									}
+								}
+							}
+
 							dropDown = {
 								size = { 132 28 }
 								minimumsize = { 132 28 }
@@ -504,6 +666,164 @@
 
 								tooltipwidget = {
 									BasicFunctionalTooltip = {}
+								}
+							}
+
+							hbox = {
+								minimumsize = { 120 28 }
+								parentanchor = center
+								widgetanchor = center
+								spacing = 0
+								visible = "[CMMListFieldIsNumeric1(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+
+								button_regular = {
+									minimumsize = { 32 28 }
+									enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+									text = "-"
+
+									action_tooltip = {
+										click_mode = single
+										click_type = left
+										click_modifier = default
+										title = "CMM_NUMERIC_DECREASE"
+									}
+
+									action_tooltip = {
+										click_mode = single
+										click_type = left
+										click_modifier = ctrl
+										title = "CMM_NUMERIC_DECREASE_5X"
+									}
+
+									action_tooltip = {
+										click_mode = single
+										click_type = left
+										click_modifier = shift
+										title = "CMM_NUMERIC_DECREASE_MIN"
+									}
+
+									click_modifiers = {
+										ondefault = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+										ondefault = "[CMMMarkListFieldSlot1]"
+										ondefault = "[CMMMarkNumericDecrease]"
+										ondefault = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+										onctrl = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+										onctrl = "[CMMMarkListFieldSlot1]"
+										onctrl = "[CMMMarkNumericDecrease5x]"
+										onctrl = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+										onshift = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+										onshift = "[CMMMarkListFieldSlot1]"
+										onshift = "[CMMMarkNumericDecreaseToMin]"
+										onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+									}
+
+									tooltipwidget = {
+										BasicFunctionalTooltip = {}
+									}
+								}
+
+								widget = {
+									size = { 56 28 }
+									minimumsize = { 56 28 }
+
+									widget = {
+										size = { 56 24 }
+										minimumsize = { 56 24 }
+										parentanchor = vcenter
+										widgetanchor = vcenter
+										using = bg_square_outline_tile
+
+										background = {
+											using = color_dark_brown_texture
+											margin = { 2 2 }
+											alpha = 0.55
+										}
+
+										background = {
+											using = overlay_window_texture
+											margin = { 2 2 }
+											blend_mode = overlay
+											alpha = 0.1
+										}
+
+										button = {
+											size = { 100% 100% }
+											alpha = 0
+											effectname = "NoHighlight"
+											tooltip_enabled = yes
+
+											tooltipwidget = {
+												ContextualTooltipType = {
+													blockoverride "tooltip_title" {}
+													blockoverride "tooltip_content_margin" { margin = { 10 6 } }
+													blockoverride "tooltip_content" {
+														hbox = {
+															set_parent_size_to_minimum = yes
+
+															textbox = {
+																using = text_single_template
+																align = left|nobaseline
+																raw_text = "[CMMListFieldNumericMin1(Scope.GetFlagName)] - [CMMListFieldNumericMax1(Scope.GetFlagName)]"
+															}
+														}
+													}
+												}
+											}
+										}
+
+										text_single = {
+											size = { 100% 100% }
+											align = center|nobaseline
+											autoresize = no
+											text = "[CMMListFieldNumericValue1(Scope.GetFlagName)]"
+										}
+									}
+								}
+
+								button_regular = {
+									minimumsize = { 32 28 }
+									enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+									text = "+"
+
+									action_tooltip = {
+										click_mode = single
+										click_type = left
+										click_modifier = default
+										title = "CMM_NUMERIC_INCREASE"
+									}
+
+									action_tooltip = {
+										click_mode = single
+										click_type = left
+										click_modifier = ctrl
+										title = "CMM_NUMERIC_INCREASE_5X"
+									}
+
+									action_tooltip = {
+										click_mode = single
+										click_type = left
+										click_modifier = shift
+										title = "CMM_NUMERIC_INCREASE_MAX"
+									}
+
+									click_modifiers = {
+										ondefault = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+										ondefault = "[CMMMarkListFieldSlot1]"
+										ondefault = "[CMMMarkNumericIncrease]"
+										ondefault = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+										onctrl = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+										onctrl = "[CMMMarkListFieldSlot1]"
+										onctrl = "[CMMMarkNumericIncrease5x]"
+										onctrl = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+										onshift = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+										onshift = "[CMMMarkListFieldSlot1]"
+										onshift = "[CMMMarkNumericIncreaseToMax]"
+										onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+									}
+
+									tooltipwidget = {
+										BasicFunctionalTooltip = {}
+									}
 								}
 							}
 
@@ -696,6 +1016,164 @@
 								}
 							}
 
+							hbox = {
+								minimumsize = { 120 28 }
+								parentanchor = center
+								widgetanchor = center
+								spacing = 0
+								visible = "[CMMListFieldIsNumeric2(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+
+								button_regular = {
+									minimumsize = { 32 28 }
+									enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+									text = "-"
+
+									action_tooltip = {
+										click_mode = single
+										click_type = left
+										click_modifier = default
+										title = "CMM_NUMERIC_DECREASE"
+									}
+
+									action_tooltip = {
+										click_mode = single
+										click_type = left
+										click_modifier = ctrl
+										title = "CMM_NUMERIC_DECREASE_5X"
+									}
+
+									action_tooltip = {
+										click_mode = single
+										click_type = left
+										click_modifier = shift
+										title = "CMM_NUMERIC_DECREASE_MIN"
+									}
+
+									click_modifiers = {
+										ondefault = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+										ondefault = "[CMMMarkListFieldSlot2]"
+										ondefault = "[CMMMarkNumericDecrease]"
+										ondefault = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+										onctrl = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+										onctrl = "[CMMMarkListFieldSlot2]"
+										onctrl = "[CMMMarkNumericDecrease5x]"
+										onctrl = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+										onshift = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+										onshift = "[CMMMarkListFieldSlot2]"
+										onshift = "[CMMMarkNumericDecreaseToMin]"
+										onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+									}
+
+									tooltipwidget = {
+										BasicFunctionalTooltip = {}
+									}
+								}
+
+								widget = {
+									size = { 56 28 }
+									minimumsize = { 56 28 }
+
+									widget = {
+										size = { 56 24 }
+										minimumsize = { 56 24 }
+										parentanchor = vcenter
+										widgetanchor = vcenter
+										using = bg_square_outline_tile
+
+										background = {
+											using = color_dark_brown_texture
+											margin = { 2 2 }
+											alpha = 0.55
+										}
+
+										background = {
+											using = overlay_window_texture
+											margin = { 2 2 }
+											blend_mode = overlay
+											alpha = 0.1
+										}
+
+										button = {
+											size = { 100% 100% }
+											alpha = 0
+											effectname = "NoHighlight"
+											tooltip_enabled = yes
+
+											tooltipwidget = {
+												ContextualTooltipType = {
+													blockoverride "tooltip_title" {}
+													blockoverride "tooltip_content_margin" { margin = { 10 6 } }
+													blockoverride "tooltip_content" {
+														hbox = {
+															set_parent_size_to_minimum = yes
+
+															textbox = {
+																using = text_single_template
+																align = left|nobaseline
+																raw_text = "[CMMListFieldNumericMin2(Scope.GetFlagName)] - [CMMListFieldNumericMax2(Scope.GetFlagName)]"
+															}
+														}
+													}
+												}
+											}
+										}
+
+										text_single = {
+											size = { 100% 100% }
+											align = center|nobaseline
+											autoresize = no
+											text = "[CMMListFieldNumericValue2(Scope.GetFlagName)]"
+										}
+									}
+								}
+
+								button_regular = {
+									minimumsize = { 32 28 }
+									enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+									text = "+"
+
+									action_tooltip = {
+										click_mode = single
+										click_type = left
+										click_modifier = default
+										title = "CMM_NUMERIC_INCREASE"
+									}
+
+									action_tooltip = {
+										click_mode = single
+										click_type = left
+										click_modifier = ctrl
+										title = "CMM_NUMERIC_INCREASE_5X"
+									}
+
+									action_tooltip = {
+										click_mode = single
+										click_type = left
+										click_modifier = shift
+										title = "CMM_NUMERIC_INCREASE_MAX"
+									}
+
+									click_modifiers = {
+										ondefault = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+										ondefault = "[CMMMarkListFieldSlot2]"
+										ondefault = "[CMMMarkNumericIncrease]"
+										ondefault = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+										onctrl = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+										onctrl = "[CMMMarkListFieldSlot2]"
+										onctrl = "[CMMMarkNumericIncrease5x]"
+										onctrl = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+										onshift = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+										onshift = "[CMMMarkListFieldSlot2]"
+										onshift = "[CMMMarkNumericIncreaseToMax]"
+										onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+									}
+
+									tooltipwidget = {
+										BasicFunctionalTooltip = {}
+									}
+								}
+							}
+
 							dropDown = {
 								size = { 132 28 }
 								minimumsize = { 132 28 }
@@ -885,6 +1363,164 @@
 								}
 							}
 
+							hbox = {
+								minimumsize = { 120 28 }
+								parentanchor = center
+								widgetanchor = center
+								spacing = 0
+								visible = "[CMMListFieldIsNumeric3(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+
+								button_regular = {
+									minimumsize = { 32 28 }
+									enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+									text = "-"
+
+									action_tooltip = {
+										click_mode = single
+										click_type = left
+										click_modifier = default
+										title = "CMM_NUMERIC_DECREASE"
+									}
+
+									action_tooltip = {
+										click_mode = single
+										click_type = left
+										click_modifier = ctrl
+										title = "CMM_NUMERIC_DECREASE_5X"
+									}
+
+									action_tooltip = {
+										click_mode = single
+										click_type = left
+										click_modifier = shift
+										title = "CMM_NUMERIC_DECREASE_MIN"
+									}
+
+									click_modifiers = {
+										ondefault = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+										ondefault = "[CMMMarkListFieldSlot3]"
+										ondefault = "[CMMMarkNumericDecrease]"
+										ondefault = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+										onctrl = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+										onctrl = "[CMMMarkListFieldSlot3]"
+										onctrl = "[CMMMarkNumericDecrease5x]"
+										onctrl = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+										onshift = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+										onshift = "[CMMMarkListFieldSlot3]"
+										onshift = "[CMMMarkNumericDecreaseToMin]"
+										onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+									}
+
+									tooltipwidget = {
+										BasicFunctionalTooltip = {}
+									}
+								}
+
+								widget = {
+									size = { 56 28 }
+									minimumsize = { 56 28 }
+
+									widget = {
+										size = { 56 24 }
+										minimumsize = { 56 24 }
+										parentanchor = vcenter
+										widgetanchor = vcenter
+										using = bg_square_outline_tile
+
+										background = {
+											using = color_dark_brown_texture
+											margin = { 2 2 }
+											alpha = 0.55
+										}
+
+										background = {
+											using = overlay_window_texture
+											margin = { 2 2 }
+											blend_mode = overlay
+											alpha = 0.1
+										}
+
+										button = {
+											size = { 100% 100% }
+											alpha = 0
+											effectname = "NoHighlight"
+											tooltip_enabled = yes
+
+											tooltipwidget = {
+												ContextualTooltipType = {
+													blockoverride "tooltip_title" {}
+													blockoverride "tooltip_content_margin" { margin = { 10 6 } }
+													blockoverride "tooltip_content" {
+														hbox = {
+															set_parent_size_to_minimum = yes
+
+															textbox = {
+																using = text_single_template
+																align = left|nobaseline
+																raw_text = "[CMMListFieldNumericMin3(Scope.GetFlagName)] - [CMMListFieldNumericMax3(Scope.GetFlagName)]"
+															}
+														}
+													}
+												}
+											}
+										}
+
+										text_single = {
+											size = { 100% 100% }
+											align = center|nobaseline
+											autoresize = no
+											text = "[CMMListFieldNumericValue3(Scope.GetFlagName)]"
+										}
+									}
+								}
+
+								button_regular = {
+									minimumsize = { 32 28 }
+									enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+									text = "+"
+
+									action_tooltip = {
+										click_mode = single
+										click_type = left
+										click_modifier = default
+										title = "CMM_NUMERIC_INCREASE"
+									}
+
+									action_tooltip = {
+										click_mode = single
+										click_type = left
+										click_modifier = ctrl
+										title = "CMM_NUMERIC_INCREASE_5X"
+									}
+
+									action_tooltip = {
+										click_mode = single
+										click_type = left
+										click_modifier = shift
+										title = "CMM_NUMERIC_INCREASE_MAX"
+									}
+
+									click_modifiers = {
+										ondefault = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+										ondefault = "[CMMMarkListFieldSlot3]"
+										ondefault = "[CMMMarkNumericIncrease]"
+										ondefault = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+										onctrl = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+										onctrl = "[CMMMarkListFieldSlot3]"
+										onctrl = "[CMMMarkNumericIncrease5x]"
+										onctrl = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+										onshift = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+										onshift = "[CMMMarkListFieldSlot3]"
+										onshift = "[CMMMarkNumericIncreaseToMax]"
+										onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+									}
+
+									tooltipwidget = {
+										BasicFunctionalTooltip = {}
+									}
+								}
+							}
+
 							dropDown = {
 								size = { 132 28 }
 								minimumsize = { 132 28 }
@@ -1071,6 +1707,164 @@
 
 								tooltipwidget = {
 									BasicFunctionalTooltip = {}
+								}
+							}
+
+							hbox = {
+								minimumsize = { 120 28 }
+								parentanchor = center
+								widgetanchor = center
+								spacing = 0
+								visible = "[CMMListFieldIsNumeric4(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+
+								button_regular = {
+									minimumsize = { 32 28 }
+									enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+									text = "-"
+
+									action_tooltip = {
+										click_mode = single
+										click_type = left
+										click_modifier = default
+										title = "CMM_NUMERIC_DECREASE"
+									}
+
+									action_tooltip = {
+										click_mode = single
+										click_type = left
+										click_modifier = ctrl
+										title = "CMM_NUMERIC_DECREASE_5X"
+									}
+
+									action_tooltip = {
+										click_mode = single
+										click_type = left
+										click_modifier = shift
+										title = "CMM_NUMERIC_DECREASE_MIN"
+									}
+
+									click_modifiers = {
+										ondefault = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+										ondefault = "[CMMMarkListFieldSlot4]"
+										ondefault = "[CMMMarkNumericDecrease]"
+										ondefault = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+										onctrl = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+										onctrl = "[CMMMarkListFieldSlot4]"
+										onctrl = "[CMMMarkNumericDecrease5x]"
+										onctrl = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+										onshift = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+										onshift = "[CMMMarkListFieldSlot4]"
+										onshift = "[CMMMarkNumericDecreaseToMin]"
+										onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+									}
+
+									tooltipwidget = {
+										BasicFunctionalTooltip = {}
+									}
+								}
+
+								widget = {
+									size = { 56 28 }
+									minimumsize = { 56 28 }
+
+									widget = {
+										size = { 56 24 }
+										minimumsize = { 56 24 }
+										parentanchor = vcenter
+										widgetanchor = vcenter
+										using = bg_square_outline_tile
+
+										background = {
+											using = color_dark_brown_texture
+											margin = { 2 2 }
+											alpha = 0.55
+										}
+
+										background = {
+											using = overlay_window_texture
+											margin = { 2 2 }
+											blend_mode = overlay
+											alpha = 0.1
+										}
+
+										button = {
+											size = { 100% 100% }
+											alpha = 0
+											effectname = "NoHighlight"
+											tooltip_enabled = yes
+
+											tooltipwidget = {
+												ContextualTooltipType = {
+													blockoverride "tooltip_title" {}
+													blockoverride "tooltip_content_margin" { margin = { 10 6 } }
+													blockoverride "tooltip_content" {
+														hbox = {
+															set_parent_size_to_minimum = yes
+
+															textbox = {
+																using = text_single_template
+																align = left|nobaseline
+																raw_text = "[CMMListFieldNumericMin4(Scope.GetFlagName)] - [CMMListFieldNumericMax4(Scope.GetFlagName)]"
+															}
+														}
+													}
+												}
+											}
+										}
+
+										text_single = {
+											size = { 100% 100% }
+											align = center|nobaseline
+											autoresize = no
+											text = "[CMMListFieldNumericValue4(Scope.GetFlagName)]"
+										}
+									}
+								}
+
+								button_regular = {
+									minimumsize = { 32 28 }
+									enabled = "[CMMCanEditSetting(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+									text = "+"
+
+									action_tooltip = {
+										click_mode = single
+										click_type = left
+										click_modifier = default
+										title = "CMM_NUMERIC_INCREASE"
+									}
+
+									action_tooltip = {
+										click_mode = single
+										click_type = left
+										click_modifier = ctrl
+										title = "CMM_NUMERIC_INCREASE_5X"
+									}
+
+									action_tooltip = {
+										click_mode = single
+										click_type = left
+										click_modifier = shift
+										title = "CMM_NUMERIC_INCREASE_MAX"
+									}
+
+									click_modifiers = {
+										ondefault = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+										ondefault = "[CMMMarkListFieldSlot4]"
+										ondefault = "[CMMMarkNumericIncrease]"
+										ondefault = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+										onctrl = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+										onctrl = "[CMMMarkListFieldSlot4]"
+										onctrl = "[CMMMarkNumericIncrease5x]"
+										onctrl = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+										onshift = "[CMMMarkListPosition(PdxGuiWidget.GetIndexInDataModel)]"
+										onshift = "[CMMMarkListFieldSlot4]"
+										onshift = "[CMMMarkNumericIncreaseToMax]"
+										onshift = "[CMMExecuteSettingChanged(CMMListItemOwnerSettingKey(Scope.GetFlagName))]"
+									}
+
+									tooltipwidget = {
+										BasicFunctionalTooltip = {}
+									}
 								}
 							}
 
