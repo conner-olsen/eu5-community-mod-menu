@@ -97,6 +97,10 @@ After doing this, the checkbox will now be fully functional. But you will want t
  cmm_example__example_toggle_name: "Toggle"                  # The setting name
  cmm_example__example_toggle_desc: "Example toggle setting." # (Optional) The setting description
 </syntaxhighlight>
+* <code>cmm_example__general_name</code> The tab name, the key must be <code>[Your_Mod_ID]__[Your_Tab_ID]_name</code>
+* <code>cmm_example__general_toggles_name</code> The group name, the key must be <code>[Your_Mod_ID]__[Your_Group_ID]_name</code>
+* <code>cmm_example__example_toggle_name</code> The setting name, the key must be <code>[Your_Mod_ID]__[Your_Setting_ID]_name</code>
+* <code>cmm_example__example_toggle_desc</code> (optinal) The settings description, which appears as a tooltip on hover, the key must be <code>[Your_Mod_ID]__[Your_Setting_ID]_desc</code>
 
 That is all that is needed in order to create your checkbox.
 
