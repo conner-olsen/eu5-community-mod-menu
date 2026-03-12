@@ -7,8 +7,9 @@
 	# - GetVariableSystem.Get('cmm_selected_tab') [string]: active tab key for row visibility filtering.
 	# - GetGlobalVariable(Scope.GetFlagName).GetValue [value]: current setting value for global settings.
 	# - Player.MakeScope.GetVariable(Scope.GetFlagName) [value]: current setting value for local settings.
-	# - Player.MakeScope.GetVariable(Concatenate(Scope.GetFlagName, '_button_text')) [flag]: localized button caption for button settings.
-	# - Player.MakeScope.GetVariable(Concatenate(Scope.GetFlagName, '_desc')) [flag]: localized setting description used by hover tooltips.
+	# - Localize(Scope.GetFlagName) [string]: localized setting label.
+	# - Localize(Concatenate(Scope.GetFlagName, '_button')) [string]: localized button caption for button settings.
+	# - Localize(Concatenate(Scope.GetFlagName, '_desc')) [string]: localized setting description used by hover tooltips.
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_min_', Scope.GetFlagName)) [value]: numeric minimum bound.
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_max_', Scope.GetFlagName)) [value]: numeric maximum bound.
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_setting_text_character_limit_', Scope.GetFlagName)) [value]: text character limit.
@@ -40,7 +41,7 @@
 				tooltip = "[CMMLocalizedSuffixText(Scope.GetFlagName, '_desc')]"
 				tooltip_enabled = "[CMMHasLocalizedSuffixText(Scope.GetFlagName, '_desc')]"
 				tooltipwidget = { BasicFunctionalTooltip = {} }
-				text = "[CMMLocalizedSuffix(Scope.GetFlagName, '_name')]"
+				text = "[CMMLocalizedKey(Scope.GetFlagName)]"
 			}
 
 			hbox = {
@@ -59,7 +60,7 @@
 					visible = "[CMMSettingIsButton(Scope.GetFlagName)]"
 					minimumsize = { 168 32 }
 					enabled = "[CMMCanEditSetting(Scope.GetFlagName)]"
-					text = "[CMMLocalizedSuffix(Scope.GetFlagName, '_button_text')]"
+					text = "[CMMLocalizedSuffix(Scope.GetFlagName, '_button')]"
 					onclick = "[CMMExecuteSettingChanged(Scope.GetFlagName)]"
 					tooltip_enabled = no
 				}

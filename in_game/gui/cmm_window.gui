@@ -37,7 +37,7 @@
 						tooltip = "[CMMLocalizedSuffixText(GetVariableSystem.Get('cmm_selected_mod'), '_desc')]"
 						tooltip_enabled = "[CMMHasLocalizedSuffixText(GetVariableSystem.Get('cmm_selected_mod'), '_desc')]"
 						tooltipwidget = { BasicFunctionalTooltip = {} }
-						text = "[CMMLocalizedSuffix(GetVariableSystem.Get('cmm_selected_mod'), '_name')]"
+						text = "[CMMLocalizedKey(GetVariableSystem.Get('cmm_selected_mod'))]"
 					}
 				}
 			}

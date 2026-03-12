@@ -60,11 +60,6 @@ cmm_register_list_setting_internal = {
 		set_variable = { name = cmm_list_field_count_$mod_id$__$setting_id$ value = 0 }
 	}
 
-	set_variable = {
-		name = cmm_list_item_column_name_$mod_id$__$setting_id$
-		value = flag:$mod_id$__$setting_id$_item_column_name
-	}
-
 	cmm_register_setting_metadata = {
 		mod_id = $mod_id$
 		setting_id = $setting_id$
