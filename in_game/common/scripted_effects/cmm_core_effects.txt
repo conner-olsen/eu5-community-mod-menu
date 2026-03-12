@@ -32,12 +32,16 @@ cmm_register_mod = {
 	}
 }
 
-# Register a tab for a mod (idempotent by mod_id + tab_id).
+# Register a tab for a mod and implicitly register the owner mod (idempotent by mod_id + tab_id).
 # Scope: country
 # Args:
 # - mod_id (key): Owner mod id.
 # - tab_id (key): Tab id unique within mod.
 cmm_register_tab = {
+	cmm_register_mod = {
+		mod_id = $mod_id$
+	}
+
 	# First-time registration path for this tab key.
 	if = {
 		limit = { NOT = { has_variable = cmm_registered_tab_$mod_id$__$tab_id$ } }
@@ -73,13 +77,18 @@ cmm_register_tab = {
 	}
 }
 
-# Register a group for a mod tab (idempotent by mod_id + group_id).
+# Register a group for a mod tab and implicitly register the owner tab/mod (idempotent by mod_id + group_id).
 # Scope: country
 # Args:
 # - mod_id (key): Owner mod id.
 # - tab_id (key): Owner tab id within mod.
 # - group_id (key): Group id unique within mod.
 cmm_register_group = {
+	cmm_register_tab = {
+		mod_id = $mod_id$
+		tab_id = $tab_id$
+	}
+
 	# First-time registration path for this group key.
 	if = {
 		limit = { NOT = { has_variable = cmm_registered_group_$mod_id$__$group_id$ } }
@@ -111,7 +120,7 @@ cmm_register_group = {
 	}
 }
 
-# Register shared metadata for a setting key (idempotent by mod_id + setting_id).
+# Register shared metadata for a setting key and implicitly register the owner group/tab/mod (idempotent by mod_id + setting_id).
 # Scope: country
 # Args:
 # - mod_id (key): Owner mod id.
@@ -119,11 +128,6 @@ cmm_register_group = {
 # - tab_id (key): Owner tab id within mod.
 # - group_id (key): Owner group id within mod.
 cmm_register_setting_metadata = {
-	cmm_register_tab = {
-		mod_id = $mod_id$
-		tab_id = $tab_id$
-	}
-
 	cmm_register_group = {
 		mod_id = $mod_id$
 		tab_id = $tab_id$

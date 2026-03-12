@@ -1,6 +1,6 @@
 ﻿# AGENTS.md
 
-Last updated: 2026-03-09
+Last updated: 2026-03-12
 
 ## Critical Context
 
@@ -23,7 +23,7 @@ Maintain CMM as a general-purpose dependency mod menu:
 Implemented:
 
 1. Pause-menu button injection and open/close flow are working (`cmm_ingame_menu.gui` + `cmm_window.gui`).
-2. Dynamic mod registration is working via `cmm_register_mod`.
+2. Dynamic mod registration is working via implicit registration from tabs, groups, and settings, with optional explicit `cmm_register_mod`.
 3. Dynamic bool setting registration is working via `cmm_register_bool_setting`.
 4. Dynamic button setting registration is working via `cmm_register_button_setting`.
 5. Dynamic numeric setting registration is working via `cmm_register_numeric_setting`.
@@ -46,7 +46,7 @@ Implemented:
 22. Global setting registration is implemented via `cmm_register_global_bool_setting`, `cmm_register_global_button_setting`, `cmm_register_global_numeric_setting`, `cmm_register_global_slider_setting`, and `cmm_register_global_dropdown_setting`.
 23. Global stateful settings are host-editable in multiplayer and read directly from global variables in UI; global button settings are host-editable in multiplayer without creating stored value state.
 24. List ordering is registration-first; earlier registration/load order remains earlier in rendered mod, tab, and setting lists.
-25. Dynamic group registration is working via `cmm_register_group` (also called implicitly by setting registration APIs). Settings are visually grouped within tabs using group header bars and shared background containers.
+25. Dynamic group registration is working via `cmm_register_group` and is also called implicitly by setting registration APIs; tab registration also implicitly registers the owning mod. Settings are visually grouped within tabs using group header bars and shared background containers.
 26. Right-panel tabs use `header_main_tabs` + `button_main_tab_alt` sitting outside the `bg_main_inner_alt` content area, matching the vanilla settings screen tab blending style.
 27. Dynamic list setting registration is working via `cmm_register_settings_list`, `cmm_register_list_bool_field`, `cmm_register_list_dropdown_field`, and `cmm_register_list_numeric_field`.
 
@@ -343,6 +343,13 @@ cmm_register_list_numeric_field = {
 }
 ```
 
+Registration notes:
+
+- `cmm_register_mod` is optional; use it only when you want an empty mod row before any tabs or settings exist.
+- `cmm_register_tab` implicitly registers the owning mod.
+- `cmm_register_group` implicitly registers the owning tab and mod.
+- All setting registration APIs implicitly register their owning group, tab, and mod.
+
 Derived localization keys:
 
 - Mod name: `<mod_id>_name`
@@ -478,7 +485,7 @@ Global button settings are host-editable in multiplayer but do not create stored
 
 Behavior:
 
-1. Tabs are registered dynamically via `cmm_register_tab` and/or implicitly via setting registration APIs.
+1. Tabs are registered dynamically via `cmm_register_tab` and/or implicitly via group/setting registration APIs; explicit tab registration also implicitly registers the owning mod.
 2. Right panel renders tabs from `cmm_registered_tab_keys`, filtered to selected mod.
 3. Clicking a mod row sets selected mod and selected tab default (`cmm_mod_default_tab_<mod_id>`).
 4. Clicking a tab sets `cmm_selected_tab`.
@@ -505,7 +512,7 @@ Reference focus for this milestone:
 
 Behavior:
 
-1. Groups are registered dynamically via `cmm_register_group` or implicitly when a setting registration API includes a `group_id`.
+1. Groups are registered dynamically via `cmm_register_group` or implicitly when a setting registration API includes a `group_id`; explicit group registration also implicitly registers the owning tab and mod.
 2. Each group is scoped to a mod and a tab; groups appear only when their owning mod and tab are selected.
 3. Each group renders a header bar (`button_main_tab_texture` frame 4, yellow title text) and a `bg_secondary_section` container holding its settings.
 4. Settings within a group are iterated from per-group variable lists (`cmm_group_setting_keys_<mod_id>__<group_id>`).

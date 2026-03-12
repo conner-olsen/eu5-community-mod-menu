@@ -2,10 +2,6 @@
 # Scope: country
 # Args: none
 cmm_register_menu_settings = {
-	cmm_register_mod = {
-		mod_id = cmm_core
-	}
-
 	if = {
 		limit = { has_multiple_players = no }
 		cmm_register_global_bool_setting = {

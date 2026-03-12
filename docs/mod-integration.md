@@ -12,7 +12,9 @@ This document is for mod authors integrating with **EU5 Community Mod Menu (CMM)
 
 All calls below are country-scope.
 
-### 1) Register your mod
+For normal integrations, you only need to register settings. CMM implicitly registers the owning mod, tab, and group from those calls.
+
+### 1) Optional: register an empty mod
 
 ```txt
 cmm_register_mod = {
@@ -24,7 +26,11 @@ Arguments:
 
 - `mod_id`: stable machine id for ownership.
 
-### 2) Register tabs
+Notes:
+
+- Use explicit `cmm_register_mod` only when you want the mod row to exist before any tabs or settings have been registered.
+
+### 2) Optional: register tabs
 
 ```txt
 cmm_register_tab = {
@@ -40,10 +46,11 @@ Arguments:
 
 Notes:
 
+- `cmm_register_tab` implicitly registers the owner mod.
 - `cmm_register_bool_setting`, `cmm_register_button_setting`, `cmm_register_numeric_setting`, `cmm_register_slider_setting`, `cmm_register_dropdown_setting`, `cmm_register_text_setting`, and their supported `cmm_register_global_*` variants auto-register their tab.
 - Use explicit `cmm_register_tab` only when you need an empty tab with no settings yet.
 
-### 3) Register groups
+### 3) Optional: register groups
 
 ```txt
 cmm_register_group = {
@@ -61,7 +68,8 @@ Arguments:
 
 Notes:
 
-- All setting registration APIs auto-register their group via `group_id`.
+- `cmm_register_group` implicitly registers the owner tab and mod.
+- All setting registration APIs auto-register their group. Standard settings use `group_id`; list settings use `setting_id` as their dedicated group key.
 - Use explicit `cmm_register_group` only when you need an empty group with no settings yet.
 - Groups provide visual structure within a tab: each group renders a header bar and a shared background container for its settings.
 
@@ -628,10 +636,6 @@ CMM writes these country-scope variables/lists:
 
 ```txt
 your_mod_register_mod = {
-    cmm_register_mod = {
-        mod_id = your_mod
-    }
-
     cmm_register_bool_setting = {
         mod_id = your_mod
         setting_id = allow_feature

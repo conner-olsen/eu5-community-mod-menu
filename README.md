@@ -53,14 +53,11 @@ A dependency mod for **Europa Universalis 5** that provides one shared in-game m
 Country scope:
 
 ```txt
-cmm_register_mod = {
-    mod_id = your_mod_id
-}
-
 cmm_register_bool_setting = {
     mod_id = your_mod_id
     setting_id = your_setting_id
     tab_id = your_tab_id
+    group_id = your_group_id
     default_value = 0 # required; 0 (off) or 1 (on)
 }
 
@@ -68,12 +65,14 @@ cmm_register_button_setting = {
     mod_id = your_mod_id
     setting_id = your_setting_id
     tab_id = your_tab_id
+    group_id = your_group_id
 }
 
 cmm_register_numeric_setting = {
     mod_id = your_mod_id
     setting_id = your_setting_id
     tab_id = your_tab_id
+    group_id = your_group_id
     default_value = 10 # required
     min_value = 0      # required
     max_value = 100    # required
@@ -84,6 +83,7 @@ cmm_register_slider_setting = {
     mod_id = your_mod_id
     setting_id = your_setting_id
     tab_id = your_tab_id
+    group_id = your_group_id
     default_value = 50 # required
     min_value = 0      # required
     max_value = 100    # required
@@ -94,6 +94,7 @@ cmm_register_dropdown_setting = {
     mod_id = your_mod_id
     setting_id = your_setting_id
     tab_id = your_tab_id
+    group_id = your_group_id
     default_index = 1 # required
     option_count = 3  # required; >= 1 (options are 0..option_count-1)
 }
@@ -102,6 +103,7 @@ cmm_register_text_setting = {
     mod_id = your_mod_id
     setting_id = your_setting_id
     tab_id = your_tab_id
+    group_id = your_group_id
     character_limit = 42 # required; >= 1
     quote_text = 1       # required; 1 = wrap in double quotes, 0 = pass raw text
 }
@@ -130,6 +132,8 @@ cmm_register_list_dropdown_field = {
 }
 ```
 
+For normal integrations, register settings directly. CMM implicitly registers the owning mod, tab, and group from those calls. Explicit `cmm_register_mod`, `cmm_register_tab`, and `cmm_register_group` remain available as advanced/manual APIs when you want an empty mod, empty tab, or empty group before any settings exist.
+
 Global variants also exist for bool, button, numeric, slider, and dropdown settings. `cmm_register_global_button_setting` only affects host-only multiplayer edit permission and does not create stored value state. Core CMM can additionally lock all global settings behind its `Enable Host-Only Tools` toggle.
 
 CMM also ships a country-scope scripted trigger named `is_host`. It only becomes true when CMM's core `Enable Host-Only Tools` toggle is on, and then resolves to the current human country whenever `has_multiple_players = no`, or to the country last auto-marked by the actual multiplayer host when they opened Mod Menu.
@@ -138,6 +142,7 @@ Localization key format is enforced by ids:
 
 - Mod: `<mod_id>_name`, `<mod_id>_desc`
 - Tab: `<mod_id>__<tab_id>_name`
+- Group: `<mod_id>__<group_id>_name`
 - Setting: `<mod_id>__<setting_id>_name`, `<mod_id>__<setting_id>_desc`
 - Button setting text: `<mod_id>__<setting_id>_button`
 - Dropdown option: `<mod_id>__<setting_id>_option_<index>_name`

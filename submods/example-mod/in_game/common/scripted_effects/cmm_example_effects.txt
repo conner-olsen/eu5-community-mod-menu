@@ -1,9 +1,5 @@
 ﻿# Root scope: country.
 cmm_example_register_mod = {
-	cmm_register_mod = {
-		mod_id = cmm_example
-	}
-
 	cmm_register_bool_setting = {
 		mod_id = cmm_example
 		setting_id = example_toggle

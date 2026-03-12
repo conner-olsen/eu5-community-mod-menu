@@ -5,7 +5,7 @@ This is a reference integration mod for `community.mod.menu.dev`.
 ## What it demonstrates
 
 - Declaring dependency on Community Mod Menu in `.metadata/metadata.json`.
-- Registering a mod id (`cmm_example`) with derived localization keys.
+- Registering settings under mod id `cmm_example` with derived localization keys.
 - Appending into CMM shared registration hook `cmm_on_mod_registration`.
 - Defining immediate per-setting callbacks for country-scope bool, button, numeric, slider, dropdown, text, and list examples.
 - Defining immediate per-setting callbacks for global bool, button, numeric, slider, and dropdown examples.
@@ -34,8 +34,12 @@ This is a reference integration mod for `community.mod.menu.dev`.
 ```txt
 # in_game/common/scripted_effects/<your_mod>_cmm.txt
 your_mod_register_in_cmm = {
-    cmm_register_mod = {
+    cmm_register_bool_setting = {
         mod_id = your_mod_id
+        setting_id = your_setting_id
+        tab_id = general
+        group_id = general
+        default_value = 1
     }
 }
 ```
