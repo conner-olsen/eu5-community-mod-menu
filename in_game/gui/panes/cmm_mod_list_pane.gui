@@ -55,7 +55,7 @@
 	type cmm_mod_list_rows = vbox {
 		layoutpolicy_horizontal = expanding
 		ignoreinvisible = yes
-		spacing = 0
+		spacing = 4
 		datamodel = "[Player.MakeScope.GetList('cmm_registered_mod_ids')]"
 
 		item = {
@@ -74,16 +74,17 @@
 	# - GetVariableSystem.Set('cmm_selected_tab') [string]: sets selected tab to the mod default.
 	type cmm_mod_list_row = widget {
 		layoutpolicy_horizontal = expanding
-		minimumsize = { 0 40 }
+		minimumsize = { 0 52 }
 		visible = "[CMMModMatchesSearch(Scope.GetFlagName)]"
 
 		hbox = {
 			margin = { 4 2 }
-			margin_right = 12
 
-			button_regular = {
+			card_header_button_01 = {
 				using = layoutpolicy_expanding
-				text = "[CMMLocalizedSuffix(Scope.GetFlagName, '_name')]"
+				size = { -1 48 }
+				using = bg_paper_card
+				using = bg_card_header_01_production
 				onclick = "[GetVariableSystem.Set('cmm_selected_mod', Scope.GetFlagName)]"
 				onclick = "[GetVariableSystem.Set('cmm_selected_tab', CMMMetadataFlag('cmm_mod_default_tab_', Scope.GetFlagName))]"
 				down = "[GetVariableSystem.HasValue('cmm_selected_mod', Scope.GetFlagName)]"
@@ -91,6 +92,28 @@
 				tooltip = "[CMMLocalizedSuffixText(Scope.GetFlagName, '_desc')]"
 				tooltip_enabled = "[CMMHasLocalizedSuffixText(Scope.GetFlagName, '_desc')]"
 				tooltipwidget = { BasicFunctionalTooltip = {} }
+
+				blockoverride "card_color" {
+					modify_texture = {
+						visible = "[GetVariableSystem.HasValue('cmm_selected_mod', Scope.GetFlagName)]"
+						using = color_gold_texture
+						alpha = 0.16
+					}
+				}
+
+				widget = {
+					size = { 100% 100% }
+
+					text_single = {
+						parentanchor = center
+						size = { 100% 22 }
+						autoresize = no
+						using = Font_Size_Medium
+						default_format = "#yellow_titles"
+						align = center|nobaseline
+						text = "[CMMLocalizedSuffix(Scope.GetFlagName, '_name')]"
+					}
+				}
 			}
 		}
 	}
