@@ -68,6 +68,7 @@
 	# - Scope.GetFlagName [string]: current row mod id.
 	# - GetVariableSystem.Get('cmm_mod_search_text') [string]: free-text filter for row visibility.
 	# - GetVariableSystem.Get('cmm_selected_mod') [string]: selected mod id for button down-state.
+	# - Player.MakeScope.GetVariable(Concatenate(Scope.GetFlagName, '_desc')) [flag]: localized mod description used by hover tooltips.
 	# Writes:
 	# - GetVariableSystem.Set('cmm_selected_mod') [string]: selects this row's mod id.
 	# - GetVariableSystem.Set('cmm_selected_tab') [string]: sets selected tab to the mod default.
@@ -86,7 +87,10 @@
 				onclick = "[GetVariableSystem.Set('cmm_selected_mod', Scope.GetFlagName)]"
 				onclick = "[GetVariableSystem.Set('cmm_selected_tab', CMMMetadataFlag('cmm_mod_default_tab_', Scope.GetFlagName))]"
 				down = "[GetVariableSystem.HasValue('cmm_selected_mod', Scope.GetFlagName)]"
-				tooltip_enabled = no
+				tagtooltip_enabled = yes
+				tooltip = "[CMMLocalizedSuffix(Scope.GetFlagName, '_desc')]"
+				tooltip_enabled = yes
+				tooltipwidget = { BasicFunctionalTooltip = {} }
 			}
 		}
 	}

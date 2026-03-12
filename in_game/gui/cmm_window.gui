@@ -33,6 +33,9 @@
 						layoutpolicy_horizontal = expanding
 						autoresize = no
 						maximumsize = { 450 40 }
+						tagtooltip_enabled = yes
+						tooltip = "[CMMLocalizedSuffix(GetVariableSystem.Get('cmm_selected_mod'), '_desc')]"
+						tooltipwidget = { BasicFunctionalTooltip = {} }
 						text = "[CMMLocalizedSuffix(GetVariableSystem.Get('cmm_selected_mod'), '_name')]"
 					}
 				}

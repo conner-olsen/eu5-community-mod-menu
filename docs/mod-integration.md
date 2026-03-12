@@ -381,6 +381,7 @@ Runtime data shape:
 Localization keys are derived automatically from ids:
 
 - Mod title: `<mod_id>_name`
+- Mod description: `<mod_id>_desc`
 - Tab label: `<mod_id>_<tab_id>_name`
 - Group label: `<mod_id>_<group_id>_name`
 - Setting label: `<mod_id>_<setting_id>_name`
@@ -579,6 +580,7 @@ CMM writes these country-scope variables/lists:
 - `cmm_tab_setting_count_<mod_id>__<tab_id>` (count of settings in that tab)
 - `cmm_group_setting_keys_<mod_id>__<group_id>` (variable list of setting keys in that group)
 - `<mod_id>_name` (flag value)
+- `<mod_id>_desc` (flag value)
 - `cmm_tab_owner_mod_id_<mod_id>__<tab_id>` (flag value)
 - `<mod_id>__<tab_id>_name` (flag value)
 - `cmm_group_owner_mod_id_<mod_id>__<group_id>` (flag value)

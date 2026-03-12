@@ -1,13 +1,15 @@
 ﻿# Register a mod (idempotent by mod_id).
 # Scope: country
 # Args:
-# - mod_id (key): Mod identifier; derives `<mod_id>_name`.
+# - mod_id (key): Mod identifier; derives `<mod_id>_name` and `<mod_id>_desc`.
 cmm_register_mod = {
+	set_variable = { name = $mod_id$_name value = flag:$mod_id$_name }
+	set_variable = { name = $mod_id$_desc value = flag:$mod_id$_desc }
+
 	# First-time registration path for this mod id.
 	if = {
 		limit = { NOT = { has_variable = cmm_registered_mod_$mod_id$ } }
 		set_variable = { name = cmm_registered_mod_$mod_id$ value = yes }
-		set_variable = { name = $mod_id$_name value = flag:$mod_id$_name }
 		# Global mod id list; used by left-panel datamodel iteration.
 		add_to_variable_list = {
 			name = cmm_registered_mod_ids
@@ -21,9 +23,11 @@ cmm_register_mod = {
 			always = no
 			exists = flag:$mod_id$
 			exists = flag:$mod_id$_name
+			exists = flag:$mod_id$_desc
 			exists = var:cmm_registered_mod_ids
 			exists = var:cmm_registered_mod_$mod_id$
 			exists = var:$mod_id$_name
+			exists = var:$mod_id$_desc
 		}
 	}
 }
