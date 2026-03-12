@@ -72,6 +72,22 @@ macro = {
     replace_with = "CMMVar(Concatenate(Key, Suffix)).GetFlagName"
 }
 
+# Args: Key (string), Suffix (string)
+# Returns: string
+macro = {
+    description = "Localized text for one runtime key plus suffix"
+    definition = "CMMLocalizedSuffixText(Key,Suffix)"
+    replace_with = "AddTextIf(CMMHasLocalizedSuffixText(Key, Suffix), CMMLocalizedSuffix(Key, Suffix))"
+}
+
+# Args: Key (string), Suffix (string)
+# Returns: boolean
+macro = {
+    description = "True when localized text exists for one runtime key plus suffix"
+    definition = "CMMHasLocalizedSuffixText(Key,Suffix)"
+    replace_with = "And(CMMVar(Concatenate(Key, Suffix)).IsSet, Not(EqualTo_string(CMMLocalizedSuffix(Key, Suffix), Concatenate(Key, Suffix))))"
+}
+
 # Args: OptionRoot (string), Index (int32)
 # Returns: string
 macro = {

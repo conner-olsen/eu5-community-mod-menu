@@ -88,8 +88,8 @@
 				onclick = "[GetVariableSystem.Set('cmm_selected_tab', CMMMetadataFlag('cmm_mod_default_tab_', Scope.GetFlagName))]"
 				down = "[GetVariableSystem.HasValue('cmm_selected_mod', Scope.GetFlagName)]"
 				tagtooltip_enabled = yes
-				tooltip = "[CMMLocalizedSuffix(Scope.GetFlagName, '_desc')]"
-				tooltip_enabled = yes
+				tooltip = "[CMMLocalizedSuffixText(Scope.GetFlagName, '_desc')]"
+				tooltip_enabled = "[CMMHasLocalizedSuffixText(Scope.GetFlagName, '_desc')]"
 				tooltipwidget = { BasicFunctionalTooltip = {} }
 			}
 		}
