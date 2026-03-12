@@ -92,10 +92,21 @@ cmm_example__example_toggle_on_changed = {
 
 That is all that is needed in order to create your checkbox.
 
-The value of the checkbox is synced with a country variable named <code>[Your_Mod_ID]__[Your_Setting_ID]</code>.
+The value of the checkbox is synced with a country variable named <code>[Your_Mod_ID]__[Your_Setting_ID]</code>, with 1 for checked, and 0 for unchecked.
 Elsewhere in your mod you can access the value of this variable through <code>var:[Your_Mod_ID]__[Your_Setting_ID]</code>.
 
-As an example,
+For example if you wanted to determine whether a effect can be run for a nation:
+<syntaxhighlight lang="text">
+your_effect = {
+	if = {
+		limit = {
+			var:cmm_example__example_toggle = 1
+		}
+		# Your effect logic here
+	}
+}
+</syntaxhighlight>
+Where the above would only run if the checkbox is checked.
 
 {{Modding navbox
 |category=Modding tools
