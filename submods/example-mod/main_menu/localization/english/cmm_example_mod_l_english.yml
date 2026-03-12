@@ -1,4 +1,4 @@
-l_english:
+﻿l_english:
  # Mod
  cmm_example_name: "CMM Example Mod"
  cmm_example_desc: "Reference integration mod for Community Mod Menu."
@@ -17,7 +17,7 @@ l_english:
  cmm_example__example_toggle_name: "Toggle"
  cmm_example__example_toggle_desc: "Example toggle setting."
  cmm_example__example_button_name: "Action Button"
- cmm_example__example_button_button_text: "Run"
+ cmm_example__example_button_button: "Run"
  cmm_example__example_button_desc: "Example action button."
 
  # General Tab - Values
@@ -68,7 +68,7 @@ l_english:
  cmm_example__global_example_toggle_name: "Global Toggle"
  cmm_example__global_example_toggle_desc: "Example global toggle setting. In multiplayer, only the host can change this setting."
  cmm_example__global_example_button_name: "Global Action Button"
- cmm_example__global_example_button_button_text: "Run"
+ cmm_example__global_example_button_button: "Run"
  cmm_example__global_example_button_desc: "Example global action button. In multiplayer, only the host can change this setting."
 
  # Global Tab - Values
