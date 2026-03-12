@@ -62,7 +62,7 @@ cmm_register_list_setting_internal = {
 
 	set_variable = {
 		name = cmm_list_item_column_name_$mod_id$__$setting_id$
-		value = flag:$mod_id$_$setting_id$_item_column_name
+		value = flag:$mod_id$__$setting_id$_item_column_name
 	}
 
 	cmm_register_setting_metadata = {

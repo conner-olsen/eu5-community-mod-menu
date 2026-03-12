@@ -258,7 +258,7 @@ cmm_register_global_button_setting = {
 Notes:
 
 - Button settings are stateless. CMM does not create or mutate `<mod_id>__<setting_id>` for them.
-- Button rows use `<mod_id>_<setting_id>_name` for the setting label and `<mod_id>_<setting_id>_button_text` for the clickable button caption.
+- Button rows use `<mod_id>__<setting_id>_name` for the setting label and `<mod_id>__<setting_id>_button_text` for the clickable button caption.
 - `cmm_register_global_button_setting` only marks the button as host-editable in multiplayer. It does not create stored value state.
 
 ### 9) Register text settings
@@ -351,7 +351,7 @@ Notes:
 - `cmm_register_settings_list` supports both ordered and unordered lists through `is_ordered`.
 - `cmm_register_list_bool_field`, `cmm_register_list_dropdown_field`, and `cmm_register_list_numeric_field` work the same for both list variants.
 - Each list setting creates and owns a dedicated group keyed by `setting_id`. You do not pass `group_id` and you do not need a separate `cmm_register_group` call for that list.
-- The dedicated group header uses `<mod_id>_<setting_id>_name`, so the list widget itself does not render a second title line inside that group.
+- The dedicated group header uses `<mod_id>__<setting_id>_name`, so the list widget itself does not render a second title line inside that group.
 - Each list may register up to 5 fields total.
 - Field columns render left-to-right in registration order.
 - Bool fields render as checkboxes.
@@ -382,16 +382,16 @@ Localization keys are derived automatically from ids:
 
 - Mod title: `<mod_id>_name`
 - Mod description: `<mod_id>_desc`
-- Tab label: `<mod_id>_<tab_id>_name`
-- Group label: `<mod_id>_<group_id>_name`
-- Setting label: `<mod_id>_<setting_id>_name`
-- Setting description: `<mod_id>_<setting_id>_desc`
-- Button setting text: `<mod_id>_<setting_id>_button_text`
+- Tab label: `<mod_id>__<tab_id>_name`
+- Group label: `<mod_id>__<group_id>_name`
+- Setting label: `<mod_id>__<setting_id>_name`
+- Setting description: `<mod_id>__<setting_id>_desc`
+- Button setting text: `<mod_id>__<setting_id>_button_text`
 - Dropdown options: `<mod_id>__<setting_id>_option_<index>_name`
-- List item column label: `<mod_id>_<setting_id>_item_column_name`
-- List item labels: `<mod_id>_<setting_id>_item_<index>_name`
-- List field labels: `<mod_id>_<setting_id>_<field_id>_name`
-- List dropdown options: `<mod_id>_<setting_id>_<field_id>_option_<index>_name`
+- List item column label: `<mod_id>__<setting_id>_item_column_name`
+- List item labels: `<mod_id>__<setting_id>_item_<index>_name`
+- List field labels: `<mod_id>__<setting_id>__<field_id>_name`
+- List dropdown options: `<mod_id>__<setting_id>__<field_id>_option_<index>_name`
 
 ## Callback Contract
 
@@ -745,23 +745,23 @@ Define your keys in your own localization file:
 
 ```txt
 your_mod_name: "Your Mod Name"
-your_mod_general_name: "General" # used for both tab and group label
-your_mod_allow_feature_name: "Allow Feature"
-your_mod_allow_feature_desc: "Enables the feature when checked."
-your_mod_run_feature_name: "Run Feature"
-your_mod_run_feature_button_text: "Run"
-your_mod_run_feature_desc: "Runs the feature when pressed."
-your_mod_amount_name: "Amount"
-your_mod_amount_desc: "Numeric amount controlled in CMM."
-your_mod_intensity_name: "Intensity"
-your_mod_intensity_desc: "Slider amount controlled in CMM."
-your_mod_mode_name: "Mode"
-your_mod_mode_desc: "Dropdown mode controlled in CMM."
+your_mod__general_name: "General" # used for both tab and group label
+your_mod__allow_feature_name: "Allow Feature"
+your_mod__allow_feature_desc: "Enables the feature when checked."
+your_mod__run_feature_name: "Run Feature"
+your_mod__run_feature_button_text: "Run"
+your_mod__run_feature_desc: "Runs the feature when pressed."
+your_mod__amount_name: "Amount"
+your_mod__amount_desc: "Numeric amount controlled in CMM."
+your_mod__intensity_name: "Intensity"
+your_mod__intensity_desc: "Slider amount controlled in CMM."
+your_mod__mode_name: "Mode"
+your_mod__mode_desc: "Dropdown mode controlled in CMM."
 your_mod__mode_option_0_name: "Off"
 your_mod__mode_option_1_name: "Standard"
 your_mod__mode_option_2_name: "Aggressive"
-your_mod_country_name_name: "Country Name"
-your_mod_country_name_desc: "Singleplayer-only text setting. Applies the entered name on submit."
+your_mod__country_name_name: "Country Name"
+your_mod__country_name_desc: "Singleplayer-only text setting. Applies the entered name on submit."
 ```
 
 ## Notes

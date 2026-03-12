@@ -346,16 +346,16 @@ cmm_register_list_numeric_field = {
 Derived localization keys:
 
 - Mod name: `<mod_id>_name`
-- Tab label: `<mod_id>_<tab_id>_name`
-- Group label: `<mod_id>_<group_id>_name`
-- Setting name: `<mod_id>_<setting_id>_name`
-- Setting description: `<mod_id>_<setting_id>_desc`
-- Button setting text: `<mod_id>_<setting_id>_button_text`
+- Tab label: `<mod_id>__<tab_id>_name`
+- Group label: `<mod_id>__<group_id>_name`
+- Setting name: `<mod_id>__<setting_id>_name`
+- Setting description: `<mod_id>__<setting_id>_desc`
+- Button setting text: `<mod_id>__<setting_id>_button_text`
 - Dropdown option label: `<mod_id>__<setting_id>_option_<index>_name`
-- List item column label: `<mod_id>_<setting_id>_item_column_name`
-- List item label: `<mod_id>_<setting_id>_item_<index>_name`
-- List field label: `<mod_id>_<setting_id>_<field_id>_name`
-- List dropdown option label: `<mod_id>_<setting_id>_<field_id>_option_<index>_name`
+- List item column label: `<mod_id>__<setting_id>_item_column_name`
+- List item label: `<mod_id>__<setting_id>_item_<index>_name`
+- List field label: `<mod_id>__<setting_id>__<field_id>_name`
+- List dropdown option label: `<mod_id>__<setting_id>__<field_id>_option_<index>_name`
 
 Required scripted GUI callbacks per bool setting:
 
