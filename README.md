@@ -144,7 +144,7 @@ Localization key format is enforced by ids:
 - Tab: `<mod_id>__<tab_id>_name`
 - Group: `<mod_id>__<group_id>_name`
 - Setting: `<mod_id>__<setting_id>_name`, `<mod_id>__<setting_id>_desc`
-- Button setting text: `<mod_id>__<setting_id>_button`
+- Button setting text: `<mod_id>__<setting_id>_text`
 - Dropdown option: `<mod_id>__<setting_id>_option_<index>_name`
 - List item: `<mod_id>__<setting_id>_item_<index>_name`
 - List field: `<mod_id>__<setting_id>__<field_id>_name`

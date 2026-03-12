@@ -266,7 +266,7 @@ cmm_register_global_button_setting = {
 Notes:
 
 - Button settings are stateless. CMM does not create or mutate `<mod_id>__<setting_id>` for them.
-- Button rows use `<mod_id>__<setting_id>_name` for the setting label and `<mod_id>__<setting_id>_button` for the clickable button caption.
+- Button rows use `<mod_id>__<setting_id>_name` for the setting label and `<mod_id>__<setting_id>_text` for the clickable button caption.
 - `cmm_register_global_button_setting` only marks the button as host-editable in multiplayer. It does not create stored value state.
 
 ### 9) Register text settings
@@ -394,7 +394,7 @@ Localization keys are derived automatically from ids:
 - Group label: `<mod_id>__<group_id>_name`
 - Setting label: `<mod_id>__<setting_id>_name`
 - Setting description: `<mod_id>__<setting_id>_desc`
-- Button setting text: `<mod_id>__<setting_id>_button`
+- Button setting text: `<mod_id>__<setting_id>_text`
 - Dropdown options: `<mod_id>__<setting_id>_option_<index>_name`
 - List item column label: `<mod_id>__<setting_id>_item_column_name`
 - List item labels: `<mod_id>__<setting_id>_item_<index>_name`
@@ -626,7 +626,7 @@ CMM writes these country-scope variables/lists:
 - `cmm_setting_text_quote_<mod_id>__<setting_id>` (text only)
 - `<mod_id>__<setting_id>_name` (flag value)
 - `<mod_id>__<setting_id>_desc` (flag value)
-- `<mod_id>__<setting_id>_button` (flag value; button only)
+- `<mod_id>__<setting_id>_text` (flag value; button only)
 - local `<mod_id>__<setting_id>` (country-scope value for local bool, numeric, slider, and dropdown settings)
 - global `<mod_id>__<setting_id>` (global-scope value for global bool, numeric, slider, and dropdown settings; read directly by CMM UI)
 - global `cmm_core__enable_host_only_tools` (bool gate controlling whether host-only settings and `is_host`-gated tools are enabled)
@@ -753,7 +753,7 @@ your_mod__general_name: "General" # used for both tab and group label
 your_mod__allow_feature_name: "Allow Feature"
 your_mod__allow_feature_desc: "Enables the feature when checked."
 your_mod__run_feature_name: "Run Feature"
-your_mod__run_feature_button: "Run"
+your_mod__run_feature_text: "Run"
 your_mod__run_feature_desc: "Runs the feature when pressed."
 your_mod__amount_name: "Amount"
 your_mod__amount_desc: "Numeric amount controlled in CMM."

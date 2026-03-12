@@ -89,11 +89,11 @@ l_english:
 
 
 === Button Label ===
-Buttons require a localization key for the button label: <code>[Your_Mod_ID]__[Your_Setting_ID]_button</code>
+Buttons require a localization key for the button label: <code>[Your_Mod_ID]__[Your_Setting_ID]_text</code>
 <syntaxhighlight lang="yaml">
 l_english:
  cmm_example__example_button_name: "Action Button"     # Setting name
- cmm_example__example_button_button: "Run"              # Button label
+ cmm_example__example_button_text: "Run"               # Button label
 </syntaxhighlight>
 
 === Descriptions ===

@@ -9,7 +9,7 @@ cmm_register_button_setting = {
 	set_variable = { name = cmm_setting_is_global_$mod_id$__$setting_id$ value = 0 }
 	set_variable = { name = cmm_setting_is_slider_$mod_id$__$setting_id$ value = 0 }
 	set_variable = { name = cmm_setting_is_button_$mod_id$__$setting_id$ value = 1 }
-	set_variable = { name = $mod_id$__$setting_id$_button value = flag:$mod_id$__$setting_id$_button }
+	set_variable = { name = $mod_id$__$setting_id$_text value = flag:$mod_id$__$setting_id$_text }
 
 	cmm_register_setting_metadata = {
 		mod_id = $mod_id$
@@ -25,8 +25,8 @@ cmm_register_button_setting = {
 			exists = var:cmm_setting_is_global_$mod_id$__$setting_id$
 			exists = var:cmm_setting_is_slider_$mod_id$__$setting_id$
 			exists = var:cmm_setting_is_button_$mod_id$__$setting_id$
-			exists = flag:$mod_id$__$setting_id$_button
-			exists = var:$mod_id$__$setting_id$_button
+			exists = flag:$mod_id$__$setting_id$_text
+			exists = var:$mod_id$__$setting_id$_text
 		}
 	}
 }
@@ -42,7 +42,7 @@ cmm_register_global_button_setting = {
 	set_variable = { name = cmm_setting_is_global_$mod_id$__$setting_id$ value = 1 }
 	set_variable = { name = cmm_setting_is_slider_$mod_id$__$setting_id$ value = 0 }
 	set_variable = { name = cmm_setting_is_button_$mod_id$__$setting_id$ value = 1 }
-	set_variable = { name = $mod_id$__$setting_id$_button value = flag:$mod_id$__$setting_id$_button }
+	set_variable = { name = $mod_id$__$setting_id$_text value = flag:$mod_id$__$setting_id$_text }
 
 	cmm_register_setting_metadata = {
 		mod_id = $mod_id$
@@ -58,8 +58,8 @@ cmm_register_global_button_setting = {
 			exists = var:cmm_setting_is_global_$mod_id$__$setting_id$
 			exists = var:cmm_setting_is_slider_$mod_id$__$setting_id$
 			exists = var:cmm_setting_is_button_$mod_id$__$setting_id$
-			exists = flag:$mod_id$__$setting_id$_button
-			exists = var:$mod_id$__$setting_id$_button
+			exists = flag:$mod_id$__$setting_id$_text
+			exists = var:$mod_id$__$setting_id$_text
 		}
 	}
 }
