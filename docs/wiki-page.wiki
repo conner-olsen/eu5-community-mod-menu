@@ -44,10 +44,10 @@ That is all that is required for your mod to show up in the menu. But now you wi
 Create a localization file such as <code>example-mod/main_menu/localization/english/cmm_example_mod_l_english.yml</code>, inside it you will want to create keys for your mod name and description, for the above example it would be:
 <syntaxhighlight lang="yaml">
 l_english:
- cmm_example_name: "CMM Example Mod"
- cmm_example_desc: "Reference integration mod for Community Mod Menu."
+ cmm_example: "CMM Example Mod"
+ cmm_example_desc: "Reference integration mod for Community Mod Menu." # Optional, skipped if the key doesn't exist.
 </syntaxhighlight>
-* The key names are based on the unique mod ID you choose, with <code>[you-mod-id]_name</code> setting the name that appears in the searchbar and menu title, and <code>[your-mod-id]_desc</code> appearing as the tooltip when you hover over it.
+* The key names are based on the unique mod ID you choose, with <code>[your-mod-id]</code> setting the name that appears in the searchbar and menu title, and <code>[your-mod-id]_desc</code> appearing as the tooltip when you hover over it.
 
 Now, as long as CMM is enabled and loaded above your mod, you can access your mod menu through the shared interface.
 
@@ -89,6 +89,14 @@ cmm_example__example_toggle_on_changed = {
 * <code>cmm_example__example_toggle_on_changed</code>: Will run whenever the checkbox is clicked, it must be named based your mod and setting ID you defined previously: <code>[Your_Mod_ID]__[Your_Setting_ID]_on_changed</code>
 * <code>cmm_toggle_bool_setting</code>: A CMM provided helper that will handle the setting change.
 * <code>setting</code>: You must provide the setting ID, which is always <code>[Your_Mod_ID]__[Your_Setting_ID]</code>, and thus for the example mod is <code>cmm_example__example_toggle</code>.
+
+After doing this, the checkbox will now be fully functional. But you will want to add localization so it stops showing raw keys. In the localization file from before, add the key(s) for the checkbox like:
+<syntaxhighlight lang="yaml">
+ cmm_example__general: "General"                                 # The tab
+ cmm_example__general_toggles: "Toggles"                         # The group
+ cmm_example__example_toggle: "Toggle"                           # The setting name
+ cmm_example__example_toggle_desc: "Example toggle setting."     # (Optional) The setting description
+</syntaxhighlight>
 
 That is all that is needed in order to create your checkbox.
 
