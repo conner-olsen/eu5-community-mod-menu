@@ -92,10 +92,10 @@ cmm_example__example_toggle_on_changed = {
 
 After doing this, the checkbox will now be fully functional. But you will want to add localization so it stops showing raw keys. In the localization file from before, add the key(s) for the checkbox like:
 <syntaxhighlight lang="yaml">
- cmm_example__general: "General"                                 # The tab
- cmm_example__general_toggles: "Toggles"                         # The group
- cmm_example__example_toggle: "Toggle"                           # The setting name
- cmm_example__example_toggle_desc: "Example toggle setting."     # (Optional) The setting description
+ cmm_example__general_name: "General"                        # The tab
+ cmm_example__general_toggles_name: "Toggles"                # The group
+ cmm_example__example_toggle_name: "Toggle"                  # The setting name
+ cmm_example__example_toggle_desc: "Example toggle setting." # (Optional) The setting description
 </syntaxhighlight>
 
 That is all that is needed in order to create your checkbox.
