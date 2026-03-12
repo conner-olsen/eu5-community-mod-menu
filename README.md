@@ -136,14 +136,14 @@ CMM also ships a country-scope scripted trigger named `is_host`. It only becomes
 
 Localization key format is enforced by ids:
 
-- Mod: `<mod_id>`, `<mod_id>_desc`
-- Tab: `<mod_id>__<tab_id>`
-- Setting: `<mod_id>__<setting_id>`, `<mod_id>__<setting_id>_desc`
-- Button setting text: `<mod_id>__<setting_id>_button`
-- Dropdown option: `<mod_id>__<setting_id>_option_<index>`
-- List item: `<mod_id>__<setting_id>_item_<index>`
-- List field: `<mod_id>__<setting_id>__<field_id>`
-- List field dropdown option: `<mod_id>__<setting_id>__<field_id>_option_<index>`
+- Mod: `<mod_id>_name`, `<mod_id>_desc`
+- Tab: `<mod_id>__<tab_id>_name`
+- Setting: `<mod_id>__<setting_id>_name`, `<mod_id>__<setting_id>_desc`
+- Button setting text: `<mod_id>__<setting_id>_button_text`
+- Dropdown option: `<mod_id>__<setting_id>_option_<index>_name`
+- List item: `<mod_id>__<setting_id>_item_<index>_name`
+- List field: `<mod_id>__<setting_id>__<field_id>_name`
+- List field dropdown option: `<mod_id>__<setting_id>__<field_id>_option_<index>_name`
 
 Callback contract:
 

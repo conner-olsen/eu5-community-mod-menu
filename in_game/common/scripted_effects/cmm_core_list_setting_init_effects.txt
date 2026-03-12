@@ -31,6 +31,10 @@ cmm_initialize_list_item_metadata = {
 		name = cmm_list_item_owner_setting_$mod_id$__$setting_id$_item_$item$
 		value = flag:$mod_id$__$setting_id$
 	}
+	set_variable = {
+		name = $mod_id$__$setting_id$_item_$item$_name
+		value = flag:$mod_id$__$setting_id$_item_$item$_name
+	}
 }
 
 # Add one stable item identity to the ordered list storage.
@@ -256,8 +260,8 @@ cmm_initialize_list_bool_field_slot = {
 		value = 1
 	}
 	set_variable = {
-		name = cmm_list_field_$slot$_key_$mod_id$__$setting_id$
-		value = flag:$mod_id$__$setting_id$__$field_id$
+		name = cmm_list_field_$slot$_name_$mod_id$__$setting_id$
+		value = flag:$mod_id$__$setting_id$__$field_id$_name
 	}
 
 	if = {
@@ -382,7 +386,11 @@ cmm_initialize_list_dropdown_field_slot = {
 		value = 2
 	}
 	set_variable = {
-		name = cmm_list_field_$slot$_key_$mod_id$__$setting_id$
+		name = cmm_list_field_$slot$_name_$mod_id$__$setting_id$
+		value = flag:$mod_id$__$setting_id$__$field_id$_name
+	}
+	set_variable = {
+		name = cmm_list_field_$slot$_option_root_$mod_id$__$setting_id$
 		value = flag:$mod_id$__$setting_id$__$field_id$
 	}
 	set_variable = {
@@ -531,8 +539,8 @@ cmm_initialize_list_numeric_field_slot = {
 		value = 3
 	}
 	set_variable = {
-		name = cmm_list_field_$slot$_key_$mod_id$__$setting_id$
-		value = flag:$mod_id$__$setting_id$__$field_id$
+		name = cmm_list_field_$slot$_name_$mod_id$__$setting_id$
+		value = flag:$mod_id$__$setting_id$__$field_id$_name
 	}
 	set_variable = {
 		name = cmm_list_field_$slot$_min_$mod_id$__$setting_id$
@@ -647,6 +655,7 @@ cmm_suppress_list_setting_warnings = {
 			exists = var:cmm_list_field_count_$mod_id$__$setting_id$
 			exists = var:cmm_list_initialized_$mod_id$__$setting_id$
 			exists = var:cmm_list_items_$mod_id$__$setting_id$
+			exists = var:cmm_list_item_column_name_$mod_id$__$setting_id$
 			exists = var:cmm_list_item_owner_setting_$mod_id$__$setting_id$_item_0
 			exists = var:cmm_list_item_owner_setting_$mod_id$__$setting_id$_item_1
 			exists = var:cmm_list_item_owner_setting_$mod_id$__$setting_id$_item_2
@@ -667,27 +676,47 @@ cmm_suppress_list_setting_warnings = {
 			exists = var:cmm_list_item_owner_setting_$mod_id$__$setting_id$_item_17
 			exists = var:cmm_list_item_owner_setting_$mod_id$__$setting_id$_item_18
 			exists = var:cmm_list_item_owner_setting_$mod_id$__$setting_id$_item_19
-			exists = flag:$mod_id$__$setting_id$_item_0
-			exists = flag:$mod_id$__$setting_id$_item_1
-			exists = flag:$mod_id$__$setting_id$_item_2
-			exists = flag:$mod_id$__$setting_id$_item_3
-			exists = flag:$mod_id$__$setting_id$_item_4
-			exists = flag:$mod_id$__$setting_id$_item_5
-			exists = flag:$mod_id$__$setting_id$_item_6
-			exists = flag:$mod_id$__$setting_id$_item_7
-			exists = flag:$mod_id$__$setting_id$_item_8
-			exists = flag:$mod_id$__$setting_id$_item_9
-			exists = flag:$mod_id$__$setting_id$_item_10
-			exists = flag:$mod_id$__$setting_id$_item_11
-			exists = flag:$mod_id$__$setting_id$_item_12
-			exists = flag:$mod_id$__$setting_id$_item_13
-			exists = flag:$mod_id$__$setting_id$_item_14
-			exists = flag:$mod_id$__$setting_id$_item_15
-			exists = flag:$mod_id$__$setting_id$_item_16
-			exists = flag:$mod_id$__$setting_id$_item_17
-			exists = flag:$mod_id$__$setting_id$_item_18
-			exists = flag:$mod_id$__$setting_id$_item_19
-			exists = flag:$mod_id$__$setting_id$_item_column
+			exists = var:$mod_id$__$setting_id$_item_0_name
+			exists = var:$mod_id$__$setting_id$_item_1_name
+			exists = var:$mod_id$__$setting_id$_item_2_name
+			exists = var:$mod_id$__$setting_id$_item_3_name
+			exists = var:$mod_id$__$setting_id$_item_4_name
+			exists = var:$mod_id$__$setting_id$_item_5_name
+			exists = var:$mod_id$__$setting_id$_item_6_name
+			exists = var:$mod_id$__$setting_id$_item_7_name
+			exists = var:$mod_id$__$setting_id$_item_8_name
+			exists = var:$mod_id$__$setting_id$_item_9_name
+			exists = var:$mod_id$__$setting_id$_item_10_name
+			exists = var:$mod_id$__$setting_id$_item_11_name
+			exists = var:$mod_id$__$setting_id$_item_12_name
+			exists = var:$mod_id$__$setting_id$_item_13_name
+			exists = var:$mod_id$__$setting_id$_item_14_name
+			exists = var:$mod_id$__$setting_id$_item_15_name
+			exists = var:$mod_id$__$setting_id$_item_16_name
+			exists = var:$mod_id$__$setting_id$_item_17_name
+			exists = var:$mod_id$__$setting_id$_item_18_name
+			exists = var:$mod_id$__$setting_id$_item_19_name
+			exists = flag:$mod_id$__$setting_id$_item_0_name
+			exists = flag:$mod_id$__$setting_id$_item_1_name
+			exists = flag:$mod_id$__$setting_id$_item_2_name
+			exists = flag:$mod_id$__$setting_id$_item_3_name
+			exists = flag:$mod_id$__$setting_id$_item_4_name
+			exists = flag:$mod_id$__$setting_id$_item_5_name
+			exists = flag:$mod_id$__$setting_id$_item_6_name
+			exists = flag:$mod_id$__$setting_id$_item_7_name
+			exists = flag:$mod_id$__$setting_id$_item_8_name
+			exists = flag:$mod_id$__$setting_id$_item_9_name
+			exists = flag:$mod_id$__$setting_id$_item_10_name
+			exists = flag:$mod_id$__$setting_id$_item_11_name
+			exists = flag:$mod_id$__$setting_id$_item_12_name
+			exists = flag:$mod_id$__$setting_id$_item_13_name
+			exists = flag:$mod_id$__$setting_id$_item_14_name
+			exists = flag:$mod_id$__$setting_id$_item_15_name
+			exists = flag:$mod_id$__$setting_id$_item_16_name
+			exists = flag:$mod_id$__$setting_id$_item_17_name
+			exists = flag:$mod_id$__$setting_id$_item_18_name
+			exists = flag:$mod_id$__$setting_id$_item_19_name
+			exists = flag:$mod_id$__$setting_id$_item_column_name
 		}
 	}
 }
@@ -704,12 +733,12 @@ cmm_suppress_list_bool_field_warnings = {
 			always = no
 			exists = var:cmm_registered_list_field_$mod_id$__$setting_id$__$field_id$
 			exists = var:cmm_list_field_slot_$mod_id$__$setting_id$__$field_id$
-			exists = flag:$mod_id$__$setting_id$__$field_id$
-			exists = var:cmm_list_field_0_key_$mod_id$__$setting_id$
-			exists = var:cmm_list_field_1_key_$mod_id$__$setting_id$
-			exists = var:cmm_list_field_2_key_$mod_id$__$setting_id$
-			exists = var:cmm_list_field_3_key_$mod_id$__$setting_id$
-			exists = var:cmm_list_field_4_key_$mod_id$__$setting_id$
+			exists = flag:$mod_id$__$setting_id$__$field_id$_name
+			exists = var:cmm_list_field_0_name_$mod_id$__$setting_id$
+			exists = var:cmm_list_field_1_name_$mod_id$__$setting_id$
+			exists = var:cmm_list_field_2_name_$mod_id$__$setting_id$
+			exists = var:cmm_list_field_3_name_$mod_id$__$setting_id$
+			exists = var:cmm_list_field_4_name_$mod_id$__$setting_id$
 		}
 	}
 }
@@ -726,12 +755,18 @@ cmm_suppress_list_dropdown_field_warnings = {
 			always = no
 			exists = var:cmm_registered_list_field_$mod_id$__$setting_id$__$field_id$
 			exists = var:cmm_list_field_slot_$mod_id$__$setting_id$__$field_id$
+			exists = flag:$mod_id$__$setting_id$__$field_id$_name
 			exists = flag:$mod_id$__$setting_id$__$field_id$
-			exists = var:cmm_list_field_0_key_$mod_id$__$setting_id$
-			exists = var:cmm_list_field_1_key_$mod_id$__$setting_id$
-			exists = var:cmm_list_field_2_key_$mod_id$__$setting_id$
-			exists = var:cmm_list_field_3_key_$mod_id$__$setting_id$
-			exists = var:cmm_list_field_4_key_$mod_id$__$setting_id$
+			exists = var:cmm_list_field_0_name_$mod_id$__$setting_id$
+			exists = var:cmm_list_field_1_name_$mod_id$__$setting_id$
+			exists = var:cmm_list_field_2_name_$mod_id$__$setting_id$
+			exists = var:cmm_list_field_3_name_$mod_id$__$setting_id$
+			exists = var:cmm_list_field_4_name_$mod_id$__$setting_id$
+			exists = var:cmm_list_field_0_option_root_$mod_id$__$setting_id$
+			exists = var:cmm_list_field_1_option_root_$mod_id$__$setting_id$
+			exists = var:cmm_list_field_2_option_root_$mod_id$__$setting_id$
+			exists = var:cmm_list_field_3_option_root_$mod_id$__$setting_id$
+			exists = var:cmm_list_field_4_option_root_$mod_id$__$setting_id$
 		}
 	}
 }
@@ -748,12 +783,12 @@ cmm_suppress_list_numeric_field_warnings = {
 			always = no
 			exists = var:cmm_registered_list_field_$mod_id$__$setting_id$__$field_id$
 			exists = var:cmm_list_field_slot_$mod_id$__$setting_id$__$field_id$
-			exists = flag:$mod_id$__$setting_id$__$field_id$
-			exists = var:cmm_list_field_0_key_$mod_id$__$setting_id$
-			exists = var:cmm_list_field_1_key_$mod_id$__$setting_id$
-			exists = var:cmm_list_field_2_key_$mod_id$__$setting_id$
-			exists = var:cmm_list_field_3_key_$mod_id$__$setting_id$
-			exists = var:cmm_list_field_4_key_$mod_id$__$setting_id$
+			exists = flag:$mod_id$__$setting_id$__$field_id$_name
+			exists = var:cmm_list_field_0_name_$mod_id$__$setting_id$
+			exists = var:cmm_list_field_1_name_$mod_id$__$setting_id$
+			exists = var:cmm_list_field_2_name_$mod_id$__$setting_id$
+			exists = var:cmm_list_field_3_name_$mod_id$__$setting_id$
+			exists = var:cmm_list_field_4_name_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_0_min_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_1_min_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_2_min_$mod_id$__$setting_id$

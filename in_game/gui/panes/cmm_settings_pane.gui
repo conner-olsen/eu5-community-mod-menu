@@ -82,7 +82,7 @@
 						margin = { 5 0 }
 						margin_top = 4
 						text_single = {
-							text = "[CMMLocalizedKey(Scope.GetFlagName)]"
+							text = "[CMMLocalizedSuffix(Scope.GetFlagName, '_name')]"
 							using = Font_Type_Headers
 							using = layoutpolicy_expanding
 							align = center
@@ -148,7 +148,7 @@
 				margin_top = 10
 				autoresize = no
 				default_format = "#yellow_titles"
-				text = "[CMMLocalizedKey(Scope.GetFlagName)]"
+				text = "[CMMLocalizedSuffix(Scope.GetFlagName, '_name')]"
 			}
 		}
 

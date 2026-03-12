@@ -69,31 +69,7 @@ macro = {
 macro = {
     description = "Localization lookup for one runtime key plus suffix"
     definition = "CMMLocalizedSuffix(Key,Suffix)"
-    replace_with = "Localize(Concatenate(Key, Suffix))"
-}
-
-# Args: Key (string)
-# Returns: string
-macro = {
-    description = "Localization lookup for one runtime key"
-    definition = "CMMLocalizedKey(Key)"
-    replace_with = "Localize(Key)"
-}
-
-# Args: Key (string)
-# Returns: string
-macro = {
-    description = "Localized text for one runtime key"
-    definition = "CMMLocalizedKeyText(Key)"
-    replace_with = "AddTextIf(CMMHasLocalizedKeyText(Key), CMMLocalizedKey(Key))"
-}
-
-# Args: Key (string)
-# Returns: boolean
-macro = {
-    description = "True when localized text exists for one runtime key"
-    definition = "CMMHasLocalizedKeyText(Key)"
-    replace_with = "Not(EqualTo_string(CMMLocalizedKey(Key), Key))"
+    replace_with = "CMMVar(Concatenate(Key, Suffix)).GetFlagName"
 }
 
 # Args: Key (string), Suffix (string)
@@ -109,7 +85,7 @@ macro = {
 macro = {
     description = "True when localized text exists for one runtime key plus suffix"
     definition = "CMMHasLocalizedSuffixText(Key,Suffix)"
-    replace_with = "Not(EqualTo_string(CMMLocalizedSuffix(Key, Suffix), Concatenate(Key, Suffix)))"
+    replace_with = "And(CMMVar(Concatenate(Key, Suffix)).IsSet, Not(EqualTo_string(CMMLocalizedSuffix(Key, Suffix), Concatenate(Key, Suffix))))"
 }
 
 # Args: OptionRoot (string), Index (int32)
@@ -117,7 +93,7 @@ macro = {
 macro = {
     description = "Localized dropdown option label"
     definition = "CMMOptionLabel(OptionRoot,Index)"
-    replace_with = "Localize(Concatenate(Concatenate(OptionRoot, '_option_'), ToString_int32(Index)))"
+    replace_with = "Localize(Concatenate(Concatenate(OptionRoot, '_option_'), Concatenate(ToString_int32(Index), '_name')))"
 }
 
 # Args: Name (string)

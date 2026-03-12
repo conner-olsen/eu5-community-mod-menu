@@ -258,7 +258,7 @@ cmm_register_global_button_setting = {
 Notes:
 
 - Button settings are stateless. CMM does not create or mutate `<mod_id>__<setting_id>` for them.
-- Button rows use `<mod_id>__<setting_id>` for the setting label and `<mod_id>__<setting_id>_button` for the clickable button caption.
+- Button rows use `<mod_id>__<setting_id>_name` for the setting label and `<mod_id>__<setting_id>_button_text` for the clickable button caption.
 - `cmm_register_global_button_setting` only marks the button as host-editable in multiplayer. It does not create stored value state.
 
 ### 9) Register text settings
@@ -351,7 +351,7 @@ Notes:
 - `cmm_register_settings_list` supports both ordered and unordered lists through `is_ordered`.
 - `cmm_register_list_bool_field`, `cmm_register_list_dropdown_field`, and `cmm_register_list_numeric_field` work the same for both list variants.
 - Each list setting creates and owns a dedicated group keyed by `setting_id`. You do not pass `group_id` and you do not need a separate `cmm_register_group` call for that list.
-- The dedicated group header uses `<mod_id>__<setting_id>`, so the list widget itself does not render a second title line inside that group.
+- The dedicated group header uses `<mod_id>__<setting_id>_name`, so the list widget itself does not render a second title line inside that group.
 - Each list may register up to 5 fields total.
 - Field columns render left-to-right in registration order.
 - Bool fields render as checkboxes.
@@ -380,18 +380,18 @@ Runtime data shape:
 
 Localization keys are derived automatically from ids:
 
-- Mod title: `<mod_id>`
+- Mod title: `<mod_id>_name`
 - Mod description: `<mod_id>_desc`
-- Tab label: `<mod_id>__<tab_id>`
-- Group label: `<mod_id>__<group_id>`
-- Setting label: `<mod_id>__<setting_id>`
+- Tab label: `<mod_id>__<tab_id>_name`
+- Group label: `<mod_id>__<group_id>_name`
+- Setting label: `<mod_id>__<setting_id>_name`
 - Setting description: `<mod_id>__<setting_id>_desc`
-- Button setting text: `<mod_id>__<setting_id>_button`
-- Dropdown options: `<mod_id>__<setting_id>_option_<index>`
-- List item column label: `<mod_id>__<setting_id>_item_column`
-- List item labels: `<mod_id>__<setting_id>_item_<index>`
-- List field labels: `<mod_id>__<setting_id>__<field_id>`
-- List dropdown options: `<mod_id>__<setting_id>__<field_id>_option_<index>`
+- Button setting text: `<mod_id>__<setting_id>_button_text`
+- Dropdown options: `<mod_id>__<setting_id>_option_<index>_name`
+- List item column label: `<mod_id>__<setting_id>_item_column_name`
+- List item labels: `<mod_id>__<setting_id>_item_<index>_name`
+- List field labels: `<mod_id>__<setting_id>__<field_id>_name`
+- List dropdown options: `<mod_id>__<setting_id>__<field_id>_option_<index>_name`
 
 ## Callback Contract
 
@@ -571,7 +571,7 @@ Notes:
 
 ## Data Contract (Runtime Variables)
 
-CMM writes these country-scope variables/lists and uses these flag values:
+CMM writes these country-scope variables/lists:
 
 - `cmm_registered_mod_ids` (variable list; registration order)
 - `cmm_registered_tab_keys` (variable list of `<mod_id>__<tab_id>`)
@@ -579,10 +579,13 @@ CMM writes these country-scope variables/lists and uses these flag values:
 - `cmm_registered_setting_keys` (variable list of `<mod_id>__<setting_id>`)
 - `cmm_tab_setting_count_<mod_id>__<tab_id>` (count of settings in that tab)
 - `cmm_group_setting_keys_<mod_id>__<group_id>` (variable list of setting keys in that group)
+- `<mod_id>_name` (flag value)
 - `<mod_id>_desc` (flag value)
 - `cmm_tab_owner_mod_id_<mod_id>__<tab_id>` (flag value)
+- `<mod_id>__<tab_id>_name` (flag value)
 - `cmm_group_owner_mod_id_<mod_id>__<group_id>` (flag value)
 - `cmm_group_owner_tab_key_<mod_id>__<group_id>` (flag value)
+- `<mod_id>__<group_id>_name` (flag value)
 - `cmm_setting_owner_mod_id_<mod_id>__<setting_id>` (flag value)
 - `cmm_setting_owner_tab_key_<mod_id>__<setting_id>` (flag value)
 - `cmm_setting_owner_group_key_<mod_id>__<setting_id>` (flag value)
@@ -603,14 +606,19 @@ CMM writes these country-scope variables/lists and uses these flag values:
 - `cmm_setting_list_last_index_<mod_id>__<setting_id>` (list only)
 - `cmm_list_items_<mod_id>__<setting_id>` (list-only variable list of stable item keys)
 - `cmm_list_field_count_<mod_id>__<setting_id>` (list only)
-- `cmm_list_field_<slot>_type_<mod_id>__<setting_id>` (list only; `1` bool, `2` dropdown, `3` numeric)
-- `cmm_list_field_<slot>_key_<mod_id>__<setting_id>` (list only; flag value)
+- `cmm_list_field_<slot>_type_<mod_id>__<setting_id>` (list only; `1` bool, `2` dropdown)
+- `cmm_list_field_<slot>_name_<mod_id>__<setting_id>` (list only; flag value)
+- `cmm_list_field_<slot>_option_root_<mod_id>__<setting_id>` (list only; flag value for list dropdown localization)
 - `cmm_list_field_<slot>_dropdown_count_<mod_id>__<setting_id>` (list dropdown fields only)
 - `cmm_list_field_<slot>_dropdown_last_index_<mod_id>__<setting_id>` (list dropdown fields only)
 - `cmm_list_item_owner_setting_<mod_id>__<setting_id>_item_<index>` (list only; flag value)
+- `<mod_id>__<setting_id>_item_<index>_name` (list only; flag value)
 - `<mod_id>__<setting_id>_item_<index>_field_<slot>` (list only; per-item field value)
 - `cmm_setting_text_character_limit_<mod_id>__<setting_id>` (text only)
 - `cmm_setting_text_quote_<mod_id>__<setting_id>` (text only)
+- `<mod_id>__<setting_id>_name` (flag value)
+- `<mod_id>__<setting_id>_desc` (flag value)
+- `<mod_id>__<setting_id>_button_text` (flag value; button only)
 - local `<mod_id>__<setting_id>` (country-scope value for local bool, numeric, slider, and dropdown settings)
 - global `<mod_id>__<setting_id>` (global-scope value for global bool, numeric, slider, and dropdown settings; read directly by CMM UI)
 - global `cmm_core__enable_host_only_tools` (bool gate controlling whether host-only settings and `is_host`-gated tools are enabled)
@@ -736,23 +744,23 @@ your_mod__country_name_on_changed = {
 Define your keys in your own localization file:
 
 ```txt
-your_mod: "Your Mod Name"
-your_mod__general: "General" # used for both tab and group label
-your_mod__allow_feature: "Allow Feature"
+your_mod_name: "Your Mod Name"
+your_mod__general_name: "General" # used for both tab and group label
+your_mod__allow_feature_name: "Allow Feature"
 your_mod__allow_feature_desc: "Enables the feature when checked."
-your_mod__run_feature: "Run Feature"
-your_mod__run_feature_button: "Run"
+your_mod__run_feature_name: "Run Feature"
+your_mod__run_feature_button_text: "Run"
 your_mod__run_feature_desc: "Runs the feature when pressed."
-your_mod__amount: "Amount"
+your_mod__amount_name: "Amount"
 your_mod__amount_desc: "Numeric amount controlled in CMM."
-your_mod__intensity: "Intensity"
+your_mod__intensity_name: "Intensity"
 your_mod__intensity_desc: "Slider amount controlled in CMM."
-your_mod__mode: "Mode"
+your_mod__mode_name: "Mode"
 your_mod__mode_desc: "Dropdown mode controlled in CMM."
-your_mod__mode_option_0: "Off"
-your_mod__mode_option_1: "Standard"
-your_mod__mode_option_2: "Aggressive"
-your_mod__country_name: "Country Name"
+your_mod__mode_option_0_name: "Off"
+your_mod__mode_option_1_name: "Standard"
+your_mod__mode_option_2_name: "Aggressive"
+your_mod__country_name_name: "Country Name"
 your_mod__country_name_desc: "Singleplayer-only text setting. Applies the entered name on submit."
 ```
 

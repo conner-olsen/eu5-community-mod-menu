@@ -4,7 +4,7 @@
 	# Reads:
 	# - Scope.GetFlagName [string]: current list setting key (`<mod_id>__<setting_id>`).
 	# - PdxGuiWidget.GetIndexInDataModel [int32]: current field slot index in the repeated header datamodel.
-	# - Player.MakeScope.GetVariable(Concatenate('cmm_list_field_<slot>_key_', Scope.GetFlagName)) [flag]: localized field root key.
+	# - Player.MakeScope.GetVariable(Concatenate('cmm_list_field_<slot>_name_', Scope.GetFlagName)) [flag]: localized field header key.
 	# Writes:
 	# - none [n/a]: no writes.
 	type cmm_list_setting_header_fields = hbox {
@@ -21,7 +21,7 @@
 				autoresize = no
 				default_format = "#medium"
 				align = center|nobaseline
-				text = "[CMMLocalizedKey(CMMListFieldMetadataFlag(Scope.GetFlagName, ToString_int32(PdxGuiWidget.GetIndexInDataModel), '_key_'))]"
+				text = "[CMMListFieldMetadataFlag(Scope.GetFlagName, ToString_int32(PdxGuiWidget.GetIndexInDataModel), '_name_')]"
 			}
 		}
 	}
@@ -316,7 +316,7 @@
 	# - PdxGuiWidget.GetIndexInDataModel [int32]: current field slot index in the repeated field datamodel or current dropdown option index in option rows.
 	# - Player.MakeScope.GetVariable(Concatenate(Scope.GetFlagName, '_field_<slot>')) [value]: current dropdown field value for this row item.
 	# - Player.MakeScope.GetVariable(Concatenate('cmm_list_field_<slot>_dropdown_count_', <setting_key>)) [value]: dropdown option count.
-	# - Player.MakeScope.GetVariable(Concatenate('cmm_list_field_<slot>_key_', <setting_key>)) [flag]: dropdown field localization root.
+	# - Player.MakeScope.GetVariable(Concatenate('cmm_list_field_<slot>_option_root_', <setting_key>)) [flag]: dropdown option localization root.
 	# - GetVariableSystem.Get('cmm_dropdown_hover_index') [string]: cached hovered dropdown option index.
 	# Writes:
 	# - GetVariableSystem.Set('cmm_dropdown_hover_index', ...) [effect]: caches the hovered dropdown option index.
@@ -374,7 +374,7 @@
 							autoresize = no
 							align = left|nobaseline
 							fontsize_min = 13
-							text = "[CMMOptionLabel(CMMListFieldMetadataFlag(CMMListItemOwnerSettingKey(Scope.GetFlagName), '0', '_key_'), CMMListItemFieldInt(Scope.GetFlagName, '0'))]"
+							text = "[CMMOptionLabel(CMMListFieldMetadataFlag(CMMListItemOwnerSettingKey(Scope.GetFlagName), '0', '_option_root_'), CMMListItemFieldInt(Scope.GetFlagName, '0'))]"
 						}
 
 						icon = {
@@ -408,7 +408,7 @@
 						align = left|nobaseline
 						fontsize_min = 13
 						default_format = "#medium"
-						text = "[CMMOptionLabel(CMMListFieldMetadataFlag(CMMListItemOwnerSettingKey(Scope.GetFlagName), '0', '_key_'), PdxGuiWidget.GetIndexInDataModel)]"
+						text = "[CMMOptionLabel(CMMListFieldMetadataFlag(CMMListItemOwnerSettingKey(Scope.GetFlagName), '0', '_option_root_'), PdxGuiWidget.GetIndexInDataModel)]"
 					}
 				}
 			}
@@ -488,7 +488,7 @@
 							autoresize = no
 							align = left|nobaseline
 							fontsize_min = 13
-							text = "[CMMOptionLabel(CMMListFieldMetadataFlag(CMMListItemOwnerSettingKey(Scope.GetFlagName), '1', '_key_'), CMMListItemFieldInt(Scope.GetFlagName, '1'))]"
+							text = "[CMMOptionLabel(CMMListFieldMetadataFlag(CMMListItemOwnerSettingKey(Scope.GetFlagName), '1', '_option_root_'), CMMListItemFieldInt(Scope.GetFlagName, '1'))]"
 						}
 
 						icon = {
@@ -522,7 +522,7 @@
 						align = left|nobaseline
 						fontsize_min = 13
 						default_format = "#medium"
-						text = "[CMMOptionLabel(CMMListFieldMetadataFlag(CMMListItemOwnerSettingKey(Scope.GetFlagName), '1', '_key_'), PdxGuiWidget.GetIndexInDataModel)]"
+						text = "[CMMOptionLabel(CMMListFieldMetadataFlag(CMMListItemOwnerSettingKey(Scope.GetFlagName), '1', '_option_root_'), PdxGuiWidget.GetIndexInDataModel)]"
 					}
 				}
 			}
@@ -602,7 +602,7 @@
 							autoresize = no
 							align = left|nobaseline
 							fontsize_min = 13
-							text = "[CMMOptionLabel(CMMListFieldMetadataFlag(CMMListItemOwnerSettingKey(Scope.GetFlagName), '2', '_key_'), CMMListItemFieldInt(Scope.GetFlagName, '2'))]"
+							text = "[CMMOptionLabel(CMMListFieldMetadataFlag(CMMListItemOwnerSettingKey(Scope.GetFlagName), '2', '_option_root_'), CMMListItemFieldInt(Scope.GetFlagName, '2'))]"
 						}
 
 						icon = {
@@ -636,7 +636,7 @@
 						align = left|nobaseline
 						fontsize_min = 13
 						default_format = "#medium"
-						text = "[CMMOptionLabel(CMMListFieldMetadataFlag(CMMListItemOwnerSettingKey(Scope.GetFlagName), '2', '_key_'), PdxGuiWidget.GetIndexInDataModel)]"
+						text = "[CMMOptionLabel(CMMListFieldMetadataFlag(CMMListItemOwnerSettingKey(Scope.GetFlagName), '2', '_option_root_'), PdxGuiWidget.GetIndexInDataModel)]"
 					}
 				}
 			}
@@ -716,7 +716,7 @@
 							autoresize = no
 							align = left|nobaseline
 							fontsize_min = 13
-							text = "[CMMOptionLabel(CMMListFieldMetadataFlag(CMMListItemOwnerSettingKey(Scope.GetFlagName), '3', '_key_'), CMMListItemFieldInt(Scope.GetFlagName, '3'))]"
+							text = "[CMMOptionLabel(CMMListFieldMetadataFlag(CMMListItemOwnerSettingKey(Scope.GetFlagName), '3', '_option_root_'), CMMListItemFieldInt(Scope.GetFlagName, '3'))]"
 						}
 
 						icon = {
@@ -750,7 +750,7 @@
 						align = left|nobaseline
 						fontsize_min = 13
 						default_format = "#medium"
-						text = "[CMMOptionLabel(CMMListFieldMetadataFlag(CMMListItemOwnerSettingKey(Scope.GetFlagName), '3', '_key_'), PdxGuiWidget.GetIndexInDataModel)]"
+						text = "[CMMOptionLabel(CMMListFieldMetadataFlag(CMMListItemOwnerSettingKey(Scope.GetFlagName), '3', '_option_root_'), PdxGuiWidget.GetIndexInDataModel)]"
 					}
 				}
 			}
@@ -830,7 +830,7 @@
 							autoresize = no
 							align = left|nobaseline
 							fontsize_min = 13
-							text = "[CMMOptionLabel(CMMListFieldMetadataFlag(CMMListItemOwnerSettingKey(Scope.GetFlagName), '4', '_key_'), CMMListItemFieldInt(Scope.GetFlagName, '4'))]"
+							text = "[CMMOptionLabel(CMMListFieldMetadataFlag(CMMListItemOwnerSettingKey(Scope.GetFlagName), '4', '_option_root_'), CMMListItemFieldInt(Scope.GetFlagName, '4'))]"
 						}
 
 						icon = {
@@ -864,7 +864,7 @@
 						align = left|nobaseline
 						fontsize_min = 13
 						default_format = "#medium"
-						text = "[CMMOptionLabel(CMMListFieldMetadataFlag(CMMListItemOwnerSettingKey(Scope.GetFlagName), '4', '_key_'), PdxGuiWidget.GetIndexInDataModel)]"
+						text = "[CMMOptionLabel(CMMListFieldMetadataFlag(CMMListItemOwnerSettingKey(Scope.GetFlagName), '4', '_option_root_'), PdxGuiWidget.GetIndexInDataModel)]"
 					}
 				}
 			}

@@ -45,7 +45,7 @@ macro = {
 macro = {
     description = "Filter match for one mod row against current search text"
     definition = "CMMModMatchesSearch(ModId)"
-    replace_with = "Or4(Not(CMMSelectedValueExists('cmm_mod_search_text')), StringIsEmpty(GetVariableSystem.Get('cmm_mod_search_text')), StringContains(CMMLocalizedKey(ModId), GetVariableSystem.Get('cmm_mod_search_text')), StringContains(ModId, GetVariableSystem.Get('cmm_mod_search_text')))"
+    replace_with = "Or4(Not(CMMSelectedValueExists('cmm_mod_search_text')), StringIsEmpty(GetVariableSystem.Get('cmm_mod_search_text')), StringContains(CMMLocalizedSuffix(ModId, '_name'), GetVariableSystem.Get('cmm_mod_search_text')), StringContains(ModId, GetVariableSystem.Get('cmm_mod_search_text')))"
 }
 
 # Args: none
