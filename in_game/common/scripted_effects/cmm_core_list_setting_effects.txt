@@ -138,8 +138,8 @@ cmm_register_list_bool_field = {
 # - mod_id (key): Owner mod id.
 # - setting_id (key): Target list setting id within the mod.
 # - field_id (key): Field id unique within the list setting.
-# - default_index (number): Default selected option index for new saves.
-# - option_count (number): Number of options (`>= 1`).
+# - default_index (number): Default selected option ordinal for new saves.
+# - option_count (number): Number of options (`>= 1`; numbered `1..option_count`).
 cmm_register_list_dropdown_field = {
 	cmm_register_list_field_slot = {
 		mod_id = $mod_id$

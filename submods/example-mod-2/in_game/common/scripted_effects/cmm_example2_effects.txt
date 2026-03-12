@@ -32,7 +32,7 @@ cmm_example2_register_mod = {
 		setting_id = example_dropdown
 		tab_id = slider_dropdown
 		group_id = controls
-		default_index = 0
+		default_index = 1
 		option_count = 3
 	}
 }

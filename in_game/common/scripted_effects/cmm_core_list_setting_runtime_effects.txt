@@ -95,7 +95,7 @@ cmm_list_prepare_bool_field_value_from_slot_item = {
 # Scope: country
 # Args:
 # - setting (key): Composite setting key `<mod_id>__<setting_id>`.
-# - item (number): Stable item identity index (`0..19`).
+# - item (number): Stable item identity ordinal (`1..20`).
 cmm_list_prepare_bool_field_value_from_item = {
 	switch = {
 		trigger = var:cmm_list_field_slot_to_apply
@@ -121,7 +121,7 @@ cmm_list_prepare_numeric_field_value_from_slot_item = {
 # Scope: country
 # Args:
 # - setting (key): Composite setting key `<mod_id>__<setting_id>`.
-# - item (number): Stable item identity index (`0..19`).
+# - item (number): Stable item identity ordinal (`1..20`).
 cmm_list_prepare_numeric_field_value_from_item = {
 	switch = {
 		trigger = var:cmm_list_field_slot_to_apply
@@ -137,7 +137,7 @@ cmm_list_prepare_numeric_field_value_from_item = {
 # Scope: country
 # Args:
 # - setting (key): Composite setting key `<mod_id>__<setting_id>`.
-# - item (number): Stable item identity index (`0..19`).
+# - item (number): Stable item identity ordinal (`1..20`).
 # - slot (number): Field slot index (`0..4`).
 cmm_list_apply_numeric_field_slot = {
 	if = {
@@ -178,7 +178,7 @@ cmm_list_apply_numeric_field_slot = {
 # Scope: country
 # Args:
 # - setting (key): Composite setting key `<mod_id>__<setting_id>`.
-# - item (number): Stable item identity index (`0..19`).
+# - item (number): Stable item identity ordinal (`1..20`).
 cmm_list_apply_numeric_field_at_item = {
 	switch = {
 		trigger = var:cmm_list_field_slot_to_apply
@@ -209,14 +209,14 @@ cmm_list_apply_field_slot_at_item = {
 		change_variable = { name = $setting$_item_$item$_field_$slot$ add = 1 }
 		if = {
 			limit = { var:$setting$_item_$item$_field_$slot$ > var:cmm_list_field_$slot$_dropdown_last_index_$setting$ }
-			set_variable = { name = $setting$_item_$item$_field_$slot$ value = 0 }
+			set_variable = { name = $setting$_item_$item$_field_$slot$ value = 1 }
 		}
 	}
 	else_if = {
 		limit = { AND = { var:cmm_list_action_to_apply = 7 var:cmm_list_field_$slot$_type_$setting$ = 2 } }
 		change_variable = { name = $setting$_item_$item$_field_$slot$ add = -1 }
 		if = {
-			limit = { var:$setting$_item_$item$_field_$slot$ < 0 }
+			limit = { var:$setting$_item_$item$_field_$slot$ < 1 }
 			set_variable = { name = $setting$_item_$item$_field_$slot$ value = var:cmm_list_field_$slot$_dropdown_last_index_$setting$ }
 		}
 	}
@@ -224,8 +224,8 @@ cmm_list_apply_field_slot_at_item = {
 		limit = { AND = { var:cmm_list_action_to_apply = 8 var:cmm_list_field_$slot$_type_$setting$ = 2 has_variable = cmm_dropdown_index_to_apply } }
 		set_variable = { name = $setting$_item_$item$_field_$slot$ value = var:cmm_dropdown_index_to_apply }
 		if = {
-			limit = { var:$setting$_item_$item$_field_$slot$ < 0 }
-			set_variable = { name = $setting$_item_$item$_field_$slot$ value = 0 }
+			limit = { var:$setting$_item_$item$_field_$slot$ < 1 }
+			set_variable = { name = $setting$_item_$item$_field_$slot$ value = 1 }
 		}
 		if = {
 			limit = { var:$setting$_item_$item$_field_$slot$ > var:cmm_list_field_$slot$_dropdown_last_index_$setting$ }
@@ -244,8 +244,8 @@ cmm_list_apply_field_slot_at_item = {
 			set_variable = { name = $setting$_item_$item$_field_$slot$ value = 1 }
 		}
 		if = {
-			limit = { AND = { var:cmm_list_field_$slot$_type_$setting$ = 2 var:$setting$_item_$item$_field_$slot$ < 0 } }
-			set_variable = { name = $setting$_item_$item$_field_$slot$ value = 0 }
+			limit = { AND = { var:cmm_list_field_$slot$_type_$setting$ = 2 var:$setting$_item_$item$_field_$slot$ < 1 } }
+			set_variable = { name = $setting$_item_$item$_field_$slot$ value = 1 }
 		}
 		if = {
 			limit = { AND = { var:cmm_list_field_$slot$_type_$setting$ = 2 var:$setting$_item_$item$_field_$slot$ > var:cmm_list_field_$slot$_dropdown_last_index_$setting$ } }
@@ -266,7 +266,7 @@ cmm_list_apply_field_slot_at_item = {
 # Scope: country
 # Args:
 # - setting (key): Composite setting key `<mod_id>__<setting_id>`.
-# - item (number): Stable item identity index (`0..19`).
+# - item (number): Stable item identity ordinal (`1..20`).
 cmm_list_apply_field_at_item = {
 	switch = {
 		trigger = var:cmm_list_field_slot_to_apply
@@ -282,7 +282,7 @@ cmm_list_apply_field_at_item = {
 # Scope: country
 # Args:
 # - setting (key): Composite setting key `<mod_id>__<setting_id>`.
-# - item (number): Stable item identity index (`0..19`).
+# - item (number): Stable item identity ordinal (`1..20`).
 cmm_list_dispatch_item_action = {
 	switch = {
 		trigger = var:cmm_list_dispatch_action
@@ -298,10 +298,6 @@ cmm_list_dispatch_item_action = {
 # Args: setting (key)
 cmm_list_dispatch_saved_item_action = {
 	if = {
-		limit = { scope:cmm_list_current_item = flag:$setting$_item_0 }
-		cmm_list_dispatch_item_action = { setting = $setting$ item = 0 }
-	}
-	else_if = {
 		limit = { scope:cmm_list_current_item = flag:$setting$_item_1 }
 		cmm_list_dispatch_item_action = { setting = $setting$ item = 1 }
 	}
@@ -376,6 +372,10 @@ cmm_list_dispatch_saved_item_action = {
 	else_if = {
 		limit = { scope:cmm_list_current_item = flag:$setting$_item_19 }
 		cmm_list_dispatch_item_action = { setting = $setting$ item = 19 }
+	}
+	else_if = {
+		limit = { scope:cmm_list_current_item = flag:$setting$_item_20 }
+		cmm_list_dispatch_item_action = { setting = $setting$ item = 20 }
 	}
 }
 

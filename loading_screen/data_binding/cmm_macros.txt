@@ -88,12 +88,36 @@ macro = {
     replace_with = "And(CMMVar(Concatenate(Key, Suffix)).IsSet, Not(EqualTo_string(CMMLocalizedSuffix(Key, Suffix), Concatenate(Key, Suffix))))"
 }
 
+# Args: Index (int32)
+# Returns: int32
+macro = {
+    description = "Convert a 0-based widget index to a 1-based public ordinal"
+    definition = "CMMWidgetIndexToOrdinal(Index)"
+    replace_with = "Add_int32(Index, '(int32)1')"
+}
+
+# Args: Index (int32)
+# Returns: int32
+macro = {
+    description = "Convert a 1-based public ordinal to a 0-based widget index"
+    definition = "CMMOrdinalToWidgetIndex(Index)"
+    replace_with = "Subtract_int32(Index, '(int32)1')"
+}
+
 # Args: OptionRoot (string), Index (int32)
 # Returns: string
 macro = {
     description = "Localized dropdown option label"
     definition = "CMMOptionLabel(OptionRoot,Index)"
     replace_with = "Localize(Concatenate(Concatenate(OptionRoot, '_option_'), Concatenate(ToString_int32(Index), '_name')))"
+}
+
+# Args: OptionRoot (string), Index (int32)
+# Returns: string
+macro = {
+    description = "Localized dropdown option label from a 0-based widget index"
+    definition = "CMMOptionLabelFromWidgetIndex(OptionRoot,Index)"
+    replace_with = "CMMOptionLabel(OptionRoot, CMMWidgetIndexToOrdinal(Index))"
 }
 
 # Args: Name (string)

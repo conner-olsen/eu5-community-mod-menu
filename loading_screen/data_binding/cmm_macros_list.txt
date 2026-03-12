@@ -104,6 +104,14 @@ macro = {
     replace_with = "FixedPointToInt(CMMListItemFieldValue(ItemKey, SlotKey))"
 }
 
+# Args: ItemKey (string), SlotKey (string)
+# Returns: int32
+macro = {
+    description = "0-based widget index for one 1-based list dropdown field value"
+    definition = "CMMListItemFieldWidgetIndex(ItemKey,SlotKey)"
+    replace_with = "CMMOrdinalToWidgetIndex(CMMListItemFieldInt(ItemKey, SlotKey))"
+}
+
 # Args: SettingKey (string), SlotKey (string)
 # Returns: boolean
 macro = {

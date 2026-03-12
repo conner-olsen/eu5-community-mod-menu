@@ -1,4 +1,4 @@
-﻿# EU5 Community Mod Menu (CMM)
+# EU5 Community Mod Menu (CMM)
 
 A dependency mod for **Europa Universalis 5** that provides one shared in-game mod settings window.
 
@@ -96,7 +96,7 @@ cmm_register_dropdown_setting = {
     tab_id = your_tab_id
     group_id = your_group_id
     default_index = 1 # required
-    option_count = 3  # required; >= 1 (options are 0..option_count-1)
+    option_count = 3  # required; >= 1 (options are 1..option_count)
 }
 
 cmm_register_text_setting = {
@@ -128,7 +128,7 @@ cmm_register_list_dropdown_field = {
     setting_id = your_setting_id
     field_id = mode
     default_index = 1 # required
-    option_count = 3  # required; >= 1
+    option_count = 3  # required; >= 1 (options are 1..option_count)
 }
 ```
 
@@ -145,10 +145,10 @@ Localization key format is enforced by ids:
 - Group: `<mod_id>__<group_id>_name`
 - Setting: `<mod_id>__<setting_id>_name`, `<mod_id>__<setting_id>_desc`
 - Button setting text: `<mod_id>__<setting_id>_text`
-- Dropdown option: `<mod_id>__<setting_id>_option_<index>_name`
-- List item: `<mod_id>__<setting_id>_item_<index>_name`
+- Dropdown option: `<mod_id>__<setting_id>_option_<index>_name` (`index` is 1-based)
+- List item: `<mod_id>__<setting_id>_item_<index>_name` (`index` is 1-based)
 - List field: `<mod_id>__<setting_id>__<field_id>_name`
-- List field dropdown option: `<mod_id>__<setting_id>__<field_id>_option_<index>_name`
+- List field dropdown option: `<mod_id>__<setting_id>__<field_id>_option_<index>_name` (`index` is 1-based)
 
 Callback contract:
 

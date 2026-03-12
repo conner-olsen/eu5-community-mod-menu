@@ -1,4 +1,4 @@
-﻿# CMM Mod Integration
+# CMM Mod Integration
 
 This document is for mod authors integrating with **EU5 Community Mod Menu (CMM)**.
 
@@ -215,8 +215,8 @@ Arguments:
 - `setting_id`: stable id within your mod.
 - `tab_id`: owner tab id within your mod.
 - `group_id`: owner group id within your mod.
-- `default_index`: initial selected option index for brand-new saves.
-- `option_count`: number of options (`>= 1`). Options are indexed `0..option_count-1`.
+- `default_index`: initial selected option ordinal for brand-new saves.
+- `option_count`: number of options (`>= 1`). Options are numbered `1..option_count`.
   - CMM dropdown controls support modifiers:
     - Click on `<` / `>`: previous/next option.
     - `Shift+click` on `<` / `>`: jump to first/last option.
@@ -345,8 +345,8 @@ Arguments:
 - `is_ordered`: `1` shows row move controls, `0` hides them.
 - `field_id`: stable per-list field id unique within the list setting.
 - `default_value`: initial bool-field value for brand-new saves (`0` or `1`).
-- `default_index`: initial dropdown-field option index for brand-new saves.
-- `option_count`: number of dropdown options (`>= 1`).
+- `default_index`: initial dropdown-field option ordinal for brand-new saves.
+- `option_count`: number of dropdown options (`>= 1`). Options are numbered `1..option_count`.
 - `default_value` (numeric field): initial numeric-field value for brand-new saves.
 - `min_value`: numeric-field minimum allowed value.
 - `max_value`: numeric-field maximum allowed value.
@@ -379,7 +379,7 @@ Notes:
 Runtime data shape:
 
 - Row sequence is stored in `cmm_list_items_<mod_id>__<setting_id>`.
-- Stable item identity keys are `flag:<mod_id>__<setting_id>_item_<index>`.
+- Stable item identity keys are `flag:<mod_id>__<setting_id>_item_<index>` where `<index>` is `1..item_count`.
 - Per-item field values are stored on the stable item identity, not on the visible row position:
   - `<mod_id>__<setting_id>_item_<index>_field_0`
   - `<mod_id>__<setting_id>_item_<index>_field_1`
@@ -395,11 +395,11 @@ Localization keys are derived automatically from ids:
 - Setting label: `<mod_id>__<setting_id>_name`
 - Setting description: `<mod_id>__<setting_id>_desc`
 - Button setting text: `<mod_id>__<setting_id>_text`
-- Dropdown options: `<mod_id>__<setting_id>_option_<index>_name`
+- Dropdown options: `<mod_id>__<setting_id>_option_<index>_name` (`index` is 1-based)
 - List item column label: `<mod_id>__<setting_id>_item_column_name`
-- List item labels: `<mod_id>__<setting_id>_item_<index>_name`
+- List item labels: `<mod_id>__<setting_id>_item_<index>_name` (`index` is 1-based)
 - List field labels: `<mod_id>__<setting_id>__<field_id>_name`
-- List dropdown options: `<mod_id>__<setting_id>__<field_id>_option_<index>_name`
+- List dropdown options: `<mod_id>__<setting_id>__<field_id>_option_<index>_name` (`index` is 1-based)
 
 ## Callback Contract
 
@@ -523,7 +523,7 @@ Notes:
 - Button settings execute `_on_changed` directly on click.
 - CMM handles numeric modes (`1x`, `5x`, `min/max`) via generic marker scripted GUIs, then executes `_on_changed`.
 - CMM handles slider track clicks and `-` / `+` modifiers via generic marker scripted GUIs, then executes `_on_changed`.
-- CMM captures dropdown selection index via a generic marker scripted GUI, then executes `_on_changed`.
+- CMM captures a 1-based dropdown selection ordinal via a generic marker scripted GUI, then executes `_on_changed`.
 - CMM captures list row position and field action via generic marker scripted GUIs, then executes `_on_changed`.
 - Ordered lists additionally capture row move actions through that same list callback.
 - If `is_shown` is omitted, the row is visible.
@@ -619,9 +619,9 @@ CMM writes these country-scope variables/lists:
 - `cmm_list_field_<slot>_option_root_<mod_id>__<setting_id>` (list only; flag value for list dropdown localization)
 - `cmm_list_field_<slot>_dropdown_count_<mod_id>__<setting_id>` (list dropdown fields only)
 - `cmm_list_field_<slot>_dropdown_last_index_<mod_id>__<setting_id>` (list dropdown fields only)
-- `cmm_list_item_owner_setting_<mod_id>__<setting_id>_item_<index>` (list only; flag value)
-- `<mod_id>__<setting_id>_item_<index>_name` (list only; flag value)
-- `<mod_id>__<setting_id>_item_<index>_field_<slot>` (list only; per-item field value)
+- `cmm_list_item_owner_setting_<mod_id>__<setting_id>_item_<index>` (list only; flag value; `<index>` is 1-based)
+- `<mod_id>__<setting_id>_item_<index>_name` (list only; flag value; `<index>` is 1-based)
+- `<mod_id>__<setting_id>_item_<index>_field_<slot>` (list only; per-item field value; `<index>` is 1-based)
 - `cmm_setting_text_character_limit_<mod_id>__<setting_id>` (text only)
 - `cmm_setting_text_quote_<mod_id>__<setting_id>` (text only)
 - `<mod_id>__<setting_id>_name` (flag value)
@@ -761,9 +761,9 @@ your_mod__intensity_name: "Intensity"
 your_mod__intensity_desc: "Slider amount controlled in CMM."
 your_mod__mode_name: "Mode"
 your_mod__mode_desc: "Dropdown mode controlled in CMM."
-your_mod__mode_option_0_name: "Off"
-your_mod__mode_option_1_name: "Standard"
-your_mod__mode_option_2_name: "Aggressive"
+your_mod__mode_option_1_name: "Off"
+your_mod__mode_option_2_name: "Standard"
+your_mod__mode_option_3_name: "Aggressive"
 your_mod__country_name_name: "Country Name"
 your_mod__country_name_desc: "Singleplayer-only text setting. Applies the entered name on submit."
 ```

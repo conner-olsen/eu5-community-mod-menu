@@ -5,15 +5,23 @@
 # - setting_id (key): Setting id unique within mod.
 # - tab_id (key): Owner tab id within mod.
 # - group_id (key): Owner group id within mod.
-# - default_index (number): Initial selected option index.
-# - option_count (number): Number of options (`>= 1`; indexed `0..option_count-1`).
+# - default_index (number): Initial selected option ordinal (`1..option_count`).
+# - option_count (number): Number of options (`>= 1`; numbered `1..option_count`).
 cmm_register_dropdown_setting = {
 	set_variable = { name = cmm_setting_is_global_$mod_id$__$setting_id$ value = 0 }
 	set_variable = { name = cmm_setting_is_slider_$mod_id$__$setting_id$ value = 0 }
 	set_variable = { name = cmm_setting_is_button_$mod_id$__$setting_id$ value = 0 }
 	set_variable = { name = cmm_setting_dropdown_count_$mod_id$__$setting_id$ value = $option_count$ }
-	set_variable = { name = cmm_setting_dropdown_last_index_$mod_id$__$setting_id$ value = $option_count$ }
-	change_variable = { name = cmm_setting_dropdown_last_index_$mod_id$__$setting_id$ add = -1 }
+
+	if = {
+		limit = { var:cmm_setting_dropdown_count_$mod_id$__$setting_id$ < 1 }
+		set_variable = { name = cmm_setting_dropdown_count_$mod_id$__$setting_id$ value = 1 }
+	}
+
+	set_variable = {
+		name = cmm_setting_dropdown_last_index_$mod_id$__$setting_id$
+		value = var:cmm_setting_dropdown_count_$mod_id$__$setting_id$
+	}
 
 	cmm_register_setting_metadata = {
 		mod_id = $mod_id$
@@ -28,8 +36,8 @@ cmm_register_dropdown_setting = {
 	}
 
 	if = {
-		limit = { var:$mod_id$__$setting_id$ < 0 }
-		set_variable = { name = $mod_id$__$setting_id$ value = 0 }
+		limit = { var:$mod_id$__$setting_id$ < 1 }
+		set_variable = { name = $mod_id$__$setting_id$ value = 1 }
 	}
 
 	if = {
@@ -58,15 +66,23 @@ cmm_register_dropdown_setting = {
 # - setting_id (key): Setting id unique within mod.
 # - tab_id (key): Owner tab id within mod.
 # - group_id (key): Owner group id within mod.
-# - default_index (number): Initial global selected index.
-# - option_count (number): Number of options (`>= 1`; indexed `0..option_count-1`).
+# - default_index (number): Initial global selected option ordinal (`1..option_count`).
+# - option_count (number): Number of options (`>= 1`; numbered `1..option_count`).
 cmm_register_global_dropdown_setting = {
 	set_variable = { name = cmm_setting_is_global_$mod_id$__$setting_id$ value = 1 }
 	set_variable = { name = cmm_setting_is_slider_$mod_id$__$setting_id$ value = 0 }
 	set_variable = { name = cmm_setting_is_button_$mod_id$__$setting_id$ value = 0 }
 	set_variable = { name = cmm_setting_dropdown_count_$mod_id$__$setting_id$ value = $option_count$ }
-	set_variable = { name = cmm_setting_dropdown_last_index_$mod_id$__$setting_id$ value = $option_count$ }
-	change_variable = { name = cmm_setting_dropdown_last_index_$mod_id$__$setting_id$ add = -1 }
+
+	if = {
+		limit = { var:cmm_setting_dropdown_count_$mod_id$__$setting_id$ < 1 }
+		set_variable = { name = cmm_setting_dropdown_count_$mod_id$__$setting_id$ value = 1 }
+	}
+
+	set_variable = {
+		name = cmm_setting_dropdown_last_index_$mod_id$__$setting_id$
+		value = var:cmm_setting_dropdown_count_$mod_id$__$setting_id$
+	}
 
 	cmm_register_setting_metadata = {
 		mod_id = $mod_id$
@@ -81,8 +97,8 @@ cmm_register_global_dropdown_setting = {
 	}
 
 	if = {
-		limit = { global_var:$mod_id$__$setting_id$ < 0 }
-		set_global_variable = { name = $mod_id$__$setting_id$ value = 0 }
+		limit = { global_var:$mod_id$__$setting_id$ < 1 }
+		set_global_variable = { name = $mod_id$__$setting_id$ value = 1 }
 	}
 
 	if = {
@@ -104,7 +120,7 @@ cmm_register_global_dropdown_setting = {
 	}
 }
 
-# Apply the pending dropdown selected index to a setting and clear the marker.
+# Apply the pending dropdown selected option ordinal to a setting and clear the marker.
 # Scope: country
 # Args:
 # - setting (key): Composite setting key `<mod_id>__<setting_id>`.
@@ -117,8 +133,8 @@ cmm_apply_dropdown_change = {
 			set_global_variable = { name = $setting$ value = var:cmm_dropdown_index_to_apply }
 
 			if = {
-				limit = { global_var:$setting$ < 0 }
-				set_global_variable = { name = $setting$ value = 0 }
+				limit = { global_var:$setting$ < 1 }
+				set_global_variable = { name = $setting$ value = 1 }
 			}
 
 			if = {
@@ -130,8 +146,8 @@ cmm_apply_dropdown_change = {
 			set_variable = { name = $setting$ value = var:cmm_dropdown_index_to_apply }
 
 			if = {
-				limit = { var:$setting$ < 0 }
-				set_variable = { name = $setting$ value = 0 }
+				limit = { var:$setting$ < 1 }
+				set_variable = { name = $setting$ value = 1 }
 			}
 
 			if = {

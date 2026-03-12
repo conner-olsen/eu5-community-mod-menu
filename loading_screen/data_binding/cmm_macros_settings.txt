@@ -115,9 +115,17 @@ macro = {
 # Args: SettingKey (string)
 # Returns: int32
 macro = {
-    description = "Dropdown selected index for one setting"
-    definition = "CMMDropdownSelectedIndex(SettingKey)"
+    description = "Stored 1-based dropdown selected ordinal for one setting"
+    definition = "CMMDropdownStoredIndex(SettingKey)"
     replace_with = "FixedPointToInt(CMMSettingValue(SettingKey))"
+}
+
+# Args: SettingKey (string)
+# Returns: int32
+macro = {
+    description = "0-based dropdown widget selected index for one setting"
+    definition = "CMMDropdownSelectedIndex(SettingKey)"
+    replace_with = "CMMOrdinalToWidgetIndex(CMMDropdownStoredIndex(SettingKey))"
 }
 
 # Args: none
