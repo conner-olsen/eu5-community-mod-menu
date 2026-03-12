@@ -10,14 +10,41 @@
 <body>
     <div id="app">
         <header class="app-header">
-            <h1 class="app-title">CMM Settings Tool</h1>
+            <div class="header-left">
+                <h1 class="app-title">CMM Settings Tool</h1>
+                <div class="undo-redo">
+                    <button class="btn-icon" @click="undo" :disabled="undoCount === 0" title="Undo (Ctrl+Z)">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4.5 3L1 6.5l3.5 3.5V7.5H10a3 3 0 0 1 0 6H7v1.5h3a4.5 4.5 0 0 0 0-9H4.5V3z"/></svg>
+                    </button>
+                    <button class="btn-icon" @click="redo" :disabled="redoCount === 0" title="Redo (Ctrl+Shift+Z)">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M11.5 3L15 6.5 11.5 10V7.5H6a3 3 0 0 0 0 6h3v1.5H6a4.5 4.5 0 0 1 0-9h5.5V3z"/></svg>
+                    </button>
+                </div>
+            </div>
             <div class="header-actions">
-                <button class="btn btn-secondary" @click="showImport = true">Import</button>
-                <button class="btn btn-primary" @click="generateAndDownload" :disabled="!state.mod_id">Download ZIP</button>
+                <button class="btn btn-secondary" @click="showImport = true">Open / Import</button>
+                <button class="btn btn-secondary" @click="generateAndDownload" :disabled="!state.mod_id">Download ZIP</button>
             </div>
         </header>
 
-        <div class="app-body">
+        <!-- Save bar: visible when editing a directory -->
+        <div v-if="modDir" class="save-bar">
+            <div class="save-bar-left">
+                <span class="save-dir" :title="modDir">{{ modDir }}</span>
+                <span v-if="dirty" class="unsaved-badge">Unsaved changes</span>
+                <span v-if="saveStatus === 'saved'" class="saved-badge">Saved</span>
+                <span v-if="saveStatus === 'error'" class="error-badge" :title="saveError">Save failed</span>
+            </div>
+            <div class="save-bar-right">
+                <button class="btn btn-save" @click="saveToDir" :disabled="!dirty || saveStatus === 'saving' || !state.mod_id">
+                    <template v-if="saveStatus === 'saving'">Saving...</template>
+                    <template v-else>Save (Ctrl+S)</template>
+                </button>
+                <button class="btn-icon" @click="closeModDir" title="Disconnect from directory">&times;</button>
+            </div>
+        </div>
+
+        <div class="app-body" :class="{'has-save-bar': !!modDir}">
             <!-- EDITOR PANEL -->
             <div class="editor-panel">
                 <mod-editor :state="state" @update="onUpdate"></mod-editor>
@@ -108,17 +135,26 @@
             </div>
         </div>
 
-        <!-- Import Modal -->
+        <!-- Open / Import Modal -->
         <div v-if="showImport" class="modal-overlay" @click.self="showImport = false">
             <div class="modal">
-                <h3>Import Existing Mod</h3>
+                <h3>Open Mod Directory</h3>
+                <p class="modal-desc">
+                    Point to an existing mod folder to import its settings and edit in-place.
+                    Or enter a new directory to start fresh and save there later.
+                </p>
                 <div class="field-row">
                     <label>Mod Directory Path</label>
-                    <input v-model="importPath" placeholder="C:\path\to\your\mod">
+                    <input v-model="importPath" placeholder="C:\path\to\your\mod" @keyup.enter="importFromDir">
                 </div>
                 <div class="modal-actions">
                     <button class="btn btn-secondary" @click="showImport = false">Cancel</button>
-                    <button class="btn btn-primary" @click="importFromDir" :disabled="!importPath">Import</button>
+                    <button class="btn btn-secondary" @click="openNewDir" :disabled="!importPath">
+                        New (empty mod)
+                    </button>
+                    <button class="btn btn-primary" @click="importFromDir" :disabled="!importPath">
+                        Open &amp; Import
+                    </button>
                 </div>
                 <div v-if="importWarnings.length" class="warnings">
                     <p v-for="w in importWarnings" class="warning">{{ w }}</p>
