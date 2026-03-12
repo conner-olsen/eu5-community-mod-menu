@@ -104,7 +104,7 @@ cmm_example_register_mod = {
 		setting_id = example_dropdown
 		tab_id = general
 		group_id = general_values
-		default_index = 1  # The default selected option (starting from 0)
+		default_index = 1  # The default selected option (starting from 1)
 		option_count = 3   # The total number of options
 	}
 }
@@ -124,7 +124,7 @@ cmm_example__example_dropdown_on_changed = {
 </syntaxhighlight>
 * <code>cmm_apply_dropdown_change</code>: A CMM provided helper that handles selection.
 
-The value of the dropdown is synced with a country variable named <code>[Your_Mod_ID]__[Your_Setting_ID]</code>, storing the selected index (starting from 0).
+The value of the dropdown is synced with a country variable named <code>[Your_Mod_ID]__[Your_Setting_ID]</code>, storing the selected option ordinal (starting from 1).
 
 So for the above example you can get its value from <code>var:cmm_example__example_dropdown</code> such as:
 <syntaxhighlight lang="text">
@@ -446,9 +446,9 @@ Each option needs a localization key following this pattern: <code>[Your_Mod_ID]
 <syntaxhighlight lang="yaml">
 l_english:
  cmm_example__example_dropdown_name: "Example Dropdown"   # Name of your setting, same format as all other settings
- cmm_example__example_dropdown_option_0_name: "Option A"  # The first option in your dropdown
- cmm_example__example_dropdown_option_1_name: "Option B"  # The second option in your dropdown
- cmm_example__example_dropdown_option_2_name: "Option C"  # The first option in your dropdown
+ cmm_example__example_dropdown_option_1_name: "Option A"  # The first option in your dropdown
+ cmm_example__example_dropdown_option_2_name: "Option B"  # The second option in your dropdown
+ cmm_example__example_dropdown_option_3_name: "Option C"  # The third option in your dropdown
 </syntaxhighlight>
 
 
@@ -476,12 +476,12 @@ l_english:
  # Column header for the item name column
  cmm_example__example_list_item_column_name: "Item"
 
- # Row labels (one per item, 0-indexed)
- cmm_example__example_list_item_0_name: "Item A"
- cmm_example__example_list_item_1_name: "Item B"
- cmm_example__example_list_item_2_name: "Item C"
- cmm_example__example_list_item_3_name: "Item D"
- cmm_example__example_list_item_4_name: "Item E"
+ # Row labels (one per item, 1-indexed)
+ cmm_example__example_list_item_1_name: "Item A"
+ cmm_example__example_list_item_2_name: "Item B"
+ cmm_example__example_list_item_3_name: "Item C"
+ cmm_example__example_list_item_4_name: "Item D"
+ cmm_example__example_list_item_5_name: "Item E"
 
  # Field column labels
  cmm_example__example_list__enabled_name: "Enabled"
@@ -489,9 +489,9 @@ l_english:
  cmm_example__example_list__weight_name: "Weight"
 
  # Dropdown field options (if using a dropdown field)
- cmm_example__example_list__mode_option_0_name: "Low"
- cmm_example__example_list__mode_option_1_name: "Standard"
- cmm_example__example_list__mode_option_2_name: "High"
+ cmm_example__example_list__mode_option_1_name: "Low"
+ cmm_example__example_list__mode_option_2_name: "Standard"
+ cmm_example__example_list__mode_option_3_name: "High"
 </syntaxhighlight>
 
 === Descriptions ===
