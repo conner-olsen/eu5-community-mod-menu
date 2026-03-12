@@ -15,7 +15,7 @@
 		max_width = 340
 		layoutpolicy_vertical = expanding
 		using = bg_main_inner_alt
-		spacing = 2
+		spacing = 1
 		margin = { 12 12 }
 		margin_top = 6
 
