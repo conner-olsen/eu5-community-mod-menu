@@ -5,11 +5,13 @@
 |github=conner-olsen/eu5-community-mod-menu
 }}
 
+== Overview ==
 The Community Mod Menu (CMM) is a dependency mod that allows multiple mods to hook into a single shared setting menu through a simple registration API.
 
 The guide below will be based on the CMM Example Mod, which can be found [TODO here on the workshop] or [https://github.com/conner-olsen/eu5-community-mod-menu/tree/main/submods/example-mod here on GitHub], where <code>example-mod</code> is the root mod folder.
+[[File:CMM_Full_Example.png|thumb|center|600px|The CMM Example Mod.]]
 
-You can always use any file name you want, but they must be placed in the correct folder and have the correct file extension.
+* You can always use any file name you want, but they must be placed in the correct folder and have the correct file extension.
 == Basic Setup ==
 First, create an effect file such as <code>example-mod/in_game/common/scripted_effects/cmm_example_effects.txt</code>:
 <syntaxhighlight lang="text">
@@ -40,78 +42,9 @@ cmm_example_on_register_mod = {
 Then for later use create a <code>Scripted GUI</code> file, and a Localization file, such as:
 <code>example-mod/in_game/common/scripted_guis/cmm_example_scripted_gui.txt</code>
 
-== Localization ==
-Create or use an existing localization file your mod settings, such as <code>example-mod/main_menu/localization/english/cmm_example_mod_l_english.yml</code>
-
-CMM follows a standard naming scheme for all localization keys you must follow.
-
-=== Mod Name ===
-* Mod Name: <code>[Your_Mod_ID]_name</code>
-For example:
-<syntaxhighlight lang="yaml">
-l_english:
- cmm_example_name: "CMM Example Mod" # Name of your mod
-</syntaxhighlight>
-
-* Tab Name: <code>[Your_Mod_ID]__[Your_Tab_ID]_name</code>
-* Group Name: <code>[Your_Mod_ID]__[Your_Group_ID]_name</code>
-
-=== Tab, Group, & Setting Names ===
-These all follow the exact same format of:
-* <code>[Your_Mod_ID]__[Tab/Setting/Group]_Name</code>
-
-For example:
-<syntaxhighlight lang="yaml">
-l_english:
- # ...
- cmm_example__general_name: "General"                   # Name of your tab
- cmm_example__general_toggles_name: "Toggles"           # Name of your group
- cmm_example__example_toggle_name: "Example Toggle"     # Name of your setting
-</syntaxhighlight>
-Where in this example:
-* <code>cmm_example</code> is the mod ID.
-* <code>general</code> is the tab ID.
-* <code>general_toggles</code> is the group ID.
-* <code>example_toggle</code> is the setting ID.
-
-You only need one key for per tab, group, and setting you make.
-
-=== Dropdowns Options ===
-Besides the
-Each option needs a localization key following this pattern: <code>[Your_Mod_ID]__[Your_Setting_ID]_option_[index]_name</code>
-<syntaxhighlight lang="yaml">
-l_english:
- cmm_example__example_dropdown_name: "Example Dropdown"   # Name of your setting, same format as all other settings
- cmm_example__example_dropdown_option_0_name: "Option A"  # The first option in your dropdown
- cmm_example__example_dropdown_option_1_name: "Option B"  # The second option in your dropdown
- cmm_example__example_dropdown_option_2_name: "Option C"  # The first option in your dropdown
-</syntaxhighlight>
-
-
-=== Button Label ===
-Buttons require a localization key for the button label: <code>[Your_Mod_ID]__[Your_Setting_ID]_text</code>
-<syntaxhighlight lang="yaml">
-l_english:
- cmm_example__example_button_name: "Action Button"     # Setting name
- cmm_example__example_button_text: "Run"               # Button label
-</syntaxhighlight>
-
-=== Descriptions ===
-Nearly everything in CMM supports a optional description as well, which will appears in the tooltip for each element.
-
-The format is nearly identical to names, just with <code>_desc</code> instead of <code>_name</code>.
-
-For example:
-<syntaxhighlight lang="yaml">
-l_english:
- cmm_example_desc: "A example reference mod for CMM."           # Description of your mod
- cmm_example__general_desc: "General purpose settings."         # Decription of your tab
- cmm_example__general_toggles_name: "All toggle settings."      # Description of your group
- cmm_example__example_toggle_name: "A example toggle setting."  # Description of your setting
-</syntaxhighlight>
-
 == Basic Settings ==
 === Checkbox ===
+[[File:CMM_Checkbox.png|thumb|right|A checkbox setting in CMM.]]
 You can create a checkbox using <code>cmm_register_bool_setting</code>, placed inside of the registration effect we created before:
 <syntaxhighlight lang="text">
 cmm_example_register_mod = {
@@ -193,6 +126,16 @@ cmm_example__example_dropdown_on_changed = {
 
 The value of the dropdown is synced with a country variable named <code>[Your_Mod_ID]__[Your_Setting_ID]</code>, storing the selected index (starting from 0).
 
+So for the above example you can get its value from <code>var:cmm_example__example_dropdown</code> such as:
+<syntaxhighlight lang="text">
+if = {
+	limit = {
+		var:cmm_example__example_dropdown = 1
+	}
+	# This will run if the dropdown has the first option selected.
+}
+</syntaxhighlight>
+
 === Button ===
 [[File:CMM_Button.png|thumb|right|A button setting in CMM.]]
 You can create an action button using <code>cmm_register_button_setting</code>:
@@ -229,10 +172,10 @@ cmm_example_register_mod = {
 		setting_id = example_numeric
 		tab_id = general
 		group_id = general_values
-		default_value = 5
-		min_value = 0
-		max_value = 10
-		step_value = 1
+		default_value = 5 # Starting value
+		min_value = 0     # Minimum value
+		max_value = 10    # Maximum value
+		step_value = 1    # Step size
 	}
 }
 </syntaxhighlight>
@@ -257,6 +200,16 @@ cmm_example__example_numeric_on_changed = {
 
 The value is synced with a country variable named <code>[Your_Mod_ID]__[Your_Setting_ID]</code>.
 
+So for the above example you can get its value from <code>var:cmm_example__example_dropdown</code> such as:
+<syntaxhighlight lang="text">
+if = {
+	limit = {
+		var:cmm_example__example_numeric > 5
+	}
+	# This will run if cmm_example__example_numeric has a value greater then 10.
+}
+</syntaxhighlight>
+
 === Slider ===
 [[File:CMM_Slider.png|thumb|right|A slider setting in CMM.]]
 You can create a slider using <code>cmm_register_slider_setting</code>:
@@ -274,7 +227,7 @@ cmm_example_register_mod = {
 	}
 }
 </syntaxhighlight>
-The parameters are the same as numeric settings. Players can click on the track to jump to a position, or use the <code>-</code> / <code>+</code> buttons on either side.
+The parameters are the same as numeric settings. Players can click on the track to jump to a position, double click to drag, or use the <code>-</code> / <code>+</code> buttons on either side.
 
 Then add the Scripted GUI callback:
 <syntaxhighlight lang="text">
@@ -311,9 +264,9 @@ cmm_example_register_mod = {
 }
 </syntaxhighlight>
 * <code>character_limit</code>: The maximum number of characters the player can enter. Must be at least 1.
-* <code>quote_text</code>: When set to 1, CMM wraps the submitted text in double quotes before passing it to your effect callback. This is useful when the text might contain spaces and needs to be treated as a single argument.
+* <code>quote_text</code>: When set to 1, CMM wraps the submitted text in double quotes before passing it to your effect. Which is needed for use in some cases, such as `change_country_name = $text`.
 
-Text settings use a '''scripted effect''' callback instead of a Scripted GUI. Place this in the same effects file as your registration effect:
+Text settings use a '''scripted effect''' callback instead of a Scripted GUI. You will need to create a effect that will run when text is submitted.
 <syntaxhighlight lang="text">
 cmm_example__example_text_on_changed = {
 	# This effect receives the submitted text as $text$.
@@ -322,14 +275,12 @@ cmm_example__example_text_on_changed = {
 }
 </syntaxhighlight>
 * The callback must be named <code>[Your_Mod_ID]__[Your_Setting_ID]_on_changed</code>.
-* The submitted text is available as <code>$text$</code>. Your effect '''must''' reference <code>$text$</code>.
-
-Text settings do not store a persistent value in a variable; the text is passed directly to your effect each time the player submits.
+* The submitted text is available as <code>$text$</code>.
 
 == Advanced Settings ==
-=== List ===
+=== Settings List ===
 [[File:CMM_List.png|thumb|right|An ordered list setting in CMM.]]
-List settings allow you to present a table of items where each row has one or more editable fields (checkboxes, dropdowns, or numeric steppers). Lists can optionally be ordered, allowing players to rearrange rows.
+A settings list allow you to make a table of items where each row has one or more settings (checkboxes, dropdowns, or numeric steppers). Lists can optionally be ordered, allowing players to rearrange rows.
 
 ==== Registering a List ====
 First, register the list itself using <code>cmm_register_settings_list</code>:
@@ -339,7 +290,7 @@ cmm_example_register_mod = {
 		mod_id = cmm_example
 		setting_id = example_list
 		tab_id = general
-		item_count = 5    # Number of rows (1-20)
+		item_count = 5    # Number of rows
 		is_ordered = 1    # 1 = players can reorder rows, 0 = fixed order
 	}
 }
@@ -356,7 +307,7 @@ After registering the list, register one or more fields. Each field becomes a co
 		mod_id = cmm_example
 		setting_id = example_list
 		field_id = enabled
-		default_value = 1           # 0 = unchecked, 1 = checked
+		default_value = 1
 	}
 </syntaxhighlight>
 
@@ -400,40 +351,6 @@ cmm_example__example_list_on_changed = {
 </syntaxhighlight>
 * <code>cmm_apply_list_change</code>: A CMM provided helper that handles all list interactions (reordering, toggling, dropdown cycling, and numeric changes).
 
-==== List Localization ====
-Lists require several additional localization keys:
-<syntaxhighlight lang="yaml">
-l_english:
- # Setting name and description
- cmm_example__example_list_name: "Priority List"
- cmm_example__example_list_desc: "Example ordered list setting."
-
- # Column header for the item name column
- cmm_example__example_list_item_column_name: "Item"
-
- # Row labels (one per item, 0-indexed)
- cmm_example__example_list_item_0_name: "Item A"
- cmm_example__example_list_item_1_name: "Item B"
- cmm_example__example_list_item_2_name: "Item C"
- cmm_example__example_list_item_3_name: "Item D"
- cmm_example__example_list_item_4_name: "Item E"
-
- # Field column labels
- cmm_example__example_list__enabled_name: "Enabled"
- cmm_example__example_list__mode_name: "Mode"
- cmm_example__example_list__weight_name: "Weight"
-
- # Dropdown field options (if using a dropdown field)
- cmm_example__example_list__mode_option_0_name: "Low"
- cmm_example__example_list__mode_option_1_name: "Standard"
- cmm_example__example_list__mode_option_2_name: "High"
-</syntaxhighlight>
-
-The key patterns are:
-* Item column header: <code>[Your_Mod_ID]__[Your_Setting_ID]_item_column_name</code>
-* Row labels: <code>[Your_Mod_ID]__[Your_Setting_ID]_item_[index]_name</code>
-* Field labels: <code>[Your_Mod_ID]__[Your_Setting_ID]__[Your_Field_ID]_name</code>
-* Dropdown field options: <code>[Your_Mod_ID]__[Your_Setting_ID]__[Your_Field_ID]_option_[index]_name</code>
 
 === Global Settings ===
 [[File:CMM_Global.png|thumb|right|Global settings in CMM. In multiplayer, only the host can change these.]]
@@ -449,8 +366,6 @@ Every basic setting type (except text) has a global variant:
 The parameters and Scripted GUI callbacks are identical to their non-global counterparts. The only differences are:
 
 # The value is stored in a '''global''' variable instead of a country variable. Access it with <code>global_var:[Your_Mod_ID]__[Your_Setting_ID]</code> instead of <code>var:</code>.
-# In multiplayer, only the host can change the value.
-# Global button settings do not store a value; they just run the effect.
 
 For example, registering a global checkbox:
 <syntaxhighlight lang="text">
@@ -490,7 +405,125 @@ your_effect = {
 }
 </syntaxhighlight>
 
-== Conditional Visibility ==
+== Localization ==
+Create or use an existing localization file your mod settings, such as <code>example-mod/main_menu/localization/english/cmm_example_mod_l_english.yml</code>
+
+CMM follows a standard naming scheme for all localization keys you must follow.
+
+=== Mod Name ===
+* Mod Name: <code>[Your_Mod_ID]_name</code>
+For example:
+<syntaxhighlight lang="yaml">
+l_english:
+ cmm_example_name: "CMM Example Mod" # Name of your mod
+</syntaxhighlight>
+
+* Tab Name: <code>[Your_Mod_ID]__[Your_Tab_ID]_name</code>
+* Group Name: <code>[Your_Mod_ID]__[Your_Group_ID]_name</code>
+
+=== Tab, Group, & Setting Names ===
+These all follow the exact same format of:
+* <code>[Your_Mod_ID]__[Tab/Setting/Group]_Name</code>
+
+For example:
+<syntaxhighlight lang="yaml">
+l_english:
+ # ...
+ cmm_example__general_name: "General"                   # Name of your tab
+ cmm_example__general_toggles_name: "Toggles"           # Name of your group
+ cmm_example__example_toggle_name: "Example Toggle"     # Name of your setting
+</syntaxhighlight>
+Where in this example:
+* <code>cmm_example</code> is the mod ID.
+* <code>general</code> is the tab ID.
+* <code>general_toggles</code> is the group ID.
+* <code>example_toggle</code> is the setting ID.
+
+You only need one key for per tab, group, and setting you make.
+
+=== Dropdowns Options ===
+Besides the
+Each option needs a localization key following this pattern: <code>[Your_Mod_ID]__[Your_Setting_ID]_option_[index]_name</code>
+<syntaxhighlight lang="yaml">
+l_english:
+ cmm_example__example_dropdown_name: "Example Dropdown"   # Name of your setting, same format as all other settings
+ cmm_example__example_dropdown_option_0_name: "Option A"  # The first option in your dropdown
+ cmm_example__example_dropdown_option_1_name: "Option B"  # The second option in your dropdown
+ cmm_example__example_dropdown_option_2_name: "Option C"  # The first option in your dropdown
+</syntaxhighlight>
+
+
+=== Button Text ===
+Buttons require a localization key for the text that appears on the button: <code>[Your_Mod_ID]__[Your_Setting_ID]_text</code>
+<syntaxhighlight lang="yaml">
+l_english:
+ cmm_example__example_button_text: "Run" # Your button text
+</syntaxhighlight>
+
+=== Setting Lists ===
+Setting Lists require several additional localization keys:
+* Item column header: <code>[Your_Mod_ID]__[Your_Setting_ID]_item_column_name</code>
+* Row labels: <code>[Your_Mod_ID]__[Your_Setting_ID]_item_[index]_name</code>
+* Field labels: <code>[Your_Mod_ID]__[Your_Setting_ID]__[Your_Field_ID]_name</code>
+* Dropdown field options: <code>[Your_Mod_ID]__[Your_Setting_ID]__[Your_Field_ID]_option_[index]_name</code>
+
+For example:
+<syntaxhighlight lang="yaml">
+l_english:
+ # Setting name and description
+ cmm_example__example_list_name: "Priority List"
+ cmm_example__example_list_desc: "Example ordered list setting."
+
+ # Column header for the item name column
+ cmm_example__example_list_item_column_name: "Item"
+
+ # Row labels (one per item, 0-indexed)
+ cmm_example__example_list_item_0_name: "Item A"
+ cmm_example__example_list_item_1_name: "Item B"
+ cmm_example__example_list_item_2_name: "Item C"
+ cmm_example__example_list_item_3_name: "Item D"
+ cmm_example__example_list_item_4_name: "Item E"
+
+ # Field column labels
+ cmm_example__example_list__enabled_name: "Enabled"
+ cmm_example__example_list__mode_name: "Mode"
+ cmm_example__example_list__weight_name: "Weight"
+
+ # Dropdown field options (if using a dropdown field)
+ cmm_example__example_list__mode_option_0_name: "Low"
+ cmm_example__example_list__mode_option_1_name: "Standard"
+ cmm_example__example_list__mode_option_2_name: "High"
+</syntaxhighlight>
+
+=== Descriptions ===
+Nearly everything in CMM supports a optional description as well, which will appears in the tooltip for each element.
+
+The format is nearly identical to names, just with <code>_desc</code> instead of <code>_name</code>.
+
+For example:
+<syntaxhighlight lang="yaml">
+l_english:
+ cmm_example_desc: "A example reference mod for CMM."           # Description of your mod
+ cmm_example__general_desc: "General purpose settings."         # Decription of your tab
+ cmm_example__general_toggles_name: "All toggle settings."      # Description of your group
+ cmm_example__example_toggle_name: "A example toggle setting."  # Description of your setting
+</syntaxhighlight>
+
+== Additional Features ==
+=== The <code>is_host</code> trigger ===
+CMM provides a easy to use trigger to check if the current country is controlled by the host player.
+
+For example:
+<syntaxhighlight lang="text">
+if = {
+	limit = {
+		is_host = yes
+	}
+	# This will run if the country is controlled by the host
+}
+</syntaxhighlight>
+
+=== Conditional Visibility ===
 Any setting's Scripted GUI callback can include an optional <code>is_shown</code> block to conditionally hide the setting row:
 <syntaxhighlight lang="text">
 cmm_example__example_toggle_on_changed = {
@@ -509,10 +542,6 @@ cmm_example__example_toggle_on_changed = {
 }
 </syntaxhighlight>
 This works for all setting types that use Scripted GUI callbacks (everything except text settings).
-
-== Full Example ==
-[[File:CMM_Full_Example.png|thumb|center|600px|The CMM Example Mod showing all setting types.]]
-The complete CMM Example Mod demonstrates every setting type described in this guide. You can find the full source code [https://github.com/conner-olsen/eu5-community-mod-menu/tree/main/submods/example-mod on GitHub].
 
 {{Modding navbox
 |category=Modding tools
