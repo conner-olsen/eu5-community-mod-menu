@@ -18,19 +18,29 @@
 		spacing = 10
 		margin = { 12 12 }
 
-		editbox_single = {
-			name = "cmm_mod_search_editbox"
+		vbox = {
 			layoutpolicy_horizontal = expanding
-			focuspolicy = all
-			alwaystransparent = no
-			multiline = no
-			text = ""
-			blockoverride "editbox_properties" {
-				ontextchanged = "[GetVariableSystem.Set('cmm_mod_search_text', GetTextFromSelfOrAnyChildEditbox(PdxGuiWidget.Self))]"
-				ontextedited = "[GetVariableSystem.Set('cmm_mod_search_text', GetTextFromSelfOrAnyChildEditbox(PdxGuiWidget.Self))]"
-			}
-			blockoverride "editbox_label" {
-				text = "CMM_MOD_SEARCH_PLACEHOLDER"
+			using = bg_secondary_section
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				margin = { 6 6 }
+
+				editbox_single = {
+					name = "cmm_mod_search_editbox"
+					layoutpolicy_horizontal = expanding
+					focuspolicy = all
+					alwaystransparent = no
+					multiline = no
+					text = ""
+					blockoverride "editbox_properties" {
+						ontextchanged = "[GetVariableSystem.Set('cmm_mod_search_text', GetTextFromSelfOrAnyChildEditbox(PdxGuiWidget.Self))]"
+						ontextedited = "[GetVariableSystem.Set('cmm_mod_search_text', GetTextFromSelfOrAnyChildEditbox(PdxGuiWidget.Self))]"
+					}
+					blockoverride "editbox_label" {
+						text = "CMM_MOD_SEARCH_PLACEHOLDER"
+					}
+				}
 			}
 		}
 
@@ -53,9 +63,11 @@
 	# Writes:
 	# - none [n/a]: no writes.
 	type cmm_mod_list_rows = vbox {
+		using = bg_secondary_section
 		layoutpolicy_horizontal = expanding
 		ignoreinvisible = yes
 		spacing = 4
+		margin = { 6 6 }
 		datamodel = "[Player.MakeScope.GetList('cmm_registered_mod_ids')]"
 
 		item = {
@@ -74,15 +86,15 @@
 	# - GetVariableSystem.Set('cmm_selected_tab') [string]: sets selected tab to the mod default.
 	type cmm_mod_list_row = widget {
 		layoutpolicy_horizontal = expanding
-		minimumsize = { 0 52 }
+		minimumsize = { 0 44 }
 		visible = "[CMMModMatchesSearch(Scope.GetFlagName)]"
 
 		hbox = {
-			margin = { 4 2 }
+			margin = { 2 2 }
 
 			card_header_button_01 = {
 				using = layoutpolicy_expanding
-				size = { -1 48 }
+				size = { -1 40 }
 				using = bg_paper_card
 				using = bg_card_header_01_production
 				onclick = "[GetVariableSystem.Set('cmm_selected_mod', Scope.GetFlagName)]"
@@ -106,10 +118,9 @@
 
 					text_single = {
 						parentanchor = center
-						size = { 100% 22 }
-						autoresize = no
-						using = Font_Size_Medium
-						default_format = "#yellow_titles"
+						autoresize = yes
+						fontsize = 18
+						maximumsize = { 280 -1 }
 						align = center|nobaseline
 						text = "[CMMLocalizedSuffix(Scope.GetFlagName, '_name')]"
 					}
