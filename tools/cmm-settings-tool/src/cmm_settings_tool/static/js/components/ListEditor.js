@@ -23,7 +23,7 @@ const ListEditorComponent = {
         <div class="subsection">
             <h5>Item Names</h5>
             <div v-for="(name, i) in setting.item_names" :key="i" class="field-row compact">
-                <label class="compact-label">{{ i }}</label>
+                <label class="compact-label">{{ i + 1 }}</label>
                 <input :value="name" @input="setting.item_names[i] = $event.target.value" :placeholder="'Item ' + (i+1)">
             </div>
         </div>
@@ -72,7 +72,7 @@ const ListEditorComponent = {
                     <div class="field-grid">
                         <div class="field-row">
                             <label>Default Index</label>
-                            <input type="number" v-model.number="field.default_index" min="0">
+                            <input type="number" v-model.number="field.default_index" min="1">
                         </div>
                         <div class="field-row">
                             <label>Option Count</label>
@@ -80,7 +80,7 @@ const ListEditorComponent = {
                         </div>
                     </div>
                     <div v-for="(opt, oi) in (field.options||[])" :key="oi" class="field-row compact">
-                        <label class="compact-label">{{ oi }}</label>
+                        <label class="compact-label">{{ oi + 1 }}</label>
                         <input v-model="opt.name" :placeholder="'Option ' + (oi+1)">
                     </div>
                 </div>
@@ -128,12 +128,12 @@ const ListEditorComponent = {
                 field_type: 'bool',
                 name: '',
                 default_value: 0,
-                default_index: 0,
+                default_index: 1,
                 option_count: 3,
                 options: [
-                    { index: 0, name: 'Option 1' },
-                    { index: 1, name: 'Option 2' },
-                    { index: 2, name: 'Option 3' },
+                    { index: 1, name: 'Option 1' },
+                    { index: 2, name: 'Option 2' },
+                    { index: 3, name: 'Option 3' },
                 ],
                 min_value: 0,
                 max_value: 10,
@@ -154,14 +154,14 @@ const ListEditorComponent = {
             field.option_count = count;
             if (!field.options) field.options = [];
             while (field.options.length < count) {
-                const i = field.options.length;
-                field.options.push({ index: i, name: `Option ${i + 1}` });
+                const i = field.options.length + 1;
+                field.options.push({ index: i, name: `Option ${i}` });
             }
             while (field.options.length > count) {
                 field.options.pop();
             }
             for (let i = 0; i < field.options.length; i++) {
-                field.options[i].index = i;
+                field.options[i].index = i + 1;
             }
         },
     },

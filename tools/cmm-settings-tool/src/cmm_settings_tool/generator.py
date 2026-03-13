@@ -122,7 +122,7 @@ def _emit_registration(lines: list, mod_id: str, tab_id: str, group_id: str, set
         lines.append(f"\t\tmax_value = {_num(setting.max_value, 100)}")
         lines.append(f"\t\tstep_value = {_num(setting.step_value, 1)}")
     elif st == "dropdown":
-        lines.append(f"\t\tdefault_index = {_int(setting.default_index, 0)}")
+        lines.append(f"\t\tdefault_index = {_int(setting.default_index, 1)}")
         lines.append(f"\t\toption_count = {_int(setting.option_count, 1)}")
     elif st == "text":
         lines.append(f"\t\tcharacter_limit = {_int(setting.character_limit, 42)}")
@@ -145,7 +145,7 @@ def _emit_list_field(lines: list, mod_id: str, setting_id: str, field: ListField
         lines.append(f"\t\tmod_id = {mod_id}")
         lines.append(f"\t\tsetting_id = {setting_id}")
         lines.append(f"\t\tfield_id = {field.field_id}")
-        lines.append(f"\t\tdefault_index = {_int(field.default_index, 0)}")
+        lines.append(f"\t\tdefault_index = {_int(field.default_index, 1)}")
         lines.append(f"\t\toption_count = {_int(field.option_count, 1)}")
         lines.append(f"\t}}")
     elif ft == "numeric":
@@ -286,7 +286,7 @@ def _emit_setting_loc(lines: list, mod_id: str, setting: Setting):
 
     elif st == "list":
         lines.append(f' {qid}_item_column_name: "{_esc(setting.item_column_name or "Item")}"')
-        for i, name in enumerate(setting.item_names or []):
+        for i, name in enumerate(setting.item_names or [], start=1):
             lines.append(f' {qid}_item_{i}_name: "{_esc(name)}"')
 
         for field in (setting.fields or []):

@@ -96,7 +96,7 @@ const SettingEditorComponent = {
                 <div class="field-grid">
                     <div class="field-row">
                         <label>Default Index</label>
-                        <input type="number" v-model.number="setting.default_index" min="0" :max="(setting.option_count||1)-1">
+                        <input type="number" v-model.number="setting.default_index" min="1" :max="setting.option_count||1">
                     </div>
                     <div class="field-row">
                         <label>Option Count</label>
@@ -150,14 +150,14 @@ const SettingEditorComponent = {
             this.setting.option_count = count;
             if (!this.setting.options) this.setting.options = [];
             while (this.setting.options.length < count) {
-                const i = this.setting.options.length;
-                this.setting.options.push({ index: i, name: `Option ${i + 1}` });
+                const i = this.setting.options.length + 1;
+                this.setting.options.push({ index: i, name: `Option ${i}` });
             }
             while (this.setting.options.length > count) {
                 this.setting.options.pop();
             }
             for (let i = 0; i < this.setting.options.length; i++) {
-                this.setting.options[i].index = i;
+                this.setting.options[i].index = i + 1;
             }
         },
     },

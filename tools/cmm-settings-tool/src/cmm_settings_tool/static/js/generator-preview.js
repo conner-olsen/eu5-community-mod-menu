@@ -108,7 +108,7 @@ ${prefix}_on_register_mod = {
             lines.push(`\t\tmax_value = ${this._num(setting.max_value, 100)}`);
             lines.push(`\t\tstep_value = ${this._num(setting.step_value, 1)}`);
         } else if (st === 'dropdown') {
-            lines.push(`\t\tdefault_index = ${setting.default_index || 0}`);
+            lines.push(`\t\tdefault_index = ${setting.default_index || 1}`);
             lines.push(`\t\toption_count = ${setting.option_count || 1}`);
         } else if (st === 'text') {
             lines.push(`\t\tcharacter_limit = ${setting.character_limit || 42}`);
@@ -131,7 +131,7 @@ ${prefix}_on_register_mod = {
             lines.push(`\t\tmod_id = ${modId}`);
             lines.push(`\t\tsetting_id = ${settingId}`);
             lines.push(`\t\tfield_id = ${field.field_id}`);
-            lines.push(`\t\tdefault_index = ${field.default_index || 0}`);
+            lines.push(`\t\tdefault_index = ${field.default_index || 1}`);
             lines.push(`\t\toption_count = ${field.option_count || 1}`);
             lines.push(`\t}`);
         } else if (ft === 'numeric') {
@@ -272,7 +272,7 @@ ${prefix}_on_register_mod = {
         } else if (setting.setting_type === 'list') {
             lines.push(` ${qid}_item_column_name: "${this._esc(setting.item_column_name || 'Item')}"`);
             for (let i = 0; i < (setting.item_names || []).length; i++) {
-                lines.push(` ${qid}_item_${i}_name: "${this._esc(setting.item_names[i])}"`);
+                lines.push(` ${qid}_item_${i + 1}_name: "${this._esc(setting.item_names[i])}"`);
             }
             for (const field of (setting.fields || [])) {
                 const fqid = `${qid}__${field.field_id}`;

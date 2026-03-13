@@ -308,11 +308,11 @@ def _reg_to_setting(
         setting.max_value = _to_float(reg.get("max_value", "100"))
         setting.step_value = _to_float(reg.get("step_value", "1"))
     elif reg_type == "dropdown":
-        setting.default_index = _to_int(reg.get("default_index", "0"))
+        setting.default_index = _to_int(reg.get("default_index", "1"))
         setting.option_count = _to_int(reg.get("option_count", "1"))
         options = []
-        for i in range(setting.option_count):
-            oname = loc_map.get(f"{qid}_option_{i}_name", f"Option {i + 1}")
+        for i in range(1, setting.option_count + 1):
+            oname = loc_map.get(f"{qid}_option_{i}_name", f"Option {i}")
             options.append(DropdownOption(index=i, name=oname))
         setting.options = options
     elif reg_type == "text":
@@ -324,8 +324,8 @@ def _reg_to_setting(
         setting.item_column_name = loc_map.get(f"{qid}_item_column_name", "Item")
 
         item_names = []
-        for i in range(setting.item_count):
-            iname = loc_map.get(f"{qid}_item_{i}_name", f"Item {i + 1}")
+        for i in range(1, setting.item_count + 1):
+            iname = loc_map.get(f"{qid}_item_{i}_name", f"Item {i}")
             item_names.append(iname)
         setting.item_names = item_names
 
@@ -363,11 +363,11 @@ def _parse_list_field(
     if ftype == "bool":
         field.default_value = _to_int(reg.get("default_value", "0"))
     elif ftype == "dropdown":
-        field.default_index = _to_int(reg.get("default_index", "0"))
+        field.default_index = _to_int(reg.get("default_index", "1"))
         field.option_count = _to_int(reg.get("option_count", "1"))
         options = []
-        for i in range(field.option_count):
-            oname = loc_map.get(f"{fqid}_option_{i}_name", f"Option {i + 1}")
+        for i in range(1, field.option_count + 1):
+            oname = loc_map.get(f"{fqid}_option_{i}_name", f"Option {i}")
             options.append(DropdownOption(index=i, name=oname))
         field.options = options
     elif ftype == "numeric":

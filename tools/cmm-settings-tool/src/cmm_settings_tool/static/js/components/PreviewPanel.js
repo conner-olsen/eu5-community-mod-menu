@@ -166,18 +166,18 @@ const PreviewPanelComponent = {
             return Math.max(0, Math.min(100, ((val - min) / (max - min)) * 100));
         },
         currentOptionName(setting) {
-            const idx = setting.default_index || 0;
-            if (setting.options && setting.options[idx]) {
-                return setting.options[idx].name;
+            const idx = setting.default_index || 1;
+            if (setting.options && setting.options[idx - 1]) {
+                return setting.options[idx - 1].name;
             }
-            return `Option ${idx + 1}`;
+            return `Option ${idx}`;
         },
         fieldOptionName(field) {
-            const idx = field.default_index || 0;
-            if (field.options && field.options[idx]) {
-                return field.options[idx].name;
+            const idx = field.default_index || 1;
+            if (field.options && field.options[idx - 1]) {
+                return field.options[idx - 1].name;
             }
-            return `Option ${idx + 1}`;
+            return `Option ${idx}`;
         },
     },
 };
