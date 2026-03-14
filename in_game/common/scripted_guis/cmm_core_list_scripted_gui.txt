@@ -214,15 +214,6 @@ CMM_MarkListMoveToBottom = {
 	}
 }
 
-# Mark the next ordered list interaction as field slot `0`.
-# Scope: country
-# Args: none
-CMM_MarkListFieldSlot_0 = {
-	effect = {
-		set_variable = { name = cmm_list_field_slot_to_apply value = 0 }
-	}
-}
-
 # Mark the next ordered list interaction as field slot `1`.
 # Scope: country
 # Args: none
@@ -256,6 +247,15 @@ CMM_MarkListFieldSlot_3 = {
 CMM_MarkListFieldSlot_4 = {
 	effect = {
 		set_variable = { name = cmm_list_field_slot_to_apply value = 4 }
+	}
+}
+
+# Mark the next ordered list interaction as field slot `5`.
+# Scope: country
+# Args: none
+CMM_MarkListFieldSlot_5 = {
+	effect = {
+		set_variable = { name = cmm_list_field_slot_to_apply value = 5 }
 	}
 }
 

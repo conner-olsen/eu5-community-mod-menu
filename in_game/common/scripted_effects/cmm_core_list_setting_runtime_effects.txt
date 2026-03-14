@@ -182,11 +182,11 @@ cmm_list_apply_numeric_field_slot = {
 cmm_list_apply_numeric_field_at_item = {
 	switch = {
 		trigger = var:cmm_list_field_slot_to_apply
-		0 = { cmm_list_apply_numeric_field_slot = { setting = $setting$ item = $item$ slot = 0 } }
 		1 = { cmm_list_apply_numeric_field_slot = { setting = $setting$ item = $item$ slot = 1 } }
 		2 = { cmm_list_apply_numeric_field_slot = { setting = $setting$ item = $item$ slot = 2 } }
 		3 = { cmm_list_apply_numeric_field_slot = { setting = $setting$ item = $item$ slot = 3 } }
 		4 = { cmm_list_apply_numeric_field_slot = { setting = $setting$ item = $item$ slot = 4 } }
+		5 = { cmm_list_apply_numeric_field_slot = { setting = $setting$ item = $item$ slot = 5 } }
 	}
 }
 
@@ -270,11 +270,11 @@ cmm_list_apply_field_slot_at_item = {
 cmm_list_apply_field_at_item = {
 	switch = {
 		trigger = var:cmm_list_field_slot_to_apply
-		0 = { cmm_list_apply_field_slot_at_item = { setting = $setting$ item = $item$ slot = 0 } }
 		1 = { cmm_list_apply_field_slot_at_item = { setting = $setting$ item = $item$ slot = 1 } }
 		2 = { cmm_list_apply_field_slot_at_item = { setting = $setting$ item = $item$ slot = 2 } }
 		3 = { cmm_list_apply_field_slot_at_item = { setting = $setting$ item = $item$ slot = 3 } }
 		4 = { cmm_list_apply_field_slot_at_item = { setting = $setting$ item = $item$ slot = 4 } }
+		5 = { cmm_list_apply_field_slot_at_item = { setting = $setting$ item = $item$ slot = 5 } }
 	}
 }
 

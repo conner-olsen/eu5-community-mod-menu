@@ -117,11 +117,11 @@ cmm_register_list_bool_field = {
 		}
 		switch = {
 			trigger = var:cmm_list_field_slot_$mod_id$__$setting_id$__$field_id$
-			0 = { cmm_initialize_list_bool_field_slot = { mod_id = $mod_id$ setting_id = $setting_id$ field_id = $field_id$ slot = 0 default_value = $default_value$ } }
 			1 = { cmm_initialize_list_bool_field_slot = { mod_id = $mod_id$ setting_id = $setting_id$ field_id = $field_id$ slot = 1 default_value = $default_value$ } }
 			2 = { cmm_initialize_list_bool_field_slot = { mod_id = $mod_id$ setting_id = $setting_id$ field_id = $field_id$ slot = 2 default_value = $default_value$ } }
 			3 = { cmm_initialize_list_bool_field_slot = { mod_id = $mod_id$ setting_id = $setting_id$ field_id = $field_id$ slot = 3 default_value = $default_value$ } }
 			4 = { cmm_initialize_list_bool_field_slot = { mod_id = $mod_id$ setting_id = $setting_id$ field_id = $field_id$ slot = 4 default_value = $default_value$ } }
+			5 = { cmm_initialize_list_bool_field_slot = { mod_id = $mod_id$ setting_id = $setting_id$ field_id = $field_id$ slot = 5 default_value = $default_value$ } }
 		}
 	}
 
@@ -156,11 +156,11 @@ cmm_register_list_dropdown_field = {
 		}
 		switch = {
 			trigger = var:cmm_list_field_slot_$mod_id$__$setting_id$__$field_id$
-			0 = { cmm_initialize_list_dropdown_field_slot = { mod_id = $mod_id$ setting_id = $setting_id$ field_id = $field_id$ slot = 0 default_index = $default_index$ option_count = $option_count$ } }
 			1 = { cmm_initialize_list_dropdown_field_slot = { mod_id = $mod_id$ setting_id = $setting_id$ field_id = $field_id$ slot = 1 default_index = $default_index$ option_count = $option_count$ } }
 			2 = { cmm_initialize_list_dropdown_field_slot = { mod_id = $mod_id$ setting_id = $setting_id$ field_id = $field_id$ slot = 2 default_index = $default_index$ option_count = $option_count$ } }
 			3 = { cmm_initialize_list_dropdown_field_slot = { mod_id = $mod_id$ setting_id = $setting_id$ field_id = $field_id$ slot = 3 default_index = $default_index$ option_count = $option_count$ } }
 			4 = { cmm_initialize_list_dropdown_field_slot = { mod_id = $mod_id$ setting_id = $setting_id$ field_id = $field_id$ slot = 4 default_index = $default_index$ option_count = $option_count$ } }
+			5 = { cmm_initialize_list_dropdown_field_slot = { mod_id = $mod_id$ setting_id = $setting_id$ field_id = $field_id$ slot = 5 default_index = $default_index$ option_count = $option_count$ } }
 		}
 	}
 
@@ -197,11 +197,11 @@ cmm_register_list_numeric_field = {
 		}
 		switch = {
 			trigger = var:cmm_list_field_slot_$mod_id$__$setting_id$__$field_id$
-			0 = { cmm_initialize_list_numeric_field_slot = { mod_id = $mod_id$ setting_id = $setting_id$ field_id = $field_id$ slot = 0 default_value = $default_value$ min_value = $min_value$ max_value = $max_value$ step_value = $step_value$ } }
 			1 = { cmm_initialize_list_numeric_field_slot = { mod_id = $mod_id$ setting_id = $setting_id$ field_id = $field_id$ slot = 1 default_value = $default_value$ min_value = $min_value$ max_value = $max_value$ step_value = $step_value$ } }
 			2 = { cmm_initialize_list_numeric_field_slot = { mod_id = $mod_id$ setting_id = $setting_id$ field_id = $field_id$ slot = 2 default_value = $default_value$ min_value = $min_value$ max_value = $max_value$ step_value = $step_value$ } }
 			3 = { cmm_initialize_list_numeric_field_slot = { mod_id = $mod_id$ setting_id = $setting_id$ field_id = $field_id$ slot = 3 default_value = $default_value$ min_value = $min_value$ max_value = $max_value$ step_value = $step_value$ } }
 			4 = { cmm_initialize_list_numeric_field_slot = { mod_id = $mod_id$ setting_id = $setting_id$ field_id = $field_id$ slot = 4 default_value = $default_value$ min_value = $min_value$ max_value = $max_value$ step_value = $step_value$ } }
+			5 = { cmm_initialize_list_numeric_field_slot = { mod_id = $mod_id$ setting_id = $setting_id$ field_id = $field_id$ slot = 5 default_value = $default_value$ min_value = $min_value$ max_value = $max_value$ step_value = $step_value$ } }
 		}
 	}
 

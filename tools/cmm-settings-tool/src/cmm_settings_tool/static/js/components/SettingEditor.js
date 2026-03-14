@@ -133,7 +133,7 @@ const SettingEditorComponent = {
 
             <!-- List -->
             <div v-if="setting.setting_type === 'list'" class="type-fields">
-                <list-editor :setting="setting"></list-editor>
+                <list-editor :setting="setting" :mod-id="modId"></list-editor>
             </div>
 
             <!-- Callback -->

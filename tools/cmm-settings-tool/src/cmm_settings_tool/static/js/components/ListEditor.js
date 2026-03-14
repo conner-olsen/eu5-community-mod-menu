@@ -1,5 +1,5 @@
 const ListEditorComponent = {
-    props: ['setting'],
+    props: ['setting', 'modId'],
     template: `
     <div class="list-editor">
         <div class="field-grid">
@@ -37,6 +37,13 @@ const ListEditorComponent = {
                 <div class="field-card-header">
                     <span class="setting-type-badge" :class="field.field_type">{{ field.field_type }}</span>
                     <span>{{ field.name || field.field_id || 'Field ' + (fi+1) }}</span>
+                    <span v-if="fieldAccessor(fi)" class="accessor-group">
+                        <span class="accessor-label">Field Slot {{ fi + 1 }} Value (per item):</span>
+                        <span class="setting-accessor" @click="copyFieldAccessor(fi)" :title="'Click to copy: ' + fieldAccessor(fi)">
+                            <code>{{ fieldAccessor(fi) }}</code>
+                            <span v-if="copiedField === fi" class="copied-flash">Copied!</span>
+                        </span>
+                    </span>
                     <button class="btn-icon btn-danger" @click="removeField(fi)">&times;</button>
                 </div>
                 <div class="field-grid">
@@ -108,7 +115,22 @@ const ListEditorComponent = {
         </div>
     </div>
     `,
+    data() {
+        return { copiedField: -1 };
+    },
     methods: {
+        fieldAccessor(fi) {
+            if (!this.modId || !this.setting.setting_id) return '';
+            const slot = fi + 1;
+            return `var:${this.modId}__${this.setting.setting_id}_item_<N>_field_${slot}`;
+        },
+        copyFieldAccessor(fi) {
+            const text = this.fieldAccessor(fi);
+            if (!text) return;
+            navigator.clipboard.writeText(text);
+            this.copiedField = fi;
+            setTimeout(() => { this.copiedField = -1; }, 1200);
+        },
         syncItemNames() {
             const count = Math.max(1, Math.min(20, this.setting.item_count || 1));
             this.setting.item_count = count;
