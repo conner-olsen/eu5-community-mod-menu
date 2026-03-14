@@ -595,7 +595,7 @@ l_english:
  cmm_example__example_toggle_name: "A example toggle setting."  # Description of your setting
 </syntaxhighlight>
 
-== Additional Features ==
+= Additional Features =
 === The <code>is_host</code> trigger ===
 CMM provides a easy to use trigger to check if the current country is controlled by the host player.
 
