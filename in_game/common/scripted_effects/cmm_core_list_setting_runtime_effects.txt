@@ -99,11 +99,11 @@ cmm_list_prepare_bool_field_value_from_slot_item = {
 cmm_list_prepare_bool_field_value_from_item = {
 	switch = {
 		trigger = var:cmm_list_field_slot_to_apply
-		0 = { cmm_list_prepare_bool_field_value_from_slot_item = { setting = $setting$ item = $item$ slot = 0 } }
 		1 = { cmm_list_prepare_bool_field_value_from_slot_item = { setting = $setting$ item = $item$ slot = 1 } }
 		2 = { cmm_list_prepare_bool_field_value_from_slot_item = { setting = $setting$ item = $item$ slot = 2 } }
 		3 = { cmm_list_prepare_bool_field_value_from_slot_item = { setting = $setting$ item = $item$ slot = 3 } }
 		4 = { cmm_list_prepare_bool_field_value_from_slot_item = { setting = $setting$ item = $item$ slot = 4 } }
+		5 = { cmm_list_prepare_bool_field_value_from_slot_item = { setting = $setting$ item = $item$ slot = 5 } }
 	}
 }
 
@@ -125,11 +125,11 @@ cmm_list_prepare_numeric_field_value_from_slot_item = {
 cmm_list_prepare_numeric_field_value_from_item = {
 	switch = {
 		trigger = var:cmm_list_field_slot_to_apply
-		0 = { cmm_list_prepare_numeric_field_value_from_slot_item = { setting = $setting$ item = $item$ slot = 0 } }
 		1 = { cmm_list_prepare_numeric_field_value_from_slot_item = { setting = $setting$ item = $item$ slot = 1 } }
 		2 = { cmm_list_prepare_numeric_field_value_from_slot_item = { setting = $setting$ item = $item$ slot = 2 } }
 		3 = { cmm_list_prepare_numeric_field_value_from_slot_item = { setting = $setting$ item = $item$ slot = 3 } }
 		4 = { cmm_list_prepare_numeric_field_value_from_slot_item = { setting = $setting$ item = $item$ slot = 4 } }
+		5 = { cmm_list_prepare_numeric_field_value_from_slot_item = { setting = $setting$ item = $item$ slot = 5 } }
 	}
 }
 
@@ -138,7 +138,7 @@ cmm_list_prepare_numeric_field_value_from_item = {
 # Args:
 # - setting (key): Composite setting key `<mod_id>__<setting_id>`.
 # - item (number): Stable item identity ordinal (`1..20`).
-# - slot (number): Field slot index (`0..4`).
+# - slot (number): Field slot index (`1..5`).
 cmm_list_apply_numeric_field_slot = {
 	if = {
 		limit = { AND = { var:cmm_list_field_$slot$_type_$setting$ = 3 has_variable = cmm_numeric_step_delta_to_apply } }

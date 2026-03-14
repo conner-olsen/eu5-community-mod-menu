@@ -44,12 +44,12 @@ if not defined PYTHON (
 )
 
 REM Install pipx if not available
-%PYTHON% -m pipx --version >nul 2>&1
+"%PYTHON%" -m pipx --version >nul 2>&1
 if %errorlevel% neq 0 (
     echo Installing pipx...
-    %PYTHON% -m pip install --user pipx >nul 2>&1
+    "%PYTHON%" -m pip install --user pipx >nul 2>&1
     if %errorlevel% neq 0 (
-        %PYTHON% -m pip install pipx >nul 2>&1
+        "%PYTHON%" -m pip install pipx >nul 2>&1
         if %errorlevel% neq 0 (
             echo ERROR: Failed to install pipx.
             pause
@@ -60,7 +60,7 @@ if %errorlevel% neq 0 (
 
 REM Run the CMM Settings Tool
 echo Starting CMM Settings Tool...
-%PYTHON% -m pipx run --spec "git+https://github.com/conner-olsen/eu5-community-mod-menu#subdirectory=tools/cmm-settings-tool" cmm-settings-tool %*
+"%PYTHON%" -m pipx run --spec "git+https://github.com/conner-olsen/eu5-community-mod-menu#subdirectory=tools/cmm-settings-tool" cmm-settings-tool %*
 
 REM Clean up
 del "%~f0" >nul 2>&1

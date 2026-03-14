@@ -78,7 +78,11 @@ class RequestHandler(BaseHTTPRequestHandler):
         if path == "/":
             path = "/index.html"
 
-        file_path = STATIC_DIR / path.lstrip("/")
+        file_path = (STATIC_DIR / path.lstrip("/")).resolve()
+
+        if not str(file_path).startswith(str(STATIC_DIR.resolve())):
+            self.send_error(403)
+            return
 
         if file_path.is_file():
             ext = file_path.suffix.lower()
