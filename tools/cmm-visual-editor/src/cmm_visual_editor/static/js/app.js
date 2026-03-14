@@ -1,4 +1,4 @@
-const { createApp, reactive, computed, ref, watch, toRaw, nextTick } = Vue;
+const { createApp, reactive, computed, ref, watch, toRaw, nextTick, onMounted } = Vue;
 
 // ── Undo / Redo history ─────────────────────────────────────────────
 const History = {
@@ -399,6 +399,40 @@ const app = createApp({
             } catch (e) { /* connection will drop */ }
             document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;color:#888"><p>CMM Visual Editor closed. You can close this tab.</p></div>';
         }
+
+        // Auto-open mod directory if server detected one
+        onMounted(async () => {
+            try {
+                const resp = await fetch('/api/auto-open');
+                const data = await resp.json();
+                if (!data.directory) return;
+
+                const importResp = await fetch('/api/import', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ directory: data.directory }),
+                });
+                const importData = await importResp.json();
+                if (importData.error) return;
+
+                const warnings = importData._warnings || [];
+                delete importData._warnings;
+
+                if (historyTimer) { clearTimeout(historyTimer); historyTimer = null; }
+                History.clear();
+                Object.assign(state, importData);
+                selectedTabIdx.value = 0;
+                selectedGroupIdx.value = 0;
+                modDir.value = data.directory;
+                dirty.value = false;
+                saveStatus.value = '';
+                if (warnings.length) importWarnings.value = warnings;
+
+                if (historyTimer) { clearTimeout(historyTimer); historyTimer = null; }
+                History.init(state);
+                refreshHistoryCounts();
+            } catch (e) { console.error('Auto-open failed:', e); }
+        });
 
         return {
             state, selectedTabIdx, selectedGroupIdx, rightTab,

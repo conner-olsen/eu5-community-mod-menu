@@ -59,6 +59,10 @@ class RequestHandler(BaseHTTPRequestHandler):
             self._handle_browse()
             return
 
+        if path == "/api/auto-open":
+            self._send_json({"directory": self.server.auto_open_dir or ""})
+            return
+
         if path == "/api/templates":
             self._send_json({
                 "mod_id": "",
@@ -235,8 +239,9 @@ class RequestHandler(BaseHTTPRequestHandler):
         self._send_json(result)
 
 
-def run_server(host: str, port: int):
+def run_server(host: str, port: int, auto_open_dir: str = None):
     server = HTTPServer((host, port), RequestHandler)
+    server.auto_open_dir = auto_open_dir
     try:
         server.serve_forever()
     except KeyboardInterrupt:
