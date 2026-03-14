@@ -12,7 +12,7 @@ The Community Mod Menu (CMM) is a dependency mod that allows multiple mods to ho
 
 = CMM Visual Editor (Beta) =
 CMM provides a visual editor tool that lets you create and manage settings without writing any code by hand. It generates all the required files (effects, scripted GUIs, localization, on_action, and metadata) from a browser-based interface.
-[[File:CMM_Visual_Editor.png|thumb|600px|The CMM Example Mod.]]
+[[File:CMM_Visual_Editor.png|thumb|600px|The CMM Visual Editor.]]
 
 === Running ===
 Run the following in a terminal to download and launch the tool:
