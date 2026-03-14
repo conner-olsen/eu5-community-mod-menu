@@ -86,10 +86,15 @@ if !errorlevel! neq 0 (
 
 REM Fast version check - compare local vs remote pyproject.toml version
 for /f "delims=" %%v in ('"%PYTHON%" -m cmm_visual_editor --version 2^>nul') do set LOCAL_VER=%%v
-for /f "delims=" %%v in ('curl.exe -sL --max-time 3 "%CMM_VERSION_URL%" 2^>nul ^| findstr "version"') do set REMOTE_LINE=%%v
 
-if defined REMOTE_LINE (
-    for /f "tokens=2 delims=^\"" %%v in ("!REMOTE_LINE!") do set REMOTE_VER=%%v
+set REMOTE_VER=
+for /f "delims=" %%v in ('curl.exe -sL --max-time 3 "%CMM_VERSION_URL%" 2^>nul') do (
+    echo %%v | findstr /c:"version" >nul 2>&1
+    if !errorlevel! equ 0 (
+        for /f "tokens=3 delims= " %%u in ("%%v") do (
+            set "REMOTE_VER=%%~u"
+        )
+    )
 )
 
 if defined LOCAL_VER if defined REMOTE_VER (
@@ -101,4 +106,4 @@ if defined LOCAL_VER if defined REMOTE_VER (
 
 :run
 echo Starting CMM Visual Editor...
-"%PYTHON%" -m cmm_visual_editor
+"%PYTHON%" -m cmm_visual_editor %*
