@@ -16,8 +16,8 @@ CMM provides a visual editor tool that lets you create and manage settings witho
 
 === Running ===
 Run the following in a terminal to download and launch the tool:
-<syntaxhighlight lang="bash">
-curl -sL https://raw.githubusercontent.com/conner-olsen/eu5-community-mod-menu/main/tools/cmm-visual-editor.bat -o %TEMP%\cmm-visual-editor.bat && %TEMP%\cmm-visual-editor.bat
+<syntaxhighlight lang="powershell">
+curl.exe -sL https://raw.githubusercontent.com/conner-olsen/eu5-community-mod-menu/main/tools/cmm-visual-editor.bat -o "$env:TEMP\cmm-visual-editor.bat"; & "$env:TEMP\cmm-visual-editor.bat"
 </syntaxhighlight>
 This will launch the tool in your browser. It will add any dependencies if needed. And will not leave any files behind after use.
 
