@@ -18,7 +18,7 @@ Run the following in a terminal to download and launch the tool:
 <syntaxhighlight lang="bash">
 curl -sL https://raw.githubusercontent.com/conner-olsen/eu5-community-mod-menu/main/tools/cmm-settings-tool.bat -o %TEMP%\cmm-settings-tool.bat && %TEMP%\cmm-settings-tool.bat
 </syntaxhighlight>
-This will launch the tool in your browser. It will any dependencies if needed. And will not leave any files behind after use.
+This will launch the tool in your browser. It will add any dependencies if needed. And will not leave any files behind after use.
 
 === Features ===
 * '''Visual editor''': Create and modify any setting type (toggle, button, numeric, slider, dropdown, text, settings list) with tabs, groups, and localization.
@@ -41,7 +41,6 @@ These are the only files the tool reads and writes. Any other files in your mod 
 When you open an existing mod directory, the tool scans for the files listed above and loads their settings into the editor. You can then modify anything and save the changes back.
 
 Custom logic you add to your scripted GUI callbacks or text effect callbacks is preserved when re-saving from the tool.
-
 
 = Manual Setup =
 
