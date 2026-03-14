@@ -32,6 +32,16 @@ def find_mod_directory(start=None):
     return None
 
 
+def get_version():
+    """Read version from pyproject.toml."""
+    pyproject = Path(__file__).parent.parent.parent / "pyproject.toml"
+    if pyproject.is_file():
+        for line in pyproject.read_text().splitlines():
+            if line.startswith("version"):
+                return line.split('"')[1]
+    return "unknown"
+
+
 def main():
     parser = argparse.ArgumentParser(description="CMM Visual Editor")
     parser.add_argument(
@@ -41,7 +51,12 @@ def main():
         "--no-open", action="store_true", help="Do not auto-open browser"
     )
     parser.add_argument("--host", default="127.0.0.1", help="Host to bind to")
+    parser.add_argument("--version", action="store_true", help="Print version and exit")
     args = parser.parse_args()
+
+    if args.version:
+        print(get_version())
+        return
 
     mod_dir = find_mod_directory()
     if mod_dir:
