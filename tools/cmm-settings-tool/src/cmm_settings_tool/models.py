@@ -55,6 +55,10 @@ class Setting:
     item_column_name: Optional[str] = None
     item_names: Optional[list] = None
     fields: Optional[list] = None
+    # callback
+    on_changed_effect: Optional[str] = None
+    pass_value_param: Optional[str] = None
+    no_pass_value: Optional[bool] = None
 
 
 @dataclass
@@ -122,6 +126,12 @@ def model_to_dict(model: ModModel) -> dict:
             d["item_column_name"] = s.item_column_name or ""
             d["item_names"] = s.item_names or []
             d["fields"] = [_list_field(f) for f in (s.fields or [])]
+        if s.on_changed_effect:
+            d["on_changed_effect"] = s.on_changed_effect
+        if s.pass_value_param:
+            d["pass_value_param"] = s.pass_value_param
+        if s.no_pass_value:
+            d["no_pass_value"] = s.no_pass_value
         return d
 
     def _list_field(f: ListField) -> dict:
@@ -217,6 +227,9 @@ def dict_to_model(data: dict) -> ModModel:
             item_column_name=s.get("item_column_name"),
             item_names=s.get("item_names"),
             fields=[_parse_list_field(f) for f in s.get("fields", [])],
+            on_changed_effect=s.get("on_changed_effect"),
+            pass_value_param=s.get("pass_value_param"),
+            no_pass_value=s.get("no_pass_value"),
         )
 
     return ModModel(

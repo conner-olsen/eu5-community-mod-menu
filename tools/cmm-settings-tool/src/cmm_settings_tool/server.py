@@ -54,6 +54,10 @@ class RequestHandler(BaseHTTPRequestHandler):
             self._send_json({"status": "ok"})
             return
 
+        if path == "/api/browse":
+            self._handle_browse()
+            return
+
         if path == "/api/templates":
             self._send_json({
                 "mod_id": "",
@@ -192,6 +196,30 @@ class RequestHandler(BaseHTTPRequestHandler):
         result = model_to_dict(model)
         result["_warnings"] = warnings
         self._send_json(result)
+
+    def _handle_browse(self):
+        import threading
+
+        result = [None]
+
+        def pick():
+            try:
+                import tkinter as tk
+                from tkinter import filedialog
+                root = tk.Tk()
+                root.withdraw()
+                root.attributes("-topmost", True)
+                path = filedialog.askdirectory(title="Select Mod Directory")
+                root.destroy()
+                result[0] = path or ""
+            except Exception:
+                result[0] = ""
+
+        # tkinter must run; use a thread to avoid blocking if already on main
+        t = threading.Thread(target=pick)
+        t.start()
+        t.join(timeout=120)
+        self._send_json({"directory": result[0]})
 
     def _handle_import_upload(self):
         body = json.loads(self._read_body())

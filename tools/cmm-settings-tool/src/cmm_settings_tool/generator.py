@@ -66,9 +66,18 @@ def _gen_effects(model: ModModel) -> str:
                     qid = f"{mod_id}__{setting.setting_id}"
                     lines.append("")
                     lines.append(f"{qid}_on_changed = {{")
-                    lines.append(f"\t# Custom text handling effect. Uses $text$ parameter.")
-                    lines.append(f"\t# Replace this placeholder with your actual effect logic.")
-                    lines.append(f"\tlog = \"Text submitted: $text$\"")
+                    if setting.on_changed_effect:
+                        if not setting.no_pass_value:
+                            param = setting.pass_value_param or "value"
+                            lines.append(f"\t{setting.on_changed_effect} = {{")
+                            lines.append(f"\t\t{param} = $text$")
+                            lines.append(f"\t}}")
+                        else:
+                            lines.append(f"\t{setting.on_changed_effect} = yes")
+                    else:
+                        lines.append(f"\t# Custom text handling effect. Uses $text$ parameter.")
+                        lines.append(f"\t# Replace this placeholder with your actual effect logic.")
+                        lines.append(f"\tlog = \"Text submitted: $text$\"")
                     lines.append("}")
 
     return "\n".join(lines) + "\n"
@@ -193,36 +202,37 @@ def _gen_callback_block(setting: Setting, qid: str) -> str:
         lines.append(f"\t\tcmm_toggle_bool_setting = {{")
         lines.append(f"\t\t\tsetting = {qid}")
         lines.append(f"\t\t}}")
-        lines.append(f"")
-        lines.append(f"\t\tif = {{")
-        lines.append(f"\t\t\tlimit = {{ {var_prefix}:{qid} = 1 }}")
-        lines.append(f"\t\t\t# enabled effect")
-        lines.append(f"\t\t}}")
-        lines.append(f"\t\telse = {{")
-        lines.append(f"\t\t\t# disabled effect")
-        lines.append(f"\t\t}}")
     elif st == "button":
-        lines.append(f"\t\t# Button effect")
+        pass  # no CMM helper for buttons
     elif st == "numeric":
         lines.append(f"\t\tcmm_apply_numeric_change = {{")
         lines.append(f"\t\t\tsetting = {qid}")
         lines.append(f"\t\t}}")
-        lines.append(f"\t\t# optional custom logic")
     elif st == "slider":
         lines.append(f"\t\tcmm_apply_slider_change = {{")
         lines.append(f"\t\t\tsetting = {qid}")
         lines.append(f"\t\t}}")
-        lines.append(f"\t\t# optional custom logic")
     elif st == "dropdown":
         lines.append(f"\t\tcmm_apply_dropdown_change = {{")
         lines.append(f"\t\t\tsetting = {qid}")
         lines.append(f"\t\t}}")
-        lines.append(f"\t\t# optional custom logic")
     elif st == "list":
         lines.append(f"\t\tcmm_apply_list_change = {{")
         lines.append(f"\t\t\tsetting = {qid}")
         lines.append(f"\t\t}}")
-        lines.append(f"\t\t# optional custom logic")
+
+    # Custom effect call
+    if setting.on_changed_effect:
+        lines.append(f"")
+        if not setting.no_pass_value and st not in ("button", "list"):
+            param = setting.pass_value_param or "value"
+            lines.append(f"\t\t{setting.on_changed_effect} = {{")
+            lines.append(f"\t\t\t{param} = {var_prefix}:{qid}")
+            lines.append(f"\t\t}}")
+        else:
+            lines.append(f"\t\t{setting.on_changed_effect} = yes")
+    elif st == "button":
+        lines.append(f"\t\t# Button effect")
 
     lines.append(f"\t}}")
     lines.append(f"}}")

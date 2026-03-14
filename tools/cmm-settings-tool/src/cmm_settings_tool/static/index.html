@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CMM Settings Tool</title>
+    <title>CMM Visual Editor</title>
     <link rel="stylesheet" href="/css/app.css">
     <link rel="stylesheet" href="/css/preview.css">
 </head>
@@ -11,7 +11,7 @@
     <div id="app">
         <header class="app-header">
             <div class="header-left">
-                <h1 class="app-title">CMM Settings Tool</h1>
+                <h1 class="app-title">CMM Visual Editor</h1>
                 <div class="undo-redo">
                     <button class="btn-icon" @click="undo" :disabled="undoCount === 0" title="Undo (Ctrl+Z)">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4.5 3L1 6.5l3.5 3.5V7.5H10a3 3 0 0 1 0 6H7v1.5h3a4.5 4.5 0 0 0 0-9H4.5V3z"/></svg>
@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="header-actions">
-                <button class="btn btn-secondary" @click="showImport = true">Open / Import</button>
+                <button class="btn btn-secondary" @click="showImport = true">Open</button>
                 <button class="btn btn-secondary" @click="generateAndDownload" :disabled="!state.mod_id">Download ZIP</button>
             </div>
         </header>
@@ -105,6 +105,7 @@
                             <div class="settings-list">
                                 <setting-editor v-for="(setting, si) in selectedGroup.settings" :key="si"
                                     :setting="setting" :index="si" :total="selectedGroup.settings.length"
+                                    :mod-id="state.mod_id"
                                     @remove="removeSetting(si)"
                                     @move-up="moveSetting(si, -1)"
                                     @move-down="moveSetting(si, 1)">
@@ -145,7 +146,10 @@
                 </p>
                 <div class="field-row">
                     <label>Mod Directory Path</label>
-                    <input v-model="importPath" placeholder="C:\path\to\your\mod" @keyup.enter="importFromDir">
+                    <div class="input-with-btn">
+                        <input v-model="importPath" placeholder="C:\path\to\your\mod" @keyup.enter="importFromDir">
+                        <button class="btn btn-secondary" @click="browseDir">Browse</button>
+                    </div>
                 </div>
                 <div class="modal-actions">
                     <button class="btn btn-secondary" @click="showImport = false">Cancel</button>
@@ -153,7 +157,7 @@
                         New (empty mod)
                     </button>
                     <button class="btn btn-primary" @click="importFromDir" :disabled="!importPath">
-                        Open &amp; Import
+                        Open
                     </button>
                 </div>
                 <div v-if="importWarnings.length" class="warnings">

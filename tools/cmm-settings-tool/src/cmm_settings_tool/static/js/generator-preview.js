@@ -59,9 +59,20 @@ ${prefix}_on_register_mod = {
                         const qid = `${modId}__${setting.setting_id}`;
                         lines.push('');
                         lines.push(`${qid}_on_changed = {`);
-                        lines.push(`\t# Custom text handling effect. Uses $text$ parameter.`);
-                        lines.push(`\t# Replace this placeholder with your actual effect logic.`);
-                        lines.push(`\tlog = "Text submitted: $text$"`);
+                        if (setting.on_changed_effect) {
+                            if (!setting.no_pass_value) {
+                                const param = setting.pass_value_param || 'value';
+                                lines.push(`\t${setting.on_changed_effect} = {`);
+                                lines.push(`\t\t${param} = $text$`);
+                                lines.push(`\t}`);
+                            } else {
+                                lines.push(`\t${setting.on_changed_effect} = yes`);
+                            }
+                        } else {
+                            lines.push(`\t# Custom text handling effect. Uses $text$ parameter.`);
+                            lines.push(`\t# Replace this placeholder with your actual effect logic.`);
+                            lines.push(`\tlog = "Text submitted: $text$"`);
+                        }
                         lines.push('}');
                     }
                 }
@@ -175,37 +186,41 @@ ${prefix}_on_register_mod = {
             lines.push(`\t\tcmm_toggle_bool_setting = {`);
             lines.push(`\t\t\tsetting = ${qid}`);
             lines.push(`\t\t}`);
-            lines.push('');
-            lines.push(`\t\tif = {`);
-            lines.push(`\t\t\tlimit = { ${varPrefix}:${qid} = 1 }`);
-            lines.push(`\t\t\t# enabled effect`);
-            lines.push(`\t\t}`);
-            lines.push(`\t\telse = {`);
-            lines.push(`\t\t\t# disabled effect`);
-            lines.push(`\t\t}`);
         } else if (st === 'button') {
-            lines.push(`\t\t# Button effect`);
+            // no CMM helper for buttons
         } else if (st === 'numeric') {
             lines.push(`\t\tcmm_apply_numeric_change = {`);
             lines.push(`\t\t\tsetting = ${qid}`);
             lines.push(`\t\t}`);
-            lines.push(`\t\t# optional custom logic`);
         } else if (st === 'slider') {
             lines.push(`\t\tcmm_apply_slider_change = {`);
             lines.push(`\t\t\tsetting = ${qid}`);
             lines.push(`\t\t}`);
-            lines.push(`\t\t# optional custom logic`);
         } else if (st === 'dropdown') {
             lines.push(`\t\tcmm_apply_dropdown_change = {`);
             lines.push(`\t\t\tsetting = ${qid}`);
             lines.push(`\t\t}`);
-            lines.push(`\t\t# optional custom logic`);
         } else if (st === 'list') {
             lines.push(`\t\tcmm_apply_list_change = {`);
             lines.push(`\t\t\tsetting = ${qid}`);
             lines.push(`\t\t}`);
-            lines.push(`\t\t# optional custom logic`);
         }
+
+        // Custom effect call
+        if (setting.on_changed_effect) {
+            lines.push('');
+            if (!setting.no_pass_value && !['button', 'list'].includes(st)) {
+                const param = setting.pass_value_param || 'value';
+                lines.push(`\t\t${setting.on_changed_effect} = {`);
+                lines.push(`\t\t\t${param} = ${varPrefix}:${qid}`);
+                lines.push(`\t\t}`);
+            } else {
+                lines.push(`\t\t${setting.on_changed_effect} = yes`);
+            }
+        } else if (st === 'button') {
+            lines.push(`\t\t# Button effect`);
+        }
+
         lines.push(`\t}`);
         lines.push(`}`);
         return lines.join('\n');

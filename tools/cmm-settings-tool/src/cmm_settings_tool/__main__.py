@@ -4,7 +4,7 @@ from .server import run_server
 
 
 def main():
-    parser = argparse.ArgumentParser(description="CMM Settings Tool")
+    parser = argparse.ArgumentParser(description="CMM Visual Editor")
     parser.add_argument(
         "--port", type=int, default=5005, help="Port to run the server on"
     )
@@ -15,7 +15,7 @@ def main():
     args = parser.parse_args()
 
     url = f"http://{args.host}:{args.port}"
-    print(f"CMM Settings Tool running at {url}")
+    print(f"CMM Visual Editor running at {url}")
     print("Press Ctrl+C to stop.")
 
     if not args.no_open:

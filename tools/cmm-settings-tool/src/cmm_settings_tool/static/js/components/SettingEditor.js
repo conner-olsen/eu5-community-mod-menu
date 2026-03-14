@@ -1,5 +1,5 @@
 const SettingEditorComponent = {
-    props: ['setting', 'index', 'total'],
+    props: ['setting', 'index', 'total', 'modId'],
     emits: ['remove', 'move-up', 'move-down'],
     template: `
     <div class="setting-card">
@@ -7,6 +7,13 @@ const SettingEditorComponent = {
             <span class="setting-type-badge" :class="setting.setting_type">{{ setting.setting_type }}</span>
             <span class="setting-title">{{ setting.name || setting.setting_id || 'New Setting' }}</span>
             <span v-if="setting.is_global" class="global-badge">Global</span>
+            <span v-if="accessor" class="accessor-group">
+                <span class="accessor-label">{{ accessorLabel }}</span>
+                <span class="setting-accessor" @click="copyAccessor" :title="'Click to copy: ' + accessor">
+                    <code>{{ accessor }}</code>
+                    <span v-if="copied" class="copied-flash">Copied!</span>
+                </span>
+            </span>
             <div class="setting-actions">
                 <button class="btn-icon" @click="$emit('move-up')" :disabled="index === 0" title="Move up">&#9650;</button>
                 <button class="btn-icon" @click="$emit('move-down')" :disabled="index === total - 1" title="Move down">&#9660;</button>
@@ -128,15 +135,55 @@ const SettingEditorComponent = {
             <div v-if="setting.setting_type === 'list'" class="type-fields">
                 <list-editor :setting="setting"></list-editor>
             </div>
+
+            <!-- Callback -->
+            <div class="type-fields callback-fields">
+                <div class="field-grid">
+                    <div class="field-row">
+                        <label>Custom On Changed Effect</label>
+                        <input v-model="setting.on_changed_effect" placeholder="my_custom_effect">
+                        <span class="field-hint">Optional effect to call when this setting changes</span>
+                    </div>
+                    <div class="field-row" v-if="setting.on_changed_effect && !['button', 'list'].includes(setting.setting_type)">
+                        <label>Parameter Name</label>
+                        <div class="input-with-inline-check">
+                            <input v-model="setting.pass_value_param" placeholder="value" :disabled="setting.no_pass_value">
+                            <label class="inline-checkbox">
+                                <input type="checkbox" v-model="setting.no_pass_value">
+                                No argument
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     `,
+    data() {
+        return { copied: false };
+    },
     computed: {
         canBeGlobal() {
             return !['text', 'list'].includes(this.setting.setting_type);
         },
+        accessor() {
+            if (!this.modId || !this.setting.setting_id) return '';
+            if (['button', 'list'].includes(this.setting.setting_type)) return '';
+            const prefix = this.setting.is_global ? 'global_var' : 'var';
+            return `${prefix}:${this.modId}__${this.setting.setting_id}`;
+        },
+        accessorLabel() {
+            if (!this.setting.is_global) return 'Current Setting Value (Country Scope):';
+            return 'Current Setting Value:';
+        },
     },
     methods: {
+        copyAccessor() {
+            if (!this.accessor) return;
+            navigator.clipboard.writeText(this.accessor);
+            this.copied = true;
+            setTimeout(() => { this.copied = false; }, 1200);
+        },
         sanitizeId() {
             this.setting.setting_id = this.setting.setting_id.replace(/[^a-z0-9_]/gi, '').toLowerCase();
         },

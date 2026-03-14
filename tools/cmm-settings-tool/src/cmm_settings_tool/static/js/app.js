@@ -227,6 +227,9 @@ const app = createApp({
                 item_column_name: 'Item',
                 item_names: ['Item A', 'Item B', 'Item C'],
                 fields: [],
+                on_changed_effect: '',
+                pass_value_param: '',
+                no_pass_value: false,
             });
         }
 
@@ -368,6 +371,19 @@ const app = createApp({
             showImport.value = false;
         }
 
+        // ── Browse for directory ──────────────────────────────────
+        async function browseDir() {
+            try {
+                const resp = await fetch('/api/browse');
+                const data = await resp.json();
+                if (data.directory) {
+                    importPath.value = data.directory;
+                }
+            } catch (e) {
+                // silently ignore if browse fails
+            }
+        }
+
         // ── Close / disconnect from directory ────────────────────
         function closeModDir() {
             modDir.value = '';
@@ -384,7 +400,7 @@ const app = createApp({
             sanitizeId, addTab, removeTab, addGroup, removeGroup,
             addSetting, removeSetting, moveSetting, onUpdate,
             generateAndDownload, importFromDir, saveToDir, closeModDir,
-            openNewDir, undo, redo,
+            openNewDir, browseDir, undo, redo,
         };
     },
 });
