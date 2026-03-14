@@ -75,7 +75,7 @@ if %errorlevel% equ 0 (
         "%PYTHON%" -m pipx reinstall cmm-visual-editor >nul 2>&1
     ) else (
         echo Installing CMM Visual Editor...
-        "%PYTHON%" -m pipx install "%CMM_SPEC%" >nul 2>&1
+        "%PYTHON%" -m pipx install --force "%CMM_SPEC%" >nul 2>&1
         if %errorlevel% neq 0 (
             echo ERROR: Failed to install CMM Visual Editor.
             pause
