@@ -2,7 +2,7 @@ name: Bump Visual Editor patch version
 
 on:
   push:
-    branches: [main]
+    branches: [dev]
     paths:
       - 'tools/cmm-visual-editor/**'
 

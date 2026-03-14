@@ -3,9 +3,59 @@ setlocal EnableDelayedExpansion
 
 REM CMM Visual Editor Launcher
 REM Installs all dependencies automatically and launches the tool.
+REM Flags:
+REM   --update   Force reinstall to latest version
+REM   --dev      Use the dev branch instead of main
+set BAT_VERSION=1 &REM:launcher-version
 
-set CMM_SPEC=git+https://github.com/conner-olsen/eu5-community-mod-menu#subdirectory=tools/cmm-visual-editor
-set CMM_VERSION_URL=https://raw.githubusercontent.com/conner-olsen/eu5-community-mod-menu/main/tools/cmm-visual-editor/pyproject.toml
+set CMM_BRANCH=main
+set FORCE_UPDATE=0
+set EXTRA_ARGS=
+
+REM Parse flags
+:parse_args
+if "%~1"=="" goto :args_done
+if "%~1"=="--update" (
+    set FORCE_UPDATE=1
+    shift
+    goto :parse_args
+)
+if "%~1"=="--dev" (
+    set CMM_BRANCH=dev
+    shift
+    goto :parse_args
+)
+set EXTRA_ARGS=!EXTRA_ARGS! %1
+shift
+goto :parse_args
+:args_done
+
+set CMM_SPEC=git+https://github.com/conner-olsen/eu5-community-mod-menu@!CMM_BRANCH!#subdirectory=tools/cmm-visual-editor
+set CMM_VERSION_URL=https://raw.githubusercontent.com/conner-olsen/eu5-community-mod-menu/!CMM_BRANCH!/tools/cmm-visual-editor/pyproject.toml
+set CMM_BAT_URL=https://raw.githubusercontent.com/conner-olsen/eu5-community-mod-menu/!CMM_BRANCH!/tools/cmm-visual-editor.bat
+
+REM Self-update check (skip for temp downloads)
+echo "%~f0" | findstr /i /c:"%TEMP%" >nul 2>&1
+if !errorlevel! neq 0 (
+    set REMOTE_BAT_VER=
+    for /f "delims=" %%v in ('curl.exe -sL --max-time 3 "!CMM_BAT_URL!" 2^>nul ^| findstr "launcher-version"') do (
+        for /f "tokens=2 delims==" %%u in ("%%v") do (
+            for /f %%w in ("%%u") do set "REMOTE_BAT_VER=%%w"
+        )
+    )
+    if defined REMOTE_BAT_VER (
+        if not "!BAT_VERSION!"=="!REMOTE_BAT_VER!" (
+            echo Updating launcher v!BAT_VERSION! -^> v!REMOTE_BAT_VER!...
+            curl.exe -sL --max-time 10 "!CMM_BAT_URL!" -o "%~f0.tmp" 2>nul
+            if exist "%~f0.tmp" (
+                move /y "%~f0.tmp" "%~f0" >nul 2>&1
+                echo Launcher updated. Restarting...
+                call "%~f0" %*
+                exit /b
+            )
+        )
+    )
+)
 
 REM Find Python
 set PYTHON=
@@ -66,16 +116,23 @@ echo "%~f0" | findstr /i /c:"%TEMP%" >nul 2>&1
 if !errorlevel! equ 0 (
     REM Temp download - run directly via pipx run, then clean up
     echo Starting CMM Visual Editor...
-    "%PYTHON%" -m pipx run --spec "%CMM_SPEC%" cmm-visual-editor
+    "%PYTHON%" -m pipx run --spec "!CMM_SPEC!" cmm-visual-editor !EXTRA_ARGS!
     del "%~f0" >nul 2>&1
     goto :eof
+)
+
+REM Forced update
+if !FORCE_UPDATE! equ 1 (
+    echo Updating CMM Visual Editor from !CMM_BRANCH!...
+    "%PYTHON%" -m pipx install --force "!CMM_SPEC!" >nul 2>&1
+    goto :run
 )
 
 REM Local launcher - install if needed, check for updates, then run
 "%PYTHON%" -m pipx list --short 2>nul | findstr /b "cmm-visual-editor" >nul 2>&1
 if !errorlevel! neq 0 (
     echo Installing CMM Visual Editor...
-    "%PYTHON%" -m pipx install --force "%CMM_SPEC%" >nul 2>&1
+    "%PYTHON%" -m pipx install --force "!CMM_SPEC!" >nul 2>&1
     if !errorlevel! neq 0 (
         echo ERROR: Failed to install CMM Visual Editor.
         pause
@@ -88,7 +145,7 @@ REM Fast version check - compare local vs remote pyproject.toml version
 for /f "delims=" %%v in ('"%PYTHON%" -m cmm_visual_editor --version 2^>nul') do set LOCAL_VER=%%v
 
 set REMOTE_VER=
-for /f "delims=" %%v in ('curl.exe -sL --max-time 3 "%CMM_VERSION_URL%" 2^>nul') do (
+for /f "delims=" %%v in ('curl.exe -sL --max-time 3 "!CMM_VERSION_URL!" 2^>nul') do (
     echo %%v | findstr /c:"version" >nul 2>&1
     if !errorlevel! equ 0 (
         for /f "tokens=3 delims= " %%u in ("%%v") do (
@@ -100,10 +157,10 @@ for /f "delims=" %%v in ('curl.exe -sL --max-time 3 "%CMM_VERSION_URL%" 2^>nul')
 if defined LOCAL_VER if defined REMOTE_VER (
     if not "!LOCAL_VER!"=="!REMOTE_VER!" (
         echo Updating CMM Visual Editor !LOCAL_VER! -^> !REMOTE_VER!...
-        "%PYTHON%" -m pipx install --force "%CMM_SPEC%" >nul 2>&1
+        "%PYTHON%" -m pipx install --force "!CMM_SPEC!" >nul 2>&1
     )
 )
 
 :run
 echo Starting CMM Visual Editor...
-"%PYTHON%" -m cmm_visual_editor %*
+"%PYTHON%" -m cmm_visual_editor !EXTRA_ARGS!
