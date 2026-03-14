@@ -22,12 +22,12 @@ curl.exe -sL https://raw.githubusercontent.com/conner-olsen/eu5-community-mod-me
 This will launch the tool in your browser. It will install any dependencies if needed and will not leave any files behind after use.
 
 === Local Install ===
-To install a persistent, double-clickable launcher, run the following in the directory you want to place it:
+To download the the persistent launcher, run the following in the directory you want to place it:
 <syntaxhighlight lang="powershell">
 curl.exe -sL https://raw.githubusercontent.com/conner-olsen/eu5-community-mod-menu/main/tools/cmm-visual-editor.bat -o cmm-visual-editor.bat
 </syntaxhighlight>
 
-Double-click the downloaded <code>cmm-visual-editor.bat</code> to launch. The local launcher automatically checks for updates on each launch.
+Double-click/run the downloaded <code>cmm-visual-editor.bat</code> to launch. The local launcher automatically checks for updates on each launch.
 
 The launcher is also available for download on the [https://github.com/conner-olsen/eu5-community-mod-menu/releases releases page].
 
@@ -39,7 +39,7 @@ The launcher is also available for download on the [https://github.com/conner-ol
 * '''Direct save''': Save changes directly back to your mod files, or download as a ZIP.
 
 === Generated Files ===
-The tool writes the following five files into your mod directory, where <code><prefix></code> is the file prefix you choose (defaults to your mod ID). File names include <code>_menu</code> to avoid conflicts with your mod's own files.
+The tool writes the following five files into your mod directory, where <code><prefix></code> is the file prefix you choose (defaults to your mod ID).
 * <code>in_game/common/on_action/<prefix>_menu_on_action.txt</code> — hooks your mod into <code>cmm_on_mod_registration</code>.
 * <code>in_game/common/scripted_effects/<prefix>_menu_effects.txt</code> — all <code>cmm_register_*</code> calls and text setting callbacks.
 * <code>in_game/common/scripted_guis/<prefix>_menu_scripted_gui.txt</code> — <code>_on_changed</code> scripted GUI callbacks for each setting.

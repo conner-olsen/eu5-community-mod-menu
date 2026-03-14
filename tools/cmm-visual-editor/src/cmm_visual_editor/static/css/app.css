@@ -65,6 +65,16 @@ body {
 }
 
 .header-actions { display: flex; gap: 8px; }
+.btn-close-app {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    padding: 4px 12px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 12px;
+}
+.btn-close-app:hover { color: var(--danger); border-color: var(--danger); }
 
 /* Save bar */
 .save-bar {

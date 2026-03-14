@@ -24,6 +24,7 @@
             <div class="header-actions">
                 <button class="btn btn-secondary" @click="showImport = true">Open</button>
                 <button class="btn btn-secondary" @click="generateAndDownload" :disabled="!state.mod_id">Download ZIP</button>
+                <button class="btn btn-close-app" @click="closeApp" title="Close the editor">Close</button>
             </div>
         </header>
 

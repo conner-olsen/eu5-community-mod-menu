@@ -391,6 +391,15 @@ const app = createApp({
             saveStatus.value = '';
         }
 
+        // ── Close the editor (shutdown server) ───────────────────
+        async function closeApp() {
+            if (dirty.value && !confirm('You have unsaved changes. Close anyway?')) return;
+            try {
+                await fetch('/api/shutdown', { method: 'POST' });
+            } catch (e) { /* connection will drop */ }
+            document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;color:#888"><p>CMM Visual Editor closed. You can close this tab.</p></div>';
+        }
+
         return {
             state, selectedTabIdx, selectedGroupIdx, rightTab,
             showImport, importPath, importWarnings,
@@ -400,7 +409,7 @@ const app = createApp({
             sanitizeId, addTab, removeTab, addGroup, removeGroup,
             addSetting, removeSetting, moveSetting, onUpdate,
             generateAndDownload, importFromDir, saveToDir, closeModDir,
-            openNewDir, browseDir, undo, redo,
+            openNewDir, browseDir, undo, redo, closeApp,
         };
     },
 });

@@ -3,6 +3,7 @@
 import json
 import io
 import os
+import threading
 import zipfile
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
@@ -121,6 +122,9 @@ class RequestHandler(BaseHTTPRequestHandler):
                 self._handle_import()
             elif path == "/api/import-upload":
                 self._handle_import_upload()
+            elif path == "/api/shutdown":
+                self._send_json({"status": "shutting down"})
+                threading.Thread(target=self.server.shutdown).start()
             else:
                 self._send_error("Not found", 404)
         except Exception as e:
@@ -202,8 +206,6 @@ class RequestHandler(BaseHTTPRequestHandler):
         self._send_json(result)
 
     def _handle_browse(self):
-        import threading
-
         result = [None]
 
         def pick():
