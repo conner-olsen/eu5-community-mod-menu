@@ -58,9 +58,15 @@ if %errorlevel% neq 0 (
     )
 )
 
-REM Run the CMM Visual Editor
-echo Starting CMM Visual Editor...
-"%PYTHON%" -m pipx run --spec "git+https://github.com/conner-olsen/eu5-community-mod-menu#subdirectory=tools/cmm-visual-editor" cmm-visual-editor %*
+REM Use local install if available, otherwise run via pipx
+where cmm-visual-editor >nul 2>&1
+if %errorlevel% equ 0 (
+    echo Starting CMM Visual Editor...
+    cmm-visual-editor %*
+) else (
+    echo Starting CMM Visual Editor...
+    "%PYTHON%" -m pipx run --spec "git+https://github.com/conner-olsen/eu5-community-mod-menu#subdirectory=tools/cmm-visual-editor" cmm-visual-editor %*
+)
 
 REM Clean up
 del "%~f0" >nul 2>&1
