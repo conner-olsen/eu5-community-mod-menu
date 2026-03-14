@@ -1,6 +1,6 @@
 ﻿# AGENTS.md
 
-Last updated: 2026-03-12
+Last updated: 2026-03-14
 
 ## Critical Context
 
@@ -9,6 +9,7 @@ Last updated: 2026-03-12
 - Treat this file as the operating brief for current CMM work.
 - CMM is not released yet; breaking changes are allowed.
 - Do not add backward-compatibility or migration shims unless explicitly requested.
+- **Keep this file up to date** when adding new features, tools, APIs, or changing conventions.
 
 ## Objective
 
@@ -49,6 +50,10 @@ Implemented:
 25. Dynamic group registration is working via `cmm_register_group` and is also called implicitly by setting registration APIs; tab registration also implicitly registers the owning mod. Settings are visually grouped within tabs using group header bars and shared background containers.
 26. Right-panel tabs use `header_main_tabs` + `button_main_tab_alt` sitting outside the `bg_main_inner_alt` content area, matching the vanilla settings screen tab blending style.
 27. Dynamic list setting registration is working via `cmm_register_settings_list`, `cmm_register_list_bool_field`, `cmm_register_list_dropdown_field`, and `cmm_register_list_numeric_field`.
+
+28. `cmm_for_each_list_item` helper effect iterates list items and calls a user-specified effect with `$i$` resolved to the 1-based item number.
+29. List field slots use 1-based indexing (1-5); field variables are `var:<mod_id>__<setting_id>_item_<N>_field_<slot>`.
+30. CMM Visual Editor tool (`tools/cmm-visual-editor/`) generates all required Paradox script files from a web UI.
 
 Status:
 
@@ -127,8 +132,11 @@ Additional rules:
 - `loading_screen/data_binding/cmm_macros_view.txt`
 - `loading_screen/data_binding/cmm_macros_settings.txt`
 - `loading_screen/data_binding/cmm_macros_list.txt`
+- `in_game/common/scripted_effects/cmm_core_list_helpers.txt`
 - `docs/mod-integration.md`
+- `docs/wiki-page.wiki`
 - `README.md`
+- `tools/cmm-visual-editor/` (CMM Visual Editor tool)
 
 ## GUI Macro Rules
 
@@ -341,6 +349,11 @@ cmm_register_list_numeric_field = {
     max_value = <required, number>
     step_value = <required, number>
 }
+
+cmm_for_each_list_item = {
+    setting = <required, mod_id__setting_id>
+    effect = <required, effect_name>
+}
 ```
 
 Registration notes:
@@ -532,6 +545,51 @@ Verification:
 3. Mod search + selection works in runtime.
 4. Selected mod settings render and apply in runtime.
 5. Player-facing localization contains no integration instructions.
+
+## List Field Indexing
+
+- Field slots are 1-based (1-5). The slot allocator increments `cmm_list_field_count` before assignment, so the first field gets slot 1.
+- Field variable pattern: `var:<mod_id>__<setting_id>_item_<N>_field_<slot>` where N is 1-based item number and slot is 1-based field registration order.
+- GUI `GetIndexInDataModel` is always 0-based (widget position); use `CMMWidgetIndexToOrdinal()` to convert to 1-based slot numbers.
+
+## List Iteration Helper
+
+```txt
+cmm_for_each_list_item = {
+    setting = <mod_id>__<setting_id>
+    effect = <effect_name>
+}
+```
+
+Iterates all items in a list setting. For each item, resolves its 1-based item number and calls `<effect_name> = { i = <N> }`. The mod author's effect can use `$i$` in variable names:
+
+```txt
+my_process_item = {
+    # $i$ is substituted to the item number (1, 2, 3, ...)
+    # var:mymod__my_list_item_$i$_field_1 accesses field 1 of the current item
+}
+```
+
+## CMM Visual Editor
+
+The CMM Visual Editor (`tools/cmm-visual-editor/`) is a web-based tool for creating and managing CMM settings integrations without manual scripting.
+
+- **Stack**: Python stdlib `http.server` (zero dependencies) + Vue 3 SPA
+- **Package name**: `cmm-visual-editor` (Python package: `cmm_visual_editor`)
+- **Launcher**: `tools/cmm-visual-editor.bat` (auto-installs Python/pipx, supports both temp-run and local install modes)
+- **Code generation**: Python generator (`generator.py`) produces all required Paradox script files; mirrored in JS (`generator-preview.js`) for live preview
+- **Parser**: `parser.py` reads existing mod files to re-import previously generated settings
+- **Callback preservation**: On re-save, existing `_on_changed` blocks in scripted GUI/effects files are preserved
+- **Encoding**: `.txt`/`.gui` = UTF-8-BOM + tabs + CRLF; `.yml` = UTF-8-BOM + 1-space + CRLF; `.json` = UTF-8 (no BOM) + CRLF
+
+Features:
+- Setting types: bool, button, numeric, slider, dropdown, text, list (with bool/dropdown/numeric fields)
+- Custom on_changed effect callbacks with configurable parameter name or no-argument mode
+- Setting value accessor display with copy-to-clipboard
+- List field accessor display with copy loop template button
+- Live code preview panel
+- Open/import existing mods with native OS browse dialog
+- Localization key management
 
 ## Helpful References
 
