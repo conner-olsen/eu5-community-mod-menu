@@ -292,6 +292,7 @@ body {
 }
 
 .btn-sm:hover { background: var(--border); }
+.btn-copy-template { color: var(--accent); border-color: var(--accent); }
 
 .btn-icon {
     background: none;

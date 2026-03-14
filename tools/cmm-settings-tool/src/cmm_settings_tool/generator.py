@@ -58,6 +58,13 @@ def _gen_effects(model: ModModel) -> str:
 
     lines.append("}")
 
+    # List iteration boilerplate (commented-out reference for mod authors)
+    for tab in model.tabs:
+        for group in tab.groups:
+            for setting in group.settings:
+                if setting.setting_type == "list" and setting.fields:
+                    _emit_list_iteration_boilerplate(lines, mod_id, setting)
+
     # Text setting effects (text callbacks are scripted effects, not scripted GUIs)
     for tab in model.tabs:
         for group in tab.groups:
@@ -170,6 +177,32 @@ def _emit_list_field(lines: list, mod_id: str, setting_id: str, field: ListField
         lines.append(f"\t\tmax_value = {_num(field.max_value, 10)}")
         lines.append(f"\t\tstep_value = {_num(field.step_value, 1)}")
         lines.append(f"\t}}")
+
+
+def _emit_list_iteration_boilerplate(lines: list, mod_id: str, setting: Setting):
+    """Emit a commented-out iteration template for a list setting."""
+    qid = f"{mod_id}__{setting.setting_id}"
+    fields = setting.fields or []
+
+    lines.append("")
+    lines.append(f"# ─── How to iterate: {qid} ───")
+    lines.append(f"# Call cmm_for_each_list_item to loop through items. It calls your effect")
+    lines.append(f"# with $i$ set to the item number, so you can use it in variable names.")
+    lines.append(f"# Scope: country")
+    lines.append(f"#")
+    lines.append(f"# cmm_for_each_list_item = {{")
+    lines.append(f"#     setting = {qid}")
+    lines.append(f"#     effect = {qid}_each_item")
+    lines.append(f"# }}")
+    lines.append(f"#")
+    lines.append(f"# {qid}_each_item = {{")
+    lines.append(f"#     # $i$ is the resolved item number (1-{_int(setting.item_count, 1)})")
+    for fi, field in enumerate(fields):
+        slot = fi + 1
+        ftype = field.field_type
+        fid = field.field_id or f"field_{slot}"
+        lines.append(f"#     # var:{qid}_item_$i$_field_{slot}  ({fid}, {ftype})")
+    lines.append(f"# }}")
 
 
 def _gen_scripted_guis(model: ModModel) -> str:

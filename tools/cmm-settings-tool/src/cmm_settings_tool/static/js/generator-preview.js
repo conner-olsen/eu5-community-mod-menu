@@ -51,6 +51,17 @@ ${prefix}_on_register_mod = {
         }
         lines.push('}');
 
+        // List iteration boilerplate
+        for (const tab of (state.tabs || [])) {
+            for (const group of (tab.groups || [])) {
+                for (const setting of (group.settings || [])) {
+                    if (setting.setting_type === 'list' && (setting.fields || []).length > 0) {
+                        this._emitListIterationBoilerplate(lines, modId, setting);
+                    }
+                }
+            }
+        }
+
         // Text effects
         for (const tab of (state.tabs || [])) {
             for (const group of (tab.groups || [])) {
@@ -156,6 +167,33 @@ ${prefix}_on_register_mod = {
             lines.push(`\t\tstep_value = ${this._num(field.step_value, 1)}`);
             lines.push(`\t}`);
         }
+    },
+
+    _emitListIterationBoilerplate(lines, modId, setting) {
+        const qid = `${modId}__${setting.setting_id}`;
+        const itemCount = setting.item_count || 1;
+        const fields = setting.fields || [];
+
+        lines.push('');
+        lines.push(`# ─── How to iterate: ${qid} ───`);
+        lines.push(`# Call cmm_for_each_list_item to loop through items. It calls your effect`);
+        lines.push(`# with $i$ set to the item number, so you can use it in variable names.`);
+        lines.push(`# Scope: country`);
+        lines.push(`#`);
+        lines.push(`# cmm_for_each_list_item = {`);
+        lines.push(`#     setting = ${qid}`);
+        lines.push(`#     effect = ${qid}_each_item`);
+        lines.push(`# }`);
+        lines.push(`#`);
+        lines.push(`# ${qid}_each_item = {`);
+        lines.push(`#     # $i$ is the resolved item number (1-${itemCount})`);
+        for (let fi = 0; fi < fields.length; fi++) {
+            const slot = fi + 1;
+            const ftype = fields[fi].field_type;
+            const fid = fields[fi].field_id || `field_${slot}`;
+            lines.push(`#     # var:${qid}_item_$i$_field_${slot}  (${fid}, ${ftype})`);
+        }
+        lines.push(`# }`);
     },
 
     genScriptedGuis(state) {

@@ -122,7 +122,7 @@ const ListEditorComponent = {
         fieldAccessor(fi) {
             if (!this.modId || !this.setting.setting_id) return '';
             const slot = fi + 1;
-            return `var:${this.modId}__${this.setting.setting_id}_item_<N>_field_${slot}`;
+            return `var:${this.modId}__${this.setting.setting_id}_item_$i$_field_${slot}`;
         },
         copyFieldAccessor(fi) {
             const text = this.fieldAccessor(fi);

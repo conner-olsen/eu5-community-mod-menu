@@ -15,6 +15,9 @@ const SettingEditorComponent = {
                 </span>
             </span>
             <div class="setting-actions">
+                <button v-if="setting.setting_type === 'list' && modId && setting.setting_id && (setting.fields||[]).length" class="btn btn-sm btn-copy-template" @click="copyLoopTemplate" title="Copy iteration template to clipboard">
+                    {{ copiedTemplate ? 'Copied!' : 'Copy Loop Template' }}
+                </button>
                 <button class="btn-icon" @click="$emit('move-up')" :disabled="index === 0" title="Move up">&#9650;</button>
                 <button class="btn-icon" @click="$emit('move-down')" :disabled="index === total - 1" title="Move down">&#9660;</button>
                 <button class="btn-icon btn-danger" @click="$emit('remove')" title="Remove">&times;</button>
@@ -160,7 +163,7 @@ const SettingEditorComponent = {
     </div>
     `,
     data() {
-        return { copied: false };
+        return { copied: false, copiedTemplate: false };
     },
     computed: {
         canBeGlobal() {
@@ -178,6 +181,29 @@ const SettingEditorComponent = {
         },
     },
     methods: {
+        copyLoopTemplate() {
+            const qid = `${this.modId}__${this.setting.setting_id}`;
+            const fields = this.setting.fields || [];
+            const itemCount = this.setting.item_count || 1;
+            const lines = [];
+            lines.push(`cmm_for_each_list_item = {`);
+            lines.push(`\tsetting = ${qid}`);
+            lines.push(`\teffect = ${qid}_each_item`);
+            lines.push(`}`);
+            lines.push(``);
+            lines.push(`${qid}_each_item = {`);
+            lines.push(`\t# $i$ is the resolved item number (1-${itemCount})`);
+            for (let fi = 0; fi < fields.length; fi++) {
+                const slot = fi + 1;
+                const ftype = fields[fi].field_type;
+                const fid = fields[fi].field_id || `field_${slot}`;
+                lines.push(`\t# var:${qid}_item_$i$_field_${slot}  (${fid}, ${ftype})`);
+            }
+            lines.push(`}`);
+            navigator.clipboard.writeText(lines.join('\n'));
+            this.copiedTemplate = true;
+            setTimeout(() => { this.copiedTemplate = false; }, 1200);
+        },
         copyAccessor() {
             if (!this.accessor) return;
             navigator.clipboard.writeText(this.accessor);

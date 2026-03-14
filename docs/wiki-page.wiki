@@ -387,6 +387,47 @@ cmm_example__example_list_on_changed = {
 </syntaxhighlight>
 * <code>cmm_apply_list_change</code>: A CMM provided helper that handles all list interactions (reordering, toggling, dropdown cycling, and numeric changes).
 
+==== Reading List Field Values ====
+Each field value is stored in a country variable following this pattern:
+<syntaxhighlight lang="text">
+var:[Your_Mod_ID]__[Your_Setting_ID]_item_[item_number]_field_[field_slot]
+</syntaxhighlight>
+* <code>item_number</code>: The item number (1 through <code>item_count</code>).
+* <code>field_slot</code>: The field's registration order (1 through 5). The first field you register gets slot 1, the second gets slot 2, and so on.
+
+For example, with the list registered above, the "enabled" bool field (slot 1) for item 3 would be:
+<syntaxhighlight lang="text">
+var:cmm_example__example_list_item_3_field_1
+</syntaxhighlight>
+
+==== Iterating List Items ====
+CMM provides <code>cmm_for_each_list_item</code> to iterate over all items in a list. It resolves each item's identity and calls your effect with <code>$i$</code> set to the item number, so you can use it directly in variable names.
+
+<syntaxhighlight lang="text">
+# Call this to iterate:
+cmm_for_each_list_item = {
+	setting = cmm_example__example_list
+	effect = cmm_example__example_list_each_item
+}
+
+# Your effect, called once per item:
+cmm_example__example_list_each_item = {
+	# $i$ is the resolved item number (1-5)
+	if = {
+		limit = {
+			var:cmm_example__example_list_item_$i$_field_1 = 1  # "enabled" field is on
+		}
+		# Do something with this item
+		# var:cmm_example__example_list_item_$i$_field_2  (mode, dropdown)
+		# var:cmm_example__example_list_item_$i$_field_3  (weight, numeric)
+	}
+}
+</syntaxhighlight>
+* <code>cmm_for_each_list_item</code>: Iterates the list in its current order (respecting any reordering the player has done).
+* <code>setting</code>: The composite setting key (<code>[Your_Mod_ID]__[Your_Setting_ID]</code>).
+* <code>effect</code>: The name of your scripted effect to call for each item.
+* <code>$i$</code>: Automatically substituted with the item number, allowing you to construct variable names like <code>var:cmm_example__example_list_item_$i$_field_1</code>.
+
 
 === Global Settings ===
 Global settings are stored in global variables instead of country variables, making them shared across all players. In multiplayer, only the host can edit global settings.
