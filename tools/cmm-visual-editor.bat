@@ -4,6 +4,7 @@ setlocal
 REM CMM Visual Editor Launcher
 REM Installs all dependencies automatically and launches the tool.
 
+set CMM_SPEC=git+https://github.com/conner-olsen/eu5-community-mod-menu#subdirectory=tools/cmm-visual-editor
 REM Find Python
 set PYTHON=
 where python >nul 2>&1 && set PYTHON=python
@@ -58,15 +59,29 @@ if %errorlevel% neq 0 (
     )
 )
 
-REM Use local install if available, otherwise run via pipx
-where cmm-visual-editor >nul 2>&1
+REM Check if this is a local (persistent) launcher or a temp download
+REM Local launchers are NOT in %TEMP%, so they install via pipx for auto-update
+echo "%~f0" | findstr /i /c:"%TEMP%" >nul 2>&1
 if %errorlevel% equ 0 (
+    REM Temp download - run directly via pipx run, then clean up
     echo Starting CMM Visual Editor...
-    cmm-visual-editor %*
+    "%PYTHON%" -m pipx run --spec "%CMM_SPEC%" cmm-visual-editor
+    del "%~f0" >nul 2>&1
 ) else (
+    REM Local launcher - install/update via pipx, then run
+    "%PYTHON%" -m pipx list --short 2>nul | findstr /b "cmm-visual-editor" >nul 2>&1
+    if %errorlevel% equ 0 (
+        echo Checking for updates...
+        "%PYTHON%" -m pipx reinstall cmm-visual-editor >nul 2>&1
+    ) else (
+        echo Installing CMM Visual Editor...
+        "%PYTHON%" -m pipx install "%CMM_SPEC%" >nul 2>&1
+        if %errorlevel% neq 0 (
+            echo ERROR: Failed to install CMM Visual Editor.
+            pause
+            exit /b 1
+        )
+    )
     echo Starting CMM Visual Editor...
-    "%PYTHON%" -m pipx run --spec "git+https://github.com/conner-olsen/eu5-community-mod-menu#subdirectory=tools/cmm-visual-editor" cmm-visual-editor %*
+    cmm-visual-editor
 )
-
-REM Clean up
-del "%~f0" >nul 2>&1
