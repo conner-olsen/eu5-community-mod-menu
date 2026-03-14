@@ -9,7 +9,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 from .encoding import encode_bom, encode_json
-from .generator import generate_all
+from .generator import generate_all, merge_with_existing
 from .models import dict_to_model, model_to_dict
 from .parser import parse_mod_directory, parse_uploaded_files
 
@@ -162,6 +162,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         model = dict_to_model(model_data)
         files = generate_all(model)
         output_path = Path(output_dir)
+        files = merge_with_existing(files, output_path)
 
         written = []
         for filepath, content in files.items():

@@ -2,25 +2,7 @@
 
 Visual editor for creating and managing EU5 Community Mod Menu (CMM) settings integrations.
 
-## Features
-
-- Create and edit all CMM setting types: bool, button, numeric, slider, dropdown, text, and list settings
-- Support for both local and global settings
-- Live preview styled to match the in-game CMM window
-- Real-time generated code view for all output files
-- Localization key overview with missing-value highlights
-- Import existing mod files for editing
-- Export as ZIP or write directly to a mod directory
-
-## Quick Start
-
-### From GitHub (single command)
-
-```bash
-pipx run --spec "git+https://github.com/<org>/eu5-community-mod-menu#subdirectory=tools/cmm-settings-tool" cmm-settings-tool
-```
-
-### From a cloned repo
+## Development Setup
 
 ```bash
 cd tools/cmm-settings-tool
@@ -28,49 +10,42 @@ pip install -e .
 cmm-settings-tool
 ```
 
-### Development
+`pip install -e .` only needs to be run once. After that, `cmm-settings-tool` launches the tool. Changes to the source files take effect immediately without reinstalling.
+
+Alternatively, you can run the module directly after install:
 
 ```bash
-cd tools/cmm-settings-tool
 python -m cmm_settings_tool
 ```
 
-### Options
+## How It Works
 
-```
---port PORT    Port to run on (default: 5005)
---host HOST    Host to bind to (default: 127.0.0.1)
---no-open      Don't auto-open browser
-```
+### Generated Files
 
-## Usage
+The tool generates 5 files into a mod directory, where `<prefix>` is the file prefix you choose (defaults to your mod ID):
 
-1. **Configure your mod** - Set the Mod ID, name, and description
-2. **Add tabs and groups** - Organize your settings into tabs and groups
-3. **Add settings** - Create settings of any type with full configuration
-4. **Preview** - See how your settings will look in the CMM window
-5. **Review code** - Check the generated Paradox script in the Code tab
-6. **Download** - Export as a ZIP file or write directly to your mod directory
-
-## Import Existing Mod
-
-Click **Import** and provide the path to your existing mod directory. The tool will parse your registration effects, scripted GUIs, and localization files to reconstruct your settings configuration for editing.
-
-## Generated Files
-
-The tool generates 5 files per mod integration:
-
-| File | Path | Purpose |
+| File | Path | Content |
 |------|------|---------|
-| On Action | `in_game/common/on_action/<prefix>_on_action.txt` | CMM registration hook |
-| Effects | `in_game/common/scripted_effects/<prefix>_effects.txt` | Setting registrations + text callbacks |
-| Scripted GUIs | `in_game/common/scripted_guis/<prefix>_scripted_gui.txt` | Setting change callbacks |
-| Localization | `main_menu/localization/english/<prefix>_l_english.yml` | All display strings |
+| On Action | `in_game/common/on_action/<prefix>_menu_on_action.txt` | CMM registration hook |
+| Effects | `in_game/common/scripted_effects/<prefix>_menu_effects.txt` | Setting registrations + text callbacks |
+| Scripted GUIs | `in_game/common/scripted_guis/<prefix>_menu_scripted_gui.txt` | Setting change callbacks |
+| Localization | `main_menu/localization/english/<prefix>_menu_l_english.yml` | All display strings |
 | Metadata | `.metadata/metadata.json` | Mod metadata with CMM dependency |
 
-All `.txt` and `.yml` files are encoded as UTF-8-BOM with CRLF line endings, matching the EU5 modding conventions.
+File names include `_menu` to avoid conflicts with a mod's own effect/GUI/localization files.
 
-## Requirements
+### Callback Preservation
 
-- Python 3.9+
-- No external dependencies (uses only Python standard library)
+When saving to a mod directory that already has generated files:
+- **Scripted GUI callbacks** (`_on_changed` blocks): existing callbacks are preserved. Only newly added settings get template callbacks appended.
+- **Text effect callbacks**: existing text `_on_changed` effects are preserved. The registration block is always regenerated.
+- **On action, localization, metadata**: always fully regenerated (these contain no custom logic).
+
+This means you can add custom logic to your callbacks and re-save from the tool without losing it.
+
+### Architecture
+
+- Python stdlib `http.server` (zero external dependencies)
+- Vue 3 SPA served as static files
+- All code generation runs server-side in Python, mirrored client-side in JS for live preview
+- Parser reads existing mod files via regex-based extraction of `cmm_register_*` blocks

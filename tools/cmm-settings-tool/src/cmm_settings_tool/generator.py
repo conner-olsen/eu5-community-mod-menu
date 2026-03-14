@@ -1,6 +1,9 @@
 """Code generator: ModModel -> Paradox script files."""
 
 import json
+import re
+from pathlib import Path
+from .encoding import decode_bom
 from .models import ModModel, Setting, ListField
 
 
@@ -11,10 +14,10 @@ def generate_all(model: ModModel) -> dict:
 
     files = {}
     if mod_id:
-        files[f"in_game/common/on_action/{prefix}_on_action.txt"] = _gen_on_action(prefix)
-        files[f"in_game/common/scripted_effects/{prefix}_effects.txt"] = _gen_effects(model)
-        files[f"in_game/common/scripted_guis/{prefix}_scripted_gui.txt"] = _gen_scripted_guis(model)
-        files[f"main_menu/localization/english/{prefix}_l_english.yml"] = _gen_localization(model)
+        files[f"in_game/common/on_action/{prefix}_menu_on_action.txt"] = _gen_on_action(prefix)
+        files[f"in_game/common/scripted_effects/{prefix}_menu_effects.txt"] = _gen_effects(model)
+        files[f"in_game/common/scripted_guis/{prefix}_menu_scripted_gui.txt"] = _gen_scripted_guis(model)
+        files[f"main_menu/localization/english/{prefix}_menu_l_english.yml"] = _gen_localization(model)
         files[".metadata/metadata.json"] = _gen_metadata(model)
 
     return files
@@ -344,3 +347,75 @@ def _esc(s: str) -> str:
     if not s:
         return ""
     return s.replace("\\", "\\\\").replace('"', '\\"')
+
+
+def merge_with_existing(generated_files: dict, output_dir: Path) -> dict:
+    """Merge generated files with existing ones, preserving custom callbacks."""
+    merged = dict(generated_files)
+
+    for filepath, content in generated_files.items():
+        existing_path = output_dir / filepath
+        if not existing_path.is_file():
+            continue
+
+        try:
+            existing = decode_bom(existing_path.read_bytes())
+        except Exception:
+            continue
+
+        if "scripted_gui" in filepath:
+            merged[filepath] = _merge_scripted_guis(content, existing)
+        elif "effects" in filepath:
+            merged[filepath] = _merge_effects(content, existing)
+
+    return merged
+
+
+def _merge_scripted_guis(generated: str, existing: str) -> str:
+    """Preserve existing _on_changed blocks, append only new ones."""
+    existing_names = set(re.findall(r"(\w+_on_changed)\s*=\s*\{", existing))
+    generated_blocks = _extract_named_blocks(generated, "_on_changed")
+
+    new_blocks = []
+    for name, block_text in generated_blocks.items():
+        if name not in existing_names:
+            new_blocks.append(block_text)
+
+    if new_blocks:
+        return existing.rstrip() + "\n\n" + "\n\n".join(new_blocks) + "\n"
+    return existing
+
+
+def _merge_effects(generated: str, existing: str) -> str:
+    """Overwrite registration block, preserve existing text callbacks."""
+    existing_callbacks = _extract_named_blocks(existing, "_on_changed")
+    if not existing_callbacks:
+        return generated
+
+    result = generated
+    for name, existing_block in existing_callbacks.items():
+        gen_blocks = _extract_named_blocks(result, "_on_changed")
+        if name in gen_blocks:
+            result = result.replace(gen_blocks[name], existing_block)
+
+    return result
+
+
+def _extract_named_blocks(content: str, suffix: str) -> dict:
+    """Extract top-level named blocks ending with suffix."""
+    blocks = {}
+    pattern = re.compile(rf"^(\w+{re.escape(suffix)})\s*=\s*\{{", re.MULTILINE)
+    for m in pattern.finditer(content):
+        name = m.group(1)
+        brace_start = m.end()
+        depth = 1
+        i = brace_start
+        while i < len(content) and depth > 0:
+            if content[i] == "{":
+                depth += 1
+            elif content[i] == "}":
+                depth -= 1
+            i += 1
+        if depth == 0:
+            blocks[name] = content[m.start():i]
+    return blocks
