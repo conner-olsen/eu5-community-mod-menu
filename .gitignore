@@ -4,3 +4,4 @@
 .env
 __pycache__/
 example-mod/example-mod.iml
+settings.local.json
