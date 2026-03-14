@@ -15,11 +15,11 @@ cmm_register_list_field_slot = {
 			}
 		}
 		set_variable = { name = cmm_registered_list_field_$mod_id$__$setting_id$__$field_id$ value = 1 }
+		change_variable = { name = cmm_list_field_count_$mod_id$__$setting_id$ add = 1 }
 		set_variable = {
 			name = cmm_list_field_slot_$mod_id$__$setting_id$__$field_id$
 			value = var:cmm_list_field_count_$mod_id$__$setting_id$
 		}
-		change_variable = { name = cmm_list_field_count_$mod_id$__$setting_id$ add = 1 }
 	}
 }
 
@@ -226,7 +226,7 @@ cmm_initialize_list_setting_item_list = {
 # Args:
 # - mod_id (key): Owner mod id.
 # - setting_id (key): Owner setting id.
-# - slot (number): Field slot index (`0..4`).
+# - slot (number): Field slot index (`1..5`).
 # - item (number): Stable item identity ordinal (`1..20`).
 # - default_value (1/0): Default checkbox state for new saves.
 cmm_initialize_list_bool_field_item = {
@@ -252,7 +252,7 @@ cmm_initialize_list_bool_field_item = {
 # - mod_id (key): Owner mod id.
 # - setting_id (key): Owner setting id.
 # - field_id (key): Field id unique within the list setting.
-# - slot (number): Field slot index (`0..4`).
+# - slot (number): Field slot index (`1..5`).
 # - default_value (1/0): Default checkbox state for new saves.
 cmm_initialize_list_bool_field_slot = {
 	set_variable = {
@@ -351,7 +351,7 @@ cmm_initialize_list_bool_field_slot = {
 # Args:
 # - mod_id (key): Owner mod id.
 # - setting_id (key): Owner setting id.
-# - slot (number): Field slot index (`0..4`).
+# - slot (number): Field slot index (`1..5`).
 # - item (number): Stable item identity ordinal (`1..20`).
 # - default_index (number): Default selected option ordinal for new saves.
 cmm_initialize_list_dropdown_field_item = {
@@ -377,7 +377,7 @@ cmm_initialize_list_dropdown_field_item = {
 # - mod_id (key): Owner mod id.
 # - setting_id (key): Owner setting id.
 # - field_id (key): Field id unique within the list setting.
-# - slot (number): Field slot index (`0..4`).
+# - slot (number): Field slot index (`1..5`).
 # - default_index (number): Default selected option ordinal for new saves.
 # - option_count (number): Number of options (`>= 1`; numbered `1..option_count`).
 cmm_initialize_list_dropdown_field_slot = {
@@ -498,7 +498,7 @@ cmm_initialize_list_dropdown_field_slot = {
 # Args:
 # - mod_id (key): Owner mod id.
 # - setting_id (key): Owner setting id.
-# - slot (number): Field slot index (`0..4`).
+# - slot (number): Field slot index (`1..5`).
 # - item (number): Stable item identity ordinal (`1..20`).
 # - default_value (number): Default numeric value for new saves.
 cmm_initialize_list_numeric_field_item = {
@@ -524,7 +524,7 @@ cmm_initialize_list_numeric_field_item = {
 # - mod_id (key): Owner mod id.
 # - setting_id (key): Owner setting id.
 # - field_id (key): Field id unique within the list setting.
-# - slot (number): Field slot index (`0..4`).
+# - slot (number): Field slot index (`1..5`).
 # - default_value (number): Default numeric value for new saves.
 # - min_value (number): Lower clamp bound.
 # - max_value (number): Upper clamp bound.
@@ -730,11 +730,11 @@ cmm_suppress_list_bool_field_warnings = {
 			exists = var:cmm_registered_list_field_$mod_id$__$setting_id$__$field_id$
 			exists = var:cmm_list_field_slot_$mod_id$__$setting_id$__$field_id$
 			exists = flag:$mod_id$__$setting_id$__$field_id$_name
-			exists = var:cmm_list_field_0_name_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_1_name_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_2_name_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_3_name_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_4_name_$mod_id$__$setting_id$
+			exists = var:cmm_list_field_5_name_$mod_id$__$setting_id$
 		}
 	}
 }
@@ -753,16 +753,16 @@ cmm_suppress_list_dropdown_field_warnings = {
 			exists = var:cmm_list_field_slot_$mod_id$__$setting_id$__$field_id$
 			exists = flag:$mod_id$__$setting_id$__$field_id$_name
 			exists = flag:$mod_id$__$setting_id$__$field_id$
-			exists = var:cmm_list_field_0_name_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_1_name_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_2_name_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_3_name_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_4_name_$mod_id$__$setting_id$
-			exists = var:cmm_list_field_0_option_root_$mod_id$__$setting_id$
+			exists = var:cmm_list_field_5_name_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_1_option_root_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_2_option_root_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_3_option_root_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_4_option_root_$mod_id$__$setting_id$
+			exists = var:cmm_list_field_5_option_root_$mod_id$__$setting_id$
 		}
 	}
 }
@@ -780,26 +780,26 @@ cmm_suppress_list_numeric_field_warnings = {
 			exists = var:cmm_registered_list_field_$mod_id$__$setting_id$__$field_id$
 			exists = var:cmm_list_field_slot_$mod_id$__$setting_id$__$field_id$
 			exists = flag:$mod_id$__$setting_id$__$field_id$_name
-			exists = var:cmm_list_field_0_name_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_1_name_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_2_name_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_3_name_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_4_name_$mod_id$__$setting_id$
-			exists = var:cmm_list_field_0_min_$mod_id$__$setting_id$
+			exists = var:cmm_list_field_5_name_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_1_min_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_2_min_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_3_min_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_4_min_$mod_id$__$setting_id$
-			exists = var:cmm_list_field_0_max_$mod_id$__$setting_id$
+			exists = var:cmm_list_field_5_min_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_1_max_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_2_max_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_3_max_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_4_max_$mod_id$__$setting_id$
-			exists = var:cmm_list_field_0_step_$mod_id$__$setting_id$
+			exists = var:cmm_list_field_5_max_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_1_step_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_2_step_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_3_step_$mod_id$__$setting_id$
 			exists = var:cmm_list_field_4_step_$mod_id$__$setting_id$
+			exists = var:cmm_list_field_5_step_$mod_id$__$setting_id$
 		}
 	}
 }

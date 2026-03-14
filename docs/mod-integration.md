@@ -381,8 +381,8 @@ Runtime data shape:
 - Row sequence is stored in `cmm_list_items_<mod_id>__<setting_id>`.
 - Stable item identity keys are `flag:<mod_id>__<setting_id>_item_<index>` where `<index>` is `1..item_count`.
 - Per-item field values are stored on the stable item identity, not on the visible row position:
-  - `<mod_id>__<setting_id>_item_<index>_field_0`
   - `<mod_id>__<setting_id>_item_<index>_field_1`
+  - `<mod_id>__<setting_id>_item_<index>_field_2`
   - ...
 - When iterating your list in script, compare the current list entry against `flag:<mod_id>__<setting_id>_item_<index>` to identify which item you are handling.
 

@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c \":*)",
+      "Bash(PYTHONPATH=src python -c \":*)",
+      "Bash(powershell -Command \"Get-Process python* | Select-Object Id, ProcessName, Path\")"
+    ]
+  }
+}
