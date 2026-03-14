@@ -6,6 +6,9 @@ on:
     paths:
       - 'tools/cmm-visual-editor/**'
 
+permissions:
+  contents: write
+
 jobs:
   bump:
     runs-on: ubuntu-latest
