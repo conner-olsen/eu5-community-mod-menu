@@ -19,7 +19,17 @@ Run the following in a terminal to download and launch the tool:
 <syntaxhighlight lang="powershell">
 curl.exe -sL https://raw.githubusercontent.com/conner-olsen/eu5-community-mod-menu/main/tools/cmm-visual-editor.bat -o "$env:TEMP\cmm-visual-editor.bat"; & "$env:TEMP\cmm-visual-editor.bat"
 </syntaxhighlight>
-This will launch the tool in your browser. It will add any dependencies if needed. And will not leave any files behind after use.
+This will launch the tool in your browser. It will install any dependencies if needed and will not leave any files behind after use.
+
+=== Local Install ===
+To install a persistent, double-clickable launcher, run the following in the directory you want to place it:
+<syntaxhighlight lang="powershell">
+curl.exe -sL https://raw.githubusercontent.com/conner-olsen/eu5-community-mod-menu/main/tools/cmm-visual-editor.bat -o cmm-visual-editor.bat
+</syntaxhighlight>
+
+Double-click the downloaded <code>cmm-visual-editor.bat</code> to launch. The local launcher automatically checks for updates on each launch.
+
+The launcher is also available for download on the [https://github.com/conner-olsen/eu5-community-mod-menu/releases releases page].
 
 === Features ===
 * '''Visual editor''': Create and modify any setting type (toggle, button, numeric, slider, dropdown, text, settings list) with tabs, groups, and localization.
