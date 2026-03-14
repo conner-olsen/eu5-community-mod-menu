@@ -176,8 +176,8 @@ const SettingEditorComponent = {
             return `${prefix}:${this.modId}__${this.setting.setting_id}`;
         },
         accessorLabel() {
-            if (!this.setting.is_global) return 'Current Setting Value (Country Scope):';
-            return 'Current Setting Value:';
+            if (!this.setting.is_global) return "To Access the Setting's Value (Country Scope):";
+            return "To Access the Setting's Value:";
         },
     },
     methods: {
