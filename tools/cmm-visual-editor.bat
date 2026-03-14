@@ -1,7 +1,7 @@
 @echo off
 setlocal
 
-REM CMM Settings Tool Launcher
+REM CMM Visual Editor Launcher
 REM Installs all dependencies automatically and launches the tool.
 
 REM Find Python
@@ -58,9 +58,9 @@ if %errorlevel% neq 0 (
     )
 )
 
-REM Run the CMM Settings Tool
-echo Starting CMM Settings Tool...
-"%PYTHON%" -m pipx run --spec "git+https://github.com/conner-olsen/eu5-community-mod-menu#subdirectory=tools/cmm-settings-tool" cmm-settings-tool %*
+REM Run the CMM Visual Editor
+echo Starting CMM Visual Editor...
+"%PYTHON%" -m pipx run --spec "git+https://github.com/conner-olsen/eu5-community-mod-menu#subdirectory=tools/cmm-visual-editor" cmm-visual-editor %*
 
 REM Clean up
 del "%~f0" >nul 2>&1

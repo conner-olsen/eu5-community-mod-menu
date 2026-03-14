@@ -1,21 +1,21 @@
-# CMM Settings Tool
+# CMM Visual Editor
 
 Visual editor for creating and managing EU5 Community Mod Menu (CMM) settings integrations.
 
 ## Development Setup
 
 ```bash
-cd tools/cmm-settings-tool
+cd tools/cmm-visual-editor
 pip install -e .
-cmm-settings-tool
+cmm-visual-editor
 ```
 
-`pip install -e .` only needs to be run once. After that, `cmm-settings-tool` launches the tool. Changes to the source files take effect immediately without reinstalling.
+`pip install -e .` only needs to be run once. After that, `cmm-visual-editor` launches the tool. Changes to the source files take effect immediately without reinstalling.
 
 Alternatively, you can run the module directly after install:
 
 ```bash
-python -m cmm_settings_tool
+python -m cmm_visual_editor
 ```
 
 ## How It Works

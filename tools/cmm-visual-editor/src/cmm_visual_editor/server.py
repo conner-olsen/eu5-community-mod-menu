@@ -1,4 +1,4 @@
-"""HTTP server for CMM Settings Tool."""
+"""HTTP server for CMM Visual Editor."""
 
 import json
 import io

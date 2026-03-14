@@ -1,4 +1,4 @@
-"""Data models for CMM Settings Tool."""
+"""Data models for CMM Visual Editor."""
 
 from dataclasses import dataclass, field
 from typing import Any, Optional

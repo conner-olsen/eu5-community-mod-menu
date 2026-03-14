@@ -12,11 +12,12 @@ The Community Mod Menu (CMM) is a dependency mod that allows multiple mods to ho
 
 = CMM Visual Editor (Beta) =
 CMM provides a visual editor tool that lets you create and manage settings without writing any code by hand. It generates all the required files (effects, scripted GUIs, localization, on_action, and metadata) from a browser-based interface.
+[[File:CMM_Visual_Editor.png|thumb|600px|The CMM Example Mod.]]
 
 === Running ===
 Run the following in a terminal to download and launch the tool:
 <syntaxhighlight lang="bash">
-curl -sL https://raw.githubusercontent.com/conner-olsen/eu5-community-mod-menu/main/tools/cmm-settings-tool.bat -o %TEMP%\cmm-settings-tool.bat && %TEMP%\cmm-settings-tool.bat
+curl -sL https://raw.githubusercontent.com/conner-olsen/eu5-community-mod-menu/main/tools/cmm-visual-editor.bat -o %TEMP%\cmm-visual-editor.bat && %TEMP%\cmm-visual-editor.bat
 </syntaxhighlight>
 This will launch the tool in your browser. It will add any dependencies if needed. And will not leave any files behind after use.
 
