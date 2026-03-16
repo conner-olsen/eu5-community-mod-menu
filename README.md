@@ -1,4 +1,4 @@
-# Community Mod Menu has merged with the [Community Mod Framework](https://github.com/Europa-Universalis-5-Modding-Co-op/community-mod-framework)
+## Community Mod Menu has merged with the [Community Mod Framework](https://github.com/Europa-Universalis-5-Modding-Co-op/community-mod-framework)
 
 # EU5 Community Mod Menu (CMM)
 
